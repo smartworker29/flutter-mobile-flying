@@ -56,7 +56,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
 
   @override
   Widget build(BuildContext context) {
-    sliderImageHieght = MediaQuery.of(context).size.width * 1.3;
+    sliderImageHieght = MediaQuery.of(context).size.width * 0.9;
     return AnimatedBuilder(
       animation: widget.animationController,
       builder: (BuildContext context, Widget child) {
@@ -105,13 +105,22 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                             ),
                           );
                         } else if (index == 2) {
-                          return TitleView(
-                            titleTxt: 'Best Deals',
-                            subTxt: 'View all',
-                            animation: animation,
-                            isLeftButton: true,
-                            animationController: widget.animationController,
-                          );
+                          return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HotelHomeScreen(),
+                                      fullscreenDialog: true),
+                                );
+                              },
+                              child: TitleView(
+                                titleTxt: 'Best Deals',
+                                subTxt: 'View all',
+                                animation: animation,
+                                isLeftButton: true,
+                                animationController: widget.animationController,
+                              ));
                         } else {
                           //   return getDealListView(index);
                           return Column(
@@ -194,7 +203,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                   _sliderUI(),
 
                   // viewHotels Button UI for click event
-                  _viewHotelsButton(_animationController),
+//                  _viewHotelsButton(_animationController),
 
                   //just gradient for see the time and battry Icon on "TopBar"
                   Positioned(

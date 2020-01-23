@@ -108,7 +108,7 @@ class CategoryView extends StatelessWidget {
                     ],
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
                     child: Stack(
                       children: <Widget>[
                         AspectRatio(
