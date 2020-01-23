@@ -41,6 +41,7 @@ dependencies:
   smooth_star_rating: ^1.0.3
   flutter_page_indicator: ^0.0.3
   intl: ^0.16.0
+  rflutter_alert:
 
 dev_dependencies:
   flutter_test:
