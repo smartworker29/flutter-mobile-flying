@@ -5,7 +5,7 @@ class AppTheme {
   static Color primaryColors = HexColor("#00AEEF");
 
   static TextTheme _buildTextTheme(TextTheme base) {
-    var fontName = "WorkSans";
+    var fontName = "Dona";
     return base.copyWith(
       title: base.title.copyWith(fontFamily: fontName),
       body1: base.title.copyWith(fontFamily: fontName),

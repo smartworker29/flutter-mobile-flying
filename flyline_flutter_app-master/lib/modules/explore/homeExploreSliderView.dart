@@ -121,7 +121,7 @@ class PagePopup extends StatelessWidget {
           ),
         ),
         Positioned(
-          bottom: 80,
+          bottom: 16,
           left: 24,
           child: Opacity(
             opacity: opValue,

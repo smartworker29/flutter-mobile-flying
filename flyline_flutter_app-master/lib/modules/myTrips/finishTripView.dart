@@ -125,7 +125,7 @@ class HotelListView extends StatelessWidget {
   Widget getUI(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 150,
+        height: 154,
         padding: EdgeInsets.only(left: !isShowDate ? 16 : 8, top: 8, bottom: 8, right: isShowDate ? 16 : 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

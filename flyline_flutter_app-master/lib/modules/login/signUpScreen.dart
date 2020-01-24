@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:motel/appTheme.dart';
-import 'package:motel/introductionScreen.dart';
 import 'package:motel/modules/login/userInfoScreen.dart';
-import '../../main.dart';
 import 'loginScreen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -96,6 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   child: TextFormField(
                                     maxLines: 1,
                                     onChanged: (String txt) {},
+                                    // ignore: missing_return
                                     validator: (String value) {
                                       if (value.isEmpty) {
                                         return 'Fill this field';
@@ -150,6 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     onChanged: (String txt) {
                                       email = txt;
                                     },
+                                    // ignore: missing_return
                                     validator: (String value) {
                                       if (value.isEmpty) {
                                         return 'Fill this field';
@@ -202,6 +201,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     obscureText: true,
                                     maxLines: 1,
                                     onChanged: (String txt) {},
+                                    // ignore: missing_return
                                     validator: (String value) {
                                       if (value.isEmpty) {
                                         return 'Fill this field';

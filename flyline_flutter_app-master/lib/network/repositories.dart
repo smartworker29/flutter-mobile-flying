@@ -1,4 +1,5 @@
 import 'package:motel/models/flightInformation.dart';
+import 'package:motel/models/flylineDeal.dart';
 import 'package:motel/models/locations.dart';
 
 import 'providers.dart';
@@ -21,4 +22,7 @@ class FlyLineRepository {
     return _flyLineProvider.searchFlight(flyFrom, flyTo, dateFrom, dateTo, type, returnFrom, returnTo, adults, infants, children, selectedCabins, curr);
   }
 
+  Future<List<FlylineDeal>> randomDeals() {
+    return _flyLineProvider.randomDeals();
+  }
 }

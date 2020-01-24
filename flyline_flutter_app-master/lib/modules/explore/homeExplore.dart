@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:motel/appTheme.dart';
+import 'package:motel/models/flylineDeal.dart';
 import 'package:motel/models/hotelListData.dart';
 import 'package:motel/modules/explore/homeExploreSliderView.dart';
 import 'package:motel/modules/explore/popularListView.dart';
 import 'package:motel/modules/explore/titleView.dart';
 import 'package:motel/modules/hotelBooking/hotelHomeScreen.dart';
 import 'package:motel/modules/hotelDetailes/hotelDetailes.dart';
-import 'package:motel/modules/hotelDetailes/searchScreen.dart';
 import 'package:motel/modules/myTrips/favoritesListView.dart';
+import 'package:motel/network/blocs.dart';
 
 class HomeExploreScreen extends StatefulWidget {
   final AnimationController animationController;
@@ -22,6 +25,7 @@ class HomeExploreScreen extends StatefulWidget {
 class _HomeExploreScreenState extends State<HomeExploreScreen>
     with TickerProviderStateMixin {
   var hotelList = HotelListData.hotelList;
+  Map<String, dynamic> airlineCodes;
   ScrollController controller;
   AnimationController _animationController;
   var sliderImageHieght = 0.0;
@@ -51,12 +55,21 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
         }
       }
     });
+    this.getAirlineCodes();
+    flyLinebloc.randomDeals();
     super.initState();
+  }
+
+  void getAirlineCodes() async {
+    airlineCodes = json.decode(
+        await DefaultAssetBundle.of(context)
+            .loadString("jsonFile/airline_codes.json"));
+    await Future.delayed(const Duration(milliseconds: 500));
   }
 
   @override
   Widget build(BuildContext context) {
-    sliderImageHieght = MediaQuery.of(context).size.width * 1.3;
+    sliderImageHieght = MediaQuery.of(context).size.width * 0.9;
     return AnimatedBuilder(
       animation: widget.animationController,
       builder: (BuildContext context, Widget child) {
@@ -105,86 +118,26 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                             ),
                           );
                         } else if (index == 2) {
-                          return TitleView(
-                            titleTxt: 'Best Deals',
-                            subTxt: 'View all',
-                            animation: animation,
-                            isLeftButton: true,
-                            animationController: widget.animationController,
-                          );
+                          return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HotelHomeScreen(),
+                                      fullscreenDialog: true),
+                                );
+                              },
+                              child: TitleView(
+                                titleTxt: 'Best Deals',
+                                subTxt: 'View all',
+                                animation: animation,
+                                isLeftButton: true,
+                                animationController: widget.animationController,
+                              ));
                         } else {
                           //   return getDealListView(index);
                           return Column(
-                            children: <Widget>[
-                              for (int i = 0; i < 5; i++)
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 24, right: 24, bottom: 16),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color:
-                                          AppTheme.getTheme().backgroundColor,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(1)),
-                                      boxShadow: <BoxShadow>[
-                                        BoxShadow(
-                                          color:
-                                              AppTheme.getTheme().dividerColor,
-                                          blurRadius: 8,
-                                          offset: Offset(4, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 16, right: 16),
-                                      child: Center(
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                            top: 10.0,
-                                            bottom: 10.0,
-                                          ),
-                                          height: 85,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Expanded(
-                                                child: Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  child: Text(
-                                                    'Newyork -> London, Round Trip | 02/10 - 02/12',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  child: Text(
-                                                    'Airlines : Norwegian, Air UK, Vueling        Cost: \$353',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color:
-                                                            AppTheme.getTheme()
-                                                                .disabledColor),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                            ],
+                            children: [_viewRandomDealsUI()],
                           );
                         }
                       },
@@ -194,7 +147,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                   _sliderUI(),
 
                   // viewHotels Button UI for click event
-                  _viewHotelsButton(_animationController),
+//                  _viewHotelsButton(_animationController),
 
                   //just gradient for see the time and battry Icon on "TopBar"
                   Positioned(
@@ -230,77 +183,152 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
     );
   }
 
-  Widget _viewHotelsButton(AnimationController _animationController) {
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (BuildContext context, Widget child) {
-        var opecity = 1.0 -
-            (_animationController.value > 0.64
-                ? 1.0
-                : _animationController.value);
-        return Positioned(
-          left: 0,
-          right: 0,
-          top: 0,
-          height: sliderImageHieght * (1.0 - _animationController.value),
-          child: Stack(
-            children: <Widget>[
-              Positioned(
-                bottom: 32,
-                left: 24,
-                child: Opacity(
-                  opacity: opecity,
-                  child: Container(
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: AppTheme.getTheme().primaryColor,
-                      borderRadius: BorderRadius.all(Radius.circular(1)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: AppTheme.getTheme().dividerColor,
-                          blurRadius: 8,
-                          offset: Offset(4, 4),
+  Widget _viewRandomDealsUI() {
+    return StreamBuilder<List<FlylineDeal>>(
+        stream: flyLinebloc.randomDealItems.stream,
+        builder: (context, AsyncSnapshot<List<FlylineDeal>> snapshot) {
+          if (snapshot.data != null && snapshot.data.isNotEmpty) {
+            var deals = snapshot.data;
+
+            List<Widget> list = List<Widget>();
+            deals.forEach((deal) {
+              list.add(Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppTheme.getTheme().backgroundColor,
+                    borderRadius: BorderRadius.all(Radius.circular(1)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: AppTheme.getTheme().dividerColor,
+                        blurRadius: 8,
+                        offset: Offset(4, 4),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          top: 10.0,
+                          bottom: 5.0,
                         ),
-                      ],
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.all(Radius.circular(1)),
-                        highlightColor: Colors.transparent,
-                        onTap: () {
-                          if (opecity != 0) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HotelHomeScreen()),
-                            );
-                          }
-                        },
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 24, right: 24, top: 8, bottom: 8),
-                            child: Text(
-                              "View Hotels",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: Colors.white),
+                        height: 85,
+                        child: Column(
+                          children: <Widget>[
+                            Expanded(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Text(
+                                  deal.dealString,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            Expanded(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Text(
+                                  'Airlines : ' + deal.getAirlines(airlineCodes) + '    Cost: ' +
+                                      deal.cost,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.getTheme().disabledColor),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+              ));
+            });
+
+            return Column(
+              children: list,
+            );
+          } else {
+            return Container();
+          }
+        });
   }
+
+//  Widget _viewHotelsButton(AnimationController _animationController) {
+//    return AnimatedBuilder(
+//      animation: _animationController,
+//      builder: (BuildContext context, Widget child) {
+//        var opecity = 1.0 -
+//            (_animationController.value > 0.64
+//                ? 1.0
+//                : _animationController.value);
+//        return Positioned(
+//          left: 0,
+//          right: 0,
+//          top: 0,
+//          height: sliderImageHieght * (1.0 - _animationController.value),
+//          child: Stack(
+//            children: <Widget>[
+//              Positioned(
+//                bottom: 32,
+//                left: 24,
+//                child: Opacity(
+//                  opacity: opecity,
+//                  child: Container(
+//                    height: 48,
+//                    decoration: BoxDecoration(
+//                      color: AppTheme.getTheme().primaryColor,
+//                      borderRadius: BorderRadius.all(Radius.circular(1)),
+//                      boxShadow: <BoxShadow>[
+//                        BoxShadow(
+//                          color: AppTheme.getTheme().dividerColor,
+//                          blurRadius: 8,
+//                          offset: Offset(4, 4),
+//                        ),
+//                      ],
+//                    ),
+//                    child: Material(
+//                      color: Colors.transparent,
+//                      child: InkWell(
+//                        borderRadius: BorderRadius.all(Radius.circular(1)),
+//                        highlightColor: Colors.transparent,
+//                        onTap: () {
+//                          if (opecity != 0) {
+//                            Navigator.push(
+//                              context,
+//                              MaterialPageRoute(
+//                                  builder: (context) => HotelHomeScreen()),
+//                            );
+//                          }
+//                        },
+//                        child: Center(
+//                          child: Padding(
+//                            padding: const EdgeInsets.only(
+//                                left: 24, right: 24, top: 8, bottom: 8),
+//                            child: Text(
+//                              "View Hotels",
+//                              style: TextStyle(
+//                                  fontWeight: FontWeight.w500,
+//                                  fontSize: 16,
+//                                  color: Colors.white),
+//                            ),
+//                          ),
+//                        ),
+//                      ),
+//                    ),
+//                  ),
+//                ),
+//              ),
+//            ],
+//          ),
+//        );
+//      },
+//    );
+//  }
 
   Widget _sliderUI() {
     return Positioned(

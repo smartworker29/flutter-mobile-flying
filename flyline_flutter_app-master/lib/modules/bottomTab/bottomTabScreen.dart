@@ -208,7 +208,7 @@ class _BottomTabScreenState extends State<BottomTabScreen> with TickerProviderSt
             ],
           ),
           SizedBox(
-            height: MediaQuery.of(context).padding.bottom,
+            height: MediaQuery.of(context).padding.bottom - 1,
           )
         ],
       ),

@@ -140,6 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 48,
                               child: Center(
                                 child: TextField(
+                                  obscureText: true,
                                   maxLines: 1,
                                   controller: passwordController,
                                   keyboardType: TextInputType.text,
