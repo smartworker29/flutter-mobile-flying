@@ -1,4 +1,5 @@
 import 'package:motel/models/flightInformation.dart';
+import 'package:motel/models/flylineDeal.dart';
 import 'package:motel/models/locations.dart';
 
 import 'repositories.dart';
@@ -7,17 +8,16 @@ import 'package:rxdart/rxdart.dart';
 class FlyLineBloc {
   final FlyLineRepository _repository = FlyLineRepository();
 
-  final BehaviorSubject<String> _token =
-  BehaviorSubject<String>();
+  final BehaviorSubject<String> _token = BehaviorSubject<String>();
 
   final BehaviorSubject<List<LocationObject>> _subjectlocationItems =
-  BehaviorSubject<List<LocationObject>>();
+      BehaviorSubject<List<LocationObject>>();
 
   final BehaviorSubject<List<FlightInformationObject>> _subjectFlightItems =
-  BehaviorSubject<List<FlightInformationObject>>();
+      BehaviorSubject<List<FlightInformationObject>>();
 
-
-
+  final BehaviorSubject<List<FlylineDeal>> _subjectRandomDeals =
+      BehaviorSubject<List<FlylineDeal>>();
 
   tryLogin(String email, String password) async {
     String response = await _repository.login(email, password);
@@ -30,31 +30,61 @@ class FlyLineBloc {
     return response;
   }
 
-  Future<List<FlightInformationObject>> searchFlight(flyFrom, flyTo, dateFrom, dateTo, type, returnFrom, returnTo, adults, infants, children, selectedCabins, curr) async {
-    List <FlightInformationObject> response = await _repository.searchFlights(flyFrom, flyTo, dateFrom, dateTo, type, returnFrom, returnTo, adults, infants, children, selectedCabins, curr);
+  Future<List<FlightInformationObject>> searchFlight(
+      flyFrom,
+      flyTo,
+      dateFrom,
+      dateTo,
+      type,
+      returnFrom,
+      returnTo,
+      adults,
+      infants,
+      children,
+      selectedCabins,
+      curr) async {
+    List<FlightInformationObject> response = await _repository.searchFlights(
+        flyFrom,
+        flyTo,
+        dateFrom,
+        dateTo,
+        type,
+        returnFrom,
+        returnTo,
+        adults,
+        infants,
+        children,
+        selectedCabins,
+        curr);
     _subjectFlightItems.sink.add(response);
 
     return response;
   }
 
+  Future<List<FlylineDeal>> randomDeals() async {
+    print("randomDeals");
+    List<FlylineDeal> response = await _repository.randomDeals();
+    _subjectRandomDeals.sink.add(response);
+
+    return response;
+  }
 
   dispose() {
     _token.close();
     _subjectlocationItems.close();
     _subjectFlightItems.close();
+    _subjectRandomDeals.close();
   }
-
-  
 
   BehaviorSubject<String> get loginResponse => _token;
 
-  BehaviorSubject<List<LocationObject>> get locationItems => _subjectlocationItems;
+  BehaviorSubject<List<LocationObject>> get locationItems =>
+      _subjectlocationItems;
 
+  BehaviorSubject<List<FlightInformationObject>> get flightsItems =>
+      _subjectFlightItems;
 
-  BehaviorSubject<List<FlightInformationObject>> get flightsItems => _subjectFlightItems;
-
-  
-
+  BehaviorSubject<List<FlylineDeal>> get randomDealItems => _subjectRandomDeals;
 }
 
 final flyLinebloc = FlyLineBloc();
