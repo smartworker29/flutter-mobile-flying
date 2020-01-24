@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/models/settingListData.dart';
-import 'package:motel/modules/login/changepassword.dart';
 import 'package:motel/modules/profile/editProfile.dart';
 import 'package:motel/modules/profile/heplCenterScreen.dart';
 import 'package:motel/modules/profile/inviteScreen.dart';
@@ -17,6 +16,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   List<SettingsListData> userSettingsList = SettingsListData.userSettingsList;
+  List<SettingsListData> userInfoList = SettingsListData.userInfoList;
 
   @override
   void initState() {
@@ -166,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Amanda",
+                    userInfoList[1].subTxt,
                     style: new TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,

@@ -42,6 +42,7 @@ dependencies:
   flutter_page_indicator: ^0.0.3
   intl: ^0.16.0
   rflutter_alert:
+  webview_flutter: ^0.3.14+1
 
 dev_dependencies:
   flutter_test:

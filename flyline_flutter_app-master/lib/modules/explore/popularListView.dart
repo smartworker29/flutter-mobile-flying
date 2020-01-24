@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/models/hotelListData.dart';
+import 'package:motel/modules/hotelBooking/hotelHomeScreen.dart';
 
 class PopularListView extends StatefulWidget {
   final Function(int) callBack;
@@ -57,7 +58,12 @@ class _PopularListViewState extends State<PopularListView> with TickerProviderSt
                           animation: animation,
                           animationController: animationController,
                           callback: () {
-                            widget.callBack(index);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HotelHomeScreen(destination: popularList[index].titleTxt),
+                                  fullscreenDialog: true),
+                            );
                           },
                         );
                       },

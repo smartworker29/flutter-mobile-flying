@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:ui';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart' as intl;
@@ -19,12 +17,18 @@ import 'filtersScreen.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 
 class HotelHomeScreen extends StatefulWidget {
+  final String destination;
+
+  HotelHomeScreen({Key key, this.destination}) : super(key: key);
+
   @override
   _HotelHomeScreenState createState() => _HotelHomeScreenState();
 }
 
 class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
+
+  bool _isSearched = true;
   AnimationController animationController;
   AnimationController _animationController;
   var hotelList = HotelListData.hotelList;
@@ -326,7 +330,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       builder:
           (context, AsyncSnapshot<List<FlightInformationObject>> snapshot) {
         if (snapshot.data != null && snapshot.data.isNotEmpty) {
-          var list_of_flights = snapshot.data;
+
+          var listOfFlights = snapshot.data;
 
           return Expanded(
             child: Container(
@@ -335,9 +340,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     child: ListView.builder(
                       padding: const EdgeInsets.only(left: 5.0, right: 5.0),
                       scrollDirection: Axis.vertical,
-                      itemCount: list_of_flights.length,
+                      itemCount: listOfFlights.length,
                       itemBuilder: (context, index) {
-                        var flight = list_of_flights[index];
+                        var flight = listOfFlights[index];
 
                         print(flight.routes);
 
@@ -797,6 +802,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     ))),
           );
         } else {
+          if (!_isSearched) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           return Container();
         }
       },
@@ -817,6 +827,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     fontSize: 19.0,
                     fontWeight: FontWeight.bold)),
             onPressed: () {
+              setState(() {
+                this._isSearched = false;
+              });
+
               try {
                 flyLinebloc.searchFlight(
                     selectedDeparture.type + ":" + selectedDeparture.code,
@@ -833,6 +847,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     "USD");
               } catch (e) {
                 print(e);
+                setState(() {
+                  this._isSearched = true;
+                });
+              } finally {
+                setState(() {
+                  this._isSearched = false;
+                });
               }
             },
           ),
@@ -1241,7 +1262,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             width: MediaQuery.of(context).size.width / 4,
             padding: EdgeInsets.only(left: 10),
             child: LocationSearchUI("Arrival", false,
-                notifyParent: refreshDepartureValue),
+                notifyParent: refreshDepartureValue,
+                destination: widget.destination),
           ),
         ),
       ],
@@ -1269,68 +1291,79 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           ),
         ),
         Container(
-          color: AppTheme.getTheme().backgroundColor,
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "530 flights found",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w100,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.grey.withOpacity(0.2),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FiltersScreen(),
-                            fullscreenDialog: true),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            "Filter",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontSize: 16,
+            color: AppTheme.getTheme().backgroundColor,
+            child: StreamBuilder<List<FlightInformationObject>>(
+              stream: flyLinebloc.flightsItems.stream,
+              builder: (context,
+                  AsyncSnapshot<List<FlightInformationObject>> snapshot) {
+                if (snapshot.data != null && snapshot.data.isNotEmpty) {
+                  var listOfFlights = snapshot.data;
+
+                  return Padding(
+                    padding:
+                    const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              listOfFlights.length.toString() + " flights found",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w100,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.sort,
-                                color: AppTheme.getTheme().primaryColor),
+                        ),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            focusColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            splashColor: Colors.grey.withOpacity(0.2),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4.0),
+                            ),
+                            onTap: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FiltersScreen(),
+                                    fullscreenDialog: true),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    "Filter",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w100,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Icon(Icons.sort,
+                                        color: AppTheme.getTheme().primaryColor),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            )),
         Positioned(
           top: 0,
           left: 0,
@@ -1434,9 +1467,10 @@ class LocationSearchUI extends StatefulWidget {
   final Function(LocationObject value, bool type) notifyParent;
   final title;
   final isDeparture;
+  final destination;
 
   LocationSearchUI(this.title, this.isDeparture,
-      {Key key, @required this.notifyParent})
+      {Key key, @required this.notifyParent, this.destination})
       : super(key: key);
 
   @override
@@ -1454,7 +1488,8 @@ class _LocationSearchUIState extends State<LocationSearchUI>
   @override
   Widget build(BuildContext context) {
     return SimpleAutocompleteFormField<LocationObject>(
-      itemToString: (location) => location != null ? location.code : "",
+      itemToString: (location) =>
+          location != null ? location.code : widget.destination,
       textAlign: TextAlign.start,
       itemBuilder: (context, location) => Padding(
         padding: EdgeInsets.all(8.0),
@@ -1477,7 +1512,7 @@ class _LocationSearchUIState extends State<LocationSearchUI>
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       decoration: new InputDecoration(
         border: InputBorder.none,
-        hintText: widget.title + " City or Airport",
+        hintText: widget.title + " City or Airport 1",
       ),
     );
   }

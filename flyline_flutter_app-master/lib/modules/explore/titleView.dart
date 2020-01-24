@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:motel/appTheme.dart';
 
 class TitleView extends StatelessWidget {
   final String titleTxt;

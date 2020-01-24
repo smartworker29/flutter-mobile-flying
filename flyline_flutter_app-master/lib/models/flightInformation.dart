@@ -1,6 +1,5 @@
 
 // A Pojo class for FlightInformation
-import 'package:duration/duration.dart';
 
 class FlightInformationObject {
   String flyFrom;
