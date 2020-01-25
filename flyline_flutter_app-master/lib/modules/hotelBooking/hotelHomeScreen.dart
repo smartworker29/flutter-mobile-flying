@@ -29,7 +29,6 @@ class HotelHomeScreen extends StatefulWidget {
 
 class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
-
   bool _isSearched = true;
   AnimationController animationController;
   AnimationController _animationController;
@@ -333,7 +332,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       builder:
           (context, AsyncSnapshot<List<FlightInformationObject>> snapshot) {
         if (snapshot.data != null && snapshot.data.isNotEmpty) {
-
           var listOfFlights = snapshot.data;
 
           return Expanded(
@@ -738,28 +736,38 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     fontSize: 19.0,
                     fontWeight: FontWeight.bold)),
             onPressed: () {
-              setState(() {
-                this._isSearched = false;
-              });
+              if (selectedDeparture != null && selectedArrival != null) {
+                print("Search Flights");
 
-              try {
-                flyLinebloc.searchFlight(
-                  selectedDeparture.type+":"+selectedDeparture.code,
-                  selectedArrival.type+":"+selectedArrival.code, 
-                  formatAllDay.format(startDate),
-                  formatAllDay.format(startDate),
-                  typeOfTripSelected==0 ? "round" : "oneway",
-                  formatAllDay.format(endDate),
-                  formatAllDay.format(endDate),
-                  ad.toString(),
-                  "0",
-                  "0",
-                  selectedClassOfServiceValue,
-                  "USD",
-                  "5");
-                  }catch (e){
-                    print(e);
-                  }
+                setState(() {
+                  this._isSearched = false;
+                });
+
+                try {
+                  flyLinebloc.searchFlight(
+                      selectedDeparture.type + ":" + selectedDeparture.code,
+                      selectedArrival.type + ":" + selectedArrival.code,
+                      formatAllDay.format(startDate),
+                      formatAllDay.format(startDate),
+                      typeOfTripSelected == 0 ? "round" : "oneway",
+                      formatAllDay.format(endDate),
+                      formatAllDay.format(endDate),
+                      ad.toString(),
+                      "0",
+                      "0",
+                      selectedClassOfServiceValue,
+                      "USD", "5");
+                } catch (e) {
+                  print(e);
+                  setState(() {
+                    this._isSearched = true;
+                  });
+                } finally {
+                  setState(() {
+                    this._isSearched = true;
+                  });
+                }
+              }
             },
           ),
         ],
@@ -1205,15 +1213,16 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   var listOfFlights = snapshot.data;
 
                   return Padding(
-                    padding:
-                    const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        left: 16, right: 16, top: 8, bottom: 4),
                     child: Row(
                       children: <Widget>[
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              listOfFlights.length.toString() + " flights found",
+                              listOfFlights.length.toString() +
+                                  " flights found",
                               style: TextStyle(
                                 fontWeight: FontWeight.w100,
                                 fontSize: 16,
@@ -1254,7 +1263,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Icon(Icons.sort,
-                                        color: AppTheme.getTheme().primaryColor),
+                                        color:
+                                            AppTheme.getTheme().primaryColor),
                                   ),
                                 ],
                               ),
@@ -1393,14 +1403,18 @@ class _LocationSearchUIState extends State<LocationSearchUI>
   @override
   Widget build(BuildContext context) {
     return SimpleAutocompleteFormField<LocationObject>(
-      itemToString: (location) =>
-          location != null ? location.code : widget.destination,
+      itemToString: (location) {
+        if (location != null) {
+          return location.name + " " + location.countryCode;
+        }
+
+        return widget.destination;
+      },
       textAlign: TextAlign.start,
       itemBuilder: (context, location) => Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(location.name, style: TextStyle(fontWeight: FontWeight.bold)),
-          Text(location.code)
+          Text(location.name + " " + location.countryCode, style: TextStyle(fontWeight: FontWeight.bold)),
         ]),
       ),
       onSearch: (search) async {

@@ -15,8 +15,10 @@ class FlyLineProvider {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token') ?? "";
 
-    if (token.isNotEmpty)
+    if (token.isNotEmpty) {
+      print("Token:" + token);
       return token;
+    }
     else {
       var email = prefs.getString('email') ?? "";
       var password = prefs.getString('password') ?? "";
@@ -109,6 +111,8 @@ class FlyLineProvider {
     List<FlightInformationObject> flights = List<FlightInformationObject>();
     var url =
         "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD&limit=$limit";
+
+    print("Search url: " + url);
     try {
       response = await dio.get(url);
     } catch (e) {
