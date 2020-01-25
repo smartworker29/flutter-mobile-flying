@@ -5,6 +5,7 @@ import 'package:motel/modules/profile/editProfile.dart';
 import 'package:motel/modules/profile/heplCenterScreen.dart';
 import 'package:motel/modules/profile/inviteScreen.dart';
 import 'package:motel/modules/profile/settingsScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   final AnimationController animationController;
@@ -17,11 +18,18 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   List<SettingsListData> userSettingsList = SettingsListData.userSettingsList;
   List<SettingsListData> userInfoList = SettingsListData.userInfoList;
+  String travelerName = '<<FirstName>>';
 
   @override
   void initState() {
     widget.animationController.forward();
+    this.getAccountInfo();
     super.initState();
+  }
+
+  void getAccountInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    this.travelerName = prefs.getString("first_name");
   }
 
   @override
@@ -166,7 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    userInfoList[1].subTxt,
+                    travelerName,
                     style: new TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,

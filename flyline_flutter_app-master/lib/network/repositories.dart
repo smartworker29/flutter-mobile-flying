@@ -1,3 +1,4 @@
+import 'package:motel/models/account.dart';
 import 'package:motel/models/flightInformation.dart';
 import 'package:motel/models/flylineDeal.dart';
 import 'package:motel/models/locations.dart';
@@ -24,5 +25,9 @@ class FlyLineRepository {
 
   Future<List<FlylineDeal>> randomDeals() {
     return _flyLineProvider.randomDeals();
+  }
+
+  Future<Account> accountInfo() {
+    return _flyLineProvider.accountInfo();
   }
 }

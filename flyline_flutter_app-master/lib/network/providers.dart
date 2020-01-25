@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:motel/models/account.dart';
 import 'package:motel/models/flightInformation.dart';
 import 'package:motel/models/flylineDeal.dart';
 import 'package:motel/models/locations.dart';
@@ -56,6 +57,7 @@ class FlyLineProvider {
 
       prefs.setString('user_email', email);
       prefs.setString('user_password', password);
+      this.accountInfo();
     } else {
       result = "";
     }
@@ -144,5 +146,43 @@ class FlyLineProvider {
       }
     }
     return deals;
+  }
+
+  Future<Account> accountInfo() async {
+    var token = await getAuthToken();
+
+    Response response;
+    Dio dio = Dio();
+    dio.options.headers["Authorization"] = "Token $token";
+
+    var url = "$baseUrl/api/users/me";
+    try {
+      response = await dio.get(url);
+    } catch (e) {
+      log(e.toString());
+    }
+
+    if (response.statusCode == 200) {
+      Account account = Account.fromJson(response.data);
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('first_name', account.firstName);
+      prefs.setString('last_name', account.lastName);
+      prefs.setString('email', account.email);
+      prefs.setString('market.code', account.market.code);
+      prefs.setString('market.country.code', account.market.country.code);
+      prefs.setString('market.name', account.market.name);
+      prefs.setString('market.subdivision.name', account.market.subdivision.name);
+      prefs.setString('market.type', account.market.type);
+      prefs.setString('gender', account.gender);
+      prefs.setString('phone_number', account.phoneNumber);
+      prefs.setString('dob', account.dob);
+      prefs.setString('tsa_precheck_number', account.tsaPrecheckNumber);
+      prefs.setString('passport_number', account.passportNumber);
+      
+      return account;
+    }
+
+    return null;
   }
 }

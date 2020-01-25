@@ -1,3 +1,4 @@
+import 'package:motel/models/account.dart';
 import 'package:motel/models/flightInformation.dart';
 import 'package:motel/models/flylineDeal.dart';
 import 'package:motel/models/locations.dart';
@@ -18,6 +19,9 @@ class FlyLineBloc {
 
   final BehaviorSubject<List<FlylineDeal>> _subjectRandomDeals =
       BehaviorSubject<List<FlylineDeal>>();
+
+  final BehaviorSubject<Account> _subjectAccountInfo =
+      BehaviorSubject<Account>();
 
   tryLogin(String email, String password) async {
     String response = await _repository.login(email, password);
@@ -62,11 +66,16 @@ class FlyLineBloc {
   }
 
   Future<List<FlylineDeal>> randomDeals() async {
-    print("randomDeals");
     List<FlylineDeal> response = await _repository.randomDeals();
     _subjectRandomDeals.sink.add(response);
 
     return response;
+  }
+
+  Future<Account> accountInfo() async {
+    Account account = await _repository.accountInfo();
+    _subjectAccountInfo.sink.add(account);
+    return account;
   }
 
   dispose() {
@@ -74,6 +83,7 @@ class FlyLineBloc {
     _subjectlocationItems.close();
     _subjectFlightItems.close();
     _subjectRandomDeals.close();
+    _subjectAccountInfo.close();
   }
 
   BehaviorSubject<String> get loginResponse => _token;
@@ -85,6 +95,8 @@ class FlyLineBloc {
       _subjectFlightItems;
 
   BehaviorSubject<List<FlylineDeal>> get randomDealItems => _subjectRandomDeals;
+
+  BehaviorSubject<Account> get accountInfoItem => _subjectAccountInfo;
 }
 
 final flyLinebloc = FlyLineBloc();
