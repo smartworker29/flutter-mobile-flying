@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/models/account.dart';
 import 'package:motel/models/settingListData.dart';
 import 'package:motel/network/blocs.dart';
+import 'package:select_dialog/select_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfile extends StatefulWidget {
@@ -21,6 +24,15 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController phoneController;
   TextEditingController passportController;
   TextEditingController tempController;
+
+  static var genders = [
+    "Male",
+    "Female",
+  ];
+  static var genderValues = ["0", "1"];
+
+  var selectedGender = genders[0];
+  var selectedGenderValue = genderValues[0];
 
   void getAccountInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -140,7 +152,8 @@ class _EditProfileState extends State<EditProfile> {
                     top: MediaQuery.of(context).padding.top, bottom: 16),
                 child: appBar(),
               ),
-              Expanded(
+              Container(
+                height: 440,
                 child: ListView.builder(
                   padding: EdgeInsets.only(
                       bottom: 16 + MediaQuery.of(context).padding.bottom),
@@ -179,6 +192,35 @@ class _EditProfileState extends State<EditProfile> {
                                               right: 16.0, bottom: 1, top: 1),
                                           child: Container(
                                             child: TextField(
+                                              onTap: () async {
+                                                if (index == 3) {
+                                                  DatePicker.showDatePicker(context,
+                                                      showTitleActions: true,
+                                                      minTime: DateTime(1960, 1, 1),
+                                                      maxTime: DateTime.now(), onChanged: (date) {
+                                                        print('change $date');
+                                                      }, onConfirm: (date) {
+                                                        var formatter = new DateFormat('yyyy-MM-dd');
+                                                        dobController.text = formatter.format(date);
+                                                      }, currentTime: DateTime.now(), locale: LocaleType.en);
+                                                } else if (index == 4) {
+                                                  SelectDialog.showModal<String>(context,
+                                                      searchBoxDecoration:
+                                                      InputDecoration(hintText: "Pick one"),
+                                                      label: "Gender",
+                                                      selectedValue: selectedGender,
+                                                      items: genders,
+                                                      onChange: (String selected) {
+                                                        setState(() {
+                                                          selectedGender = selected;
+                                                          selectedGenderValue =
+                                                          genderValues[
+                                                          genders.indexOf(selected)];
+                                                          genderController.text = selectedGender;
+                                                        });
+                                                      });
+                                                }
+                                              },
                                               maxLines: 1,
                                               onChanged: (String txt) {},
                                               controller: getController(index),

@@ -160,7 +160,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (context) => EditProfile(),
             fullscreenDialog: true,
           ),
-        );
+        ).whenComplete(() {
+          this.getAccountInfo();
+        });
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
