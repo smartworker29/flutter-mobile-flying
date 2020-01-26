@@ -196,31 +196,44 @@ class FlyLineProvider {
     dio.options.headers["Authorization"] = "Token $token";
 
     var url = "$baseUrl/api/users/me/";
+
     try {
-      response = await dio.patch(url, data: {
+      var data = {
         "first_name": firstName,
         "last_name": lastName,
-        "gender": gender,
         "email": email,
-        "dob": dob,
         "phone_number": phone,
         "passport_number": passport
-      });
-      print(response);
-    } catch (e) {
-      print(e);
-      log(e.toString());
+      };
+
+      if (gender.length > 0) {
+        gender = (gender.toLowerCase() == 'male' ? 0 : 1).toString();
+        data.addAll({
+          "gender": gender
+        });
+      }
+
+      if (dob.length > 0) {
+        data.addAll({
+          "dob": dob
+        });
+      }
+      response = await dio.patch(url, data: data);
+      print(response.toString());
+    } on DioError catch (e) {
+      print(e.response.toString());
+      log(e.response.toString());
     }
 
-//    if (response.statusCode == 200) {
-//      SharedPreferences prefs = await SharedPreferences.getInstance();
-//      prefs.setString('first_name', firstName);
-//      prefs.setString('last_name', lastName);
-//      prefs.setString('email', email);
-//      prefs.setString('gender', gender);
-//      prefs.setString('phone_number', phone);
-//      prefs.setString('dob', dob);
-//      prefs.setString('passport_number', passport);
-//    }
+    if (response.statusCode == 200) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('first_name', firstName);
+      prefs.setString('last_name', lastName);
+      prefs.setString('email', email);
+      prefs.setString('gender', gender);
+      prefs.setString('phone_number', phone);
+      prefs.setString('dob', dob);
+      prefs.setString('passport_number', passport);
+    }
   }
 }

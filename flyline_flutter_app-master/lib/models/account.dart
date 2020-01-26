@@ -36,7 +36,7 @@ class Account {
         json['last_name'],
         json['email'],
         Market.fromJson(json['market']),
-        json['gender'],
+        json['gender'].toString(),
         json['phone_number'],
         json['dob'],
         json['tsa_precheck_number'],
@@ -60,7 +60,7 @@ class Account {
       },
       {
         "key": 'Gender',
-        "value": this.gender ?? "",
+        "value": this.gender ?? "0",
       },
       {
         "key": 'Email address',

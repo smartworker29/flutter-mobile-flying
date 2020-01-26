@@ -67,7 +67,7 @@ class _EditProfileState extends State<EditProfile> {
             dobController.text = v['value'];
             break;
           case 4:
-            genderController.text = v['value'];
+            genderController.text = int.parse(v['value']) == 0 ? 'Male' : 'Female';
             break;
           case 5:
             emailController.text = v['value'];
