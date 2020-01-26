@@ -78,6 +78,11 @@ class FlyLineBloc {
     return account;
   }
 
+  Future<void> updateAccountInfo(String firstName, String lastName, String dob,
+      String gender, String email, String phone, String passport) async {
+    _repository.updateAccountInfo(firstName, lastName, dob, gender, email, phone, passport);
+  }
+
   dispose() {
     _token.close();
     _subjectlocationItems.close();

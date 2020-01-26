@@ -30,4 +30,9 @@ class FlyLineRepository {
   Future<Account> accountInfo() {
     return _flyLineProvider.accountInfo();
   }
+
+  Future<void> updateAccountInfo(String firstName, String lastName, String dob,
+      String gender, String email, String phone, String passport) {
+    return _flyLineProvider.updateAccountInfo(firstName, lastName, dob, gender, email, phone, passport);
+  }
 }

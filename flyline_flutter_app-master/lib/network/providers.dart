@@ -172,17 +172,55 @@ class FlyLineProvider {
       prefs.setString('market.code', account.market.code);
       prefs.setString('market.country.code', account.market.country.code);
       prefs.setString('market.name', account.market.name);
-      prefs.setString('market.subdivision.name', account.market.subdivision.name);
+      prefs.setString(
+          'market.subdivision.name', account.market.subdivision.name);
       prefs.setString('market.type', account.market.type);
       prefs.setString('gender', account.gender);
       prefs.setString('phone_number', account.phoneNumber);
       prefs.setString('dob', account.dob);
       prefs.setString('tsa_precheck_number', account.tsaPrecheckNumber);
       prefs.setString('passport_number', account.passportNumber);
-      
+
       return account;
     }
 
     return null;
+  }
+
+  Future<void> updateAccountInfo(String firstName, String lastName, String dob,
+      String gender, String email, String phone, String passport) async {
+    var token = await getAuthToken();
+
+    Response response;
+    Dio dio = Dio();
+    dio.options.headers["Authorization"] = "Token $token";
+
+    var url = "$baseUrl/api/users/me/";
+    try {
+      response = await dio.patch(url, data: {
+        "first_name": firstName,
+        "last_name": lastName,
+        "gender": gender,
+        "email": email,
+        "dob": dob,
+        "phone_number": phone,
+        "passport_number": passport
+      });
+      print(response);
+    } catch (e) {
+      print(e);
+      log(e.toString());
+    }
+
+//    if (response.statusCode == 200) {
+//      SharedPreferences prefs = await SharedPreferences.getInstance();
+//      prefs.setString('first_name', firstName);
+//      prefs.setString('last_name', lastName);
+//      prefs.setString('email', email);
+//      prefs.setString('gender', gender);
+//      prefs.setString('phone_number', phone);
+//      prefs.setString('dob', dob);
+//      prefs.setString('passport_number', passport);
+//    }
   }
 }
