@@ -46,7 +46,8 @@ class FlyLineBloc {
       infants,
       children,
       selectedCabins,
-      curr) async {
+      curr,
+      limit) async {
     List<FlightInformationObject> response = await _repository.searchFlights(
         flyFrom,
         flyTo,
@@ -59,7 +60,8 @@ class FlyLineBloc {
         infants,
         children,
         selectedCabins,
-        curr);
+        curr,
+        limit);
     _subjectFlightItems.sink.add(response);
 
     return response;

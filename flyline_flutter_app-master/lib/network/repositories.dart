@@ -19,8 +19,8 @@ class FlyLineRepository {
     return _flyLineProvider.locationQuery(term);
   }
 
-  Future<List<FlightInformationObject>> searchFlights(flyFrom, flyTo, dateFrom, dateTo, type, returnFrom, returnTo, adults, infants, children, selectedCabins, curr){
-    return _flyLineProvider.searchFlight(flyFrom, flyTo, dateFrom, dateTo, type, returnFrom, returnTo, adults, infants, children, selectedCabins, curr);
+  Future<List<FlightInformationObject>> searchFlights(flyFrom, flyTo, dateFrom, dateTo, type, returnFrom, returnTo, adults, infants, children, selectedCabins, curr, limit){
+    return _flyLineProvider.searchFlight(flyFrom, flyTo, dateFrom, dateTo, type, returnFrom, returnTo, adults, infants, children, selectedCabins, curr, limit);
   }
 
   Future<List<FlylineDeal>> randomDeals() {

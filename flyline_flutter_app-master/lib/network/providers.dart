@@ -99,7 +99,7 @@ class FlyLineProvider {
       infants,
       children,
       selectedCabins,
-      curr) async {
+      curr, limit) async {
     var token = await getAuthToken();
 
     Response response;
@@ -108,8 +108,7 @@ class FlyLineProvider {
 
     List<FlightInformationObject> flights = List<FlightInformationObject>();
     var url =
-        "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD";
-
+        "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD&limit=$limit";
     try {
       response = await dio.get(url);
     } catch (e) {

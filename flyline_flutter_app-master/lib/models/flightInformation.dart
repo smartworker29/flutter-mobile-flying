@@ -1,5 +1,6 @@
 
 // A Pojo class for FlightInformation
+import 'package:motel/utils/date_utils.dart';
 
 class FlightInformationObject {
   String flyFrom;
@@ -40,12 +41,16 @@ class FlightInformationObject {
     var parsedDepartureDate = DateTime.parse(json["local_departure"]);
     var parsedArrivalDate = DateTime.parse(json["local_arrival"]);
 
-    if (json["duration"]!=null && json["duration"]["departure"]!=null) durationDeparture = Duration(seconds:json["duration"]["departure"]).toString();
-    if (json["duration"]!=null && json["duration"]["return"]!=null) durationReturn = Duration(seconds:json["duration"]["return"]).toString();
+    if (json["duration"]!=null && json["duration"]["departure"]!=null) durationDeparture =
+  DateUtils.secs2hm(Duration(seconds:json["duration"]["departure"]).inSeconds);
+
+    if (json["duration"]!=null && json["duration"]["return"]!=null) durationReturn =
+  DateUtils.secs2hm(Duration(seconds:json["duration"]["return"]).inSeconds);
     
     return FlightInformationObject(json['flyFrom'], json["flyTo"], json['cityFrom'], json['cityTo'], json["nightsInDest"], parsedArrivalDate, parsedDepartureDate, items, durationDeparture, durationReturn);
     
   }
+
 }
 
 
@@ -79,6 +84,7 @@ class FlightRouteObject {
     var parsedArrivalDate = DateTime.parse(json["local_arrival"]);
     
     return FlightRouteObject(json['flyFrom'], json["flyTo"], json['cityFrom'], json['cityTo'], json["flight_no"], parsedArrivalDate, parsedDepartureDate, json["airline"]);
-    
+
   }
+
 }
