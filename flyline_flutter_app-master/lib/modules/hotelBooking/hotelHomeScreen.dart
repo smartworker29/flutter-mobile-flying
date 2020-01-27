@@ -1417,7 +1417,7 @@ class _LocationSearchUIState extends State<LocationSearchUI>
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       decoration: new InputDecoration(
         border: InputBorder.none,
-        hintText: widget.title + " City or Airport 1",
+        hintText: "Select " + widget.title + " City or Airport",
       ),
     );
   }
