@@ -1,22 +1,22 @@
-import 'dart:developer';
 import 'dart:ui';
-import 'package:flushbar/flushbar.dart';
+
+import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:motel/appTheme.dart';
-import 'package:motel/models/flightInformation.dart';
-import 'package:motel/models/hotelListData.dart';
-import 'package:motel/models/locations.dart';
-import 'package:motel/modules/hotelBooking/calendarPopupView.dart';
-import 'package:motel/modules/hotelBooking/roomPopupView.dart';
-import 'package:motel/modules/myTrips/upcomingListView.dart';
-import 'package:motel/network/blocs.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:simple_autocomplete_formfield/simple_autocomplete_formfield.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+
+import '../../appTheme.dart';
+import '../../models/flightInformation.dart';
+import '../../models/hotelListData.dart';
+import '../../models/locations.dart';
+import '../../network/blocs.dart';
+import 'calendarPopupView.dart';
 import 'filtersScreen.dart';
-import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
+import 'hotelListView.dart';
+import 'roomPopupView.dart';
 
 class HotelHomeScreen extends StatefulWidget {
   final String destination;

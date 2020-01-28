@@ -1,10 +1,12 @@
-import 'package:motel/models/account.dart';
-import 'package:motel/models/flightInformation.dart';
-import 'package:motel/models/flylineDeal.dart';
-import 'package:motel/models/locations.dart';
-
-import 'repositories.dart';
+import 'package:motel/models/recentlFlightSearch.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../models/account.dart';
+import '../models/bookedFlight.dart';
+import '../models/flightInformation.dart';
+import '../models/flylineDeal.dart';
+import '../models/locations.dart';
+import 'repositories.dart';
 
 class FlyLineBloc {
   final FlyLineRepository _repository = FlyLineRepository();
@@ -16,6 +18,14 @@ class FlyLineBloc {
 
   final BehaviorSubject<List<FlightInformationObject>> _subjectFlightItems =
       BehaviorSubject<List<FlightInformationObject>>();
+
+  final BehaviorSubject<List<BookedFlight>> _subjectUpcomingFlights =
+      BehaviorSubject<List<BookedFlight>>();
+  final BehaviorSubject<List<BookedFlight>> _subjectPastFlights =
+      BehaviorSubject<List<BookedFlight>>();
+
+  final BehaviorSubject<List<RecentFlightSearch>> _subjectRecentFlightSearch =
+      BehaviorSubject<List<RecentFlightSearch>>();
 
   final BehaviorSubject<List<FlylineDeal>> _subjectRandomDeals =
       BehaviorSubject<List<FlylineDeal>>();
@@ -74,6 +84,22 @@ class FlyLineBloc {
     return response;
   }
 
+  Future<List<BookedFlight>> pastOrUpcomingFlightSummary(
+      bool isUpcoming) async {
+    List<BookedFlight> response =
+        await _repository.pastOrUpcomingFlightSummary(isUpcoming);
+    isUpcoming
+        ? _subjectUpcomingFlights.add(response)
+        : _subjectPastFlights.add(response);
+    return response;
+  }
+
+  Future<List<RecentFlightSearch>> flightSearchHistory() async {
+    List<RecentFlightSearch> response = await _repository.flightSearchHistory();
+    _subjectRecentFlightSearch.add(response);
+    return response;
+  }
+
   Future<Account> accountInfo() async {
     Account account = await _repository.accountInfo();
     _subjectAccountInfo.sink.add(account);
@@ -82,7 +108,8 @@ class FlyLineBloc {
 
   Future<void> updateAccountInfo(String firstName, String lastName, String dob,
       String gender, String email, String phone, String passport) async {
-    _repository.updateAccountInfo(firstName, lastName, dob, gender, email, phone, passport);
+    _repository.updateAccountInfo(
+        firstName, lastName, dob, gender, email, phone, passport);
   }
 
   dispose() {
@@ -91,6 +118,9 @@ class FlyLineBloc {
     _subjectFlightItems.close();
     _subjectRandomDeals.close();
     _subjectAccountInfo.close();
+    _subjectRecentFlightSearch.close();
+    _subjectPastFlights.close();
+    _subjectUpcomingFlights.close();
   }
 
   BehaviorSubject<String> get loginResponse => _token;
@@ -104,6 +134,14 @@ class FlyLineBloc {
   BehaviorSubject<List<FlylineDeal>> get randomDealItems => _subjectRandomDeals;
 
   BehaviorSubject<Account> get accountInfoItem => _subjectAccountInfo;
+
+  BehaviorSubject<List<RecentFlightSearch>> get recentFlightSearches =>
+      _subjectRecentFlightSearch;
+
+  BehaviorSubject<List<BookedFlight>> get pastFlights => _subjectPastFlights;
+
+  BehaviorSubject<List<BookedFlight>> get upcomingFlights =>
+      _subjectUpcomingFlights;
 }
 
 final flyLinebloc = FlyLineBloc();

@@ -13,6 +13,7 @@ class FlightInformationObject {
   DateTime localDeparture;
   String durationDeparture;
   String durationReturn;
+  
 
   FlightInformationObject(String flyFrom, String flyTo, String cityFrom, String cityTo, int nightsInDest, DateTime localArrival, DateTime localDeparture, List<FlightRouteObject> routes, String durationDeparture, String durationReturn) {
     this.flyFrom = flyFrom;

@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:motel/appTheme.dart';
-import 'package:motel/modules/myTrips/favoritesListView.dart';
-import 'package:motel/modules/myTrips/finishTripView.dart';
-import 'package:motel/modules/myTrips/upcomingListView.dart';
+
+import '../../appTheme.dart';
+import 'previousTripView.dart';
+import 'recentSearchesListView.dart';
+import 'upcomingListView.dart';
 
 class MyTripsScreen extends StatefulWidget {
   final AnimationController animationController;
@@ -12,33 +15,38 @@ class MyTripsScreen extends StatefulWidget {
   _MyTripsScreenState createState() => _MyTripsScreenState();
 }
 
-class _MyTripsScreenState extends State<MyTripsScreen> with TickerProviderStateMixin {
+class _MyTripsScreenState extends State<MyTripsScreen>
+    with TickerProviderStateMixin {
   AnimationController tabAnimationController;
+  Map<String, dynamic> airlineCodes;
 
   Widget indexView = Container();
   TopBarType topBarType = TopBarType.Upcomming;
 
   @override
   void initState() {
-    tabAnimationController = AnimationController(duration: Duration(milliseconds: 400), vsync: this);
+    this.getAirlineCodes();
+    tabAnimationController =
+        AnimationController(duration: Duration(milliseconds: 400), vsync: this);
     indexView = UpcomingListView(
+      airlineCodes: airlineCodes,
       animationController: tabAnimationController,
     );
     tabAnimationController..forward();
     widget.animationController.forward();
-
     super.initState();
-  }
-
-  Future<bool> getData() async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return true;
   }
 
   @override
   void dispose() {
     tabAnimationController.dispose();
     super.dispose();
+  }
+
+  void getAirlineCodes() async {
+    airlineCodes = json.decode(await DefaultAssetBundle.of(context)
+        .loadString("jsonFile/airline_codes.json"));
+    await Future.delayed(const Duration(milliseconds: 500));
   }
 
   @override
@@ -49,13 +57,15 @@ class _MyTripsScreenState extends State<MyTripsScreen> with TickerProviderStateM
         return FadeTransition(
           opacity: widget.animationController,
           child: new Transform(
-            transform: new Matrix4.translationValues(0.0, 40 * (1.0 - widget.animationController.value), 0.0),
+            transform: new Matrix4.translationValues(
+                0.0, 40 * (1.0 - widget.animationController.value), 0.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  padding:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                   child: Container(child: appBar()),
                 ),
                 tabViewUI(topBarType),
@@ -77,18 +87,20 @@ class _MyTripsScreenState extends State<MyTripsScreen> with TickerProviderStateM
         if (tabType == TopBarType.Upcomming) {
           setState(() {
             indexView = UpcomingListView(
+              airlineCodes: airlineCodes,
               animationController: tabAnimationController,
             );
           });
-        } else if (tabType == TopBarType.Finished) {
+        } else if (tabType == TopBarType.Previous) {
           setState(() {
-            indexView = FinishTripView(
+            indexView = PreviousTripView(
+              airlineCodes: airlineCodes,
               animationController: tabAnimationController,
             );
           });
-        } else if (tabType == TopBarType.Favorites) {
+        } else if (tabType == TopBarType.Searched) {
           setState(() {
-            indexView = FavoritesListView(
+            indexView = SearchedListView(
               animationController: tabAnimationController,
             );
           });
@@ -115,7 +127,8 @@ class _MyTripsScreenState extends State<MyTripsScreen> with TickerProviderStateM
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(1.0)),
                       highlightColor: Colors.transparent,
-                      splashColor: AppTheme.getTheme().primaryColor.withOpacity(0.2),
+                      splashColor:
+                          AppTheme.getTheme().primaryColor.withOpacity(0.2),
                       onTap: () {
                         tabClick(TopBarType.Upcomming);
                       },
@@ -141,9 +154,10 @@ class _MyTripsScreenState extends State<MyTripsScreen> with TickerProviderStateM
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(1.0)),
                       highlightColor: Colors.transparent,
-                      splashColor: AppTheme.getTheme().primaryColor.withOpacity(0.2),
+                      splashColor:
+                          AppTheme.getTheme().primaryColor.withOpacity(0.2),
                       onTap: () {
-                        tabClick(TopBarType.Finished);
+                        tabClick(TopBarType.Previous);
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 16, top: 16),
@@ -152,7 +166,7 @@ class _MyTripsScreenState extends State<MyTripsScreen> with TickerProviderStateM
                             "Previous",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                color: tabType == TopBarType.Finished
+                                color: tabType == TopBarType.Previous
                                     ? AppTheme.getTheme().primaryColor
                                     : AppTheme.getTheme().disabledColor),
                           ),
@@ -167,9 +181,10 @@ class _MyTripsScreenState extends State<MyTripsScreen> with TickerProviderStateM
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(1.0)),
                       highlightColor: Colors.transparent,
-                      splashColor: AppTheme.getTheme().primaryColor.withOpacity(0.2),
+                      splashColor:
+                          AppTheme.getTheme().primaryColor.withOpacity(0.2),
                       onTap: () {
-                        tabClick(TopBarType.Favorites);
+                        tabClick(TopBarType.Searched);
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 16, top: 16),
@@ -178,7 +193,7 @@ class _MyTripsScreenState extends State<MyTripsScreen> with TickerProviderStateM
                             "Searched",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                color: tabType == TopBarType.Favorites
+                                color: tabType == TopBarType.Searched
                                     ? AppTheme.getTheme().primaryColor
                                     : AppTheme.getTheme().disabledColor),
                           ),
@@ -218,4 +233,4 @@ class _MyTripsScreenState extends State<MyTripsScreen> with TickerProviderStateM
   }
 }
 
-enum TopBarType { Upcomming, Finished, Favorites }
+enum TopBarType { Upcomming, Previous, Searched }

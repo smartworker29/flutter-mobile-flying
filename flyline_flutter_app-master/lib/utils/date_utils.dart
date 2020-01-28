@@ -1,9 +1,7 @@
-
 ///
 /// Provides a set of utility functions for converting dates
 ///
-class DateUtils{
-
+class DateUtils {
   ///
   /// Convert duration in seconds to "XXd XXh XXm" format
   ///
@@ -16,5 +14,11 @@ class DateUtils{
     final daysPart = (days != 0) ? "${days}d " : "";
     final hoursPart = (hours != 0) ? "${hours}h " : "";
     return "$daysPart$hoursPart${minutes}m";
+  }
+
+  static String monthDayFormat(DateTime date) {
+    var month = date.month;
+    var day = date.day;
+    return '$month/$day';
   }
 }
