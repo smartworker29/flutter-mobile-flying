@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:motel/models/account.dart';
+import 'package:motel/models/checkFlightResponse.dart';
 import 'package:motel/models/flightInformation.dart';
 import 'package:motel/models/flylineDeal.dart';
 import 'package:motel/models/locations.dart';
@@ -125,6 +126,39 @@ class FlyLineProvider {
       }
     }
     return flights;
+  }
+
+  Future<CheckFlightResponse> checkFlights(bookingId, infants, children, adults) async {
+    var token = await getAuthToken();
+
+    Response response;
+    Dio dio = Dio();
+    dio.options.headers["Authorization"] = "Token $token";
+
+    CheckFlightResponse flightResponse;
+    var url =
+        "$baseUrl/api/booking/check_flights/";
+
+    var queryParameters = {
+      "v": "2",
+      "currency": "USD",
+      "booking_token": bookingId,
+      "bnum": 0,
+      "infants": infants,
+      "children": children,
+      "adults": adults,
+    };
+
+    try {
+      response = await dio.get(url, queryParameters: queryParameters);
+    } catch (e) {
+      log(e.toString());
+    }
+
+    if (response.statusCode == 200) {
+      flightResponse = CheckFlightResponse.fromJson(response.data);
+    }
+    return flightResponse;
   }
 
   Future<List<FlylineDeal>> randomDeals() async {

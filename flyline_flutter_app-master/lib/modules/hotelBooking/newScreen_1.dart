@@ -1,8 +1,15 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
+import 'package:motel/helper/helper.dart';
+import 'package:motel/models/flightInformation.dart';
+import 'package:motel/modules/hotelBooking/newScreen_2.dart' as newScreen2;
 
 class HotelHomeScreen extends StatefulWidget {
+  List<FlightRouteObject> routes;
+
+  HotelHomeScreen({Key key, this.routes}) : super(key: key);
+
   @override
   _HotelHomeScreenState createState() => _HotelHomeScreenState();
 }
@@ -14,6 +21,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   var noCheckBagBool = false;
   var oneCheckBagBool = false;
   var twoCheckBagBool = false;
+
   
   @override
   Widget build(BuildContext context) {
@@ -512,256 +520,134 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   }
 
   Widget getFlightDetails(){
+    List<Widget> lists = List();
+    for (var i =0; i < widget.routes.length; i++) {
+      FlightRouteObject route = widget.routes[i];
+      lists.add(Container(
+        padding: EdgeInsets.only(bottom: 5),
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.3),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              blurRadius: 5.0,
+              spreadRadius: 5.0,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(left: 16.0 , top :10),
+                        width: MediaQuery.of(context).size.width/2,
+                        child: Text( Helper.getDateViaDate(route.localDeparture, "dd MMM") + " | " + (route.returnFlight == 0 ? "Departure" : "Return"),
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600
+                          ),
+                        ),
+                      ),
+
+
+                      Container(
+                        width: MediaQuery.of(context).size.width-32,
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(top:10,left: 16, right: 16 ),
+                        decoration: BoxDecoration(
+                          color: AppTheme.getTheme().backgroundColor,
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: AppTheme.getTheme().dividerColor,
+                              offset: Offset(4, 4),
+                              blurRadius: 16,
+                            ),
+                          ],
+                        ),
+
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(left:10, top:5),
+                                    margin: EdgeInsets.only(bottom:3),
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(Helper.getDateViaDate(route.localDeparture, "HH : m a") + " " + route.flyFrom + " (" + route.cityFrom + ")",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w800
+                                      ),
+                                    ),
+                                  ),
+
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.only(left:10, top:5),
+                                    margin: EdgeInsets.only(bottom:3),
+                                    child: Text(Helper.getDateViaDate(route.localArrival, "HH : m a") + " " + route.flyTo + " (" + route.cityTo + ")",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w800
+                                      ),
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                            ),
+
+                            Container(
+                              margin: EdgeInsets.only(right: 10, ),
+                              color: Colors.blueAccent,
+                              child: Image.asset(
+                                "assets/images/delta_logo.png",height: 20,width: 20,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        width: MediaQuery.of(context).size.width-20,
+                        padding: EdgeInsets.only(top :10),
+                        child: Text(Helper.duration(route.duration),
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                ],
+              ),
+            ),
+
+          ],
+        ),
+
+      ));
+    }
     return Column(
-      children: <Widget>[
-        Container(
-              padding: EdgeInsets.only(bottom: 5),
-              decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.3),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 5.0,
-                      spreadRadius: 5.0,
-                    ),
-                  ],
-                ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(                   
-                                padding: EdgeInsets.only(left: 16.0 , top :10),
-                                width: MediaQuery.of(context).size.width/2,
-                                  child: Text("10 Feb | Departure",
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600
-                                    ),
-                                  ),
-                                ),
-
-                              
-                              Container(
-                                width: MediaQuery.of(context).size.width-32,
-                                  alignment: Alignment.centerLeft,
-                                  margin: EdgeInsets.only(top:10,left: 16, right: 16 ),
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.getTheme().backgroundColor,
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                        color: AppTheme.getTheme().dividerColor,
-                                        offset: Offset(4, 4),
-                                        blurRadius: 16,
-                                      ),
-                                    ],
-                                  ),
-                                  
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Column(
-                                          children: <Widget>[
-                                            Container(                
-                                              padding: EdgeInsets.only(left:10, top:5),
-                                              margin: EdgeInsets.only(bottom:3),
-                                                alignment: Alignment.centerLeft,
-                                                child: Text("5 : 30 AM Dallas (DFW)",
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w800
-                                                  ),
-                                                ),
-                                              ),
-
-                                              Container(    
-                                                alignment: Alignment.centerLeft,               
-                                                padding: EdgeInsets.only(left:10, top:5),
-                                                margin: EdgeInsets.only(bottom:3),
-                                                  child: Text("9 : 13 AM Fort Lauderdale (FLL)",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w800
-                                                    ),
-                                                  ),
-                                              ),
-
-                                              ],
-                                          ),
-                                      ),
-                                      
-                                      Container(
-                                        margin: EdgeInsets.only(right: 10, ),
-                                        color: Colors.blueAccent,
-                                        child: Image.asset(
-                                          "assets/images/delta_logo.png",height: 20,width: 20,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),     
-                            
-                              Container(
-                                width: MediaQuery.of(context).size.width-20,       
-                                padding: EdgeInsets.only(top :10),
-                                  child: Text("2 h 43 mn",
-                                    textAlign: TextAlign.end,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-          
-                        ],
-                      ),
-                      ),
-                    
-                  ],
-                ),
-              
-        ),
-
-        Container(
-              margin: EdgeInsets.only(top:25),
-              padding: EdgeInsets.only(bottom: 5),
-              decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.3),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 2.0,
-                      spreadRadius: 2.0,
-                    ),
-                  ],
-                ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(                   
-                                padding: EdgeInsets.only(left: 16.0 , top :10),
-                                width: MediaQuery.of(context).size.width/2,
-                                  child: Text("20 Feb | Return",
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600
-                                    ),
-                                  ),
-                                ),
-
-                              
-                              Container(
-                                width: MediaQuery.of(context).size.width-32,
-                                  alignment: Alignment.centerLeft,
-                                  margin: EdgeInsets.only(top:10,left: 16, right: 16 ),
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.getTheme().backgroundColor,
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                        color: AppTheme.getTheme().dividerColor,
-                                        offset: Offset(4, 4),
-                                        blurRadius: 16,
-                                      ),
-                                    ],
-                                  ),
-                                  
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Column(
-                                          children: <Widget>[
-                                            Container(                
-                                              padding: EdgeInsets.only(left:10, top:5),
-                                              margin: EdgeInsets.only(bottom:3),
-                                                alignment: Alignment.centerLeft,
-                                                child: Text("5 : 30 AM Dallas (DFW)",
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w800
-                                                  ),
-                                                ),
-                                              ),
-
-                                              Container(    
-                                                alignment: Alignment.centerLeft,               
-                                                padding: EdgeInsets.only(left:10, top:5),
-                                                margin: EdgeInsets.only(bottom:3),
-                                                  child: Text("9 : 13 AM Fort Lauderdale (FLL)",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w800
-                                                    ),
-                                                  ),
-                                              ),
-
-                                              ],
-                                          ),
-                                      ),
-                                      
-                                      Container(
-                                        margin: EdgeInsets.only(right: 10, ),
-                                        color: Colors.blueAccent,
-                                        child: Image.asset(
-                                          "assets/images/delta_logo.png",height: 20,width: 20,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),     
-                            
-                              Container(
-                                width: MediaQuery.of(context).size.width-20,       
-                                padding: EdgeInsets.only(top :10),
-                                  child: Text("2 h 43 mn",
-                                    textAlign: TextAlign.end,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-          
-                        ],
-                      ),
-                      ),
-                    
-                  ],
-                ),
-              
-        ),
-      
-      ],
+      children: lists,
     );
   }
   
@@ -827,7 +713,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
           FlatButton(
             child: Text("",style: TextStyle(
                 fontSize: 19.0 , fontWeight: FontWeight.bold)),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => newScreen2.HotelHomeScreen()),
+              );
+            },
           ),
         ],
       ),

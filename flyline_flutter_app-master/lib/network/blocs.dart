@@ -1,4 +1,5 @@
 import 'package:motel/models/account.dart';
+import 'package:motel/models/checkFlightResponse.dart';
 import 'package:motel/models/flightInformation.dart';
 import 'package:motel/models/flylineDeal.dart';
 import 'package:motel/models/locations.dart';
@@ -22,6 +23,9 @@ class FlyLineBloc {
 
   final BehaviorSubject<Account> _subjectAccountInfo =
       BehaviorSubject<Account>();
+
+  final BehaviorSubject<CheckFlightResponse> _subjectCheckFlight =
+      BehaviorSubject<CheckFlightResponse>();
 
   tryLogin(String email, String password) async {
     String response = await _repository.login(email, password);
@@ -67,6 +71,15 @@ class FlyLineBloc {
     return response;
   }
 
+  Future<CheckFlightResponse> checkFlights(
+      bookingId, infants, children, adults) async {
+    CheckFlightResponse response =
+        await _repository.checkFlights(bookingId, infants, children, adults);
+    _subjectCheckFlight.sink.add(response);
+
+    return response;
+  }
+
   Future<List<FlylineDeal>> randomDeals() async {
     List<FlylineDeal> response = await _repository.randomDeals();
     _subjectRandomDeals.sink.add(response);
@@ -82,7 +95,8 @@ class FlyLineBloc {
 
   Future<void> updateAccountInfo(String firstName, String lastName, String dob,
       String gender, String email, String phone, String passport) async {
-    _repository.updateAccountInfo(firstName, lastName, dob, gender, email, phone, passport);
+    _repository.updateAccountInfo(
+        firstName, lastName, dob, gender, email, phone, passport);
   }
 
   dispose() {
@@ -91,6 +105,7 @@ class FlyLineBloc {
     _subjectFlightItems.close();
     _subjectRandomDeals.close();
     _subjectAccountInfo.close();
+    _subjectCheckFlight.close();
   }
 
   BehaviorSubject<String> get loginResponse => _token;
@@ -104,6 +119,9 @@ class FlyLineBloc {
   BehaviorSubject<List<FlylineDeal>> get randomDealItems => _subjectRandomDeals;
 
   BehaviorSubject<Account> get accountInfoItem => _subjectAccountInfo;
+
+  BehaviorSubject<CheckFlightResponse> get checkFlightData =>
+      _subjectCheckFlight;
 }
 
 final flyLinebloc = FlyLineBloc();
