@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:motel/models/checkFlightResponse.dart';
 import 'package:motel/models/recentlFlightSearch.dart';
 
 import '../models/account.dart';

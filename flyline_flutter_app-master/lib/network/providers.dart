@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:motel/models/checkFlightResponse.dart';
 import 'package:motel/models/recentlFlightSearch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
