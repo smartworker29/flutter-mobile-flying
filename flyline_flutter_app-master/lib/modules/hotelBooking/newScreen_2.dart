@@ -1,24 +1,45 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
+import 'package:motel/helper/helper.dart';
+import 'package:motel/models/checkFlightResponse.dart';
 
 class HotelHomeScreen extends StatefulWidget {
+  final int numberOfPassengers;
+  final CheckFlightResponse flightResponse;
+
+  HotelHomeScreen({Key key, this.numberOfPassengers, this.flightResponse}) : super(key: key);
+
   @override
   _HotelHomeScreenState createState() => _HotelHomeScreenState();
 }
 
-class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderStateMixin {
-  
-  var personalItemBool = false;
-  var noHandBagBool = false;
-  var noCheckBagBool = false;
-  var oneCheckBagBool = false;
-  var twoCheckBagBool = false;
-  
+class _HotelHomeScreenState extends State<HotelHomeScreen>
+    with TickerProviderStateMixin {
+
+  double priceOnPassenger = 0;
+  double priceOnBaggage = 0;
+  double tripTotal = 0;
+
+  TextEditingController promoCodeController;
+  TextEditingController nameOnCardController;
+  TextEditingController creditController;
+  TextEditingController expDateController;
+  TextEditingController ccvController;
+  TextEditingController emailAddressController;
+  TextEditingController phoneNumberController;
+
+  @override
+  void initState() {
+    priceOnPassenger = Helper.getCostNumber(widget.flightResponse.total, widget.flightResponse.conversion.amount, widget.flightResponse.total);
+    priceOnBaggage = 0;
+    tripTotal = priceOnPassenger + priceOnBaggage;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Stack(
         children: <Widget>[
           InkWell(
@@ -33,7 +54,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
               child: Column(
                 children: <Widget>[
                   getAppBarUI(),
-
                   Container(
                     child: Column(
                       children: <Widget>[
@@ -41,7 +61,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                         getCheckoutUI(),
                         getBookButton()
                       ],
-                    ),)
+                    ),
+                  )
                 ],
               ),
             ),
@@ -58,459 +79,425 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
           width: MediaQuery.of(context).size.width,
           margin: const EdgeInsets.only(top: 8, bottom: 8),
           alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(left: 16.0 , top :10),
-            child: Text("Check out",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600
-              ),
-            ),
-          
+          padding: EdgeInsets.only(left: 16.0, top: 10),
+          child: Text(
+            "Check out",
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
-
+        ),
         Container(
           width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-            decoration: BoxDecoration(
-              color: AppTheme.getTheme().backgroundColor,
-              boxShadow: <BoxShadow>[
-                BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-              ],
-            ),
-            child: Container(                   
-                  width: MediaQuery.of(context).size.width/4,
-                  padding: EdgeInsets.only(left: 10),
-                    child: TextField(
-                      textAlign: TextAlign.start,
-                      onChanged: (String txt) {},
-                      onTap: () {
-                      },
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600
-                      ),
-                      cursorColor: AppTheme.getTheme().primaryColor,
-                      decoration: new InputDecoration(
-
-                        border: InputBorder.none,
-                        hintText: "Promo Code",
-                      ),
-                    ),
-                  ),
-            ),
-
-            Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-            decoration: BoxDecoration(
-              color: AppTheme.getTheme().backgroundColor,
-              boxShadow: <BoxShadow>[
-                BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-              ],
-            ),
-            child: Container(                   
-                  padding: EdgeInsets.only(left: 10),
-                    child: TextField(
-                      textAlign: TextAlign.start,
-                      onChanged: (String txt) {},
-                      onTap: () {
-                      },
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600
-                      ),
-                      cursorColor: AppTheme.getTheme().primaryColor,
-                      decoration: new InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Name on Card",
-                      ),
-                    ),
-                  ),
-            ),
-
-            Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-            decoration: BoxDecoration(
-              color: AppTheme.getTheme().backgroundColor,
-              boxShadow: <BoxShadow>[
-                BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-              ],
-            ),
-            child: Container(                   
-                  padding: EdgeInsets.only(left: 10),
-                    child: TextField(
-                      textAlign: TextAlign.start,
-                      onChanged: (String txt) {},
-                      onTap: () {
-                      },
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600
-                      ),
-                      cursorColor: AppTheme.getTheme().primaryColor,
-                      decoration: new InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Credit Card Number",
-                      ),
-                    ),
-                  ),
-            ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Expanded(
-                              child: Container(
-                  margin: const EdgeInsets.only(left: 16, right: 8, top: 8, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: AppTheme.getTheme().backgroundColor,
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-                    ],
-                  ),
-                  child: Container(                   
-                        padding: EdgeInsets.only(left: 10),
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            onChanged: (String txt) {},
-                            onTap: () {
-                            },
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600
-                            ),
-                            cursorColor: AppTheme.getTheme().primaryColor,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Exp Date",
-                            ),
-                          ),
-                        ),
-                  ),
-              ),
-
-              Expanded(
-                  child: Container(
-                  margin: const EdgeInsets.only(left: 8, right: 16, top: 8, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: AppTheme.getTheme().backgroundColor,
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-                    ],
-                  ),
-                  child: Container(                   
-                        padding: EdgeInsets.only(left: 10),
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            onChanged: (String txt) {},
-                            onTap: () {
-                            },
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600
-                            ),
-                            cursorColor: AppTheme.getTheme().primaryColor,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "CCV",
-                            ),
-                          ),
-                        ),
-                  ),
-              )
+          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          decoration: BoxDecoration(
+            color: AppTheme.getTheme().backgroundColor,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
             ],
           ),
-
-            
-          Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-            decoration: BoxDecoration(
-              color: AppTheme.getTheme().backgroundColor,
-              boxShadow: <BoxShadow>[
-                BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-              ],
+          child: Container(
+            width: MediaQuery.of(context).size.width / 4,
+            padding: EdgeInsets.only(left: 10),
+            child: TextField(
+              textAlign: TextAlign.start,
+              onChanged: (String txt) {},
+              onTap: () {},
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              cursorColor: AppTheme.getTheme().primaryColor,
+              decoration: new InputDecoration(
+                border: InputBorder.none,
+                hintText: "Promo Code",
+              ),
             ),
-            child: Container(                   
-                  padding: EdgeInsets.only(left: 10),
-                    child: TextField(
-                      textAlign: TextAlign.start,
-                      onChanged: (String txt) {},
-                      onTap: () {
-                      },
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600
-                      ),
-                      cursorColor: AppTheme.getTheme().primaryColor,
-                      decoration: new InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Email Address",
-                      ),
-                    ),
-                  ),
-            ),
-
-
+          ),
+        ),
         Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-            decoration: BoxDecoration(
-              color: AppTheme.getTheme().backgroundColor,
-              boxShadow: <BoxShadow>[
-                BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-              ],
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          decoration: BoxDecoration(
+            color: AppTheme.getTheme().backgroundColor,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
+            ],
+          ),
+          child: Container(
+            padding: EdgeInsets.only(left: 10),
+            child: TextField(
+              textAlign: TextAlign.start,
+              onChanged: (String txt) {},
+              onTap: () {},
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              cursorColor: AppTheme.getTheme().primaryColor,
+              decoration: new InputDecoration(
+                border: InputBorder.none,
+                hintText: "Name on Card",
+              ),
             ),
-            child: Container(                   
-                  padding: EdgeInsets.only(left: 10),
-                    child: TextField(
-                      textAlign: TextAlign.start,
-                      onChanged: (String txt) {},
-                      onTap: () {
-                      },
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600
-                      ),
-                      cursorColor: AppTheme.getTheme().primaryColor,
-                      decoration: new InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Phone Number",
-                      ),
-                    ),
-                  ),
-            ),
-      ],
-    );
-        
-  }
-
-  Widget getTripDetails(){
-    return Column(
-      children: <Widget>[
+          ),
+        ),
         Container(
-              padding: EdgeInsets.only(bottom: 15),
-              decoration: BoxDecoration(
-              color: AppTheme.getTheme().backgroundColor,
-              boxShadow: <BoxShadow>[
-                BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-              ],
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          decoration: BoxDecoration(
+            color: AppTheme.getTheme().backgroundColor,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
+            ],
+          ),
+          child: Container(
+            padding: EdgeInsets.only(left: 10),
+            child: TextField(
+              textAlign: TextAlign.start,
+              onChanged: (String txt) {},
+              onTap: () {},
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              cursorColor: AppTheme.getTheme().primaryColor,
+              decoration: new InputDecoration(
+                border: InputBorder.none,
+                hintText: "Credit Card Number",
+              ),
             ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(                   
-                                padding: EdgeInsets.only(left: 16.0 , top :10),
-                                width: MediaQuery.of(context).size.width/2,
-                                  child: Text("Trip Summary",
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600
-                                    ),
-                                  ),
-                                ),
-
-                              
-                              Container(
-                                width: MediaQuery.of(context).size.width-32,
-                                  alignment: Alignment.centerLeft,
-                                  margin: EdgeInsets.only(top:10,left: 16, right: 16 ),
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.getTheme().backgroundColor,
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                        color: AppTheme.getTheme().dividerColor,
-                                        offset: Offset(4, 4),
-                                        blurRadius: 16,
-                                      ),
-                                    ],
-                                  ),
-                                  
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: <Widget>[
-                                          Expanded(
-                                              child: Container(                
-                                                padding: EdgeInsets.only(left:10, top:5),
-                                                margin: EdgeInsets.only(bottom:3),
-                                                  alignment: Alignment.centerLeft,
-                                                  child: Text("1 Passenger",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w800
-                                                    ),
-                                                  ),
-                                                ),
-                                          ),
-
-                                              Container(    
-                                                alignment: Alignment.centerLeft,               
-                                                padding: EdgeInsets.only(left:10, top:5),
-                                                margin: EdgeInsets.only(bottom:3),
-                                                  child: Text("\$175 ",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w800
-                                                    ),
-                                                  ),
-                                              ),
-                                          
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: <Widget>[
-                                          Expanded(
-                                              child: Container(                
-                                                padding: EdgeInsets.only(left:10, top:5),
-                                                margin: EdgeInsets.only(bottom:3),
-                                                  alignment: Alignment.centerLeft,
-                                                  child: Text("Bagage",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w800
-                                                    ),
-                                                  ),
-                                                ),
-                                          ),
-
-                                              Container(    
-                                                alignment: Alignment.centerLeft,               
-                                                padding: EdgeInsets.only(left:10, top:5),
-                                                margin: EdgeInsets.only(bottom:3),
-                                                  child: Text("\$0 ",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w800
-                                                    ),
-                                                  ),
-                                              ),
-                                          
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: <Widget>[
-                                          Expanded(
-                                              child: Container(                
-                                                padding: EdgeInsets.only(left:10, top:5),
-                                                margin: EdgeInsets.only(bottom:3),
-                                                  alignment: Alignment.centerLeft,
-                                                  child: Text("Automatic Check-in",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w800
-                                                    ),
-                                                  ),
-                                                ),
-                                          ),
-
-                                              Container(    
-                                                alignment: Alignment.centerLeft,               
-                                                padding: EdgeInsets.only(left:10, top:5),
-                                                margin: EdgeInsets.only(bottom:3),
-                                                  child: Text("Free ",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w800
-                                                    ),
-                                                  ),
-                                              ),
-                                          
-                                        ],
-                                      ),
-
-                                      Padding(
-                                        padding: EdgeInsets.only(top:10, bottom:10),
-                                        child: Container(
-                                          height: 1,
-                                          color: Colors.grey.withOpacity(0.4),
-                                        ),
-                                      ),
-
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: <Widget>[
-                                          Expanded(
-                                              child: Container(                
-                                                padding: EdgeInsets.only(left:10, top:5),
-                                                margin: EdgeInsets.only(bottom:3),
-                                                  alignment: Alignment.centerLeft,
-                                                  child: Text("Trip Total",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w800
-                                                    ),
-                                                  ),
-                                                ),
-                                          ),
-
-                                              Container(    
-                                                alignment: Alignment.centerLeft,               
-                                                padding: EdgeInsets.only(left:10, top:5),
-                                                margin: EdgeInsets.only(bottom:3),
-                                                  child: Text("\$175 ",
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight: FontWeight.w800
-                                                    ),
-                                                  ),
-                                              ),
-                                          
-                                        ],
-                                      ),   
-                                    ],
-                                  ),
-                                ),     
-                            ],
-                          ),
-          
-                        ],
-                      ),
-                      ),
-                    
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(
+                    left: 16, right: 8, top: 8, bottom: 8),
+                decoration: BoxDecoration(
+                  color: AppTheme.getTheme().backgroundColor,
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(0, 2),
+                        blurRadius: 8.0),
                   ],
                 ),
-              
+                child: Container(
+                  padding: EdgeInsets.only(left: 10),
+                  child: TextField(
+                    textAlign: TextAlign.start,
+                    onChanged: (String txt) {},
+                    onTap: () {},
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    cursorColor: AppTheme.getTheme().primaryColor,
+                    decoration: new InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Exp Date",
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(
+                    left: 8, right: 16, top: 8, bottom: 8),
+                decoration: BoxDecoration(
+                  color: AppTheme.getTheme().backgroundColor,
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(0, 2),
+                        blurRadius: 8.0),
+                  ],
+                ),
+                child: Container(
+                  padding: EdgeInsets.only(left: 10),
+                  child: TextField(
+                    textAlign: TextAlign.start,
+                    onChanged: (String txt) {},
+                    onTap: () {},
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    cursorColor: AppTheme.getTheme().primaryColor,
+                    decoration: new InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "CCV",
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          decoration: BoxDecoration(
+            color: AppTheme.getTheme().backgroundColor,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
+            ],
+          ),
+          child: Container(
+            padding: EdgeInsets.only(left: 10),
+            child: TextField(
+              textAlign: TextAlign.start,
+              onChanged: (String txt) {},
+              onTap: () {},
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              cursorColor: AppTheme.getTheme().primaryColor,
+              decoration: new InputDecoration(
+                border: InputBorder.none,
+                hintText: "Email Address",
+              ),
+            ),
+          ),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          decoration: BoxDecoration(
+            color: AppTheme.getTheme().backgroundColor,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
+            ],
+          ),
+          child: Container(
+            padding: EdgeInsets.only(left: 10),
+            child: TextField(
+              textAlign: TextAlign.start,
+              onChanged: (String txt) {},
+              onTap: () {},
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              cursorColor: AppTheme.getTheme().primaryColor,
+              decoration: new InputDecoration(
+                border: InputBorder.none,
+                hintText: "Phone Number",
+              ),
+            ),
+          ),
         ),
       ],
     );
   }
-  
+
+  Widget getTripDetails() {
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(bottom: 15),
+          decoration: BoxDecoration(
+            color: AppTheme.getTheme().backgroundColor,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(left: 16.0, top: 10),
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: Text(
+                            "Trip Summary",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width - 32,
+                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.only(top: 10, left: 16, right: 16),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: AppTheme.getTheme().backgroundColor,
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: AppTheme.getTheme().dividerColor,
+                                offset: Offset(4, 4),
+                                blurRadius: 16,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.only(left: 10, top: 5),
+                                      margin: EdgeInsets.only(bottom: 3),
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        widget.numberOfPassengers.toString() + " Passenger",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.only(left: 10, top: 5),
+                                    margin: EdgeInsets.only(bottom: 3),
+                                    child: Text(
+                                      Helper.cost(widget.flightResponse.total, widget.flightResponse.conversion.amount, widget.flightResponse.total),
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.only(left: 10, top: 5),
+                                      margin: EdgeInsets.only(bottom: 3),
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Bagage",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.only(left: 10, top: 5),
+                                    margin: EdgeInsets.only(bottom: 3),
+                                    child: Text(
+                                      "\$0 ",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.only(left: 10, top: 5),
+                                      margin: EdgeInsets.only(bottom: 3),
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Automatic Check-in",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.only(left: 10, top: 5),
+                                    margin: EdgeInsets.only(bottom: 3),
+                                    child: Text(
+                                      "Free ",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 10, bottom: 10),
+                                child: Container(
+                                  height: 1,
+                                  color: Colors.grey.withOpacity(0.4),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.only(left: 10, top: 5),
+                                      margin: EdgeInsets.only(bottom: 3),
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Trip Total",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.only(left: 10, top: 5),
+                                    margin: EdgeInsets.only(bottom: 3),
+                                    child: Text(
+                                      " \$" + tripTotal.toString(),
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget getAppBarUI() {
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.getTheme().backgroundColor,
         boxShadow: <BoxShadow>[
-          BoxShadow(color: AppTheme.getTheme().dividerColor, offset: Offset(0, 2), blurRadius: 8.0),
+          BoxShadow(
+              color: AppTheme.getTheme().dividerColor,
+              offset: Offset(0, 2),
+              blurRadius: 8.0),
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 8, right: 8),
+        padding: EdgeInsets.only(
+            top: MediaQuery.of(context).padding.top, left: 8, right: 8),
         child: Stack(
           children: <Widget>[
             Container(
@@ -534,35 +521,33 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
               ),
             ),
             Container(
-                margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top/2),
-                alignment: Alignment.center,
-                child: Text(
-                  "Payment",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,
-                  ),
+              margin:
+                  EdgeInsets.only(top: MediaQuery.of(context).padding.top / 2),
+              alignment: Alignment.center,
+              child: Text(
+                "Payment",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 22,
                 ),
               ),
+            ),
           ],
         ),
       ),
     );
   }
-  
-  Widget getBookButton(){
+
+  Widget getBookButton() {
     return Container(
-      margin: EdgeInsets.only(left:16.0, right:16, top : 30),
-      
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.lightBlue)
-      ),
+      margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
+      decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(
-            child: Text("Book Flight For \$175",style: TextStyle(
-                fontSize: 19.0 , fontWeight: FontWeight.bold)),
+            child: Text("Book Flight For \$" + tripTotal.toString(),
+                style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold)),
             onPressed: () {},
           ),
         ],

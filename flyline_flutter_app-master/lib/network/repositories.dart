@@ -1,4 +1,5 @@
 import 'package:motel/models/account.dart';
+import 'package:motel/models/checkFlightResponse.dart';
 import 'package:motel/models/flightInformation.dart';
 import 'package:motel/models/flylineDeal.dart';
 import 'package:motel/models/locations.dart';
@@ -21,6 +22,10 @@ class FlyLineRepository {
 
   Future<List<FlightInformationObject>> searchFlights(flyFrom, flyTo, dateFrom, dateTo, type, returnFrom, returnTo, adults, infants, children, selectedCabins, curr, limit){
     return _flyLineProvider.searchFlight(flyFrom, flyTo, dateFrom, dateTo, type, returnFrom, returnTo, adults, infants, children, selectedCabins, curr, limit);
+  }
+
+  Future<CheckFlightResponse> checkFlights(bookingId, infants, children, adults) {
+    return _flyLineProvider.checkFlights(bookingId, infants, children, adults);
   }
 
   Future<List<FlylineDeal>> randomDeals() {
