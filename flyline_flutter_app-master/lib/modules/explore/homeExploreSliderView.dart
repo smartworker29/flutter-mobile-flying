@@ -23,18 +23,18 @@ class _HomeExploreSliderViewState extends State<HomeExploreSliderView> {
   @override
   void initState() {
     pageViewModelData.add(PageViewData(
-      titleText: 'Cape Town',
-      subText: 'Extraordinary five-star\noutdoor activites',
+      titleText: 'Save With Virtual Interlining',
+      subText: 'We connect one-way flights \nto deliver the best savings.',
       assetsImage: 'assets/images/mainpageone.jpg',
     ));
     pageViewModelData.add(PageViewData(
-      titleText: 'Find best deals',
-      subText: 'Extraordinary five-star\noutdoor activites',
+      titleText: 'Fly Your Favorite Airlines',
+      subText: 'Save on Both Domestic and \nInternational Flights',
       assetsImage: 'assets/images/mainpagetwo.jpg',
     ));
     pageViewModelData.add(PageViewData(
-      titleText: 'Find best deals',
-      subText: 'Extraordinary five-star\noutdoor activites',
+      titleText: 'Book FlyLine and Public Fares',
+      subText: 'We always display the cheapest \nfare on FlyLine',
       assetsImage: 'assets/images/mainpagethree.jpg',
     ));
 

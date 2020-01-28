@@ -726,7 +726,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   Widget getSearchButton() {
     return Container(
-      margin: EdgeInsets.only(left: 16.0, right: 16, top: 10),
+      margin: EdgeInsets.only(left: 16.0, right: 16, top: 2, bottom:12),
       color: Colors.lightBlue,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -769,7 +769,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   Widget getTimeDateUI() {
     return Padding(
-      padding: const EdgeInsets.only(left: 18, bottom: 16),
+      padding: const EdgeInsets.only(left: 18, bottom: 2),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -792,7 +792,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          left: 4, right: 4, top: 4, bottom: 4),
+                          left: 4, right: 4, top: 20, bottom: 20),
                       child: InkWell(
                         onTap: () async {
                           final List<DateTime> picked =
@@ -839,7 +839,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   : "${formatDates.format(startDate)}",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 12,
+                                fontSize: 14,
                               ),
                             ),
                           ],
@@ -911,7 +911,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             "$ad Adults",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 12,
+                              fontSize: 14,
                             ),
                           ),
                         ],
@@ -999,7 +999,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               selectedClassOfService,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 12,
+                                fontSize: 14,
                               ),
                             ),
                           ],
@@ -1021,7 +1021,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          margin: const EdgeInsets.only(left: 16, right: 16, top: 14, bottom: 10),
           decoration: BoxDecoration(
             color: AppTheme.getTheme().backgroundColor,
             boxShadow: <BoxShadow>[
@@ -1046,7 +1046,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     "Round-Trip",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: (typeOfTripSelected == 0)
                             ? Colors.black
                             : Colors.grey,
@@ -1060,7 +1060,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 padding: EdgeInsets.all(8),
                 child: Container(
                   width: 1,
-                  height: 45,
+                  height: 40,
                   color: Colors.grey.withOpacity(0.8),
                 ),
               ),
@@ -1076,7 +1076,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     "One-Way",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: (typeOfTripSelected == 1)
                             ? Colors.black
                             : Colors.grey,
@@ -1090,7 +1090,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 padding: EdgeInsets.all(8),
                 child: Container(
                   width: 1,
-                  height: 45,
+                  height: 40,
                   color: Colors.grey.withOpacity(0.8),
                 ),
               ),
@@ -1106,7 +1106,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 9,
+                          fontSize: 8,
                         ),
                       ),
                     ),
@@ -1117,7 +1117,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         onChanged: (String txt) {},
                         onTap: () {},
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                         ),
                         cursorColor: AppTheme.getTheme().primaryColor,
                         decoration: new InputDecoration(
@@ -1134,7 +1134,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          margin: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
           decoration: BoxDecoration(
             color: AppTheme.getTheme().backgroundColor,
             boxShadow: <BoxShadow>[

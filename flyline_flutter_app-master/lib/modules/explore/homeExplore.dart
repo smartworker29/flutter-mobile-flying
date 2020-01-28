@@ -111,7 +111,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                           );
                         } else if (index == 1) {
                           return Padding(
-                            padding: const EdgeInsets.only(top: 8),
+                            padding: const EdgeInsets.only(top: 2),
                             child: PopularListView(
                               animationController: widget.animationController,
                               callBack: (index) {},
@@ -211,10 +211,10 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                     child: Center(
                       child: Container(
                         padding: EdgeInsets.only(
-                          top: 10.0,
-                          bottom: 5.0,
+                          top: 18.0,
+                          bottom: 10.0,
                         ),
-                        height: 85,
+                        height: 78,
                         child: Column(
                           children: <Widget>[
                             Expanded(
@@ -224,6 +224,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                                   deal.dealString,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
+                                    fontSize: 12.8,
                                   ),
                                 ),
                               ),
@@ -236,6 +237,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                                       deal.cost,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
+                                      fontSize: 12,
                                       color: AppTheme.getTheme().disabledColor),
                                 ),
                               ),

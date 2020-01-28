@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static bool isLightTheme = true;
-  static Color primaryColors = HexColor("#00AEEF");
+  static Color primaryColors = HexColor("#00AEEF"); 
 
   static TextTheme _buildTextTheme(TextTheme base) {
     var fontName = "Dona";
