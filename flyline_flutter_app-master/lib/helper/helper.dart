@@ -38,4 +38,12 @@ class Helper {
     var f = new NumberFormat("###.0#", "en_US");
     return " \$" + f.format(price);
   }
+
+  static getCostNumber(double total, double conversationAmount, double amount) {
+    if (amount == 0) {
+      return amount;
+    }
+
+    return (conversationAmount / total) * amount;
+  }
 }

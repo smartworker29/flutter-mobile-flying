@@ -31,6 +31,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   var oneCheckBagBool = false;
   var twoCheckBagBool = false;
 
+  int numberOfPassengers = 1;
+
   TextEditingController firstNameController;
   TextEditingController lastNameController;
   TextEditingController dobController;
@@ -369,7 +371,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              Helper.cost(response.total, response.conversion.amount, bag.price.amount),
+                              Helper.cost(response.total,
+                                  response.conversion.amount, bag.price.amount),
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   fontSize: 14,
@@ -380,16 +383,18 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         ),
                       ),
                     ));
-                  }
-                  else {
+                  } else {
                     list.add(Container(
                       width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+                      margin: const EdgeInsets.only(
+                          left: 16, right: 16, top: 8, bottom: 8),
                       decoration: BoxDecoration(
                         color: AppTheme.getTheme().backgroundColor,
                         boxShadow: <BoxShadow>[
                           BoxShadow(
-                              color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
+                              color: Colors.grey,
+                              offset: Offset(0, 2),
+                              blurRadius: 8.0),
                         ],
                       ),
                       child: Container(
@@ -415,7 +420,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              Helper.cost(response.total, response.conversion.amount, bag.price.amount),
+                              Helper.cost(response.total,
+                                  response.conversion.amount, bag.price.amount),
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   fontSize: 14,
@@ -490,7 +496,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              Helper.cost(response.total, response.conversion.amount, bag.price.amount),
+                              Helper.cost(response.total,
+                                  response.conversion.amount, bag.price.amount),
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   fontSize: 14,
@@ -544,7 +551,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               children: rows,
                             ),
                             Text(
-                              Helper.cost(response.total, response.conversion.amount, bag.price.amount),
+                              Helper.cost(response.total,
+                                  response.conversion.amount, bag.price.amount),
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   fontSize: 14,
@@ -764,25 +772,36 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchButton() {
-    return Container(
-      margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
-      decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          FlatButton(
-            child: Text("",
-                style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold)),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => newScreen2.HotelHomeScreen()),
-              );
-            },
-          ),
-        ],
-      ),
-    );
+    return StreamBuilder<CheckFlightResponse>(
+        stream: flyLinebloc.checkFlightData.stream,
+        builder: (context, AsyncSnapshot<CheckFlightResponse> snapshot) {
+          if (snapshot.data != null) {
+            return Container(
+              margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.lightBlue)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FlatButton(
+                    child: Text("",
+                        style: TextStyle(
+                            fontSize: 19.0, fontWeight: FontWeight.bold)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => newScreen2.HotelHomeScreen(
+                                numberOfPassengers: numberOfPassengers,
+                                flightResponse: snapshot.data)),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container();
+        });
   }
 }
