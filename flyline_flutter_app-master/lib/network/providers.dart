@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:motel/models/account.dart';
+import 'package:motel/models/checkFlightResponse.dart';
 import 'package:motel/models/flightInformation.dart';
 import 'package:motel/models/flylineDeal.dart';
 import 'package:motel/models/locations.dart';
@@ -15,9 +16,10 @@ class FlyLineProvider {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token') ?? "";
 
-    if (token.isNotEmpty)
+    if (token.isNotEmpty) {
+      print("Token:" + token);
       return token;
-    else {
+    } else {
       var email = prefs.getString('email') ?? "";
       var password = prefs.getString('password') ?? "";
 
@@ -109,8 +111,12 @@ class FlyLineProvider {
     List<FlightInformationObject> flights = List<FlightInformationObject>();
     var url =
         "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD&limit=$limit";
+
+    url = 'https://staging.joinflyline.com/api/search/?fly_from=city:NYC&fly_to=city:LAX&date_from=31%2F01%2F2020&date_to=31%2F01%2F2020&type=round&return_from=31%2F01%2F2020&return_to=31%2F01%2F2020&adults=1&infants=0&children=0&selected_cabins=M&curr=USD';
+    print("Search url: " + url);
     try {
       response = await dio.get(url);
+      print(response.toString());
     } catch (e) {
       log(e.toString());
     }
@@ -121,6 +127,38 @@ class FlyLineProvider {
       }
     }
     return flights;
+  }
+
+  Future<CheckFlightResponse> checkFlights(
+      bookingId, infants, children, adults) async {
+    var token = await getAuthToken();
+
+    Response response;
+    Dio dio = Dio();
+    dio.options.headers["Authorization"] = "Token $token";
+
+    CheckFlightResponse flightResponse;
+    var url = "$baseUrl/api/booking/check_flights/";
+    print("checkFlights: " + url);
+    var queryParameters = {
+      "v": "2",
+      "currency": "USD",
+      "booking_token": bookingId,
+      "bnum": 0,
+      "infants": infants,
+      "children": children,
+      "adults": adults,
+    };
+    try {
+      response = await dio.get(url, queryParameters: queryParameters);
+    } catch (e) {
+      log(e.toString());
+    }
+
+    if (response.statusCode == 200) {
+      flightResponse = CheckFlightResponse.fromJson(response.data);
+    }
+    return flightResponse;
   }
 
   Future<List<FlylineDeal>> randomDeals() async {
@@ -207,15 +245,11 @@ class FlyLineProvider {
 
       if (gender.length > 0) {
         gender = (gender.toLowerCase() == 'male' ? 0 : 1).toString();
-        data.addAll({
-          "gender": gender
-        });
+        data.addAll({"gender": gender});
       }
 
       if (dob.length > 0) {
-        data.addAll({
-          "dob": dob
-        });
+        data.addAll({"dob": dob});
       }
       response = await dio.patch(url, data: data);
       print(response.toString());
