@@ -1,13 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:motel/appTheme.dart';
-import 'package:oktoast/oktoast.dart';
 import '../../main.dart';
 import 'loginScreen.dart';
 import 'package:http/http.dart' as http;
 
+// ignore: must_be_immutable
 class UserInfoScreen extends StatefulWidget {
   String home;
   String email;
@@ -190,6 +189,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                   child: TextFormField(
                                     maxLines: 1,
                                     onChanged: (String txt) {},
+                                    // ignore: missing_return
                                     validator: (String value) {
                                       if (value.isEmpty) {
                                         return 'Fill this field';
@@ -242,6 +242,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                   child: TextFormField(
                                     maxLines: 1,
                                     onChanged: (String txt) {},
+                                    // ignore: missing_return
                                     validator: (String value) {
                                       if (value.isEmpty) {
                                         return 'Fill this field';

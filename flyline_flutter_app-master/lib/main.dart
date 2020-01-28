@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:motel/appTheme.dart';
-import 'package:motel/modules/login/userInfoScreen.dart';
-import 'package:motel/splashScreen.dart';
 
 import 'introductionScreen.dart';
 import 'modules/bottomTab/bottomTabScreen.dart';

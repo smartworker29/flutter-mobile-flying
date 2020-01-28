@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/models/settingListData.dart';
 import 'package:motel/modules/profile/howDoScreen.dart';

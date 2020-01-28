@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:motel/main.dart';
 import 'package:motel/models/settingListData.dart';
-import 'package:motel/modules/profile/countryScreen.dart';
-import 'package:motel/modules/profile/currencyScreen.dart';
+import 'package:motel/modules/profile/myWebView.dart';
 
 import '../../appTheme.dart';
 
@@ -33,7 +32,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 24),
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top, bottom: 24),
               child: appBar(),
             ),
             Expanded(
@@ -43,40 +43,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      if (index == 6) {
+                      if (index == 2) {
                         MyApp.restartApp(context);
-                      } else if (index == 2) {
+                      } else if (index == 0) {
+                        // Terms of Services
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CurrencyScreen(),
+                            builder: (context) => MyWebView(
+                              title: "Terms of Services",
+                              selectedUrl:
+                                  "https://joinflyline.com/terms-of-services",
+                            ),
                             fullscreenDialog: true,
                           ),
-                        ).then((value) {
-                          if (value is String) {
-                            if (value != "") {
-                              setState(() {
-                                currency = value;
-                              });
-                            }
-                          }
-                        });
+                        );
                       } else if (index == 1) {
+                        // Privacy Policy
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CountryScreen(),
+                            builder: (context) => MyWebView(
+                              title: "Privacy Policy",
+                              selectedUrl:
+                                  "https://joinflyline.com/privacy-policy",
+                            ),
                             fullscreenDialog: true,
                           ),
-                        ).then((value) {
-                          if (value is String) {
-                            if (value != "") {
-                              setState(() {
-                                country = value;
-                              });
-                            }
-                          }
-                        });
+                        );
                       }
                     },
                     child: Column(
@@ -90,45 +84,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   padding: const EdgeInsets.all(16.0),
                                   child: Text(
                                     settingsList[index].titleTxt,
-                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16),
                                   ),
                                 ),
                               ),
-                              index == 1
-                                  ? Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: Container(
-                                        child: Text(
-                                          country,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                            color: AppTheme.getTheme().disabledColor.withOpacity(0.3),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : index == 2
-                                      ? Padding(
-                                          padding: const EdgeInsets.all(16),
-                                          child: Container(
-                                            child: Text(
-                                              currency,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 16,
-                                                color: AppTheme.getTheme().disabledColor.withOpacity(0.3),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : Padding(
-                                          padding: const EdgeInsets.all(16),
-                                          child: Container(
-                                            child:
-                                                Icon(settingsList[index].iconData, color: AppTheme.getTheme().disabledColor.withOpacity(0.3)),
-                                          ),
-                                        )
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Container(
+                                  child: Icon(settingsList[index].iconData,
+                                      color: AppTheme.getTheme()
+                                          .disabledColor
+                                          .withOpacity(0.3)),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -198,12 +168,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Radius.circular(32.0),
                       ),
                       onTap: () {
-                        
                         MyApp.setCustomeTheme(context);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Icon(AppTheme.isLightTheme ? FontAwesomeIcons.cloudSun : FontAwesomeIcons.cloudMoon),
+                        child: Icon(AppTheme.isLightTheme
+                            ? FontAwesomeIcons.cloudSun
+                            : FontAwesomeIcons.cloudMoon),
                       ),
                     ),
                   ),
