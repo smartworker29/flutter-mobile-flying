@@ -784,7 +784,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   FlatButton(
-                    child: Text("",
+                    child: Text("Payment",
                         style: TextStyle(
                             fontSize: 19.0, fontWeight: FontWeight.bold)),
                     onPressed: () {

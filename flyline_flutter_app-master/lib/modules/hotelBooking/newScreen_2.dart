@@ -546,7 +546,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(
-            child: Text("Book Flight For \$175",
+            child: Text("Book Flight For \$" + tripTotal.toString(),
                 style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold)),
             onPressed: () {},
           ),
