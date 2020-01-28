@@ -1,14 +1,21 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/models/flightInformation.dart';
 import 'package:motel/modules/hotelBooking/newScreen_2.dart' as newScreen2;
+import 'package:motel/network/blocs.dart';
+import 'package:select_dialog/select_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HotelHomeScreen extends StatefulWidget {
   List<FlightRouteObject> routes;
+  final int ad;
+  final int ch;
+  final String bookingToken;
 
-  HotelHomeScreen({Key key, this.routes}) : super(key: key);
+  HotelHomeScreen({Key key, this.routes, this.ad, this.ch, this.bookingToken}) : super(key: key);
 
   @override
   _HotelHomeScreenState createState() => _HotelHomeScreenState();
@@ -22,6 +29,44 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   var oneCheckBagBool = false;
   var twoCheckBagBool = false;
 
+  TextEditingController firstNameController;
+  TextEditingController lastNameController;
+  TextEditingController dobController;
+  TextEditingController genderController;
+
+  static var genders = [
+    "Male",
+    "Female",
+  ];
+  static var genderValues = ["0", "1"];
+
+  var selectedGender = genders[0];
+  var selectedGenderValue = genderValues[0];
+
+  void getAccountInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      firstNameController = TextEditingController();
+      firstNameController.text = prefs.getString('first_name');
+
+      lastNameController = TextEditingController();
+      lastNameController.text = prefs.getString('last_name');
+
+      dobController = TextEditingController();
+      dobController.text = prefs.getString('dob');
+
+      genderController = TextEditingController();
+      genderController.text = int.parse(prefs.getString('gender')) == 0 ? 'Male' : 'Female';
+    });
+  }
+
+  @override
+  void initState() {
+    this.getAccountInfo();
+    flyLinebloc.checkFlights(widget.bookingToken, 0, widget.ch, widget.ad);
+    super.initState();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -91,6 +136,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                   width: MediaQuery.of(context).size.width/4,
                   padding: EdgeInsets.only(left: 10),
                     child: TextField(
+                      controller: firstNameController,
                       textAlign: TextAlign.start,
                       onChanged: (String txt) {},
                       onTap: () {
@@ -121,6 +167,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
             child: Container(                   
                   padding: EdgeInsets.only(left: 10),
                     child: TextField(
+                      controller: lastNameController,
                       textAlign: TextAlign.start,
                       onChanged: (String txt) {},
                       onTap: () {
@@ -150,9 +197,18 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
             child: Container(                   
                   padding: EdgeInsets.only(left: 10),
                     child: TextField(
+                      controller: dobController,
                       textAlign: TextAlign.start,
                       onChanged: (String txt) {},
                       onTap: () {
+                        DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            minTime: DateTime(1960, 1, 1),
+                            maxTime: DateTime.now(), onChanged: (date) {
+                              print('change $date');
+                            }, onConfirm: (date) {
+                              dobController.text = Helper.getDateViaDate(date, 'yyyy-MM-dd');
+                            }, currentTime: DateTime.now(), locale: LocaleType.en);
                       },
                       style: TextStyle(
                         fontSize: 14,
@@ -179,9 +235,25 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
             child: Container(                   
                   padding: EdgeInsets.only(left: 10),
                     child: TextField(
+                      controller: genderController,
                       textAlign: TextAlign.start,
                       onChanged: (String txt) {},
                       onTap: () {
+                        SelectDialog.showModal<String>(context,
+                            searchBoxDecoration:
+                            InputDecoration(hintText: "Pick one"),
+                            label: "Gender",
+                            selectedValue: selectedGender,
+                            items: genders,
+                            onChange: (String selected) {
+                              setState(() {
+                                selectedGender = selected;
+                                selectedGenderValue =
+                                genderValues[
+                                genders.indexOf(selected)];
+                                genderController.text = selectedGender;
+                              });
+                            });
                       },
                       style: TextStyle(
                         fontSize: 14,

@@ -75,7 +75,12 @@ class FlyLineBloc {
       bookingId, infants, children, adults) async {
     CheckFlightResponse response =
         await _repository.checkFlights(bookingId, infants, children, adults);
+
     _subjectCheckFlight.sink.add(response);
+
+//    if (!response.flightsInvalid) {
+//      return this.checkFlights(bookingId, infants, children, adults);
+//    }
 
     return response;
   }

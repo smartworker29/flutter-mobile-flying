@@ -19,8 +19,7 @@ class FlyLineProvider {
     if (token.isNotEmpty) {
       print("Token:" + token);
       return token;
-    }
-    else {
+    } else {
       var email = prefs.getString('email') ?? "";
       var password = prefs.getString('password') ?? "";
 
@@ -128,7 +127,8 @@ class FlyLineProvider {
     return flights;
   }
 
-  Future<CheckFlightResponse> checkFlights(bookingId, infants, children, adults) async {
+  Future<CheckFlightResponse> checkFlights(
+      bookingId, infants, children, adults) async {
     var token = await getAuthToken();
 
     Response response;
@@ -136,9 +136,8 @@ class FlyLineProvider {
     dio.options.headers["Authorization"] = "Token $token";
 
     CheckFlightResponse flightResponse;
-    var url =
-        "$baseUrl/api/booking/check_flights/";
-
+    var url = "$baseUrl/api/booking/check_flights/";
+    print("checkFlights: " + url);
     var queryParameters = {
       "v": "2",
       "currency": "USD",
@@ -245,15 +244,11 @@ class FlyLineProvider {
 
       if (gender.length > 0) {
         gender = (gender.toLowerCase() == 'male' ? 0 : 1).toString();
-        data.addAll({
-          "gender": gender
-        });
+        data.addAll({"gender": gender});
       }
 
       if (dob.length > 0) {
-        data.addAll({
-          "dob": dob
-        });
+        data.addAll({"dob": dob});
       }
       response = await dio.patch(url, data: data);
       print(response.toString());

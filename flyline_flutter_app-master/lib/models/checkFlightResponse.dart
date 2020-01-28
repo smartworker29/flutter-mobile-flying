@@ -35,7 +35,7 @@ class BaggageItem {
 class BagItem {
   String category;
   Conditions conditions;
-  List<int> indices;
+  List<dynamic> indices;
   Price price;
 
   BagItem(this.category, this.conditions, this.indices, this.price);
@@ -44,11 +44,11 @@ class BagItem {
       : category = json['category'],
         conditions = Conditions.fromJson(json['conditions']),
         indices = json['indices'],
-        price = json['price'];
+        price = Price.fromJson(json['price']);
 }
 
 class Conditions {
-  List<String> passengerGroups;
+  List<dynamic> passengerGroups;
 
   Conditions(this.passengerGroups);
 
@@ -57,21 +57,21 @@ class Conditions {
 }
 
 class Price {
-  int amount;
-  int base;
+  double amount;
+  double base;
   String currency;
   int merchant;
-  int service;
+  double service;
   int serviceList;
 
   Price(this.amount, this.base, this.currency, this.merchant, this.service,
       this.serviceList);
 
   Price.fromJson(Map<String, dynamic> json)
-      : amount = json['amount'],
-        base = json['base'],
+      : amount = double.parse(json['amount'].toString()),
+        base = double.parse(json['base'].toString()),
         currency = json['currency'],
         merchant = json['merchant'],
-        service = json['service'],
+        service = double.parse(json['service'].toString()),
         serviceList = json['serviceList'];
 }

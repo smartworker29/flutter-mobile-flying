@@ -739,8 +739,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           },
         )
     );
-
-
   }
 
   Widget getSearchButton() {
@@ -976,6 +974,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             setState(() {
                               room = ro;
                               ad = a;
+                              children = c;
                             });
                           },
                         ),
@@ -1419,8 +1418,8 @@ class _LocationSearchUIState extends State<LocationSearchUI>
       itemBuilder: (context, location) => Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(location.name, style: TextStyle(fontWeight: FontWeight.bold)),
-          Text(location.code)
+          Text(location.name + " " + location.countryCode,
+              style: TextStyle(fontWeight: FontWeight.bold)),
         ]),
       ),
       onSearch: (search) async {
