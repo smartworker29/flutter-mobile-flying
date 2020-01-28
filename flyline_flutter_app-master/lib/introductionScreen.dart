@@ -28,7 +28,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
     ));
 
     pageViewModelData.add(PageViewData(
-      titleText: 'Save Virtual Interlining',
+      titleText: 'Virtual Interlining',
       subText:
           'We connect one-way flights from \ndifferent carriers to deliver the best savings.',
       assetsImage: 'assets/images/introduction2.png',
@@ -215,7 +215,7 @@ class PagePopup extends StatelessWidget {
               imageData.titleText,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -228,7 +228,7 @@ class PagePopup extends StatelessWidget {
               imageData.subText,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 15.2,
                 fontWeight: FontWeight.w500,
                 color: AppTheme.getTheme().disabledColor,
               ),

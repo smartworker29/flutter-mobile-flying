@@ -67,7 +67,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           child: Row(
                             children: <Widget>[
                               Text(
-                                "Enter your email to receive a mail to\nreset your password",
+                                "Enter your email to reset your password.",
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontSize: 14,
