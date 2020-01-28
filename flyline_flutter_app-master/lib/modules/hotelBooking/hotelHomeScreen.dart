@@ -1412,13 +1412,18 @@ class _LocationSearchUIState extends State<LocationSearchUI>
   @override
   Widget build(BuildContext context) {
     return SimpleAutocompleteFormField<LocationObject>(
-      itemToString: (location) =>
-      location != null ? location.code : widget.destination,
+      itemToString: (location) {
+        if (location != null) {
+          return location.name + " " + location.subdivisionName + " " + location.countryCode;
+        }
+
+        return widget.destination;
+      },
       textAlign: TextAlign.start,
       itemBuilder: (context, location) => Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(location.name + " " + location.countryCode,
+          Text(location.name + " " + location.subdivisionName + " " + location.countryCode,
               style: TextStyle(fontWeight: FontWeight.bold)),
         ]),
       ),

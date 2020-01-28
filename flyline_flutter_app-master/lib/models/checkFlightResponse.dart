@@ -2,12 +2,16 @@ class CheckFlightResponse {
   Baggage baggage;
   bool flightsChecked;
   bool flightsInvalid;
+  Conversion conversion;
+  double total;
 
-  CheckFlightResponse(this.baggage, this.flightsChecked, this.flightsInvalid);
+  CheckFlightResponse(this.baggage, this.flightsChecked, this.flightsInvalid, this.total);
   CheckFlightResponse.fromJson(Map<String, dynamic> json)
       : baggage = Baggage.fromJson(json['baggage']),
         flightsChecked = json['flights_checked'],
-        flightsInvalid = json['flights_invalid'];
+        flightsInvalid = json['flights_invalid'],
+        conversion = Conversion.fromJson(json['conversion']),
+        total = double.parse(json['total'].toString());
 }
 
 class Baggage {
@@ -19,6 +23,18 @@ class Baggage {
   Baggage.fromJson(Map<String, dynamic> json)
       : combinations = BaggageItem.fromJson(json['combinations']),
         definitions = BaggageItem.fromJson(json['definitions']);
+}
+
+class Conversion {
+  String currency;
+  double amount;
+
+  Conversion(this.currency, this.amount);
+
+  factory Conversion.fromJson(Map<String, dynamic> json) {
+    print(json.toString());
+    return Conversion(json['currency'], double.parse(json['amount'].toString()));
+  }
 }
 
 class BaggageItem {

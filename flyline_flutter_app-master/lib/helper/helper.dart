@@ -28,4 +28,14 @@ class Helper {
 
     return d.join(" ");
   }
+
+  static cost(double total, double conversationAmount, double amount) {
+    if (amount == 0) {
+      return " \$0.0";
+    }
+
+    double price = (conversationAmount / total) * amount;
+    var f = new NumberFormat("###.0#", "en_US");
+    return " \$" + f.format(price);
+  }
 }
