@@ -9,8 +9,8 @@ import 'package:motel/modules/explore/homeExploreSliderView.dart';
 import 'package:motel/modules/explore/popularListView.dart';
 import 'package:motel/modules/explore/titleView.dart';
 import 'package:motel/modules/hotelBooking/hotelHomeScreen.dart';
+import 'package:motel/modules/hotelBooking/hotelListView.dart';
 import 'package:motel/modules/hotelDetailes/hotelDetailes.dart';
-import 'package:motel/modules/myTrips/favoritesListView.dart';
 import 'package:motel/network/blocs.dart';
 
 class HomeExploreScreen extends StatefulWidget {
@@ -61,9 +61,8 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
   }
 
   void getAirlineCodes() async {
-    airlineCodes = json.decode(
-        await DefaultAssetBundle.of(context)
-            .loadString("jsonFile/airline_codes.json"));
+    airlineCodes = json.decode(await DefaultAssetBundle.of(context)
+        .loadString("jsonFile/airline_codes.json"));
     await Future.delayed(const Duration(milliseconds: 500));
   }
 
@@ -233,7 +232,9 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 child: Text(
-                                  'Airlines : ' + deal.getAirlines(airlineCodes) + '    Cost: ' +
+                                  'Airlines : ' +
+                                      deal.getAirlines(airlineCodes) +
+                                      '    Cost: ' +
                                       deal.cost,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,

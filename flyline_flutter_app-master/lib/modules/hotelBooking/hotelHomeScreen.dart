@@ -1,21 +1,22 @@
-import 'dart:developer';
 import 'dart:ui';
-import 'package:flushbar/flushbar.dart';
+
+import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:motel/appTheme.dart';
-import 'package:motel/models/flightInformation.dart';
-import 'package:motel/models/hotelListData.dart';
-import 'package:motel/models/locations.dart';
-import 'package:motel/modules/hotelBooking/calendarPopupView.dart';
-import 'package:motel/modules/hotelBooking/roomPopupView.dart';
-import 'package:motel/modules/myTrips/upcomingListView.dart';
-import 'package:motel/network/blocs.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:simple_autocomplete_formfield/simple_autocomplete_formfield.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+
+import '../../appTheme.dart';
+import '../../models/flightInformation.dart';
+import '../../models/hotelListData.dart';
+import '../../models/locations.dart';
+import '../../network/blocs.dart';
+import 'calendarPopupView.dart';
 import 'filtersScreen.dart';
+import 'hotelListView.dart';
+import 'roomPopupView.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 import 'package:motel/modules/hotelBooking/newScreen_1.dart' as newScreen1;
 
@@ -38,8 +39,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   var hotelList = HotelListData.hotelList;
   ScrollController scrollController = new ScrollController();
   int room = 1;
-  int ad = 1;
-  int children = 0;
+  int ad = 2;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(Duration(days: 5));
   bool isMap = false;
@@ -126,64 +126,64 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 getAppBarUI(),
                 isMap
                     ? Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      getSearchBarUI(),
-                      getTimeDateUI(),
-                      getSearchButton(),
-                      Expanded(
-                        child: Stack(
+                        child: Column(
                           children: <Widget>[
-                            SizedBox(
-                              width:
-                              MediaQuery.of(context).size.width,
-                              child: Image.asset(
-                                "assets/images/mapImage.png",
-                                fit: BoxFit.cover,
+                            getSearchBarUI(),
+                            getTimeDateUI(),
+                            getSearchButton(),
+                            Expanded(
+                              child: Stack(
+                                children: <Widget>[
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Image.asset(
+                                          "assets/images/mapImage.png",
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              AppTheme.getTheme()
+                                                  .scaffoldBackgroundColor
+                                                  .withOpacity(1.0),
+                                              AppTheme.getTheme()
+                                                  .scaffoldBackgroundColor
+                                                  .withOpacity(0.0),
+                                            ],
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                          ),
+                                        ),
+                                      ),
+                                    ] +
+                                    [
+                                      getFlightDetails(),
+                                    ],
                               ),
-                            ),
-                            Container(
-                              height: 80,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppTheme.getTheme()
-                                        .scaffoldBackgroundColor
-                                        .withOpacity(1.0),
-                                    AppTheme.getTheme()
-                                        .scaffoldBackgroundColor
-                                        .withOpacity(0.0),
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                              ),
-                            ),
-                          ] +
-                              [
-                                getFlightDetails(),
-                              ],
+                            )
+                          ],
                         ),
                       )
-                    ],
-                  ),
-                )
                     : Expanded(
-                  child: Column(children: <Widget>[
-                    Container(
-                      color: AppTheme.getTheme().scaffoldBackgroundColor,
-                      child: Column(
-                        children: <Widget>[
-                          getSearchBarUI(),
-                          getTimeDateUI(),
-                          getSearchButton(),
-                        ],
-                      ),
-                    ),
-                    getFilterBarUI(),
-                    getFlightDetails(),
-                  ]),
-                )
+                        child: Column(children: <Widget>[
+                          Container(
+                            color: AppTheme.getTheme().scaffoldBackgroundColor,
+                            child: Column(
+                              children: <Widget>[
+                                getSearchBarUI(),
+                                getTimeDateUI(),
+                                getSearchButton(),
+                              ],
+                            ),
+                          ),
+                          getFilterBarUI(),
+                          getFlightDetails(),
+                        ]),
+                      )
               ],
             ),
           ),

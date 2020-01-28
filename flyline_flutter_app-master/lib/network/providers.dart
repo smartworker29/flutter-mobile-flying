@@ -1,13 +1,16 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
-import 'package:motel/models/account.dart';
-import 'package:motel/models/checkFlightResponse.dart';
-import 'package:motel/models/flightInformation.dart';
-import 'package:motel/models/flylineDeal.dart';
-import 'package:motel/models/locations.dart';
+import 'package:motel/models/recentlFlightSearch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/account.dart';
+import '../models/bookedFlight.dart';
+import '../models/flightInformation.dart';
+import '../models/flylineDeal.dart';
+import '../models/locations.dart';
 
 class FlyLineProvider {
   final baseUrl = "https://staging.joinflyline.com";
@@ -17,7 +20,6 @@ class FlyLineProvider {
     var token = prefs.getString('token') ?? "";
 
     if (token.isNotEmpty) {
-      print("Token:" + token);
       return token;
     } else {
       var email = prefs.getString('email') ?? "";
@@ -101,7 +103,8 @@ class FlyLineProvider {
       infants,
       children,
       selectedCabins,
-      curr, limit) async {
+      curr,
+      limit) async {
     var token = await getAuthToken();
 
     Response response;
@@ -111,7 +114,6 @@ class FlyLineProvider {
     List<FlightInformationObject> flights = List<FlightInformationObject>();
     var url =
         "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD&limit=$limit";
-
     try {
       response = await dio.get(url);
     } catch (e) {
@@ -221,6 +223,53 @@ class FlyLineProvider {
     return null;
   }
 
+  Future<List<BookedFlight>> pastorUpcomingFlightSummary(
+      bool isUpcoming) async {
+    List<BookedFlight> flights = List<BookedFlight>();
+    var pastFlightsURL = '$baseUrl/api/bookings/?kind=past';
+    var upcomingFlightsURL = '$baseUrl/api/bookings/?kind=upcoming';
+
+    var token = await getAuthToken();
+
+    Response response;
+    Dio dio = Dio();
+    dio.options.headers["Authorization"] = "Token $token";
+    try {
+      response =
+          await dio.get(isUpcoming ? upcomingFlightsURL : pastFlightsURL);
+    } catch (e) {
+      log(e.toString());
+    }
+    if (response.statusCode == 200) {
+      for (Map<String, dynamic> i in response.data) {
+        flights.add(BookedFlight.fromJson(i));
+      }
+    }
+    return flights;
+  }
+
+  Future<List<RecentFlightSearch>> flightSearchHistory() async {
+    var searchHistoryURL = '$baseUrl/api/search-history/';
+
+    List<RecentFlightSearch> flights = List<RecentFlightSearch>();
+    var token = await getAuthToken();
+
+    Response response;
+    Dio dio = Dio();
+    dio.options.headers["Authorization"] = "Token $token";
+    try {
+      response = await dio.get(searchHistoryURL);
+    } catch (e) {
+      log(e.toString());
+    }
+    if (response.statusCode == 200) {
+      for (dynamic i in response.data) {
+        flights.add(RecentFlightSearch.fromJson(i));
+      }
+    }
+    return flights;
+  }
+
   Future<void> updateAccountInfo(String firstName, String lastName, String dob,
       String gender, String email, String phone, String passport) async {
     var token = await getAuthToken();
@@ -242,11 +291,15 @@ class FlyLineProvider {
 
       if (gender.length > 0) {
         gender = (gender.toLowerCase() == 'male' ? 0 : 1).toString();
-        data.addAll({"gender": gender});
+        data.addAll({
+          "gender": gender
+        });
       }
 
       if (dob.length > 0) {
-        data.addAll({"dob": dob});
+        data.addAll({
+          "dob": dob
+        });
       }
       response = await dio.patch(url, data: data);
       print(response.toString());
