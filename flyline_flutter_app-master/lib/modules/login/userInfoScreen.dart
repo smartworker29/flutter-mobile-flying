@@ -107,7 +107,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                   text: '- As a reminder we\'ll email you',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                     fontSize: 16,
                                   ),
                                   children: <TextSpan>[
@@ -133,14 +133,14 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 24, right: 24, bottom: 16),
+                              left: 24, right: 24, bottom: 24),
                           child: Center(
                             child: RichText(
                               text: TextSpan(
                                   text: '- No Commitments.',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                     fontSize: 16,
                                   ),
                                   children: <TextSpan>[
@@ -613,7 +613,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
-                            "By signing up, you agreed with our terms of\nServices and privacy Policy",
+                            "By signing up, you agree to FlyLine Terms of\nServices and Privacy Policy.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14,

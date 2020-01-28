@@ -34,7 +34,7 @@ class _HomeExploreSliderViewState extends State<HomeExploreSliderView> {
     ));
     pageViewModelData.add(PageViewData(
       titleText: 'Book FlyLine and Public Fares',
-      subText: 'We always display the cheapest \nfare on FlyLine',
+      subText: 'We always display the cheapest \nflights on FlyLine',
       assetsImage: 'assets/images/mainpagethree.jpg',
     ));
 

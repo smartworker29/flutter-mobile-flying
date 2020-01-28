@@ -287,7 +287,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
-                            "By signing up, you agreed with our terms of\nServices and privacy Policy",
+                            "By signing up, you agree to FlyLine Terms of\nServices and Privacy Policy.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14,
