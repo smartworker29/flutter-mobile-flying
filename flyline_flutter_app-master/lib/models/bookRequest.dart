@@ -8,6 +8,7 @@ class BookRequest {
   String paymentGateway;
   Payment payment;
   List<Passenger> passengers;
+  Object retailInfo;
 
   static const String DEFAULT_CURRENCY = 'usd';
   static const String DEFAULT_LANG = 'en';
@@ -29,7 +30,8 @@ class BookRequest {
       "locale": this.locale,
       "payment_gateway": this.paymentGateway,
       "payment": this.payment.jsonSerializeHardCode,
-      "passengers": lists
+      "passengers": lists,
+      "retail_info": this.retailInfo,
     };
   }
 }
@@ -90,7 +92,8 @@ class BaggageItem {
   List<int> passengers;
   BaggageItem(this.combination, this.passengers);
 
-  Map get jsonSerialize => {"combination": this.combination.jsonSerialize, "passengers": passengers};
+  Map get jsonSerialize =>
+      {"combination": this.combination.jsonSerialize, "passengers": passengers};
 }
 
 class Combination {

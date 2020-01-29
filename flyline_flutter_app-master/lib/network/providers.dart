@@ -174,9 +174,13 @@ class FlyLineProvider {
     var url = "$baseUrl/api/book/";
     var result = "";
 
-    print(json.encode(bookRequest.jsonSerialize));
+    JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+    String prettyprint = encoder.convert(bookRequest.jsonSerialize);
+    prettyprint.split('\n').forEach((element) => print(element));
+//    print(json.encode(bookRequest.jsonSerialize));
     try {
       response = await dio.post(url, data: json.encode(bookRequest.jsonSerialize));
+      print(response.toString());
     } on DioError catch (e) {
       result = e.toString();
       print(result);

@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 class CheckFlightResponse {
   Baggage baggage;
   bool flightsChecked;
@@ -44,9 +46,13 @@ class BaggageItem {
 
   BaggageItem(this.handBag, this.holdBag);
 
-  BaggageItem.fromJson(Map<String, dynamic> json)
-      : handBag = (json['hand_bag'] as List).map((i) => BagItem.fromJson(i)).toList(),
-        holdBag = (json['hold_bag'] as List).map((i) => BagItem.fromJson(i)).toList();
+  factory BaggageItem.fromJson(Map<String, dynamic> json) {
+    var handBag = (json['hand_bag'] as List).map((i) => BagItem.fromJson(i)).toList();
+    var holdBag = (json['hold_bag'] as List).map((i) => BagItem.fromJson(i)).toList();
+
+    return BaggageItem(handBag, holdBag);
+  }
+
 }
 
 class BagItem {
@@ -54,20 +60,30 @@ class BagItem {
   Conditions conditions;
   List<dynamic> indices;
   Price price;
+  String uuid;
 
-  BagItem(this.category, this.conditions, this.indices, this.price);
+  BagItem(String category, Conditions conditions, List<dynamic> indices, Price price) {
+    this.category = category;
+    this.conditions = conditions;
+    this.indices = indices;
+    this.price = price;
+
+    var uuid = new Uuid();
+    this.uuid = uuid.v4();
+  }
 
   BagItem.fromJson(Map<String, dynamic> json)
       : category = json['category'],
         conditions = Conditions.fromJson(json['conditions']),
         indices = json['indices'],
-        price = Price.fromJson(json['price']);
+        price = Price.fromJson(json['price']),
+        uuid = Uuid().v4();
 
   Map get jsonSerialize => {
       "category": this.category,
       "conditions": this.conditions.jsonSerialize,
       "indices": this.indices,
-      "price": this.price.jsonSerialize
+      "price": this.price.jsonSerialize,
   };
 }
 

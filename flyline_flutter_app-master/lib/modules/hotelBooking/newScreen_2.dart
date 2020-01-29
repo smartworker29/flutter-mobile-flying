@@ -11,15 +11,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HotelHomeScreen extends StatefulWidget {
   final int numberOfPassengers;
   final CheckFlightResponse flightResponse;
-  final BagItem carryOnSelected;
-  final BagItem checkedBagageSelected;
   final List<TravelerInformation> travelerInformations;
 
   HotelHomeScreen(
       {Key key,
       this.numberOfPassengers,
-      this.carryOnSelected,
-      this.checkedBagageSelected,
       this.travelerInformations,
       this.flightResponse})
       : super(key: key);
@@ -594,15 +590,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             child: Text("Book Flight For \$" + tripTotal.toString(),
                 style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold)),
             onPressed: () {
-              BookRequest.BookRequest bookRequest = BookRequest.BookRequest(
-                  this.getBaggage(),
-                  BookRequest.BookRequest.DEFAULT_CURRENCY,
-                  BookRequest.BookRequest.DEFAULT_LANG,
-                  BookRequest.BookRequest.DEFAULT_LOCALE,
-                  BookRequest.BookRequest.DEFAULT_PAYMENT_GATEWAY,
-                  this.getPayment(),
-                  this.getPassengers());
-              flyLinebloc.book(bookRequest);
+              flyLinebloc.book(this.createBookRequest());
             },
           ),
         ],
@@ -610,31 +598,18 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     );
   }
 
-  BookRequest.Baggage getBaggage() {
-    BookRequest.Baggage baggage = BookRequest.Baggage(List<BookRequest.BaggageItem>());
+  BookRequest.BookRequest createBookRequest() {
+    BookRequest.Baggage baggage =
+        BookRequest.Baggage(List<BookRequest.BaggageItem>());
 
-    BookRequest.Combination combinationCarryOn =
-    BookRequest.Combination(widget.carryOnSelected);
-    BookRequest.Combination combinationCheckedBagage =
-    BookRequest.Combination(widget.checkedBagageSelected);
-
-    baggage.add(new BookRequest.BaggageItem(combinationCarryOn, [0]));
-    baggage.add(new BookRequest.BaggageItem(combinationCheckedBagage, [0]));
-
-    return baggage;
-  }
-
-  BookRequest.Payment getPayment() => BookRequest.Payment(
-      creditController.text,
-      ccvController.text,
-      emailAddressController.text,
-      expDateController.text,
-      nameOnCardController.text,
-      phoneNumberController.text,
-      promoCodeController.text);
-
-  List<BookRequest.Passenger> getPassengers() {
     List<BookRequest.Passenger> passengers = List();
+
+    Map<String, List<int>> carryOnPassengers = Map();
+    List<BagItem> carryOns = List();
+
+    Map<String, List<int>> checkedBagagePassengers = Map();
+    List<BagItem> checkedBagages = List();
+
     widget.travelerInformations.forEach((p) {
       BookRequest.Passenger passenger = BookRequest.Passenger(
           DateTime.parse(p.dob),
@@ -647,8 +622,72 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           "mr");
 
       passengers.add(passenger);
+
+      if (carryOnPassengers.containsKey(p.carryOnSelected.uuid)) {
+        carryOnPassengers.update(p.carryOnSelected.uuid, (List<int> val) {
+          val.add(passengers.length - 1);
+          return val;
+        });
+      } else {
+        carryOns.add(p.carryOnSelected);
+        carryOnPassengers.addAll({
+          p.carryOnSelected.uuid: [passengers.length - 1]
+        });
+      }
+
+      if (checkedBagagePassengers.containsKey(p.checkedBagageSelected.uuid)) {
+        checkedBagagePassengers.update(p.checkedBagageSelected.uuid, (List<int> val) {
+          val.add(passengers.length - 1);
+          return val;
+        });
+      } else {
+        checkedBagages.add(p.checkedBagageSelected);
+        checkedBagagePassengers.addAll({
+          p.checkedBagageSelected.uuid: [passengers.length - 1]
+        });
+      }
+//      BookRequest.Combination combinationCarryOn =
+//          BookRequest.Combination(p.carryOnSelected);
+//
+//      BookRequest.Combination combinationCheckedBagage =
+//          BookRequest.Combination(p.checkedBagageSelected);
+//
+//      baggage.add(new BookRequest.BaggageItem(combinationCarryOn, [passengers.length - 1]));
+//      baggage.add(new BookRequest.BaggageItem(combinationCheckedBagage, [passengers.length - 1]));
     });
 
-    return passengers;
+    carryOns.forEach((item) {
+      BookRequest.Combination combination =
+          BookRequest.Combination(item);
+
+      baggage.add(new BookRequest.BaggageItem(combination, carryOnPassengers[item.uuid]));
+    });
+
+    checkedBagages.forEach((item) {
+      BookRequest.Combination combination =
+      BookRequest.Combination(item);
+
+      baggage.add(new BookRequest.BaggageItem(combination, checkedBagagePassengers[item.uuid]));
+    });
+
+    BookRequest.BookRequest bookRequest = BookRequest.BookRequest(
+        baggage,
+        BookRequest.BookRequest.DEFAULT_CURRENCY,
+        BookRequest.BookRequest.DEFAULT_LANG,
+        BookRequest.BookRequest.DEFAULT_LOCALE,
+        BookRequest.BookRequest.DEFAULT_PAYMENT_GATEWAY,
+        this.getPayment(),
+        passengers);
+
+    return bookRequest;
   }
+
+  BookRequest.Payment getPayment() => BookRequest.Payment(
+      creditController.text,
+      ccvController.text,
+      emailAddressController.text,
+      expDateController.text,
+      nameOnCardController.text,
+      phoneNumberController.text,
+      promoCodeController.text);
 }
