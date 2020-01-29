@@ -8,7 +8,7 @@ class BookRequest {
   String paymentGateway;
   Payment payment;
   List<Passenger> passengers;
-  Object retailInfo;
+  Map<String, dynamic> retailInfo;
 
   static const String DEFAULT_CURRENCY = 'usd';
   static const String DEFAULT_LANG = 'en';
@@ -16,7 +16,7 @@ class BookRequest {
   static const String DEFAULT_PAYMENT_GATEWAY = 'payu';
 
   BookRequest(this.baggage, this.currency, this.lang, this.locale,
-      this.paymentGateway, this.payment, this.passengers);
+      this.paymentGateway, this.payment, this.passengers, this.retailInfo);
 
   Map get jsonSerialize {
     List<Map> lists = List();

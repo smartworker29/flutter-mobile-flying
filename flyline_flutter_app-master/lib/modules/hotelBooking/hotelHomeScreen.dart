@@ -930,6 +930,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                                 ad: this.ad,
                                                                 ch: this.children,
                                                                 bookingToken: flight.bookingToken,
+                                                                retailInfo: flight.raw
                                                               )),
                                                     );
                                                   },

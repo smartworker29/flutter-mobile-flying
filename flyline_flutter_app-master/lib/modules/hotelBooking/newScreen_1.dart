@@ -18,8 +18,9 @@ class HotelHomeScreen extends StatefulWidget {
   final int ad;
   final int ch;
   final String bookingToken;
+  final Map<String, dynamic> retailInfo;
 
-  HotelHomeScreen({Key key, this.routes, this.ad, this.ch, this.bookingToken})
+  HotelHomeScreen({Key key, this.routes, this.ad, this.ch, this.bookingToken, this.retailInfo})
       : super(key: key);
 
   @override
@@ -916,7 +917,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     newScreen2.HotelHomeScreen(
                                         numberOfPassengers: numberOfPassengers,
                                         travelerInformations: lists,
-                                        flightResponse: snapshot.data)),
+                                        flightResponse: snapshot.data,
+                                        retailInfo: widget.retailInfo,
+                                    )),
                           );
                         }
                       },

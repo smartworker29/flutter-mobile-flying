@@ -12,12 +12,14 @@ class HotelHomeScreen extends StatefulWidget {
   final int numberOfPassengers;
   final CheckFlightResponse flightResponse;
   final List<TravelerInformation> travelerInformations;
+  final Map<String, dynamic> retailInfo;
 
   HotelHomeScreen(
       {Key key,
       this.numberOfPassengers,
       this.travelerInformations,
-      this.flightResponse})
+      this.flightResponse,
+      this.retailInfo})
       : super(key: key);
 
   @override
@@ -636,7 +638,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       }
 
       if (checkedBagagePassengers.containsKey(p.checkedBagageSelected.uuid)) {
-        checkedBagagePassengers.update(p.checkedBagageSelected.uuid, (List<int> val) {
+        checkedBagagePassengers.update(p.checkedBagageSelected.uuid,
+            (List<int> val) {
           val.add(passengers.length - 1);
           return val;
         });
@@ -657,17 +660,17 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     });
 
     carryOns.forEach((item) {
-      BookRequest.Combination combination =
-          BookRequest.Combination(item);
+      BookRequest.Combination combination = BookRequest.Combination(item);
 
-      baggage.add(new BookRequest.BaggageItem(combination, carryOnPassengers[item.uuid]));
+      baggage.add(new BookRequest.BaggageItem(
+          combination, carryOnPassengers[item.uuid]));
     });
 
     checkedBagages.forEach((item) {
-      BookRequest.Combination combination =
-      BookRequest.Combination(item);
+      BookRequest.Combination combination = BookRequest.Combination(item);
 
-      baggage.add(new BookRequest.BaggageItem(combination, checkedBagagePassengers[item.uuid]));
+      baggage.add(new BookRequest.BaggageItem(
+          combination, checkedBagagePassengers[item.uuid]));
     });
 
     BookRequest.BookRequest bookRequest = BookRequest.BookRequest(
@@ -677,7 +680,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         BookRequest.BookRequest.DEFAULT_LOCALE,
         BookRequest.BookRequest.DEFAULT_PAYMENT_GATEWAY,
         this.getPayment(),
-        passengers);
+        passengers,
+        widget.retailInfo);
 
     return bookRequest;
   }
