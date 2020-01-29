@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/models/checkFlightResponse.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HotelHomeScreen extends StatefulWidget {
   final int numberOfPassengers;
@@ -34,7 +35,26 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     priceOnPassenger = Helper.getCostNumber(widget.flightResponse.total, widget.flightResponse.conversion.amount, widget.flightResponse.total);
     priceOnBaggage = 0;
     tripTotal = priceOnPassenger + priceOnBaggage;
+
+    this.getAccountInfo();
     super.initState();
+  }
+
+  void getAccountInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      promoCodeController = TextEditingController();
+      nameOnCardController = TextEditingController();
+      creditController = TextEditingController();
+      expDateController = TextEditingController();
+      ccvController = TextEditingController();
+      emailAddressController = TextEditingController();
+      phoneNumberController = TextEditingController();
+
+      emailAddressController.text = prefs.getString('email');
+      phoneNumberController.text = prefs.getString('phone_number');
+    });
   }
 
   @override
@@ -100,6 +120,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             width: MediaQuery.of(context).size.width / 4,
             padding: EdgeInsets.only(left: 10),
             child: TextField(
+              controller: promoCodeController,
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -125,6 +146,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
+              controller: nameOnCardController,
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -150,6 +172,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
+              controller: creditController,
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -181,6 +204,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 child: Container(
                   padding: EdgeInsets.only(left: 10),
                   child: TextField(
+                    controller: expDateController,
                     textAlign: TextAlign.start,
                     onChanged: (String txt) {},
                     onTap: () {},
@@ -210,6 +234,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 child: Container(
                   padding: EdgeInsets.only(left: 10),
                   child: TextField(
+                    controller: ccvController,
                     textAlign: TextAlign.start,
                     onChanged: (String txt) {},
                     onTap: () {},
@@ -238,6 +263,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
+              controller: emailAddressController,
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -263,6 +289,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
+              controller: phoneNumberController,
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},

@@ -645,7 +645,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     child: Text(
                                       Helper.getDateViaDate(
                                               route.localDeparture,
-                                              "HH : m a") +
+                                              "hh:mm a") +
                                           " " +
                                           route.flyFrom +
                                           " (" +
@@ -663,7 +663,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     margin: EdgeInsets.only(bottom: 3),
                                     child: Text(
                                       Helper.getDateViaDate(
-                                              route.localArrival, "HH : m a") +
+                                              route.localArrival, "hh:mm a") +
                                           " " +
                                           route.flyTo +
                                           " (" +

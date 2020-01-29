@@ -115,7 +115,7 @@ class HotelListData {
     ),
     HotelListData(
       imagePath: 'assets/images/popular_6.jpg',
-      titleTxt: 'Diamond Head',
+      titleTxt: 'Honolulu',
     ),
   ];
 

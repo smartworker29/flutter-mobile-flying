@@ -197,19 +197,15 @@ class PagePopup extends StatelessWidget {
           flex: 8,
           child: Center(
             child: Container(
-              width: MediaQuery.of(context).size.width - 120,
-              child: AspectRatio(
-                aspectRatio: 1,
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 60, left: 16, right: 16),
                 child: Image.asset(
                   imageData.assetsImage,
                   fit: BoxFit.cover,
                 ),
-              ),
             ),
           ),
         ),
         Expanded(
-          flex: 1,
           child: Container(
             child: Text(
               imageData.titleText,
@@ -222,7 +218,6 @@ class PagePopup extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex: 1,
           child: Container(
             child: Text(
               imageData.subText,
@@ -236,7 +231,6 @@ class PagePopup extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex: 1,
           child: SizedBox(),
         ),
       ],

@@ -61,16 +61,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
+
                             if (index == 0) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => InviteFriend(),
-                                  fullscreenDialog: true,
-                                ),
-                              );
-                            }
-                            if (index == 1) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -79,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               );
                             }
-                            if (index == 2) {
+                            if (index == 1) {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

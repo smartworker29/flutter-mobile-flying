@@ -136,7 +136,7 @@ class FlightRouteObject {
         parsedArrivalDate,
         parsedDepartureDate,
         parsedUTCArrivalDate,
-        parsedUTCArrivalDate,
+        parsedUTCDepartureDate,
         json["airline"],
         json['return']);
   }

@@ -32,7 +32,6 @@ class Conversion {
   Conversion(this.currency, this.amount);
 
   factory Conversion.fromJson(Map<String, dynamic> json) {
-    print(json.toString());
     return Conversion(json['currency'], double.parse(json['amount'].toString()));
   }
 }

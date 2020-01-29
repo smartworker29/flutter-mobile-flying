@@ -34,11 +34,11 @@ class SettingsListData {
     //   isSelected: false,
     //   iconData: FontAwesomeIcons.lock,
     // ),
-    SettingsListData(
-      titleTxt: 'Invite Friends',
-      isSelected: false,
-      iconData: FontAwesomeIcons.userFriends,
-    ),
+//    SettingsListData(
+//      titleTxt: 'Invite Friends',
+//      isSelected: false,
+//      iconData: FontAwesomeIcons.userFriends,
+//    ),
     // SettingsListData(
     //   titleTxt: 'Credits & Coupons',
     //   isSelected: false,
