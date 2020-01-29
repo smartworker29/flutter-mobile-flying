@@ -2,14 +2,25 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/helper/helper.dart';
+import 'package:motel/models/bookRequest.dart' as BookRequest;
 import 'package:motel/models/checkFlightResponse.dart';
+import 'package:motel/models/travelerInformation.dart';
+import 'package:motel/network/blocs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HotelHomeScreen extends StatefulWidget {
   final int numberOfPassengers;
   final CheckFlightResponse flightResponse;
+  final List<TravelerInformation> travelerInformations;
+  final Map<String, dynamic> retailInfo;
 
-  HotelHomeScreen({Key key, this.numberOfPassengers, this.flightResponse}) : super(key: key);
+  HotelHomeScreen(
+      {Key key,
+      this.numberOfPassengers,
+      this.travelerInformations,
+      this.flightResponse,
+      this.retailInfo})
+      : super(key: key);
 
   @override
   _HotelHomeScreenState createState() => _HotelHomeScreenState();
@@ -17,7 +28,6 @@ class HotelHomeScreen extends StatefulWidget {
 
 class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
-
   double priceOnPassenger = 0;
   double priceOnBaggage = 0;
   double tripTotal = 0;
@@ -32,7 +42,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   @override
   void initState() {
-    priceOnPassenger = Helper.getCostNumber(widget.flightResponse.total, widget.flightResponse.conversion.amount, widget.flightResponse.total);
+    priceOnPassenger = Helper.getCostNumber(widget.flightResponse.total,
+        widget.flightResponse.conversion.amount, widget.flightResponse.total);
     priceOnBaggage = 0;
     tripTotal = priceOnPassenger + priceOnBaggage;
 
@@ -368,7 +379,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       margin: EdgeInsets.only(bottom: 3),
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        widget.numberOfPassengers.toString() + " Passenger",
+                                        widget.numberOfPassengers.toString() +
+                                            " Passenger",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             fontSize: 13,
@@ -381,7 +393,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     padding: EdgeInsets.only(left: 10, top: 5),
                                     margin: EdgeInsets.only(bottom: 3),
                                     child: Text(
-                                      Helper.cost(widget.flightResponse.total, widget.flightResponse.conversion.amount, widget.flightResponse.total),
+                                      Helper.cost(
+                                          widget.flightResponse.total,
+                                          widget
+                                              .flightResponse.conversion.amount,
+                                          widget.flightResponse.total),
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                           fontSize: 13,
@@ -575,10 +591,107 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           FlatButton(
             child: Text("Book Flight For \$" + tripTotal.toString(),
                 style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold)),
-            onPressed: () {},
+            onPressed: () {
+              flyLinebloc.book(this.createBookRequest());
+            },
           ),
         ],
       ),
     );
   }
+
+  BookRequest.BookRequest createBookRequest() {
+    BookRequest.Baggage baggage =
+        BookRequest.Baggage(List<BookRequest.BaggageItem>());
+
+    List<BookRequest.Passenger> passengers = List();
+
+    Map<String, List<int>> carryOnPassengers = Map();
+    List<BagItem> carryOns = List();
+
+    Map<String, List<int>> checkedBagagePassengers = Map();
+    List<BagItem> checkedBagages = List();
+
+    widget.travelerInformations.forEach((p) {
+      BookRequest.Passenger passenger = BookRequest.Passenger(
+          DateTime.parse(p.dob),
+          p.passportId,
+          "adult",
+          p.passportExpiration,
+          p.firstName,
+          "US",
+          p.lastName,
+          "mr");
+
+      passengers.add(passenger);
+
+      if (carryOnPassengers.containsKey(p.carryOnSelected.uuid)) {
+        carryOnPassengers.update(p.carryOnSelected.uuid, (List<int> val) {
+          val.add(passengers.length - 1);
+          return val;
+        });
+      } else {
+        carryOns.add(p.carryOnSelected);
+        carryOnPassengers.addAll({
+          p.carryOnSelected.uuid: [passengers.length - 1]
+        });
+      }
+
+      if (checkedBagagePassengers.containsKey(p.checkedBagageSelected.uuid)) {
+        checkedBagagePassengers.update(p.checkedBagageSelected.uuid,
+            (List<int> val) {
+          val.add(passengers.length - 1);
+          return val;
+        });
+      } else {
+        checkedBagages.add(p.checkedBagageSelected);
+        checkedBagagePassengers.addAll({
+          p.checkedBagageSelected.uuid: [passengers.length - 1]
+        });
+      }
+//      BookRequest.Combination combinationCarryOn =
+//          BookRequest.Combination(p.carryOnSelected);
+//
+//      BookRequest.Combination combinationCheckedBagage =
+//          BookRequest.Combination(p.checkedBagageSelected);
+//
+//      baggage.add(new BookRequest.BaggageItem(combinationCarryOn, [passengers.length - 1]));
+//      baggage.add(new BookRequest.BaggageItem(combinationCheckedBagage, [passengers.length - 1]));
+    });
+
+    carryOns.forEach((item) {
+      BookRequest.Combination combination = BookRequest.Combination(item);
+
+      baggage.add(new BookRequest.BaggageItem(
+          combination, carryOnPassengers[item.uuid]));
+    });
+
+    checkedBagages.forEach((item) {
+      BookRequest.Combination combination = BookRequest.Combination(item);
+
+      baggage.add(new BookRequest.BaggageItem(
+          combination, checkedBagagePassengers[item.uuid]));
+    });
+
+    BookRequest.BookRequest bookRequest = BookRequest.BookRequest(
+        baggage,
+        BookRequest.BookRequest.DEFAULT_CURRENCY,
+        BookRequest.BookRequest.DEFAULT_LANG,
+        BookRequest.BookRequest.DEFAULT_LOCALE,
+        BookRequest.BookRequest.DEFAULT_PAYMENT_GATEWAY,
+        this.getPayment(),
+        passengers,
+        widget.retailInfo);
+
+    return bookRequest;
+  }
+
+  BookRequest.Payment getPayment() => BookRequest.Payment(
+      creditController.text,
+      ccvController.text,
+      emailAddressController.text,
+      expDateController.text,
+      nameOnCardController.text,
+      phoneNumberController.text,
+      promoCodeController.text);
 }

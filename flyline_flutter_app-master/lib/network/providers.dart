@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:motel/models/bookRequest.dart';
 import 'package:motel/models/checkFlightResponse.dart';
 import 'package:motel/models/recentlFlightSearch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -162,6 +163,30 @@ class FlyLineProvider {
       flightResponse = CheckFlightResponse.fromJson(response.data);
     }
     return flightResponse;
+  }
+
+  Future<void> book(BookRequest bookRequest) async {
+    var token = await getAuthToken();
+
+    Response response;
+    Dio dio = Dio();
+    dio.options.headers["Authorization"] = "Token $token";
+    var url = "$baseUrl/api/book/";
+    var result = "";
+
+    JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+    String prettyprint = encoder.convert(bookRequest.jsonSerialize);
+    prettyprint.split('\n').forEach((element) => print(element));
+//    print(json.encode(bookRequest.jsonSerialize));
+    try {
+      response = await dio.post(url, data: json.encode(bookRequest.jsonSerialize));
+      print(response.toString());
+    } on DioError catch (e) {
+      result = e.toString();
+      print(result);
+    } on Error catch (e) {
+      print(e);
+    }
   }
 
   Future<List<FlylineDeal>> randomDeals() async {

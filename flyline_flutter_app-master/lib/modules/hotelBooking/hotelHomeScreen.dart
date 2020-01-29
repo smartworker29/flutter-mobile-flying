@@ -35,7 +35,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   var hotelList = HotelListData.hotelList;
   ScrollController scrollController = new ScrollController();
   int room = 1;
-  int ad = 2;
+  int ad = 1;
   int children = 0;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(Duration(days: 5));
@@ -346,9 +346,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       itemCount: listOfFlights.length,
                       itemBuilder: (context, index) {
                         var flight = listOfFlights[index];
-
-                        print(flight);
-                        print(flight.routes);
 
                         // initialize
                         int a2b = 0;
@@ -933,6 +930,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                                 ad: this.ad,
                                                                 ch: this.children,
                                                                 bookingToken: flight.bookingToken,
+                                                                retailInfo: flight.raw
                                                               )),
                                                     );
                                                   },

@@ -1,3 +1,4 @@
+import 'package:motel/models/bookRequest.dart';
 import 'package:motel/models/recentlFlightSearch.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -94,11 +95,15 @@ class FlyLineBloc {
 
     _subjectCheckFlight.sink.add(response);
 
-//    if (!response.flightsInvalid) {
-//      return this.checkFlights(bookingId, infants, children, adults);
-//    }
+    if (!response.flightsChecked) {
+      return this.checkFlights(bookingId, infants, children, adults);
+    }
 
     return response;
+  }
+
+  Future<void> book(BookRequest bookRequest) async {
+    await _repository.book(bookRequest);
   }
 
   Future<List<FlylineDeal>> randomDeals() async {

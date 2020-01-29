@@ -14,6 +14,7 @@ class FlightInformationObject {
   String durationReturn;
   String bookingToken;
   double price;
+  Map<String, dynamic> raw;
 
   FlightInformationObject(
       String flyFrom,
@@ -27,7 +28,8 @@ class FlightInformationObject {
       String durationDeparture,
       String durationReturn,
       String bookingToken,
-      double price) {
+      double price,
+      Map<String, dynamic> raw) {
     this.flyFrom = flyFrom;
     this.flyTo = flyTo;
     this.cityFrom = cityFrom;
@@ -40,6 +42,7 @@ class FlightInformationObject {
     this.durationReturn = durationReturn;
     this.bookingToken = bookingToken;
     this.price = price;
+    this.raw = raw;
   }
 
   factory FlightInformationObject.fromJson(Map<String, dynamic> json) {
@@ -75,15 +78,14 @@ class FlightInformationObject {
         durationDeparture,
         durationReturn,
         json['booking_token'],
-    double.parse(json['price'].toString()));
+        double.parse(json['price'].toString()),
+        json);
   }
 
   @override
   String toString() {
     return 'FlightInformationObject{flyFrom: $flyFrom, flyTo: $flyTo, cityFrom: $cityFrom, cityTo: $cityTo, nightsInDest: $nightsInDest, routes: $routes, localArrival: $localArrival, localDeparture: $localDeparture, durationDeparture: $durationDeparture, durationReturn: $durationReturn}';
   }
-
-
 }
 
 // A Pojo class for Flight Route
@@ -155,6 +157,4 @@ class FlightRouteObject {
   String toString() {
     return 'FlightRouteObject{cityFrom: $cityFrom, cityTo: $cityTo, flyFrom: $flyFrom, flyTo: $flyTo, flightNo: $flightNo, airline: $airline, localArrival: $localArrival, localDeparture: $localDeparture}';
   }
-
-
 }
