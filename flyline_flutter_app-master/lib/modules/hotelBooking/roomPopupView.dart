@@ -65,20 +65,19 @@ class _RoomPopupViewState extends State<RoomPopupView> with TickerProviderStateM
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppTheme.getTheme().backgroundColor,
-                        borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                        borderRadius: BorderRadius.all(Radius.circular(1.0)),
                         boxShadow: <BoxShadow>[
                           BoxShadow(color:AppTheme.getTheme().dividerColor, offset: Offset(4, 4), blurRadius: 8.0),
                         ],
                       ),
                       child: InkWell(
-                        borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                        borderRadius: BorderRadius.all(Radius.circular(1.0)),
                         onTap: () {},
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            getRowView("Number of Rooms", "", room, PopupTextType.no),
                             getRowView("Adult", " (Aged 18+)", ad, PopupTextType.ad),
                             getRowView("Children", " (0-17)", ch, PopupTextType.ch),
                             Padding(
@@ -87,7 +86,7 @@ class _RoomPopupViewState extends State<RoomPopupView> with TickerProviderStateM
                                 height: 48,
                                 decoration: BoxDecoration(
                                   color: AppTheme.getTheme().primaryColor,
-                                  borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
                                   boxShadow: <BoxShadow>[
                                     BoxShadow(
                                       color:AppTheme.getTheme().dividerColor,
@@ -99,7 +98,7 @@ class _RoomPopupViewState extends State<RoomPopupView> with TickerProviderStateM
                                 child: Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
                                     highlightColor: Colors.transparent,
                                     onTap: () {
                                       try {

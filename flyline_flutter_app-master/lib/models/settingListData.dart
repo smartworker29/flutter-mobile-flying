@@ -61,21 +61,21 @@ class SettingsListData {
     )
   ];
   static List<SettingsListData> settingsList = [
-    SettingsListData(
-      titleTxt: 'Notifications',
-      isSelected: false,
-      iconData: FontAwesomeIcons.solidBell,
-    ),
-    SettingsListData(
-      titleTxt: 'Country',
-      isSelected: false,
-      iconData: FontAwesomeIcons.userFriends,
-    ),
-    SettingsListData(
-      titleTxt: 'Currency',
-      isSelected: false,
-      iconData: FontAwesomeIcons.gift,
-    ),
+//    SettingsListData(
+//      titleTxt: 'Notifications',
+//      isSelected: false,
+//      iconData: FontAwesomeIcons.solidBell,
+//    ),
+//    SettingsListData(
+//      titleTxt: 'Country',
+//      isSelected: false,
+//      iconData: FontAwesomeIcons.userFriends,
+//    ),
+//    SettingsListData(
+//      titleTxt: 'Currency',
+//      isSelected: false,
+//      iconData: FontAwesomeIcons.gift,
+//    ),
     SettingsListData(
       titleTxt: 'Terms of Services',
       isSelected: false,
@@ -86,11 +86,11 @@ class SettingsListData {
       isSelected: false,
       iconData: Icons.keyboard_arrow_right,
     ),
-    SettingsListData(
-      titleTxt: 'Give Us Feedbacks',
-      isSelected: false,
-      iconData: Icons.keyboard_arrow_right,
-    ),
+//    SettingsListData(
+//      titleTxt: 'Give Us Feedbacks',
+//      isSelected: false,
+//      iconData: Icons.keyboard_arrow_right,
+//    ),
     SettingsListData(
       titleTxt: 'Log out',
       isSelected: false,

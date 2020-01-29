@@ -42,6 +42,8 @@ dependencies:
   flutter_page_indicator: ^0.0.3
   intl: ^0.16.0
   rflutter_alert:
+  webview_flutter: ^0.3.14+1
+  flutter_datetime_picker: ^1.3.4
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +63,7 @@ flutter:
   assets:
     - assets/images/
     - jsonFile/countryList.json
+    - jsonFile/airline_codes.json
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -84,6 +87,10 @@ flutter:
           weight: 600
         - asset: assets/fonts/WorkSans-Bold.ttf
           weight: 700
+    - family: Dona
+      fonts:
+        - asset: assets/fonts/Dona-Heavy.ttf
+        - asset: assets/fonts/Dona-Bold.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

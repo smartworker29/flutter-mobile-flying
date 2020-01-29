@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:motel/appTheme.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+import '../../appTheme.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -11,18 +10,17 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  TextEditingController email_text_controller = new TextEditingController();
-  GlobalKey<FormState> form_key = new GlobalKey();
+  TextEditingController emailTextController = new TextEditingController();
+  GlobalKey<FormState> formKey = new GlobalKey();
   var response;
   int statusCode;
 
-  Future<dynamic> forgot_password_api_call() async {
+  Future<dynamic> forgotPasswordApiCall() async {
     String url =
         'https://staging.joinflyline.com/api/password_reset/'; // here i am checking with my own api
     response =
-        await http.post(url, body: {"email": email_text_controller.text});
+        await http.post(url, body: {"email": emailTextController.text});
     statusCode=response.statusCode;
-
 
     //this is output i got
 
@@ -58,7 +56,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
               Expanded(
                 child: Form(
-                  key: form_key,
+                  key: formKey,
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
@@ -68,7 +66,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           child: Row(
                             children: <Widget>[
                               Text(
-                                "Enter your email to receive a mail to\nreset your password",
+                                "Enter your email to reset your password.",
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontSize: 14,
@@ -104,7 +102,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 height: 48,
                                 child: Center(
                                   child: TextFormField(
-                                    controller: email_text_controller,
+                                    controller: emailTextController,
                                     maxLines: 1,
                                     onChanged: (String txt) {},
                                     style: TextStyle(
@@ -120,8 +118,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                           color: AppTheme.getTheme()
                                               .disabledColor),
                                     ),
+                                    // ignore: missing_return
                                     validator: (value) {
-                                      if (value == "") {
+                                      if (value.length == 0) {
                                         return "Email must not be null";
                                       }
                                     },
@@ -131,8 +130,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ),
                           ),
                         ),
-
-
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 24, right: 24, bottom: 8, top: 16),
@@ -156,9 +153,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(24.0)),
                                 highlightColor: Colors.transparent,
+                                // ignore: missing_return
                                 onTap: () async {
-                                  if (form_key.currentState.validate()) {
-                                    await forgot_password_api_call();
+                                  if (formKey.currentState.validate()) {
+                                    await forgotPasswordApiCall();
                                     if(statusCode==200){
 //                                      Navigator.pop(context);
                                       return Alert(context:context,title: "Please check your email, we have sent you instructions to reset your password",

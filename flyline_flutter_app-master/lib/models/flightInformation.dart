@@ -1,4 +1,3 @@
-
 // A Pojo class for FlightInformation
 import 'package:motel/utils/date_utils.dart';
 
@@ -13,8 +12,20 @@ class FlightInformationObject {
   DateTime localDeparture;
   String durationDeparture;
   String durationReturn;
+  String bookingToken;
 
-  FlightInformationObject(String flyFrom, String flyTo, String cityFrom, String cityTo, int nightsInDest, DateTime localArrival, DateTime localDeparture, List<FlightRouteObject> routes, String durationDeparture, String durationReturn) {
+  FlightInformationObject(
+      String flyFrom,
+      String flyTo,
+      String cityFrom,
+      String cityTo,
+      int nightsInDest,
+      DateTime localArrival,
+      DateTime localDeparture,
+      List<FlightRouteObject> routes,
+      String durationDeparture,
+      String durationReturn,
+      String bookingToken) {
     this.flyFrom = flyFrom;
     this.flyTo = flyTo;
     this.cityFrom = cityFrom;
@@ -25,30 +36,42 @@ class FlightInformationObject {
     this.nightsInDest = nightsInDest;
     this.durationDeparture = durationDeparture;
     this.durationReturn = durationReturn;
+    this.bookingToken = bookingToken;
   }
 
   factory FlightInformationObject.fromJson(Map<String, dynamic> json) {
-    
     var list = json['route'] as List;
-    
+
     List<FlightRouteObject> items = List<FlightRouteObject>();
-    
+
     items = list.map((i) => FlightRouteObject.fromJson(i)).toList();
 
-    var durationDeparture="";
-    var durationReturn="";
+    var durationDeparture = "";
+    var durationReturn = "";
 
     var parsedDepartureDate = DateTime.parse(json["local_departure"]);
     var parsedArrivalDate = DateTime.parse(json["local_arrival"]);
 
-    if (json["duration"]!=null && json["duration"]["departure"]!=null) durationDeparture =
-  DateUtils.secs2hm(Duration(seconds:json["duration"]["departure"]).inSeconds);
+    if (json["duration"] != null && json["duration"]["departure"] != null)
+      durationDeparture = DateUtils.secs2hm(
+          Duration(seconds: json["duration"]["departure"]).inSeconds);
 
-    if (json["duration"]!=null && json["duration"]["return"]!=null) durationReturn =
-  DateUtils.secs2hm(Duration(seconds:json["duration"]["return"]).inSeconds);
-    
-    return FlightInformationObject(json['flyFrom'], json["flyTo"], json['cityFrom'], json['cityTo'], json["nightsInDest"], parsedArrivalDate, parsedDepartureDate, items, durationDeparture, durationReturn);
-    
+    if (json["duration"] != null && json["duration"]["return"] != null)
+      durationReturn = DateUtils.secs2hm(
+          Duration(seconds: json["duration"]["return"]).inSeconds);
+
+    return FlightInformationObject(
+        json['flyFrom'],
+        json["flyTo"],
+        json['cityFrom'],
+        json['cityTo'],
+        json["nightsInDest"],
+        parsedArrivalDate,
+        parsedDepartureDate,
+        items,
+        durationDeparture,
+        durationReturn,
+        json['booking_token']);
   }
 
   @override
@@ -59,10 +82,8 @@ class FlightInformationObject {
 
 }
 
-
-  // A Pojo class for Flight Route
+// A Pojo class for Flight Route
 class FlightRouteObject {
-  
   String cityFrom;
   String cityTo;
   String flyFrom;
@@ -71,26 +92,59 @@ class FlightRouteObject {
   String airline;
   DateTime localArrival;
   DateTime localDeparture;
+  DateTime utcArrival;
+  DateTime utcDeparture;
+  int returnFlight;
 
-  FlightRouteObject(String flyFrom, String flyTo, String cityFrom, String cityTo, int flightNo, DateTime localArrival, DateTime localDeparture, String airline) {
+  FlightRouteObject(
+      String flyFrom,
+      String flyTo,
+      String cityFrom,
+      String cityTo,
+      int flightNo,
+      DateTime localArrival,
+      DateTime localDeparture,
+      DateTime utcArrival,
+      DateTime utcDeparture,
+      String airline,
+      int returnFlight) {
     this.cityFrom = cityFrom;
     this.cityTo = cityTo;
     this.flyFrom = flyFrom;
     this.flyTo = flyTo;
     this.localArrival = localArrival;
     this.localDeparture = localDeparture;
+    this.utcArrival = utcArrival;
+    this.utcDeparture = utcDeparture;
     this.flightNo = flightNo;
     this.airline = airline;
+    this.returnFlight = returnFlight;
   }
 
   factory FlightRouteObject.fromJson(Map<String, dynamic> json) {
-
-
     var parsedDepartureDate = DateTime.parse(json["local_departure"]);
     var parsedArrivalDate = DateTime.parse(json["local_arrival"]);
-    
-    return FlightRouteObject(json['flyFrom'], json["flyTo"], json['cityFrom'], json['cityTo'], json["flight_no"], parsedArrivalDate, parsedDepartureDate, json["airline"]);
+    var parsedUTCDepartureDate = DateTime.parse(json["utc_departure"]);
+    var parsedUTCArrivalDate = DateTime.parse(json["utc_arrival"]);
 
+    return FlightRouteObject(
+        json['flyFrom'],
+        json["flyTo"],
+        json['cityFrom'],
+        json['cityTo'],
+        json["flight_no"],
+        parsedArrivalDate,
+        parsedDepartureDate,
+        parsedUTCArrivalDate,
+        parsedUTCArrivalDate,
+        json["airline"],
+        json['return']);
+  }
+
+  get duration {
+    return Duration(
+        milliseconds: this.utcArrival.millisecondsSinceEpoch -
+            this.utcDeparture.millisecondsSinceEpoch);
   }
 
   @override

@@ -10,11 +10,11 @@ class PopularFilterListData {
   static List<PopularFilterListData> popularFList = [
     PopularFilterListData(
       titleTxt: 'Free Breakfast',
-      isSelected: false,
+      isSelected: true,
     ),
     PopularFilterListData(
       titleTxt: 'Free Parking',
-      isSelected: false,
+      isSelected: true,
     ),
     PopularFilterListData(
       titleTxt: 'Pool',
@@ -22,22 +22,22 @@ class PopularFilterListData {
     ),
     PopularFilterListData(
       titleTxt: 'Pet Friendly',
-      isSelected: false,
+      isSelected: true,
     ),
     PopularFilterListData(
       titleTxt: 'Free wifi',
-      isSelected: false,
+      isSelected: true,
     ),
   ];
 
   static List<PopularFilterListData> accomodationList = [
     PopularFilterListData(
       titleTxt: 'No Stops',
-      isSelected: false,
+      isSelected: true,
     ),
     PopularFilterListData(
       titleTxt: 'One Stop',
-      isSelected: false,
+      isSelected: true,
     ),
     PopularFilterListData(
       titleTxt: 'Two Stops',
