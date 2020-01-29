@@ -42,7 +42,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   bool isMap = false;
 
   final formatDates = intl.DateFormat("dd MMM");
-  final formatTime = intl.DateFormat("HH : m a");
+  final formatTime = intl.DateFormat("HH : mm a");
   final formatAllDay = intl.DateFormat("dd/MM/yyyy");
 
   var typeOfTripSelected = 0;
