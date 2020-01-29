@@ -4,7 +4,6 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:select_dialog/select_dialog.dart';
 import 'package:simple_autocomplete_formfield/simple_autocomplete_formfield.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
@@ -17,7 +16,6 @@ import 'calendarPopupView.dart';
 import 'filtersScreen.dart';
 import 'hotelListView.dart';
 import 'roomPopupView.dart';
-import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 import 'package:motel/modules/hotelBooking/newScreen_1.dart' as newScreen1;
 
 class HotelHomeScreen extends StatefulWidget {
@@ -403,19 +401,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             splashColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             focusColor: Colors.transparent,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        newScreen1.HotelHomeScreen(
-                                          routes: flight.routes,
-                                          ad: this.ad,
-                                          ch: this.children,
-                                          bookingToken: flight.bookingToken,
-                                        )),
-                              );
-                            },
+                            onTap: () {},
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -902,7 +888,63 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                             ),
                                           ],
                                         ),
-                                      ))
+                                      )),
+                                // Price and Book
+                                Container(
+                                    margin: EdgeInsets.all(5.0),
+                                    padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide( //                    <--- top side
+                                        color: AppTheme.getTheme().dividerColor,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Center(
+                                          child: Text("Trip Price: \$" + flight.price.toString(), style: TextStyle(
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 16,
+                                          ),)
+                                        )
+                                      ),
+                                      Expanded(
+                                        child: Center(
+                                          child: Container(
+                                            margin: EdgeInsets.only(left: 20.0, right: 20),
+                                            decoration:
+                                            BoxDecoration(border: Border.all(color: Colors.lightBlue)),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                FlatButton(
+                                                  child: Text("Book",
+                                                      style: TextStyle(
+                                                          fontSize: 19.0, fontWeight: FontWeight.bold)),
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              newScreen1.HotelHomeScreen(
+                                                                routes: flight.routes,
+                                                                ad: this.ad,
+                                                                ch: this.children,
+                                                                bookingToken: flight.bookingToken,
+                                                              )),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ),
+                                    ],
+                                  )
+                                )
                               ],
                             ),
                           ),

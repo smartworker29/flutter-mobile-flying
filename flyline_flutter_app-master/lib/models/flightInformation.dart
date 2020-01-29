@@ -13,6 +13,7 @@ class FlightInformationObject {
   String durationDeparture;
   String durationReturn;
   String bookingToken;
+  double price;
 
   FlightInformationObject(
       String flyFrom,
@@ -25,7 +26,8 @@ class FlightInformationObject {
       List<FlightRouteObject> routes,
       String durationDeparture,
       String durationReturn,
-      String bookingToken) {
+      String bookingToken,
+      double price) {
     this.flyFrom = flyFrom;
     this.flyTo = flyTo;
     this.cityFrom = cityFrom;
@@ -37,6 +39,7 @@ class FlightInformationObject {
     this.durationDeparture = durationDeparture;
     this.durationReturn = durationReturn;
     this.bookingToken = bookingToken;
+    this.price = price;
   }
 
   factory FlightInformationObject.fromJson(Map<String, dynamic> json) {
@@ -71,7 +74,8 @@ class FlightInformationObject {
         items,
         durationDeparture,
         durationReturn,
-        json['booking_token']);
+        json['booking_token'],
+    double.parse(json['price'].toString()));
   }
 
   @override
