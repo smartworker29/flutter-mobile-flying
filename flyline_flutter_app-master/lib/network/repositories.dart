@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:motel/models/bookRequest.dart';
 import 'package:motel/models/checkFlightResponse.dart';
 import 'package:motel/models/recentlFlightSearch.dart';
 
@@ -53,6 +54,10 @@ class FlyLineRepository {
 
   Future<CheckFlightResponse> checkFlights(bookingId, infants, children, adults) {
     return _flyLineProvider.checkFlights(bookingId, infants, children, adults);
+  }
+
+  Future<void> book(BookRequest bookRequest) {
+    return _flyLineProvider.book(bookRequest);
   }
 
   Future<List<FlylineDeal>> randomDeals() {

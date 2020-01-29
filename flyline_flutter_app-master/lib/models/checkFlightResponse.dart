@@ -12,6 +12,8 @@ class CheckFlightResponse {
         flightsInvalid = json['flights_invalid'],
         conversion = Conversion.fromJson(json['conversion']),
         total = double.parse(json['total'].toString());
+
+  bool get noAvailableForBooking => this.flightsInvalid;
 }
 
 class Baggage {
@@ -60,6 +62,13 @@ class BagItem {
         conditions = Conditions.fromJson(json['conditions']),
         indices = json['indices'],
         price = Price.fromJson(json['price']);
+
+  Map get jsonSerialize => {
+      "category": this.category,
+      "conditions": this.conditions.jsonSerialize,
+      "indices": this.indices,
+      "price": this.price.jsonSerialize
+  };
 }
 
 class Conditions {
@@ -69,6 +78,10 @@ class Conditions {
 
   Conditions.fromJson(Map<String, dynamic> json)
       : passengerGroups = json['passenger_groups'];
+
+  Map get jsonSerialize => {
+    "passenger_groups": this.passengerGroups
+  };
 }
 
 class Price {
@@ -89,4 +102,13 @@ class Price {
         merchant = json['merchant'],
         service = double.parse(json['service'].toString()),
         serviceList = json['serviceList'];
+
+  Map get jsonSerialize => {
+    "amount": this.amount,
+    "base": this.base,
+    "currency": this.currency,
+    "merchant": this.merchant,
+    "service": this.service,
+    "service_flat": this.serviceList
+  };
 }

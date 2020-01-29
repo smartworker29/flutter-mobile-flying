@@ -5,8 +5,10 @@ import 'package:motel/appTheme.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/models/checkFlightResponse.dart';
 import 'package:motel/models/flightInformation.dart';
+import 'package:motel/models/travelerInformation.dart';
 import 'package:motel/modules/hotelBooking/newScreen_2.dart' as newScreen2;
 import 'package:motel/network/blocs.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,6 +34,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   var twoCheckBagBool = false;
 
   int numberOfPassengers = 1;
+
+  BagItem carryOnSelected;
+  BagItem checkedBagageSelected;
 
   TextEditingController firstNameController;
   TextEditingController lastNameController;
@@ -65,6 +70,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       genderController = TextEditingController();
       genderController.text =
           int.parse(prefs.getString('gender')) == 0 ? 'Male' : 'Female';
+
+      passportIdController = TextEditingController();
+      passportExpirationController = TextEditingController();
     });
   }
 
@@ -335,6 +343,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 List<Widget> list = List();
                 response.baggage.combinations.handBag.forEach((bag) {
                   if (bag.indices.length == 0) {
+                    carryOnSelected = bag;
                     list.add(Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.only(
@@ -358,7 +367,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               value: personalItemBool,
                               onChanged: (value) {
                                 setState(() {
-                                  personalItemBool = value;
+                                  carryOnSelected = bag;
                                 });
                               },
                             ),
@@ -407,7 +416,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               value: noHandBagBool,
                               onChanged: (value) {
                                 setState(() {
-                                  noHandBagBool = value;
+                                  carryOnSelected = bag;
                                 });
                               },
                             ),
@@ -460,6 +469,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 List<Widget> list = List();
                 response.baggage.combinations.holdBag.forEach((bag) {
                   if (bag.indices.length == 0) {
+                    checkedBagageSelected = bag;
                     list.add(Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.only(
@@ -483,6 +493,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               value: noCheckBagBool,
                               onChanged: (value) {
                                 setState(() {
+                                  checkedBagageSelected = bag;
                                   noCheckBagBool = value;
                                 });
                               },
@@ -543,6 +554,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               value: oneCheckBagBool,
                               onChanged: (value) {
                                 setState(() {
+                                  checkedBagageSelected = bag;
                                   oneCheckBagBool = value;
                                 });
                               },
@@ -644,8 +656,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       Helper.getDateViaDate(
-                                              route.localDeparture,
-                                              "hh:mm a") +
+                                              route.localDeparture, "hh:mm a") +
                                           " " +
                                           route.flyFrom +
                                           " (" +
@@ -776,30 +787,70 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         stream: flyLinebloc.checkFlightData.stream,
         builder: (context, AsyncSnapshot<CheckFlightResponse> snapshot) {
           if (snapshot.data != null) {
-            return Container(
-              margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
-              decoration:
-                  BoxDecoration(border: Border.all(color: Colors.lightBlue)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  FlatButton(
-                    child: Text("Payment",
-                        style: TextStyle(
-                            fontSize: 19.0, fontWeight: FontWeight.bold)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => newScreen2.HotelHomeScreen(
-                                numberOfPassengers: numberOfPassengers,
-                                flightResponse: snapshot.data)),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            );
+            if (snapshot.data.flightsChecked) {
+              return Container(
+                margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.lightBlue)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text("Payment",
+                          style: TextStyle(
+                              fontSize: 19.0, fontWeight: FontWeight.bold)),
+                      onPressed: () {
+                        if (snapshot.data.noAvailableForBooking) {
+                          Alert(
+                            context: context,
+                            title:
+                                "Sorry, seems like the flight does not exist. Please choose another one.",
+                            buttons: [
+                              DialogButton(
+                                child: Text(
+                                  "OKAY",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                                width: 120,
+                              ),
+                            ],
+                          ).show();
+                        } else {
+                          TravelerInformation travelerInformation =
+                              TravelerInformation(
+                                  firstNameController.text,
+                                  lastNameController.text,
+                                  dobController.text,
+                                  genderController.text,
+                                  passportIdController.text,
+                                  passportExpirationController.text);
+                          List<TravelerInformation> lists = List();
+                          lists.add(travelerInformation);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    newScreen2.HotelHomeScreen(
+                                        numberOfPassengers: numberOfPassengers,
+                                        checkedBagageSelected:
+                                            checkedBagageSelected,
+                                        carryOnSelected: carryOnSelected,
+                                        travelerInformations: lists,
+                                        flightResponse: snapshot.data)),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }
+            return Container();
           }
           return Container();
         });
