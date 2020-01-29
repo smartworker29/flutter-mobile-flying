@@ -29,7 +29,7 @@ class HotelHomeScreen extends StatefulWidget {
 
 class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
-  bool _isSearched = true;
+  bool _isSearched = false;
   AnimationController animationController;
   AnimationController _animationController;
   var hotelList = HotelListData.hotelList;
@@ -85,7 +85,17 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         }
       }
     });
+
+
     super.initState();
+
+    flyLinebloc.flightsItems.stream.listen((onData){
+      if (onData != null) {
+        setState(()  {
+          this._isSearched = true;
+        });
+      }
+    });
   }
 
   Future<bool> getData() async {
@@ -958,6 +968,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchButton() {
+    if (_isSearched) {
+      return Container();
+    }
     return Container(
       margin: EdgeInsets.only(left: 16.0, right: 16, top: 2, bottom:12),
       color: Colors.lightBlue,
@@ -971,9 +984,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     fontSize: 19.0,
                     fontWeight: FontWeight.bold)),
             onPressed: () {
-              setState(() {
-                this._isSearched = false;
-              });
+
 
               try {
                 flyLinebloc.searchFlight(
@@ -1000,7 +1011,37 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     );
   }
 
+  Widget getUpdateButton() {
+    if (!_isSearched) {
+      return Container();
+    }
+    return Container(
+      margin: EdgeInsets.only(left: 16.0, right: 16, top: 2, bottom:12),
+      color: Colors.lightBlue,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          FlatButton(
+            child: Text("Update Results",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 19.0,
+                    fontWeight: FontWeight.bold)),
+            onPressed: () {
+              setState(() {
+                this._isSearched = false;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget getTimeDateUI() {
+    if (_isSearched) {
+      return Container();
+    }
     return Padding(
       padding: const EdgeInsets.only(left: 18, bottom: 2),
       child: Row(
@@ -1313,6 +1354,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchBarUI() {
+    if (_isSearched) {
+      return Container();
+    }
     return Column(
       children: <Widget>[
         Container(
@@ -1503,63 +1547,65 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   return Padding(
                     padding: const EdgeInsets.only(
                         left: 16, right: 16, top: 8, bottom: 4),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              listOfFlights.length.toString() +
-                                  " flights found",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            focusColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            splashColor: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4.0),
-                            ),
-                            onTap: () {
-                              FocusScope.of(context).requestFocus(FocusNode());
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FiltersScreen(),
-                                    fullscreenDialog: true),
-                              );
-                            },
+                    child: Column(
+                      children: <Widget>[Row(
+                        children: <Widget>[
+                          Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    "Filter",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Icon(Icons.sort,
-                                        color:
-                                            AppTheme.getTheme().primaryColor),
-                                  ),
-                                ],
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                listOfFlights.length.toString() +
+                                    " flights found",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w100,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              focusColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              splashColor: Colors.grey.withOpacity(0.2),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4.0),
+                              ),
+                              onTap: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => FiltersScreen(),
+                                      fullscreenDialog: true),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      "Filter",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Icon(Icons.sort,
+                                          color:
+                                          AppTheme.getTheme().primaryColor),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ), getUpdateButton()],
                     ),
                   );
                 } else {
