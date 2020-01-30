@@ -1001,7 +1001,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     ))),
           );
         } else {
-          return Container();
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
+              )
+            )
+          );
         }
       },
     ));
