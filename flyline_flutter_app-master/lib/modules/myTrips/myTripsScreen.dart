@@ -42,7 +42,9 @@ class _MyTripsScreenState extends State<MyTripsScreen>
           if (!snapshot.hasData) {
             return Container(
               child: Center(
-                child: CircularProgressIndicator()
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
+                )
               )
             );
           } else {

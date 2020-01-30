@@ -1546,7 +1546,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   if (!snapshot.hasData) {
                     return Container(
                       child: Center(
-                        child: CircularProgressIndicator()
+                        child: CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
+                        )
                       )
                     );
                   } else {
@@ -1580,7 +1582,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   if (!snapshot.hasData) {
                     return Container(
                         child: Center(
-                            child: CircularProgressIndicator()
+                            child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
+                            )
                         )
                     );
                   } else {

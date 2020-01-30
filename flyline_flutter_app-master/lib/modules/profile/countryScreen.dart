@@ -52,6 +52,7 @@ class _CountryScreenState extends State<CountryScreen> {
                           width: 40,
                           height: 40,
                           child: CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
                             strokeWidth: 2,
                           ),
                         ),
