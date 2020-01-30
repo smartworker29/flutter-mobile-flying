@@ -355,11 +355,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         Container(
           padding: EdgeInsets.only(bottom: 15),
           decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
+            color: const Color(0xF6F6F6),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -535,7 +531,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     padding: EdgeInsets.only(left: 10, top: 5),
                                     margin: EdgeInsets.only(bottom: 3),
                                     child: Text(
-                                      " \$" + tripTotal.toString(),
+                                      Helper.formatNumber(tripTotal),
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                           fontSize: 13,
@@ -615,13 +611,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   Widget getBookButton() {
     return Container(
+      height: 40,
       margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
-      decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue)),
+      decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue, width: 0.7)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(
-            child: Text("Book Flight For \$" + tripTotal.toString(),
+            child: Text("Book Flight For" + Helper.formatNumber(tripTotal),
                 style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold)),
             onPressed: () {
               setState(() {

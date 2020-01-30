@@ -54,7 +54,9 @@ class _PreviousTripViewState extends State<PreviousTripView> {
           } else
             return Column(
               children: <Widget>[
-                Center(child: CircularProgressIndicator()),
+                Center(child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
+                )),
                 BookFlightButton()
               ],
             );

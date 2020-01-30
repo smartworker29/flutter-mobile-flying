@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
+import 'package:motel/models/locations.dart';
+import 'package:motel/modules/hotelBooking/hotelHomeScreen.dart';
 import 'package:motel/modules/login/userInfoScreen.dart';
 import 'loginScreen.dart';
 
@@ -14,6 +16,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String home;
   String email;
   String password;
+
+  LocationObject selectedHomeAirport;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -86,36 +91,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(left: 16, right: 16),
+                                  const EdgeInsets.only(left: 16, right: 16, top: 5, bottom: 0),
                               child: Container(
-                                height: 58.0,
                                 child: Center(
-                                  child: TextFormField(
-                                    maxLines: 1,
-                                    onChanged: (String txt) {},
-                                    // ignore: missing_return
-                                    validator: (String value) {
-                                      if (value.isEmpty) {
-                                        return 'Fill this field';
-                                      }
-                                    },
-                                    onSaved: (String value) {
-                                      home = value;
-                                    },
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                    cursorColor:
-                                        AppTheme.getTheme().primaryColor,
-                                    decoration: new InputDecoration(
-                                      errorText: null,
-                                      border: InputBorder.none,
-                                      hintText: "Home Airport",
-                                      hintStyle: TextStyle(
-                                          color: AppTheme.getTheme()
-                                              .disabledColor),
-                                    ),
-                                  ),
+                                  child: LocationSearchUI("Home Airport", true,
+                                      notifyParent: refreshValue),
+//                                  child: TextFormField(
+//                                    maxLines: 1,
+//                                    onChanged: (String txt) {},
+//                                    // ignore: missing_return
+//                                    validator: (String value) {
+//                                      if (value.isEmpty) {
+//                                        return 'Fill this field';
+//                                      }
+//                                    },
+//                                    onSaved: (String value) {
+//                                      home = value;
+//                                    },
+//                                    style: TextStyle(
+//                                      fontSize: 16,
+//                                    ),
+//                                    cursorColor:
+//                                        AppTheme.getTheme().primaryColor,
+//                                    decoration: new InputDecoration(
+//                                      errorText: null,
+//                                      border: InputBorder.none,
+//                                      hintText: "Home Airport",
+//                                      hintStyle: TextStyle(
+//                                          color: AppTheme.getTheme()
+//                                              .disabledColor),
+//                                    ),
+//                                  ),
                                 ),
                               ),
                             ),
@@ -346,6 +352,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+
+  refreshValue(LocationObject value, _) {
+    if (this.mounted && value != null) {
+      setState(() {
+        selectedHomeAirport = value;
+
+        home = selectedHomeAirport.name +
+            " " +
+            selectedHomeAirport.subdivisionName +
+            " " +
+            selectedHomeAirport.countryCode;
+      });
+    }
   }
 
   Widget getFTButton({bool isFacebook: true}) {

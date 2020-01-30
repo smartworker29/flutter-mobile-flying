@@ -129,12 +129,15 @@ class FlightsListView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(
+                            Expanded(
+                              flex: 4,
+                              child:Text(
                               'Airlines: ' + flight.getAirlines(airlineCodes),
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey.withOpacity(0.8)),
-                            ),
+                            )),
                             SizedBox(
                               width: 12,
                             ),

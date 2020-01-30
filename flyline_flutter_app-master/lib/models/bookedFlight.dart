@@ -39,16 +39,19 @@ class BookedFlight {
   }
 
   factory BookedFlight.fromJson(Map<String, dynamic> json) {
-
     var parsedDepartureDate = DateUtils.monthDayFormat(
         DateTime.parse(json['data']["local_departure"]));
     var parsedArrivalDate =
         DateUtils.monthDayFormat(DateTime.parse(json['data']["local_arrival"]));
 
-    var parsedReturnDepartureDate = DateUtils.monthDayFormat(
-        DateTime.parse(json['data']["return_departure"]));
-    var parsedReturnArrivalDate = DateUtils.monthDayFormat(
-        DateTime.parse(json['data']["return_arrival"]));
+    var parsedReturnDepartureDate = json['data']["return_departure"] != null
+        ? DateUtils.monthDayFormat(
+            DateTime.parse(json['data']["return_departure"]))
+        : null;
+    var parsedReturnArrivalDate = json['data']["return_arrival"] != null
+        ? DateUtils.monthDayFormat(
+            DateTime.parse(json['data']["return_arrival"]))
+        : null;
 
     return BookedFlight(
       airlines: json['data']['airlines'],
@@ -62,8 +65,12 @@ class BookedFlight {
       returnDeparture: parsedReturnDepartureDate,
       localArrivalFull: DateTime.parse(json['data']["local_arrival"]),
       localDepartureFull: DateTime.parse(json['data']["local_departure"]),
-      returnArrivalFull: DateTime.parse(json['data']["return_arrival"]),
-      returnDepartureFull: DateTime.parse(json['data']["return_departure"]),
+      returnArrivalFull: json['data']["return_arrival"] != null
+          ? DateTime.parse(json['data']["return_arrival"])
+          : null,
+      returnDepartureFull: json['data']["return_departure"] != null
+          ? DateTime.parse(json['data']["return_departure"])
+          : null,
     );
   }
 }

@@ -301,9 +301,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                       );
                                     }).toList(),
                                     onChanged: (String newValueSelected) {
-                                      plan = newValueSelected;
+                                      print("onChanged");
+                                      setState(() {
+                                        plan = newValueSelected;
+                                      });
                                     },
                                     onSaved: (String value) {
+                                      print("onSaved");
                                       _formData['plan'] = value;
                                     },
                                     decoration:

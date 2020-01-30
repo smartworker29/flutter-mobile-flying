@@ -51,7 +51,9 @@ class _UpcomingListViewState extends State<UpcomingListView> {
                   animationController: widget.animationController,
                 );
         } else
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
+          ));
       },
     );
   }

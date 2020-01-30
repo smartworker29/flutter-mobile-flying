@@ -28,12 +28,35 @@ class _MyTripsScreenState extends State<MyTripsScreen>
     this.getAirlineCodes();
     tabAnimationController =
         AnimationController(duration: Duration(milliseconds: 400), vsync: this);
-    indexView = UpcomingListView(
-      airlineCodes: airlineCodes,
-      animationController: tabAnimationController,
-    );
+
     tabAnimationController..forward();
     widget.animationController.forward();
+
+    setState(() {
+      indexView = FutureBuilder(
+        future: Future<String>.delayed(
+          Duration(seconds: 1),
+              () => 'Data Loaded',
+        ),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
+                )
+              )
+            );
+          } else {
+            return UpcomingListView(
+              airlineCodes: airlineCodes,
+              animationController: tabAnimationController,
+            );
+
+          }
+        },
+      );
+    });
     super.initState();
   }
 

@@ -925,7 +925,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                 // Price and Book
                                 Container(
                                     margin: EdgeInsets.all(5.0),
-                                    padding: EdgeInsets.all(10.0),
+                                    padding: EdgeInsets.all(15.0),
                                     decoration: BoxDecoration(
                                       border: Border(
                                         top: BorderSide(
@@ -950,10 +950,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                         Expanded(
                                             child: Center(
                                           child: Container(
+                                            height: 40,
                                             margin: EdgeInsets.only(
                                                 left: 20.0, right: 20),
                                             decoration: BoxDecoration(
                                                 border: Border.all(
+                                                  width: 0.7,
                                                     color: Colors.lightBlue)),
                                             child: Row(
                                               mainAxisAlignment:
@@ -1546,7 +1548,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   if (!snapshot.hasData) {
                     return Container(
                       child: Center(
-                        child: CircularProgressIndicator()
+                        child: CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
+                        )
                       )
                     );
                   } else {
@@ -1580,7 +1584,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   if (!snapshot.hasData) {
                     return Container(
                         child: Center(
-                            child: CircularProgressIndicator()
+                            child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
+                            )
                         )
                     );
                   } else {

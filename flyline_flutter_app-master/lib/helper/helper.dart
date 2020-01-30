@@ -47,6 +47,11 @@ class Helper {
     return (conversationAmount / total) * amount;
   }
 
+  static formatNumber(double number) {
+    var f = new NumberFormat("###.0#", "en_US");
+    return " \$" + f.format(number);
+  }
+
   static age(DateTime birthDate) {
     DateTime currentDate = DateTime.now();
     int age = currentDate.year - birthDate.year;
