@@ -113,15 +113,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     startDate = widget.startDate ?? DateTime.now();
     endDate = widget.endDate ?? DateTime.now().add(Duration(days: 2));
 
-    print("11111");
     var responseDeparture = await flyLinebloc.locationQuery(widget.departure);
-    var responseArrival = await flyLinebloc.locationQuery(widget.arrival);
-    print(responseDeparture);
     setState(() {
       selectedDeparture = departure = responseDeparture[0];
+    });
+
+    var responseArrival = await flyLinebloc.locationQuery(widget.arrival);
+    setState(() {
       selectedArrival = arrival = responseArrival[0];
     });
-    print(22222);
   }
 
   Future<bool> getData() async {
@@ -1539,19 +1539,17 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               padding: EdgeInsets.only(left: 10),
               child: FutureBuilder(
                 future: Future<String>.delayed(
-                  Duration(milliseconds: 100),
+                  Duration(seconds: 2),
                   () => 'Data Loaded',
                 ),
                 builder: (context, snapshot) {
-                  print("aaaa11111");
-                  print(snapshot.error);
-                  print(snapshot.hasData);
                   if (!snapshot.hasData) {
-                    return SizedBox();
+                    return Container(
+                      child: Center(
+                        child: CircularProgressIndicator()
+                      )
+                    );
                   } else {
-                    print("aaaa");
-                    print(snapshot.data);
-                    print(departure);
                     return LocationSearchUI("Departure", true,
                         notifyParent: refreshDepartureValue, city: departure);
                   }
@@ -1575,26 +1573,22 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               padding: EdgeInsets.only(left: 10),
               child: FutureBuilder(
                 future: Future<String>.delayed(
-                  Duration(milliseconds: 100),
+                  Duration(seconds: 2),
                   () => 'Data Loaded',
                 ),
                 builder: (context, snapshot) {
-                  print("bbb11111");
-                  print(snapshot.error);
-                  print(snapshot.hasData);
                   if (!snapshot.hasData) {
-                    return SizedBox();
+                    return Container(
+                        child: Center(
+                            child: CircularProgressIndicator()
+                        )
+                    );
                   } else {
-                    print("bbbbb");
-                    print(snapshot.data);
-                    print(arrival);
                     return LocationSearchUI("Arrival", true,
                         notifyParent: refreshDepartureValue, city: arrival);
                   }
                 },
               )
-//            child: LocationSearchUI("Arrival", false,
-//                notifyParent: refreshDepartureValue, city: arrival),
               ),
         ),
       ],
