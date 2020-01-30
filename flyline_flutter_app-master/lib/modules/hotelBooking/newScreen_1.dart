@@ -905,6 +905,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         stream: flyLinebloc.checkFlightData.stream,
         builder: (context, AsyncSnapshot<CheckFlightResponse> snapshot) {
           if (snapshot.data != null) {
+            print("snapshot.data.flightsChecked: " + snapshot.data.flightsChecked.toString());
             if (snapshot.data.flightsChecked) {
               return Container(
                 margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),

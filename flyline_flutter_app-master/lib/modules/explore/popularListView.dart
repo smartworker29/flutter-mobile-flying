@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/models/hotelListData.dart';
 import 'package:motel/modules/hotelBooking/hotelHomeScreen.dart';
+import 'package:motel/network/blocs.dart';
 
 class PopularListView extends StatefulWidget {
   final Function(int) callBack;
@@ -57,11 +58,14 @@ class _PopularListViewState extends State<PopularListView> with TickerProviderSt
                           popularList: popularList[index],
                           animation: animation,
                           animationController: animationController,
-                          callback: () {
+                          callback: () async {
+                            var response =
+                            await flyLinebloc.locationQuery(popularList[index].titleTxt);
+                            var arrival = response[0];
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HotelHomeScreen(destination: popularList[index].titleTxt),
+                                  builder: (context) => HotelHomeScreen(arrival: arrival),
                                   fullscreenDialog: true),
                             );
                           },

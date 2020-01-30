@@ -191,65 +191,88 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
 
             List<Widget> list = List<Widget>();
             deals.forEach((deal) {
-              list.add(Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppTheme.getTheme().backgroundColor,
-                    borderRadius: BorderRadius.all(Radius.circular(1)),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: AppTheme.getTheme().dividerColor,
-                        blurRadius: 8,
-                        offset: Offset(4, 4),
-                      ),
-                    ],
-                  ),
+              list.add(InkWell(
+                  onTap: () async {
+                    var responseDeparture =
+                        await flyLinebloc.locationQuery(deal.cityFromName);
+                    var departure = responseDeparture[0];
+                    var responseArrival =
+                        await flyLinebloc.locationQuery(deal.cityToName);
+                    var arrival = responseArrival[0];
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HotelHomeScreen(
+                                departure: departure,
+                                arrival: arrival,
+                                startDate: deal.departureDate,
+                                endDate: deal.returnDate,
+                              ),
+                          fullscreenDialog: true),
+                    );
+                  },
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: Center(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: 18.0,
-                          bottom: 10.0,
-                        ),
-                        height: 78,
-                        child: Column(
-                          children: <Widget>[
-                            Expanded(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Text(
-                                  deal.dealString,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12.8,
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppTheme.getTheme().backgroundColor,
+                        borderRadius: BorderRadius.all(Radius.circular(1)),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: AppTheme.getTheme().dividerColor,
+                            blurRadius: 8,
+                            offset: Offset(4, 4),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Center(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: 18.0,
+                              bottom: 10.0,
+                            ),
+                            height: 78,
+                            child: Column(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Text(
+                                      deal.dealString,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12.8,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                                Expanded(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Text(
+                                      'Airlines : ' +
+                                          deal.getAirlines(airlineCodes) +
+                                          '    Cost: ' +
+                                          deal.cost,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                          color: AppTheme.getTheme()
+                                              .disabledColor),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                            Expanded(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Text(
-                                  'Airlines : ' +
-                                      deal.getAirlines(airlineCodes) +
-                                      '    Cost: ' +
-                                      deal.cost,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                      color: AppTheme.getTheme().disabledColor),
-                                ),
-                              ),
-                            )
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ));
+                  )));
             });
 
             return Column(

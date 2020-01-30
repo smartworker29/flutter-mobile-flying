@@ -19,9 +19,14 @@ import 'roomPopupView.dart';
 import 'package:motel/modules/hotelBooking/newScreen_1.dart' as newScreen1;
 
 class HotelHomeScreen extends StatefulWidget {
-  final String destination;
+  final LocationObject departure;
+  final LocationObject arrival;
+  final DateTime startDate;
+  final DateTime endDate;
 
-  HotelHomeScreen({Key key, this.destination}) : super(key: key);
+  HotelHomeScreen(
+      {Key key, this.arrival, this.departure, this.startDate, this.endDate})
+      : super(key: key);
 
   @override
   _HotelHomeScreenState createState() => _HotelHomeScreenState();
@@ -50,6 +55,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   LocationObject selectedDeparture;
   LocationObject selectedArrival;
 
+  LocationObject departure;
+  LocationObject arrival;
   var departureDate = DateTime.now();
   var returnDate = DateTime.now().add(Duration(days: 2));
   static var classOfServicesList = [
@@ -87,10 +94,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       }
     });
 
+    this.getCity();
 
     super.initState();
 
-    flyLinebloc.flightsItems.stream.listen((onData){
+    flyLinebloc.flightsItems.stream.listen((onData) {
       if (onData != null) {
         if (_clickedSearch) {
           setState(() {
@@ -99,6 +107,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         }
       }
     });
+  }
+
+  void getCity() async {
+    selectedDeparture = departure = widget.departure;
+    selectedArrival = arrival = widget.arrival;
+    startDate = widget.startDate ?? DateTime.now();
+    endDate = widget.endDate ?? DateTime.now().add(Duration(days: 2));
   }
 
   Future<bool> getData() async {
@@ -344,7 +359,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   Widget getFlightDetails() {
     return Container(
         child: StreamBuilder<List<FlightInformationObject>>(
-
       stream: flyLinebloc.flightsItems.stream,
       builder:
           (context, AsyncSnapshot<List<FlightInformationObject>> snapshot) {
@@ -386,7 +400,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               break;
                             }
                           }
-
 
                           for (FlightRouteObject route
                               in flight.routes.reversed) {
@@ -905,59 +918,71 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                 Container(
                                     margin: EdgeInsets.all(5.0),
                                     padding: EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      top: BorderSide( //                    <--- top side
-                                        color: AppTheme.getTheme().dividerColor,
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(
+                                          //                    <--- top side
+                                          color:
+                                              AppTheme.getTheme().dividerColor,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Center(
-                                          child: Text("Trip Price: \$" + flight.price.toString(), style: TextStyle(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: Center(
+                                                child: Text(
+                                          "Trip Price: \$" +
+                                              flight.price.toString(),
+                                          style: TextStyle(
                                             fontWeight: FontWeight.w100,
                                             fontSize: 16,
-                                          ),)
-                                        )
-                                      ),
-                                      Expanded(
-                                        child: Center(
+                                          ),
+                                        ))),
+                                        Expanded(
+                                            child: Center(
                                           child: Container(
-                                            margin: EdgeInsets.only(left: 20.0, right: 20),
-                                            decoration:
-                                            BoxDecoration(border: Border.all(color: Colors.lightBlue)),
+                                            margin: EdgeInsets.only(
+                                                left: 20.0, right: 20),
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.lightBlue)),
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: <Widget>[
                                                 FlatButton(
                                                   child: Text("Book",
                                                       style: TextStyle(
-                                                          fontSize: 19.0, fontWeight: FontWeight.bold)),
+                                                          fontSize: 19.0,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
                                                   onPressed: () {
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               newScreen1.HotelHomeScreen(
-                                                                routes: flight.routes,
-                                                                ad: this.ad,
-                                                                ch: this.children,
-                                                                bookingToken: flight.bookingToken,
-                                                                retailInfo: flight.raw
-                                                              )),
+                                                                  routes: flight
+                                                                      .routes,
+                                                                  ad: this.ad,
+                                                                  ch: this
+                                                                      .children,
+                                                                  bookingToken:
+                                                                      flight
+                                                                          .bookingToken,
+                                                                  retailInfo:
+                                                                      flight
+                                                                          .raw)),
                                                     );
                                                   },
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        )
-                                      ),
-                                    ],
-                                  )
-                                )
+                                        )),
+                                      ],
+                                    ))
                               ],
                             ),
                           ),
@@ -978,7 +1003,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       return Container();
     }
     return Container(
-      margin: EdgeInsets.only(left: 16.0, right: 16, top: 2, bottom:12),
+      margin: EdgeInsets.only(left: 16.0, right: 16, top: 2, bottom: 12),
       color: Colors.lightBlue,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -1026,7 +1051,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       return Container();
     }
     return Container(
-      margin: EdgeInsets.only(left: 16.0, right: 16, top: 2, bottom:12),
+      margin: EdgeInsets.only(left: 16.0, right: 16, top: 2, bottom: 12),
       color: Colors.lightBlue,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -1254,38 +1279,44 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         onTap: () async {
                           List<Widget> items = List();
                           items.add(Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide( //                    <--- top side
-                                    color: AppTheme.getTheme().dividerColor,
-                                  ),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  //                    <--- top side
+                                  color: AppTheme.getTheme().dividerColor,
                                 ),
                               ),
+                            ),
                             child: Container(),
                           ));
                           classOfServicesList.forEach((item) {
                             items.add(Container(
-                                margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+                                margin: const EdgeInsets.only(
+                                    left: 10.0,
+                                    right: 10.0,
+                                    top: 5.0,
+                                    bottom: 5.0),
                                 decoration: BoxDecoration(
                                   border: Border(
-                                    bottom: BorderSide( //                    <--- top side
+                                    bottom: BorderSide(
+                                      //                    <--- top side
                                       color: AppTheme.getTheme().dividerColor,
                                     ),
                                   ),
                                 ),
-                              child: SimpleDialogOption(
-                                onPressed: () {
-                                  Navigator.pop(context, item);
-                                  setState(() {
-                                    selectedClassOfService = item;
-                                    selectedClassOfServiceValue =
-                                    classOfServicesValueList[
-                                    classOfServicesList.indexOf(item)];
-                                  });
-                                },
-                                child: Text(item),
-                              )
-                            ));
+                                child: SimpleDialogOption(
+                                  onPressed: () {
+                                    Navigator.pop(context, item);
+                                    setState(() {
+                                      selectedClassOfService = item;
+                                      selectedClassOfServiceValue =
+                                          classOfServicesValueList[
+                                              classOfServicesList
+                                                  .indexOf(item)];
+                                    });
+                                  },
+                                  child: Text(item),
+                                )));
                           });
                           await showDialog(
                               context: context,
@@ -1294,8 +1325,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   title: const Text('Select Class of Service'),
                                   children: items,
                                 );
-                              })
-                          ;
+                              });
 //                          SelectDialog.showModal<String>(context,
 //                              label: "Select Class of Service",
 //                              selectedValue: selectedClassOfService,
@@ -1371,7 +1401,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 14, bottom: 10),
+          margin:
+              const EdgeInsets.only(left: 16, right: 16, top: 14, bottom: 10),
           decoration: BoxDecoration(
             color: AppTheme.getTheme().backgroundColor,
             boxShadow: <BoxShadow>[
@@ -1484,7 +1515,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+          margin:
+              const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
           decoration: BoxDecoration(
             color: AppTheme.getTheme().backgroundColor,
             boxShadow: <BoxShadow>[
@@ -1498,7 +1530,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             width: MediaQuery.of(context).size.width / 4,
             padding: EdgeInsets.only(left: 10),
             child: LocationSearchUI("Departure", true,
-                notifyParent: refreshDepartureValue),
+                notifyParent: refreshDepartureValue, city: departure),
           ),
         ),
         Container(
@@ -1517,8 +1549,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             width: MediaQuery.of(context).size.width / 4,
             padding: EdgeInsets.only(left: 10),
             child: LocationSearchUI("Arrival", false,
-                notifyParent: refreshDepartureValue,
-                destination: widget.destination),
+                notifyParent: refreshDepartureValue, city: arrival),
           ),
         ),
       ],
@@ -1558,64 +1589,68 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     padding: const EdgeInsets.only(
                         left: 16, right: 16, top: 8, bottom: 4),
                     child: Column(
-                      children: <Widget>[Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                listOfFlights.length.toString() +
-                                    " flights found",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w100,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              focusColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              splashColor: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4.0),
-                              ),
-                              onTap: () {
-                                FocusScope.of(context).requestFocus(FocusNode());
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => FiltersScreen(),
-                                      fullscreenDialog: true),
-                                );
-                              },
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 8),
-                                child: Row(
-                                  children: <Widget>[
-                                    Text(
-                                      "Filter",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Icon(Icons.sort,
-                                          color:
-                                          AppTheme.getTheme().primaryColor),
-                                    ),
-                                  ],
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  listOfFlights.length.toString() +
+                                      " flights found",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w100,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ), getUpdateButton()],
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                focusColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                splashColor: Colors.grey.withOpacity(0.2),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4.0),
+                                ),
+                                onTap: () {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => FiltersScreen(),
+                                        fullscreenDialog: true),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "Filter",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(Icons.sort,
+                                            color: AppTheme.getTheme()
+                                                .primaryColor),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        getUpdateButton()
+                      ],
                     ),
                   );
                 } else {
@@ -1729,10 +1764,10 @@ class LocationSearchUI extends StatefulWidget {
   final Function(LocationObject value, bool type) notifyParent;
   final title;
   final isDeparture;
-  final destination;
+  LocationObject city;
 
   LocationSearchUI(this.title, this.isDeparture,
-      {Key key, @required this.notifyParent, this.destination})
+      {Key key, @required this.notifyParent, this.city})
       : super(key: key);
 
   @override
@@ -1759,7 +1794,11 @@ class _LocationSearchUIState extends State<LocationSearchUI>
               location.countryCode;
         }
 
-        return widget.destination;
+        return widget.city != null ? widget.city.name +
+            " " +
+            widget.city.subdivisionName +
+            " " +
+            widget.city.countryCode : null;
       },
       textAlign: TextAlign.start,
       itemBuilder: (context, location) => Padding(
