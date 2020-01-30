@@ -684,14 +684,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       lists.add(Container(
         padding: EdgeInsets.only(bottom: 5),
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.3),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              blurRadius: 5.0,
-              spreadRadius: 5.0,
-            ),
-          ],
+          color: const Color(0xF6F6F6),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -907,49 +900,52 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           if (snapshot.data != null) {
             print("snapshot.data.flightsChecked: " + snapshot.data.flightsChecked.toString());
             if (snapshot.data.flightsChecked) {
-              return Container(
-                margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.lightBlue)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton(
-                      child: Text("Payment",
-                          style: TextStyle(
-                              fontSize: 19.0, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        if (snapshot.data.noAvailableForBooking) {
-                          Alert(
-                            context: context,
-                            title:
+              return Column(
+                children: <Widget>[
+                  Container(
+                    height: 40,
+                    margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
+                    decoration:
+                    BoxDecoration(border: Border.all(color: Colors.lightBlue, width: 0.7)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        FlatButton(
+                          child: Text("Payment",
+                              style: TextStyle(
+                                  fontSize: 19.0, fontWeight: FontWeight.bold)),
+                          onPressed: () {
+                            if (snapshot.data.noAvailableForBooking) {
+                              Alert(
+                                context: context,
+                                title:
                                 "Sorry, seems like the flight does not exist. Please choose another one.",
-                            buttons: [
-                              DialogButton(
-                                child: Text(
-                                  "OKAY",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                },
-                                width: 120,
-                              ),
-                            ],
-                          ).show();
-                        } else {
-                          List<TravelerInformation> lists = List();
-                          int index = 0;
+                                buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "OKAY",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    },
+                                    width: 120,
+                                  ),
+                                ],
+                              ).show();
+                            } else {
+                              List<TravelerInformation> lists = List();
+                              int index = 0;
 
-                          travailInformationUIs.forEach((f) {
-                            var uuid = new Uuid();
-                            carryOnSelectedList[index].uuid = uuid.v4();
+                              travailInformationUIs.forEach((f) {
+                                var uuid = new Uuid();
+                                carryOnSelectedList[index].uuid = uuid.v4();
 
-                            var uuid2 = new Uuid();
-                            checkedBagageSelectedList[index].uuid = uuid2.v4();
-                            TravelerInformation travelerInformation =
+                                var uuid2 = new Uuid();
+                                checkedBagageSelectedList[index].uuid = uuid2.v4();
+                                TravelerInformation travelerInformation =
                                 TravelerInformation(
                                     firstNameControllers[index].text,
                                     lastNameControllers[index].text,
@@ -959,35 +955,40 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     passportExpirationControllers[index].text,
                                     carryOnSelectedList[index],
                                     checkedBagageSelectedList[index]);
-                            lists.add(travelerInformation);
-                            index++;
-                          });
+                                lists.add(travelerInformation);
+                                index++;
+                              });
 
-                          carryOnSelectedList.forEach((f) {
-                            print(f.jsonSerialize);
-                          });
+                              carryOnSelectedList.forEach((f) {
+                                print(f.jsonSerialize);
+                              });
 
-                          checkedBagageSelectedList.forEach((f) {
-                            print(f.jsonSerialize);
-                          });
+                              checkedBagageSelectedList.forEach((f) {
+                                print(f.jsonSerialize);
+                              });
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    newScreen2.HotelHomeScreen(
-                                      numberOfPassengers: numberOfPassengers,
-                                      travelerInformations: lists,
-                                      flightResponse: snapshot.data,
-                                      retailInfo: widget.retailInfo,
-                                      bookingToken: widget.bookingToken,
-                                    )),
-                          );
-                        }
-                      },
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        newScreen2.HotelHomeScreen(
+                                          numberOfPassengers: numberOfPassengers,
+                                          travelerInformations: lists,
+                                          flightResponse: snapshot.data,
+                                          retailInfo: widget.retailInfo,
+                                          bookingToken: widget.bookingToken,
+                                        )),
+                              );
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: 38
+                  )
+                ],
               );
             }
             return Container();
