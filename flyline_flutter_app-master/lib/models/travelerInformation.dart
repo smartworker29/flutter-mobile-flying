@@ -1,3 +1,4 @@
+import 'package:motel/helper/helper.dart';
 import 'package:motel/models/checkFlightResponse.dart';
 
 class TravelerInformation {
@@ -19,4 +20,19 @@ class TravelerInformation {
       this.passportExpiration,
       this.carryOnSelected,
       this.checkedBagageSelected);
+
+  String get ageCategory {
+    try {
+      var age = Helper.age(DateTime.parse(this.dob));
+      if (age <= 7) {
+        return "infant";
+      } else if (age <= 18) {
+        return "child";
+      }
+
+      return "adult";
+    } catch (e) {
+      return null;
+    }
+  }
 }

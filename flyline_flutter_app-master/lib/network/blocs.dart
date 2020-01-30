@@ -38,6 +38,8 @@ class FlyLineBloc {
   final BehaviorSubject<CheckFlightResponse> _subjectCheckFlight =
       BehaviorSubject<CheckFlightResponse>();
 
+  final BehaviorSubject<Map> _subjectBookFlight = BehaviorSubject<Map>();
+
   tryLogin(String email, String password) async {
     String response = await _repository.login(email, password);
     _token.sink.add(response);
@@ -63,7 +65,6 @@ class FlyLineBloc {
       selectedCabins,
       curr,
       limit) async {
-
     // return null for activate loading indicator on search page
     // before real results will be loaded
     _subjectFlightItems.sink.add(null);
@@ -95,15 +96,13 @@ class FlyLineBloc {
 
     _subjectCheckFlight.sink.add(response);
 
-//    if (!response.flightsChecked) {
-//      return this.checkFlights(bookingId, infants, children, adults);
-//    }
-
     return response;
   }
 
-  Future<void> book(BookRequest bookRequest) async {
-    await _repository.book(bookRequest);
+  Future<Map> book(BookRequest bookRequest) async {
+    Map response = await _repository.book(bookRequest);
+    _subjectBookFlight.sink.add(response);
+    return response;
   }
 
   Future<List<FlylineDeal>> randomDeals() async {
@@ -151,6 +150,7 @@ class FlyLineBloc {
     _subjectRecentFlightSearch.close();
     _subjectPastFlights.close();
     _subjectUpcomingFlights.close();
+    _subjectBookFlight.close();
   }
 
   BehaviorSubject<String> get loginResponse => _token;
@@ -175,6 +175,8 @@ class FlyLineBloc {
 
   BehaviorSubject<List<BookedFlight>> get upcomingFlights =>
       _subjectUpcomingFlights;
+
+  BehaviorSubject<Map> get bookFlight => _subjectBookFlight;
 }
 
 final flyLinebloc = FlyLineBloc();

@@ -44,8 +44,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   int numberOfPassengers = 0;
 
   bool _checkFlight = false;
+  bool _firstLoad = false;
 
   List<BagItem> carryOnSelectedList;
+  List<Map<String, bool>> carryOnCheckBoxes;
   List<BagItem> checkedBagageSelectedList;
 
   List<TextEditingController> firstNameControllers;
@@ -86,6 +88,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     carryOnSelectedList.add(null);
     checkedBagageSelectedList.add(null);
 
+    carryOnCheckBoxes.add(Map());
+
     if (numberOfPassengers == 1) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       firstNameController.text = prefs.getString('first_name');
@@ -108,6 +112,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     carryOnSelectedList = List();
     checkedBagageSelectedList = List();
 
+    carryOnCheckBoxes = List();
+
     addPassenger();
     flyLinebloc.checkFlights(widget.bookingToken, 0, widget.ch, widget.ad);
     _checkFlight = true;
@@ -125,12 +131,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   @override
   void dispose() {
     _checkFlight = false;
+    _firstLoad = false;
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    if (numberOfPassengers == 1) {
+    if (!_firstLoad) {
+      _firstLoad = true;
       travailInformationUIs
           .add(this.getTravailInformationUI(numberOfPassengers));
     }
@@ -176,6 +184,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getTravailInformationUI(int position) {
+
     return Column(
       children: <Widget>[
         Container(
@@ -396,11 +405,24 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             stream: flyLinebloc.checkFlightData.stream,
             builder: (context, AsyncSnapshot<CheckFlightResponse> snapshot) {
               if (snapshot.data != null) {
+                print("stream called");
                 CheckFlightResponse response = snapshot.data;
                 List<Widget> list = List();
+                int indexBag = 0;
                 response.baggage.combinations.handBag.forEach((bag) {
+                  var uuid = Uuid().v4();
+                  if (indexBag == 0) {
+                    this.carryOnCheckBoxes[numberOfPassengers - 1] = Map();
+                    this.carryOnCheckBoxes[numberOfPassengers - 1].addAll({
+                      uuid: true
+                    });
+                  } else {
+                    this.carryOnCheckBoxes[numberOfPassengers - 1].addAll({
+                      uuid: false
+                    });
+                  }
+                  this.carryOnSelectedList[numberOfPassengers - 1] = bag;
                   if (bag.indices.length == 0) {
-                    carryOnSelectedList[numberOfPassengers - 1] = bag;
                     list.add(Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.only(
@@ -424,9 +446,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               value: personalItemBool,
                               onChanged: (value) {
                                 setState(() {
+                                  personalItemBool = value;
+                                  carryOnCheckBoxes[position - 1][uuid] = value;
                                   carryOnSelectedList[numberOfPassengers - 1] =
                                       bag;
                                 });
+                                print(carryOnCheckBoxes[numberOfPassengers - 1][uuid]);
                               },
                             ),
                             Text(
@@ -471,9 +496,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Checkbox(
-                              value: noHandBagBool,
+                              value: carryOnCheckBoxes[numberOfPassengers - 1][uuid],
                               onChanged: (value) {
+                                carryOnCheckBoxes[numberOfPassengers - 1][uuid] = value;
                                 setState(() {
+
                                   carryOnSelectedList[numberOfPassengers - 1] =
                                       bag;
                                 });
@@ -501,6 +528,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       ),
                     ));
                   }
+                  indexBag++;
                 });
                 return Column(
                   children: list,
@@ -877,6 +905,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         stream: flyLinebloc.checkFlightData.stream,
         builder: (context, AsyncSnapshot<CheckFlightResponse> snapshot) {
           if (snapshot.data != null) {
+            print("snapshot.data.flightsChecked: " + snapshot.data.flightsChecked.toString());
             if (snapshot.data.flightsChecked) {
               return Container(
                 margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
@@ -932,6 +961,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     checkedBagageSelectedList[index]);
                             lists.add(travelerInformation);
                             index++;
+                          });
+
+                          carryOnSelectedList.forEach((f) {
+                            print(f.jsonSerialize);
+                          });
+
+                          checkedBagageSelectedList.forEach((f) {
+                            print(f.jsonSerialize);
                           });
 
                           Navigator.push(
