@@ -36,7 +36,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   var hotelList = HotelListData.hotelList;
   ScrollController scrollController = new ScrollController();
   int room = 1;
-  int ad = 1;
+  int ad = 2;
   int children = 0;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(Duration(days: 5));
