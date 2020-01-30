@@ -192,20 +192,13 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
             List<Widget> list = List<Widget>();
             deals.forEach((deal) {
               list.add(InkWell(
-                  onTap: () async {
-                    var responseDeparture =
-                        await flyLinebloc.locationQuery(deal.cityFromName);
-                    var departure = responseDeparture[0];
-                    var responseArrival =
-                        await flyLinebloc.locationQuery(deal.cityToName);
-                    var arrival = responseArrival[0];
-
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => HotelHomeScreen(
-                                departure: departure,
-                                arrival: arrival,
+                                departure: deal.cityFromName,
+                                arrival: deal.cityToName,
                                 startDate: deal.departureDate,
                                 endDate: deal.returnDate,
                               ),

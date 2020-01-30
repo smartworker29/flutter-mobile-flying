@@ -71,20 +71,13 @@ class FlightsListView extends StatelessWidget {
                 0.0, 50 * (1.0 - animation.value), 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
-              onTap: () async {
-                var responseDeparture =
-                    await flyLinebloc.locationQuery(flight.cityFrom);
-                var departure = responseDeparture[0];
-                var responseArrival =
-                    await flyLinebloc.locationQuery(flight.cityTo);
-                var arrival = responseArrival[0];
-
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => HotelHomeScreen(
-                        departure: departure,
-                        arrival: arrival,
+                        departure: flight.cityFrom,
+                        arrival: flight.cityTo,
                         startDate: flight.localDepartureFull,
                         endDate: flight.localArrivalFull,
                       ),

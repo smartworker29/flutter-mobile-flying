@@ -19,8 +19,8 @@ import 'roomPopupView.dart';
 import 'package:motel/modules/hotelBooking/newScreen_1.dart' as newScreen1;
 
 class HotelHomeScreen extends StatefulWidget {
-  final LocationObject departure;
-  final LocationObject arrival;
+  final String departure;
+  final String arrival;
   final DateTime startDate;
   final DateTime endDate;
 
@@ -110,10 +110,18 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   void getCity() async {
-    selectedDeparture = departure = widget.departure;
-    selectedArrival = arrival = widget.arrival;
     startDate = widget.startDate ?? DateTime.now();
     endDate = widget.endDate ?? DateTime.now().add(Duration(days: 2));
+
+    print("11111");
+    var responseDeparture = await flyLinebloc.locationQuery(widget.departure);
+    var responseArrival = await flyLinebloc.locationQuery(widget.arrival);
+    print(responseDeparture);
+    setState(() {
+      selectedDeparture = departure = responseDeparture[0];
+      selectedArrival = arrival = responseArrival[0];
+    });
+    print(22222);
   }
 
   Future<bool> getData() async {
@@ -1527,11 +1535,28 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             ],
           ),
           child: Container(
-            width: MediaQuery.of(context).size.width / 4,
-            padding: EdgeInsets.only(left: 10),
-            child: LocationSearchUI("Departure", true,
-                notifyParent: refreshDepartureValue, city: departure),
-          ),
+              width: MediaQuery.of(context).size.width / 4,
+              padding: EdgeInsets.only(left: 10),
+              child: FutureBuilder(
+                future: Future<String>.delayed(
+                  Duration(milliseconds: 100),
+                  () => 'Data Loaded',
+                ),
+                builder: (context, snapshot) {
+                  print("aaaa11111");
+                  print(snapshot.error);
+                  print(snapshot.hasData);
+                  if (!snapshot.hasData) {
+                    return SizedBox();
+                  } else {
+                    print("aaaa");
+                    print(snapshot.data);
+                    print(departure);
+                    return LocationSearchUI("Departure", true,
+                        notifyParent: refreshDepartureValue, city: departure);
+                  }
+                },
+              )),
         ),
         Container(
           width: MediaQuery.of(context).size.width,
@@ -1546,11 +1571,31 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             ],
           ),
           child: Container(
-            width: MediaQuery.of(context).size.width / 4,
-            padding: EdgeInsets.only(left: 10),
-            child: LocationSearchUI("Arrival", false,
-                notifyParent: refreshDepartureValue, city: arrival),
-          ),
+              width: MediaQuery.of(context).size.width / 4,
+              padding: EdgeInsets.only(left: 10),
+              child: FutureBuilder(
+                future: Future<String>.delayed(
+                  Duration(milliseconds: 100),
+                  () => 'Data Loaded',
+                ),
+                builder: (context, snapshot) {
+                  print("bbb11111");
+                  print(snapshot.error);
+                  print(snapshot.hasData);
+                  if (!snapshot.hasData) {
+                    return SizedBox();
+                  } else {
+                    print("bbbbb");
+                    print(snapshot.data);
+                    print(arrival);
+                    return LocationSearchUI("Arrival", true,
+                        notifyParent: refreshDepartureValue, city: arrival);
+                  }
+                },
+              )
+//            child: LocationSearchUI("Arrival", false,
+//                notifyParent: refreshDepartureValue, city: arrival),
+              ),
         ),
       ],
     );
@@ -1794,11 +1839,13 @@ class _LocationSearchUIState extends State<LocationSearchUI>
               location.countryCode;
         }
 
-        return widget.city != null ? widget.city.name +
-            " " +
-            widget.city.subdivisionName +
-            " " +
-            widget.city.countryCode : null;
+        return widget.city != null
+            ? widget.city.name +
+                " " +
+                widget.city.subdivisionName +
+                " " +
+                widget.city.countryCode
+            : null;
       },
       textAlign: TextAlign.start,
       itemBuilder: (context, location) => Padding(

@@ -58,14 +58,11 @@ class _PopularListViewState extends State<PopularListView> with TickerProviderSt
                           popularList: popularList[index],
                           animation: animation,
                           animationController: animationController,
-                          callback: () async {
-                            var response =
-                            await flyLinebloc.locationQuery(popularList[index].titleTxt);
-                            var arrival = response[0];
+                          callback: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HotelHomeScreen(arrival: arrival),
+                                  builder: (context) => HotelHomeScreen(arrival: popularList[index].titleTxt),
                                   fullscreenDialog: true),
                             );
                           },
