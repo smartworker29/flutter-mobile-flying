@@ -3,6 +3,8 @@ import 'package:motel/utils/date_utils.dart';
 class RecentFlightSearch {
   final String arrivalDate;
   final String departureDate;
+  final DateTime arrivalDateFull;
+  final DateTime departureDateFull;
   final String cityFrom;
   final String cityTo;
   final bool isRoundtrip;
@@ -10,6 +12,8 @@ class RecentFlightSearch {
   RecentFlightSearch({
     this.arrivalDate,
     this.departureDate,
+    this.arrivalDateFull,
+    this.departureDateFull,
     this.cityFrom,
     this.cityTo,
     this.isRoundtrip,
@@ -27,6 +31,8 @@ class RecentFlightSearch {
       isRoundtrip: json['destination_type'] == 'round' ? true : false,
       arrivalDate: parsedArrivalDate,
       departureDate: parsedDepartureDate,
+      arrivalDateFull: DateTime.parse(json["return_date"]),
+      departureDateFull: DateTime.parse(json["departure_date"]),
     );
   }
 }

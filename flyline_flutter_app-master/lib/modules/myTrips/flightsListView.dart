@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:motel/modules/hotelBooking/hotelHomeScreen.dart';
+import 'package:motel/network/blocs.dart';
 
 import '../../appTheme.dart';
 import '../../models/bookedFlight.dart';
@@ -69,7 +71,26 @@ class FlightsListView extends StatelessWidget {
                 0.0, 50 * (1.0 - animation.value), 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
-              onTap: callback,
+              onTap: () async {
+                var responseDeparture =
+                    await flyLinebloc.locationQuery(flight.cityFrom);
+                var departure = responseDeparture[0];
+                var responseArrival =
+                    await flyLinebloc.locationQuery(flight.cityTo);
+                var arrival = responseArrival[0];
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HotelHomeScreen(
+                        departure: departure,
+                        arrival: arrival,
+                        startDate: flight.localDepartureFull,
+                        endDate: flight.localArrivalFull,
+                      ),
+                      fullscreenDialog: true),
+                );
+              },
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 24, right: 24, top: 8, bottom: 8),

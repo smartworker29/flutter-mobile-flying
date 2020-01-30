@@ -6,6 +6,10 @@ class BookedFlight {
   final String localDeparture;
   final String returnArrival;
   final String returnDeparture;
+  final DateTime localArrivalFull;
+  final DateTime localDepartureFull;
+  final DateTime returnArrivalFull;
+  final DateTime returnDepartureFull;
   final String cityFrom;
   final String cityTo;
   final int price;
@@ -17,6 +21,10 @@ class BookedFlight {
     this.localDeparture,
     this.returnArrival,
     this.returnDeparture,
+    this.localArrivalFull,
+    this.localDepartureFull,
+    this.returnArrivalFull,
+    this.returnDepartureFull,
     this.cityFrom,
     this.cityTo,
     this.isRoundtrip,
@@ -50,8 +58,12 @@ class BookedFlight {
       price: json['data']['price'],
       localArrival: parsedArrivalDate,
       localDeparture: parsedDepartureDate,
-      returnArrival: parsedReturnDepartureDate,
-      returnDeparture: parsedReturnArrivalDate,
+      returnArrival: parsedReturnArrivalDate,
+      returnDeparture: parsedReturnDepartureDate,
+      localArrivalFull: DateTime.parse(json['data']["local_arrival"]),
+      localDepartureFull: DateTime.parse(json['data']["local_departure"]),
+      returnArrivalFull: DateTime.parse(json['data']["return_arrival"]),
+      returnDepartureFull: DateTime.parse(json['data']["return_departure"]),
     );
   }
 }
