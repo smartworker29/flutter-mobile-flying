@@ -20,7 +20,13 @@ class HotelHomeScreen extends StatefulWidget {
   final String bookingToken;
   final Map<String, dynamic> retailInfo;
 
-  HotelHomeScreen({Key key, this.routes, this.ad, this.ch, this.bookingToken, this.retailInfo})
+  HotelHomeScreen(
+      {Key key,
+      this.routes,
+      this.ad,
+      this.ch,
+      this.bookingToken,
+      this.retailInfo})
       : super(key: key);
 
   @override
@@ -36,6 +42,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   var twoCheckBagBool = false;
 
   int numberOfPassengers = 0;
+
+  bool _checkFlight = false;
 
   List<BagItem> carryOnSelectedList;
   List<BagItem> checkedBagageSelectedList;
@@ -66,7 +74,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     TextEditingController genderController = new TextEditingController();
     TextEditingController passportIdController = new TextEditingController();
     TextEditingController passportExpirationController =
-    new TextEditingController();
+        new TextEditingController();
 
     firstNameControllers.add(firstNameController);
     lastNameControllers.add(lastNameController);
@@ -102,21 +110,35 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
     addPassenger();
     flyLinebloc.checkFlights(widget.bookingToken, 0, widget.ch, widget.ad);
-
+    _checkFlight = true;
     super.initState();
+
+    flyLinebloc.checkFlightData.stream.listen((CheckFlightResponse onData) {
+      if (onData != null && _checkFlight) {
+        if (!onData.flightsChecked) {
+          flyLinebloc.checkFlights(widget.bookingToken, 0, widget.ch, widget.ad);
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _checkFlight = false;
+    super.dispose();
   }
 
   @override
   void didChangeDependencies() {
     if (numberOfPassengers == 1) {
-      travailInformationUIs.add(this.getTravailInformationUI(numberOfPassengers));
+      travailInformationUIs
+          .add(this.getTravailInformationUI(numberOfPassengers));
     }
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -282,8 +304,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     selectedGender = selected;
                     selectedGenderValue =
                         genderValues[genders.indexOf(selected)];
-                    genderControllers[position - 1].text =
-                        selected;
+                    genderControllers[position - 1].text = selected;
                   });
                 });
               },
@@ -403,7 +424,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               value: personalItemBool,
                               onChanged: (value) {
                                 setState(() {
-                                  carryOnSelectedList[numberOfPassengers - 1] = bag;
+                                  carryOnSelectedList[numberOfPassengers - 1] =
+                                      bag;
                                 });
                               },
                             ),
@@ -452,7 +474,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               value: noHandBagBool,
                               onChanged: (value) {
                                 setState(() {
-                                  carryOnSelectedList[numberOfPassengers - 1] = bag;
+                                  carryOnSelectedList[numberOfPassengers - 1] =
+                                      bag;
                                 });
                               },
                             ),
@@ -529,7 +552,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               value: noCheckBagBool,
                               onChanged: (value) {
                                 setState(() {
-                                  checkedBagageSelectedList[numberOfPassengers - 1] = bag;
+                                  checkedBagageSelectedList[
+                                      numberOfPassengers - 1] = bag;
                                   noCheckBagBool = value;
                                 });
                               },
@@ -590,7 +614,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               value: oneCheckBagBool,
                               onChanged: (value) {
                                 setState(() {
-                                  checkedBagageSelectedList[numberOfPassengers - 1] = bag;
+                                  checkedBagageSelectedList[
+                                      numberOfPassengers - 1] = bag;
                                   oneCheckBagBool = value;
                                 });
                               },
@@ -828,7 +853,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           print("add another");
           this.addPassenger();
           setState(() {
-            travailInformationUIs.add(this.getTravailInformationUI(this.numberOfPassengers));
+            travailInformationUIs
+                .add(this.getTravailInformationUI(this.numberOfPassengers));
             print(travailInformationUIs.length);
             print("======");
           });
@@ -888,7 +914,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           List<TravelerInformation> lists = List();
                           int index = 0;
 
-
                           travailInformationUIs.forEach((f) {
                             var uuid = new Uuid();
                             carryOnSelectedList[index].uuid = uuid.v4();
@@ -904,8 +929,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     passportIdControllers[index].text,
                                     passportExpirationControllers[index].text,
                                     carryOnSelectedList[index],
-                                    checkedBagageSelectedList[index]
-                                );
+                                    checkedBagageSelectedList[index]);
                             lists.add(travelerInformation);
                             index++;
                           });
@@ -915,10 +939,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             MaterialPageRoute(
                                 builder: (context) =>
                                     newScreen2.HotelHomeScreen(
-                                        numberOfPassengers: numberOfPassengers,
-                                        travelerInformations: lists,
-                                        flightResponse: snapshot.data,
-                                        retailInfo: widget.retailInfo,
+                                      numberOfPassengers: numberOfPassengers,
+                                      travelerInformations: lists,
+                                      flightResponse: snapshot.data,
+                                      retailInfo: widget.retailInfo,
+                                      bookingToken: widget.bookingToken,
                                     )),
                           );
                         }

@@ -30,6 +30,7 @@ class HotelHomeScreen extends StatefulWidget {
 class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
   bool _isSearched = false;
+  bool _clickedSearch = false;
   AnimationController animationController;
   AnimationController _animationController;
   var hotelList = HotelListData.hotelList;
@@ -91,9 +92,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
     flyLinebloc.flightsItems.stream.listen((onData){
       if (onData != null) {
-        setState(()  {
-          this._isSearched = true;
-        });
+        if (_clickedSearch) {
+          setState(() {
+            this._isSearched = true;
+          });
+        }
       }
     });
   }
@@ -112,6 +115,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   @override
   void dispose() {
     animationController.dispose();
+    this._isSearched = false;
+    this._clickedSearch = false;
     super.dispose();
   }
 
@@ -968,6 +973,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchButton() {
+    print(_isSearched);
     if (_isSearched) {
       return Container();
     }
@@ -984,25 +990,29 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     fontSize: 19.0,
                     fontWeight: FontWeight.bold)),
             onPressed: () {
+              if (selectedDeparture != null && selectedArrival != null) {
+                setState(() {
+                  _clickedSearch = true;
+                });
 
-
-              try {
-                flyLinebloc.searchFlight(
-                    selectedDeparture.type + ":" + selectedDeparture.code,
-                    selectedArrival.type + ":" + selectedArrival.code,
-                    formatAllDay.format(startDate),
-                    formatAllDay.format(startDate),
-                    typeOfTripSelected == 0 ? "round" : "oneway",
-                    formatAllDay.format(endDate),
-                    formatAllDay.format(endDate),
-                    ad.toString(),
-                    "0",
-                    "0",
-                    selectedClassOfServiceValue,
-                    "USD",
-                    "5");
-              } catch (e) {
-                print(e);
+                try {
+                  flyLinebloc.searchFlight(
+                      selectedDeparture.type + ":" + selectedDeparture.code,
+                      selectedArrival.type + ":" + selectedArrival.code,
+                      formatAllDay.format(startDate),
+                      formatAllDay.format(startDate),
+                      typeOfTripSelected == 0 ? "round" : "oneway",
+                      formatAllDay.format(endDate),
+                      formatAllDay.format(endDate),
+                      ad.toString(),
+                      "0",
+                      "0",
+                      selectedClassOfServiceValue,
+                      "USD",
+                      "5");
+                } catch (e) {
+                  print(e);
+                }
               }
             },
           ),
@@ -1674,6 +1684,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     Radius.circular(32.0),
                   ),
                   onTap: () {
+                    setState(() {
+                      _isSearched = false;
+                    });
                     Navigator.pop(context);
                   },
                   child: Padding(

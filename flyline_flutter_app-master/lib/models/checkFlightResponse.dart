@@ -106,10 +106,10 @@ class Price {
   String currency;
   int merchant;
   double service;
-  int serviceList;
+  int serviceFlat;
 
   Price(this.amount, this.base, this.currency, this.merchant, this.service,
-      this.serviceList);
+      this.serviceFlat);
 
   Price.fromJson(Map<String, dynamic> json)
       : amount = double.parse(json['amount'].toString()),
@@ -117,7 +117,7 @@ class Price {
         currency = json['currency'],
         merchant = json['merchant'],
         service = double.parse(json['service'].toString()),
-        serviceList = json['serviceList'];
+        serviceFlat = json['service_flat'];
 
   Map get jsonSerialize => {
     "amount": this.amount,
@@ -125,6 +125,6 @@ class Price {
     "currency": this.currency,
     "merchant": this.merchant,
     "service": this.service,
-    "service_flat": this.serviceList
+    "service_flat": this.serviceFlat ?? "None"
   };
 }

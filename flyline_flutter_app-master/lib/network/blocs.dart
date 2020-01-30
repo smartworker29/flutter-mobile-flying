@@ -95,9 +95,9 @@ class FlyLineBloc {
 
     _subjectCheckFlight.sink.add(response);
 
-    if (!response.flightsChecked) {
-      return this.checkFlights(bookingId, infants, children, adults);
-    }
+//    if (!response.flightsChecked) {
+//      return this.checkFlights(bookingId, infants, children, adults);
+//    }
 
     return response;
   }
