@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/models/hotelListData.dart';
 import 'package:motel/modules/hotelBooking/hotelHomeScreen.dart';
-import 'package:motel/network/blocs.dart';
 
 class PopularListView extends StatefulWidget {
   final Function(int) callBack;

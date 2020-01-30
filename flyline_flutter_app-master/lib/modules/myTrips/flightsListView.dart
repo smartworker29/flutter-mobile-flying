@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:motel/modules/hotelBooking/hotelHomeScreen.dart';
-import 'package:motel/network/blocs.dart';
 
 import '../../appTheme.dart';
 import '../../models/bookedFlight.dart';

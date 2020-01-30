@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:motel/modules/hotelBooking/hotelHomeScreen.dart';
 
-import '../../appTheme.dart';
-
 class BookFlightButton extends StatelessWidget {
   const BookFlightButton({
     Key key,
