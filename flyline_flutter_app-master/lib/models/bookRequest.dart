@@ -33,6 +33,7 @@ class BookRequest {
       lists.add(p.jsonSerialize);
     });
     return {
+      "booking_token": this.bookingToken,
       "baggage": this.baggage.jsonSerialize,
       "currency": this.currency,
       "lang": this.lang,
@@ -41,7 +42,6 @@ class BookRequest {
       "payment": this.payment.jsonSerializeHardCode,
       "passengers": lists,
       "retail_info": this.retailInfo,
-      "booking_token": this.bookingToken,
     };
   }
 }

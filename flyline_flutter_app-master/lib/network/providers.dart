@@ -165,7 +165,7 @@ class FlyLineProvider {
     return flightResponse;
   }
 
-  Future<void> book(BookRequest bookRequest) async {
+  Future<Map> book(BookRequest bookRequest) async {
     var token = await getAuthToken();
 
     Response response;
@@ -177,16 +177,20 @@ class FlyLineProvider {
     JsonEncoder encoder = new JsonEncoder.withIndent('  ');
     String prettyprint = encoder.convert(bookRequest.jsonSerialize);
     prettyprint.split('\n').forEach((element) => print(element));
-//    print(json.encode(bookRequest.jsonSerialize));
+    print(json.encode(bookRequest.jsonSerialize));
     try {
       response = await dio.post(url, data: json.encode(bookRequest.jsonSerialize));
       print(response.toString());
+      print(response.statusCode.toString());
     } on DioError catch (e) {
-      result = e.toString();
+      result = e.response.statusCode.toString();
       print(result);
+      return { "status": e.response.statusCode };
     } on Error catch (e) {
       print(e);
     }
+
+    return { "status": response.statusCode };
   }
 
   Future<List<FlylineDeal>> randomDeals() async {

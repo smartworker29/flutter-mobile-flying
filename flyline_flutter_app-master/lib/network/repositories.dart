@@ -56,7 +56,7 @@ class FlyLineRepository {
     return _flyLineProvider.checkFlights(bookingId, infants, children, adults);
   }
 
-  Future<void> book(BookRequest bookRequest) {
+  Future<Map> book(BookRequest bookRequest) {
     return _flyLineProvider.book(bookRequest);
   }
 

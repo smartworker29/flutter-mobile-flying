@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
@@ -6,6 +7,7 @@ import 'package:motel/models/bookRequest.dart' as BookRequest;
 import 'package:motel/models/checkFlightResponse.dart';
 import 'package:motel/models/travelerInformation.dart';
 import 'package:motel/network/blocs.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HotelHomeScreen extends StatefulWidget {
@@ -33,6 +35,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   double priceOnPassenger = 0;
   double priceOnBaggage = 0;
   double tripTotal = 0;
+  bool _clickedBookFlight = false;
 
   TextEditingController promoCodeController;
   TextEditingController nameOnCardController;
@@ -51,6 +54,34 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
     this.getAccountInfo();
     super.initState();
+
+    flyLinebloc.bookFlight.stream.listen((Map onData) {
+      if (onData != null && _clickedBookFlight && onData['status'] != 200) {
+        Alert(
+          context: context,
+          title:
+              "There seemed to be an error when booking your flight, try again or contact FlyLine support, support@joinflyline.com",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Close",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              width: 120,
+            ),
+          ],
+        ).show();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _clickedBookFlight = false;
+    super.dispose();
   }
 
   void getAccountInfo() async {
@@ -594,6 +625,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             child: Text("Book Flight For \$" + tripTotal.toString(),
                 style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold)),
             onPressed: () {
+              setState(() {
+                _clickedBookFlight = true;
+              });
               flyLinebloc.book(this.createBookRequest());
             },
           ),
@@ -618,7 +652,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       BookRequest.Passenger passenger = BookRequest.Passenger(
           DateTime.parse(p.dob),
           p.passportId,
-          "adult",
+          p.ageCategory,
           p.passportExpiration,
           p.firstName,
           "US",
@@ -627,38 +661,39 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
       passengers.add(passenger);
 
-      if (carryOnPassengers.containsKey(p.carryOnSelected.uuid)) {
-        carryOnPassengers.update(p.carryOnSelected.uuid, (List<int> val) {
-          val.add(passengers.length - 1);
-          return val;
-        });
-      } else {
-        carryOns.add(p.carryOnSelected);
-        carryOnPassengers.addAll({
-          p.carryOnSelected.uuid: [passengers.length - 1]
-        });
+      if (p.carryOnSelected != null &&
+          p.carryOnSelected.conditions.passengerGroups.indexOf(p.ageCategory) !=
+              -1) {
+        if (carryOnPassengers.containsKey(p.carryOnSelected.uuid)) {
+          carryOnPassengers.update(p.carryOnSelected.uuid, (List<int> val) {
+            val.add(passengers.length - 1);
+            return val;
+          });
+        } else {
+          carryOns.add(p.carryOnSelected);
+          carryOnPassengers.addAll({
+            p.carryOnSelected.uuid: [passengers.length - 1]
+          });
+        }
       }
 
-      if (checkedBagagePassengers.containsKey(p.checkedBagageSelected.uuid)) {
-        checkedBagagePassengers.update(p.checkedBagageSelected.uuid,
-            (List<int> val) {
-          val.add(passengers.length - 1);
-          return val;
-        });
-      } else {
-        checkedBagages.add(p.checkedBagageSelected);
-        checkedBagagePassengers.addAll({
-          p.checkedBagageSelected.uuid: [passengers.length - 1]
-        });
+      if (p.checkedBagageSelected != null &&
+          p.checkedBagageSelected.conditions.passengerGroups
+                  .indexOf(p.ageCategory) !=
+              -1) {
+        if (checkedBagagePassengers.containsKey(p.checkedBagageSelected.uuid)) {
+          checkedBagagePassengers.update(p.checkedBagageSelected.uuid,
+              (List<int> val) {
+            val.add(passengers.length - 1);
+            return val;
+          });
+        } else {
+          checkedBagages.add(p.checkedBagageSelected);
+          checkedBagagePassengers.addAll({
+            p.checkedBagageSelected.uuid: [passengers.length - 1]
+          });
+        }
       }
-//      BookRequest.Combination combinationCarryOn =
-//          BookRequest.Combination(p.carryOnSelected);
-//
-//      BookRequest.Combination combinationCheckedBagage =
-//          BookRequest.Combination(p.checkedBagageSelected);
-//
-//      baggage.add(new BookRequest.BaggageItem(combinationCarryOn, [passengers.length - 1]));
-//      baggage.add(new BookRequest.BaggageItem(combinationCheckedBagage, [passengers.length - 1]));
     });
 
     carryOns.forEach((item) {
