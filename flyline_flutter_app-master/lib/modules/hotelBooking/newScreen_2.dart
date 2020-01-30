@@ -13,13 +13,15 @@ class HotelHomeScreen extends StatefulWidget {
   final CheckFlightResponse flightResponse;
   final List<TravelerInformation> travelerInformations;
   final Map<String, dynamic> retailInfo;
+  final String bookingToken;
 
   HotelHomeScreen(
       {Key key,
       this.numberOfPassengers,
       this.travelerInformations,
       this.flightResponse,
-      this.retailInfo})
+      this.retailInfo,
+      this.bookingToken})
       : super(key: key);
 
   @override
@@ -681,7 +683,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         BookRequest.BookRequest.DEFAULT_PAYMENT_GATEWAY,
         this.getPayment(),
         passengers,
-        widget.retailInfo);
+        widget.retailInfo,
+        widget.bookingToken);
 
     return bookRequest;
   }

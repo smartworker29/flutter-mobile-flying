@@ -9,14 +9,23 @@ class BookRequest {
   Payment payment;
   List<Passenger> passengers;
   Map<String, dynamic> retailInfo;
+  String bookingToken;
 
   static const String DEFAULT_CURRENCY = 'usd';
   static const String DEFAULT_LANG = 'en';
   static const String DEFAULT_LOCALE = 'en';
   static const String DEFAULT_PAYMENT_GATEWAY = 'payu';
 
-  BookRequest(this.baggage, this.currency, this.lang, this.locale,
-      this.paymentGateway, this.payment, this.passengers, this.retailInfo);
+  BookRequest(
+      this.baggage,
+      this.currency,
+      this.lang,
+      this.locale,
+      this.paymentGateway,
+      this.payment,
+      this.passengers,
+      this.retailInfo,
+      this.bookingToken);
 
   Map get jsonSerialize {
     List<Map> lists = List();
@@ -32,6 +41,7 @@ class BookRequest {
       "payment": this.payment.jsonSerializeHardCode,
       "passengers": lists,
       "retail_info": this.retailInfo,
+      "booking_token": this.bookingToken,
     };
   }
 }
