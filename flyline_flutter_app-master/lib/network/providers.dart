@@ -115,8 +115,10 @@ class FlyLineProvider {
     dio.options.headers["Authorization"] = "Token $token";
 
     List<FlightInformationObject> flights = List<FlightInformationObject>();
+//    var url =
+//        "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD&limit=$limit&offset=$offset";
     var url =
-        "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD&limit=$limit&offset=$offset";
+        "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD";
 
 //    url = 'https://staging.joinflyline.com/api/search/?fly_from=city:NYC&fly_to=city:LAX&date_from=31%2F01%2F2020&date_to=31%2F01%2F2020&type=round&return_from=31%2F01%2F2020&return_to=31%2F01%2F2020&adults=1&infants=0&children=0&selected_cabins=M&curr=USD';
     print("Search url: " + url);

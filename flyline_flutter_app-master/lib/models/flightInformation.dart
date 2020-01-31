@@ -14,6 +14,8 @@ class FlightInformationObject {
   String durationReturn;
   String bookingToken;
   double price;
+  List<dynamic> airlines;
+  double distance;
   Map<String, dynamic> raw;
 
   FlightInformationObject(
@@ -28,7 +30,9 @@ class FlightInformationObject {
       String durationDeparture,
       String durationReturn,
       String bookingToken,
+      List<dynamic> airlines,
       double price,
+      double distance,
       Map<String, dynamic> raw) {
     this.flyFrom = flyFrom;
     this.flyTo = flyTo;
@@ -42,6 +46,8 @@ class FlightInformationObject {
     this.durationReturn = durationReturn;
     this.bookingToken = bookingToken;
     this.price = price;
+    this.airlines = airlines;
+    this.distance = distance;
     this.raw = raw;
   }
 
@@ -78,7 +84,9 @@ class FlightInformationObject {
         durationDeparture,
         durationReturn,
         json['booking_token'],
+        json['airlines'],
         double.parse(json['price'].toString()),
+        double.parse(json['distance'].toString()),
         json);
   }
 

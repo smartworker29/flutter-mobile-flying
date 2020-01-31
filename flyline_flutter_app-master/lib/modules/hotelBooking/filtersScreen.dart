@@ -1,21 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
+import 'package:motel/models/filterExplore.dart';
 import 'package:motel/models/popularFilterList.dart';
 import 'RangeSliderView.dart';
 import 'SliderView.dart';
 
 class FiltersScreen extends StatefulWidget {
+  final FilterExplore filterExplore;
+  final Function(FilterExplore) callback;
+
+  FiltersScreen({
+    Key key,
+    this.filterExplore,
+    this.callback,
+  }) : super(key: key);
   @override
   _FiltersScreenState createState() => _FiltersScreenState();
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
-  List<PopularFilterListData> popularFilterListData = PopularFilterListData.popularFList;
-  List<PopularFilterListData> accomodationListData = PopularFilterListData.accomodationList;
+  List<PopularFilterListData> popularFilterListData =
+      PopularFilterListData.popularFList;
+  List<PopularFilterListData> accomodationListData =
+      PopularFilterListData.accomodationList;
 
   RangeValues _values = RangeValues(100, 600);
+  RangeValues range = RangeValues(0, 600);
   double distValue = 50.0;
+
+  List<Map<String, dynamic>> airlines = List();
+
+  @override
+  void initState() {
+    _values = RangeValues(widget.filterExplore.priceFrom, widget.filterExplore.priceTo);
+    range = RangeValues(widget.filterExplore.priceMin, widget.filterExplore.priceMax);
+    airlines = widget.filterExplore.airlines;
+    accomodationListData = widget.filterExplore.accomodationListData;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +57,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16,right: 16),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
                   child: Column(
                     children: <Widget>[
                       priceBarFilter(),
@@ -59,7 +82,11 @@ class _FiltersScreenState extends State<FiltersScreen> {
               height: 1,
             ),
             Padding(
-              padding:  EdgeInsets.only(left: 16, right: 16, bottom: 16+MediaQuery.of(context).padding.bottom, top: 8),
+              padding: EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  bottom: 16 + MediaQuery.of(context).padding.bottom,
+                  top: 8),
               child: Container(
                 height: 48,
                 decoration: BoxDecoration(
@@ -79,12 +106,21 @@ class _FiltersScreenState extends State<FiltersScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(1.0)),
                     highlightColor: Colors.transparent,
                     onTap: () {
+                      widget.filterExplore.priceFrom = this._values.start;
+                      widget.filterExplore.priceTo = this._values.end;
+                      widget.filterExplore.airlines = airlines;
+                      widget.filterExplore.accomodationListData = accomodationListData;
+
+                      widget.callback(widget.filterExplore);
                       Navigator.pop(context);
                     },
                     child: Center(
                       child: Text(
                         "Apply",
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Colors.white),
                       ),
                     ),
                   ),
@@ -103,11 +139,15 @@ class _FiltersScreenState extends State<FiltersScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+          padding:
+              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
           child: Text(
             "Filter by Stops",
             textAlign: TextAlign.left,
-            style: TextStyle(color: Colors.grey, fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16, fontWeight: FontWeight.normal),
+            style: TextStyle(
+                color: Colors.grey,
+                fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16,
+                fontWeight: FontWeight.normal),
           ),
         ),
         Padding(
@@ -148,7 +188,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
                     ),
                   ),
                   CupertinoSwitch(
-                    activeColor: date.isSelected ? AppTheme.getTheme().primaryColor : Colors.grey.withOpacity(0.6),
+                    activeColor: date.isSelected
+                        ? AppTheme.getTheme().primaryColor
+                        : Colors.grey.withOpacity(0.6),
                     onChanged: (value) {
                       setState(() {
                         checkAppPosition(i);
@@ -172,35 +214,10 @@ class _FiltersScreenState extends State<FiltersScreen> {
   }
 
   void checkAppPosition(int index) {
-    if (index == 0) {
-      if (accomodationListData[0].isSelected) {
-        accomodationListData.forEach((d) {
-          d.isSelected = false;
-        });
-      } else {
-        accomodationListData.forEach((d) {
-          d.isSelected = true;
-        });
-      }
-    } else {
-      accomodationListData[index].isSelected = !accomodationListData[index].isSelected;
-
-      var count = 0;
-      for (var i = 0; i < accomodationListData.length; i++) {
-        if (i != 0) {
-          var data = accomodationListData[i];
-          if (data.isSelected) {
-            count += 1;
-          }
-        }
-      }
-
-      if (count == accomodationListData.length - 1) {
-        accomodationListData[0].isSelected = true;
-      } else {
-        accomodationListData[0].isSelected = false;
-      }
-    }
+    accomodationListData.forEach((d) {
+      d.isSelected = false;
+    });
+    accomodationListData[index].isSelected = true;
   }
 
   Widget distanceViewUI() {
@@ -209,11 +226,15 @@ class _FiltersScreenState extends State<FiltersScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+          padding:
+              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
           child: Text(
             "Filter by Flight Duration",
             textAlign: TextAlign.left,
-            style: TextStyle(color: Colors.grey, fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16, fontWeight: FontWeight.normal),
+            style: TextStyle(
+                color: Colors.grey,
+                fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16,
+                fontWeight: FontWeight.normal),
           ),
         ),
         SliderView(
@@ -235,11 +256,15 @@ class _FiltersScreenState extends State<FiltersScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+          padding:
+              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
           child: Text(
             "Filter by Airline",
             textAlign: TextAlign.left,
-            style: TextStyle(color: Colors.grey, fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16, fontWeight: FontWeight.normal),
+            style: TextStyle(
+                color: Colors.grey,
+                fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16,
+                fontWeight: FontWeight.normal),
           ),
         ),
         Padding(
@@ -259,46 +284,55 @@ class _FiltersScreenState extends State<FiltersScreen> {
     List<Widget> noList = List<Widget>();
     var cout = 0;
     final columCount = 2;
-    for (var i = 0; i < popularFilterListData.length / columCount; i++) {
+    for (var i = 0; i < airlines.length / columCount; i++) {
       List<Widget> listUI = List<Widget>();
       for (var i = 0; i < columCount; i++) {
         try {
-          final date = popularFilterListData[cout];
-          listUI.add(Expanded(
-            child: Row(
-              children: <Widget>[
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                    onTap: () {
-                      setState(() {
-                        date.isSelected = !date.isSelected;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            date.isSelected ? Icons.check_box : Icons.check_box_outline_blank,
-                            color: date.isSelected ? AppTheme.getTheme().primaryColor : Colors.grey.withOpacity(0.6),
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            date.titleTxt,
-                          ),
-                        ],
+          if (cout < airlines.length) {
+            final airline = airlines[cout];
+
+            listUI.add(Expanded(
+              child: Row(
+                children: <Widget>[
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                      onTap: () {
+                        setState(() {
+                          airline['isSelected'] = !airline['isSelected'];
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              airline['isSelected']
+                                  ? Icons.check_box
+                                  : Icons.check_box_outline_blank,
+                              color: airline['isSelected']
+                                  ? AppTheme
+                                  .getTheme()
+                                  .primaryColor
+                                  : Colors.grey.withOpacity(0.6),
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              airline['title'],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ));
-          cout += 1;
+                ],
+              ),
+            ));
+            cout += 1;
+          }
         } catch (e) {
           print(e);
         }
@@ -323,11 +357,15 @@ class _FiltersScreenState extends State<FiltersScreen> {
           child: Text(
             "Price",
             textAlign: TextAlign.left,
-            style: TextStyle(color: Colors.grey, fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16, fontWeight: FontWeight.normal),
+            style: TextStyle(
+                color: Colors.grey,
+                fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16,
+                fontWeight: FontWeight.normal),
           ),
         ),
         RangeSliderView(
           values: _values,
+          range: range,
           onChnageRangeValues: (values) {
             _values = values;
           },
@@ -424,7 +462,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 4, left: 24,bottom: 16),
+              padding: const EdgeInsets.only(top: 4, left: 24, bottom: 16),
               child: Text(
                 "Filters",
                 style: new TextStyle(
