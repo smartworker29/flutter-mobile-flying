@@ -1195,7 +1195,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
 
-                      showDemoDialog(context: context);
+//                      showDemoDialog(context: context);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(

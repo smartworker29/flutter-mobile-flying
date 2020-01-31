@@ -191,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 70,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                child: Image.asset("assets/images/userImage.png"),
+                child: Image.asset("assets/images/user_img.png"),
               ),
             ),
           )
