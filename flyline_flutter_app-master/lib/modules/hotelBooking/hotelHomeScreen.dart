@@ -114,8 +114,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
     flyLinebloc.flightsItems.stream.listen((List<FlightInformationObject> onData) {
       if (onData != null) {
-        if (_clickedSearch) {
+        if (_clickedSearch || _loadMore) {
           setState(() {
+            this._loadMore = false;
+            this._clickedSearch = false;
             this._isSearched = true;
             if (listOfFlights.length != 0) {
               if (listOfFlights[listOfFlights.length - 1] == null) {
@@ -491,7 +493,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                             child: Text(
                                               formatDates.format(
                                                   flight.localDeparture) +
-                                                  " | Departure  " + index.toString(),
+                                                  " | Departure",
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                   fontSize: 16,
@@ -1081,8 +1083,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             style: TextStyle(
                                 fontSize: 19.0, fontWeight: FontWeight.bold)),
                         onPressed: () {
-                          if (selectedDeparture != null && selectedArrival != null) {
+                          if (!_loadMore && selectedDeparture != null && selectedArrival != null) {
                             setState(() {
+                              _loadMore = true;
                               _isLoading = true;
                               listOfFlights.add(null);
                             });
@@ -1141,7 +1144,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     fontSize: 19.0,
                     fontWeight: FontWeight.bold)),
             onPressed: () {
-              if (selectedDeparture != null && selectedArrival != null) {
+              if (!_clickedSearch && selectedDeparture != null && selectedArrival != null) {
                 setState(() {
                   offset = 5;
                   listOfFlights = List();
