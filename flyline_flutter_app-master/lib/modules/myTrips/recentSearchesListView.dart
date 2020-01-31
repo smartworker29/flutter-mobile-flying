@@ -117,6 +117,8 @@ class RecentFlightSearchesListView extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => HotelHomeScreen(
+                                      departureCode: search.flyFrom,
+                                      arrivalCode: search.flyTo,
                                       departure: search.cityFrom,
                                       arrival: search.cityTo,
                                       startDate: search.departureDateFull,

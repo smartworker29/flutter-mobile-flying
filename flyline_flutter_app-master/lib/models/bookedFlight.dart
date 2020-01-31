@@ -12,6 +12,8 @@ class BookedFlight {
   final DateTime returnDepartureFull;
   final String cityFrom;
   final String cityTo;
+  final String flyFrom;
+  final String flyTo;
   final int price;
   final bool isRoundtrip;
 
@@ -27,6 +29,8 @@ class BookedFlight {
     this.returnDepartureFull,
     this.cityFrom,
     this.cityTo,
+    this.flyFrom,
+    this.flyTo,
     this.isRoundtrip,
     this.price,
   });
@@ -39,6 +43,7 @@ class BookedFlight {
   }
 
   factory BookedFlight.fromJson(Map<String, dynamic> json) {
+    print(json['data']);
     var parsedDepartureDate = DateUtils.monthDayFormat(
         DateTime.parse(json['data']["local_departure"]));
     var parsedArrivalDate =
@@ -57,6 +62,8 @@ class BookedFlight {
       airlines: json['data']['airlines'],
       cityFrom: json['data']['cityFrom'],
       cityTo: json['data']['cityTo'],
+      flyFrom: json['data']['flyFrom'],
+      flyTo: json['data']['flyTo'],
       isRoundtrip: json['data']['roundtrip'],
       price: json['data']['price'],
       localArrival: parsedArrivalDate,

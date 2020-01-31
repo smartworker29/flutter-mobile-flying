@@ -75,6 +75,8 @@ class FlightsListView extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => HotelHomeScreen(
+                        departureCode: flight.flyFrom,
+                        arrivalCode: flight.flyTo,
                         departure: flight.cityFrom,
                         arrival: flight.cityTo,
                         startDate: flight.localDepartureFull,

@@ -21,11 +21,19 @@ import 'package:motel/modules/hotelBooking/newScreen_1.dart' as newScreen1;
 class HotelHomeScreen extends StatefulWidget {
   final String departure;
   final String arrival;
+  final String departureCode;
+  final String arrivalCode;
   final DateTime startDate;
   final DateTime endDate;
 
   HotelHomeScreen(
-      {Key key, this.arrival, this.departure, this.startDate, this.endDate})
+      {Key key,
+      this.arrival,
+      this.departure,
+      this.arrivalCode,
+      this.departureCode,
+      this.startDate,
+      this.endDate})
       : super(key: key);
 
   @override
@@ -36,6 +44,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
   bool _isSearched = false;
   bool _clickedSearch = false;
+  bool _loadMore = false;
   AnimationController animationController;
   AnimationController _animationController;
   var hotelList = HotelListData.hotelList;
@@ -113,15 +122,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     startDate = widget.startDate ?? DateTime.now();
     endDate = widget.endDate ?? DateTime.now().add(Duration(days: 2));
 
-    var responseDeparture = await flyLinebloc.locationQuery(widget.departure);
-    setState(() {
-      selectedDeparture = departure = responseDeparture[0];
-    });
+    if (widget.departure != null) {
+      selectedDeparture = departure = LocationObject(widget.departureCode,
+          widget.departureCode, "city", widget.departure, "");
+    }
 
-    var responseArrival = await flyLinebloc.locationQuery(widget.arrival);
-    setState(() {
-      selectedArrival = arrival = responseArrival[0];
-    });
+    if (widget.arrival != null) {
+      selectedArrival = arrival = LocationObject(
+          widget.arrivalCode, widget.arrivalCode, "city", widget.arrival, "");
+    }
   }
 
   Future<bool> getData() async {
@@ -217,6 +226,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           ),
                           getFilterBarUI(),
                           getFlightDetails(),
+                          getLoadMoreButton(),
                         ]),
                       )
               ],
@@ -955,7 +965,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 left: 20.0, right: 20),
                                             decoration: BoxDecoration(
                                                 border: Border.all(
-                                                  width: 0.7,
+                                                    width: 0.7,
                                                     color: Colors.lightBlue)),
                                             child: Row(
                                               mainAxisAlignment:
@@ -1000,21 +1010,84 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       },
                     ))),
           );
-        } else {
+        } else if (_clickedSearch &&
+            !_isSearched &&
+
+            selectedDeparture != null &&
+            selectedArrival != null) {
           return Container(
-            child: Center(
-              child: CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
-              )
-            )
-          );
+              child: Center(
+                  child: CircularProgressIndicator(
+            valueColor:
+                new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
+          )));
+        } else {
+          return Container();
         }
       },
     ));
   }
 
+  Widget getLoadMoreButton() {
+    return Container(
+        child: StreamBuilder<List<FlightInformationObject>>(
+        stream: flyLinebloc.flightsItems.stream,
+        builder:
+            (context, AsyncSnapshot<List<FlightInformationObject>> snapshot) {
+          if (snapshot.data != null && snapshot.data.isNotEmpty) {
+            return Column(
+              children: <Widget>[
+                Container(
+                  height: 40,
+                  margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
+                  decoration:
+                  BoxDecoration(border: Border.all(color: Colors.lightBlue, width: 0.7)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text("Load More",
+                            style: TextStyle(
+                                fontSize: 19.0, fontWeight: FontWeight.bold)),
+                        onPressed: () {
+                          if (selectedDeparture != null && selectedArrival != null) {
+                            try {
+                              flyLinebloc.searchFlight(
+                                  selectedDeparture.type + ":" + selectedDeparture.code,
+                                  selectedArrival.type + ":" + selectedArrival.code,
+                                  formatAllDay.format(startDate),
+                                  formatAllDay.format(startDate),
+                                  typeOfTripSelected == 0 ? "round" : "oneway",
+                                  formatAllDay.format(endDate),
+                                  formatAllDay.format(endDate),
+                                  ad.toString(),
+                                  "0",
+                                  "0",
+                                  selectedClassOfServiceValue,
+                                  "USD",
+                                  "5");
+                            } catch (e) {
+                              print(e);
+                            }
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                    height: 38
+                )
+                ]
+            );
+          }
+
+          return Container();
+        },
+    ));
+  }
+
   Widget getSearchButton() {
-    print(_isSearched);
     if (_isSearched) {
       return Container();
     }
@@ -1545,26 +1618,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
               width: MediaQuery.of(context).size.width / 4,
               padding: EdgeInsets.only(left: 10),
-              child: FutureBuilder(
-                future: Future<String>.delayed(
-                  Duration(seconds: 2),
-                  () => 'Data Loaded',
-                ),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Container(
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
-                        )
-                      )
-                    );
-                  } else {
-                    return LocationSearchUI("Departure", true,
-                        notifyParent: refreshDepartureValue, city: departure);
-                  }
-                },
-              )),
+              child: LocationSearchUI("Departure", true,
+                  notifyParent: refreshDepartureValue, city: departure)),
         ),
         Container(
           width: MediaQuery.of(context).size.width,
@@ -1581,27 +1636,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
               width: MediaQuery.of(context).size.width / 4,
               padding: EdgeInsets.only(left: 10),
-              child: FutureBuilder(
-                future: Future<String>.delayed(
-                  Duration(seconds: 2),
-                  () => 'Data Loaded',
-                ),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Container(
-                        child: Center(
-                            child: CircularProgressIndicator(
-                              valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF00AFF5)),
-                            )
-                        )
-                    );
-                  } else {
-                    return LocationSearchUI("Arrival", true,
-                        notifyParent: refreshDepartureValue, city: arrival);
-                  }
-                },
-              )
-              ),
+              child: LocationSearchUI("Arrival", false,
+                  notifyParent: refreshDepartureValue, city: arrival)),
         ),
       ],
     );
@@ -1829,7 +1865,7 @@ class _LocationSearchUIState extends State<LocationSearchUI>
     with TickerProviderStateMixin {
   var title;
 
-  _LocationSearchUIState(var item) {
+  _LocationSearchUIState(var title) {
     this.title = title;
   }
 
@@ -1845,13 +1881,7 @@ class _LocationSearchUIState extends State<LocationSearchUI>
               location.countryCode;
         }
 
-        return widget.city != null
-            ? widget.city.name +
-                " " +
-                widget.city.subdivisionName +
-                " " +
-                widget.city.countryCode
-            : null;
+        return widget.city != null ? widget.city.name : null;
       },
       textAlign: TextAlign.start,
       itemBuilder: (context, location) => Padding(

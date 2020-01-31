@@ -197,7 +197,9 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                       context,
                       MaterialPageRoute(
                           builder: (context) => HotelHomeScreen(
+                                departureCode: deal.flyFrom,
                                 departure: deal.cityFromName,
+                                arrivalCode: deal.flyTo,
                                 arrival: deal.cityToName,
                                 startDate: deal.departureDate,
                                 endDate: deal.returnDate,

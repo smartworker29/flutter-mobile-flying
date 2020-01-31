@@ -7,6 +7,8 @@ class RecentFlightSearch {
   final DateTime departureDateFull;
   final String cityFrom;
   final String cityTo;
+  final String flyFrom;
+  final String flyTo;
   final bool isRoundtrip;
 
   RecentFlightSearch({
@@ -16,10 +18,14 @@ class RecentFlightSearch {
     this.departureDateFull,
     this.cityFrom,
     this.cityTo,
+    this.flyFrom,
+    this.flyTo,
     this.isRoundtrip,
   });
 
   factory RecentFlightSearch.fromJson(Map<String, dynamic> json) {
+    print(json);
+    print("======");
     var parsedDepartureDate =
         DateUtils.monthDayFormat(DateTime.parse(json["departure_date"]));
     var parsedArrivalDate =
@@ -28,6 +34,8 @@ class RecentFlightSearch {
     return RecentFlightSearch(
       cityFrom: json['place_from']['name'],
       cityTo: json['place_to']['name'],
+      flyFrom: json['place_from']['code'],
+      flyTo: json['place_to']['code'],
       isRoundtrip: json['destination_type'] == 'round' ? true : false,
       arrivalDate: parsedArrivalDate,
       departureDate: parsedDepartureDate,
