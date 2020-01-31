@@ -64,6 +64,7 @@ class FlyLineBloc {
       children,
       selectedCabins,
       curr,
+      offset,
       limit) async {
     // return null for activate loading indicator on search page
     // before real results will be loaded
@@ -82,6 +83,7 @@ class FlyLineBloc {
         children,
         selectedCabins,
         curr,
+        offset,
         limit);
 
     _subjectFlightItems.sink.add(response);

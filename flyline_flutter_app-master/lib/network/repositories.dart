@@ -35,6 +35,7 @@ class FlyLineRepository {
       children,
       selectedCabins,
       curr,
+      offset,
       limit) {
     return _flyLineProvider.searchFlight(
         flyFrom,
@@ -49,6 +50,7 @@ class FlyLineRepository {
         children,
         selectedCabins,
         curr,
+        offset,
         limit);
   }
 
