@@ -574,8 +574,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                         left: 5,
                                                         right: 5),
                                                     decoration: BoxDecoration(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.6)),
+                                                        color: const Color(0xFFEDEDED)),
                                                     child: Text(
                                                       flight.durationDeparture,
                                                       textAlign:
@@ -613,8 +612,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                         left: 5,
                                                         right: 5),
                                                     decoration: BoxDecoration(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.6)),
+                                                        color: const Color(0xFFEDEDED)),
                                                     child: Text(
                                                       (a2b > 0
                                                           ? "$a2b Stopover"
@@ -640,8 +638,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                     left: 5,
                                                     right: 5),
                                                 decoration: BoxDecoration(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.6)),
+                                                    color: const Color(0xFFEDEDED)),
                                                 child: Text(
                                                   selectedClassOfService,
                                                   textAlign: TextAlign.start,
@@ -800,10 +797,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                                   right: 5),
                                                           decoration:
                                                               BoxDecoration(
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .withOpacity(
-                                                                          0.6)),
+                                                                  color: const Color(0xFFEDEDED)),
                                                           child: Text(
                                                             flight
                                                                 .durationReturn,
@@ -850,10 +844,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                                   right: 5),
                                                           decoration:
                                                               BoxDecoration(
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .withOpacity(
-                                                                          0.6)),
+                                                                  color: const Color(0xFFEDEDED)),
                                                           child: Text(
                                                             (b2a > 0
                                                                 ? "$b2a Stopover"
@@ -880,9 +871,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                           left: 5,
                                                           right: 5),
                                                       decoration: BoxDecoration(
-                                                          color: Colors.grey
-                                                              .withOpacity(
-                                                                  0.6)),
+                                                          color: const Color(0xFFEDEDED)),
                                                       child: Text(
                                                         selectedClassOfService,
                                                         textAlign:
