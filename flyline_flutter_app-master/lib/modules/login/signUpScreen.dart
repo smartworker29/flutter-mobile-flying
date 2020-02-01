@@ -267,6 +267,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     return;
                                   }
                                   _formKey.currentState.save();
+
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

@@ -45,7 +45,7 @@ class SettingsListData {
     //   iconData: FontAwesomeIcons.gift,
     // ),
     SettingsListData(
-      titleTxt: 'Help Center',
+      titleTxt: 'Frequently Asked Questions',
       isSelected: false,
       iconData: FontAwesomeIcons.infoCircle,
     ),

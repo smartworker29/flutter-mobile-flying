@@ -71,11 +71,8 @@ class FlyLineProvider {
   }
 
   Future<List<LocationObject>> locationQuery(term) async {
-    var token = await getAuthToken();
-
     Response response;
     Dio dio = Dio();
-    dio.options.headers["Authorization"] = "Token $token";
 
     List<LocationObject> locations = List<LocationObject>();
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:motel/appTheme.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../main.dart';
 import 'loginScreen.dart';
 import 'package:http/http.dart' as http;
@@ -753,6 +754,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     FocusScope.of(context).requestFocus(FocusNode());
     print("aaappppiii");
     print(widget.home);
+    print(widget.email);
     print(_formData['first_name']);
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final params = jsonEncode({
@@ -768,6 +770,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       'cvc': _formData['cvc'],
       'plan': _formData['plan'],
     });
+    print(params);
     http
         .post(
       'https://staging.joinflyline.com/api/get-started/',
@@ -779,22 +782,25 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       var jsonResponse = json.decode(response.body);
       print("Resssspoooonnnsseee");
       print(jsonResponse);
-      Navigator.pushNamedAndRemoveUntil(
-          context, Routes.TabScreen, (Route<dynamic> route) => false);
-      //   if (response.statusCode == 400) {
-      //     showToast(jsonResponse['error_description'],
-      //         duration: Duration(seconds: 3), position: ToastPosition.bottom);
-      //   } else if (response.statusCode == 200) {
-      //     if (jsonResponse['status'] == "error") {
-      //       showToast(jsonResponse['error'],
-      //           duration: Duration(seconds: 3), position: ToastPosition.bottom);
-      //     } else if (jsonResponse['status'] == "ok") {
-      //       showToast("Successfully Registered",
-      //           duration: Duration(seconds: 3), position: ToastPosition.bottom);
-      //       Navigator.pushNamedAndRemoveUntil(
-      //           context, Routes.TabScreen, (Route<dynamic> route) => false);
-      //     }
-      //   }
+
+      Alert(
+        context: context,
+        title:
+        "Signup successfully",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Close",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, Routes.TabScreen, (Route<dynamic> route) => false);
+            },
+            width: 120,
+          ),
+        ],
+      ).show();
     });
   }
 }
