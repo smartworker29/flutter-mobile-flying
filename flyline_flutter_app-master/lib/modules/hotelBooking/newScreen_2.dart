@@ -595,9 +595,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               margin:
                   EdgeInsets.only(top: MediaQuery.of(context).padding.top / 2),
               alignment: Alignment.center,
+
               child: Text(
                 "Payment",
                 style: TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
                 ),
@@ -613,13 +615,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     return Container(
       height: 40,
       margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
-      decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue, width: 0.7)),
+      decoration: BoxDecoration(color: const Color(0xFF00AFF5),border: Border.all(color: const Color(0xFF00AFF5), width: 0.5)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(
             child: Text("Book Flight For" + Helper.formatNumber(tripTotal),
-                style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold)),
+                style: TextStyle(color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.bold)),
             onPressed: () {
               setState(() {
                 _clickedBookFlight = true;

@@ -198,7 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               margin: EdgeInsets.only(left: 40.0, right: 40.0, top: 30.0, bottom: 30.0),
                               child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation(Colors.blueAccent
+                                    valueColor: new AlwaysStoppedAnimation<Color>(
+                                        const Color(0xFF00AFF5)
                                     ),
                                     strokeWidth: 3.0),
                                 height: 40.0,
@@ -206,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Container(
                           height: 48,
                           decoration: BoxDecoration(
-                            color: AppTheme.getTheme().primaryColor,
+                            color: const Color(0xFF00AFF5),
                             borderRadius: BorderRadius.all(Radius.circular(1)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(

@@ -51,7 +51,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   var hotelList = HotelListData.hotelList;
   ScrollController scrollController = new ScrollController();
   int room = 1;
-  int ad = 2;
+  int ad = 1;
   int children = 0;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(Duration(days: 5));
@@ -966,9 +966,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                         margin: EdgeInsets.only(
                                             left: 20.0, right: 20),
                                         decoration: BoxDecoration(
+                                            color: const Color(0xFF00AFF5),
                                             border: Border.all(
-                                                width: 0.7,
-                                                color: Colors.lightBlue)),
+                                                width: 0.5,
+                                                color:
+                                                    const Color(0xFF00AFF5))),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -976,6 +978,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                             FlatButton(
                                               child: Text("Book",
                                                   style: TextStyle(
+                                                      color: Colors.white,
                                                       fontSize: 19.0,
                                                       fontWeight:
                                                           FontWeight.bold)),
@@ -1023,14 +1026,17 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         height: 40,
         margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.lightBlue, width: 0.7)),
+            color: const Color(0xFF00AFF5),
+            border: Border.all(color: const Color(0xFF00AFF5), width: 0.5)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             FlatButton(
               child: Text("Load More",
-                  style:
-                      TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 19.0,
+                      fontWeight: FontWeight.bold)),
               onPressed: () {
                 if (!_loadMore &&
                     selectedDeparture != null &&
@@ -1052,8 +1058,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     }).toList();
 
                     if ((offset + perPage) > items.length) {
-                        listOfFlights.addAll(
-                            items.getRange(offset, items.length));
+                      listOfFlights
+                          .addAll(items.getRange(offset, items.length));
                       _displayLoadMore = false;
                     } else {
                       listOfFlights
@@ -1093,7 +1099,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     }
     return Container(
       margin: EdgeInsets.only(left: 16.0, right: 16, top: 2, bottom: 12),
-      color: Colors.lightBlue,
+      color: const Color(0xFF00AFF5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

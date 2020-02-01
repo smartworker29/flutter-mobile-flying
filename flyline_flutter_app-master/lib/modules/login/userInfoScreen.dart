@@ -106,25 +106,25 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                               text: TextSpan(
                                   text: '- As a reminder we\'ll email you',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: const Color(0xFF929292),
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                   ),
                                   children: <TextSpan>[
                                     TextSpan(
                                       text: ' 3 days',
                                       style: TextStyle(
-                                        color: AppTheme.getTheme().primaryColor,
+                                        color: const Color(0xFF929292),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     ),
                                     TextSpan(
                                       text: ' Before.',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: const Color(0xFF929292),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     )
                                   ]),
@@ -139,25 +139,25 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                               text: TextSpan(
                                   text: '- No Commitments.',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: const Color(0xFF929292),
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                   ),
                                   children: <TextSpan>[
                                     TextSpan(
                                       text: ' Cancel',
                                       style: TextStyle(
-                                        color: AppTheme.getTheme().primaryColor,
+                                        color: const Color(0xFF929292),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     ),
                                     TextSpan(
                                       text: ' at anytime.',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: const Color(0xFF929292),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     )
                                   ]),
