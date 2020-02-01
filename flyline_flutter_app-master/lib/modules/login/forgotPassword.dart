@@ -210,9 +210,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                           ),
                                         ],).show();
                                     }
-
-//
-
                                 }},
 
                                 child: Center(
