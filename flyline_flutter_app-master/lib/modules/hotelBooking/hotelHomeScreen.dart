@@ -273,20 +273,20 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       )
                     : Expanded(
                         child: Column(children: <Widget>[
-                          AnimatedContainer(
+                          Container(
                              key: stickyKey,
-                             height: !this._isSearched
-                                 ? (heightBox != -1 ? heightBox : null)
-                                 : 0,
-                             duration: Duration(milliseconds: 100),
+//                             height: !this._isSearched
+//                                 ? (heightBox != -1 ? heightBox : null)
+//                                 : 0,
+//                             duration: Duration(milliseconds: 200),
                              color: AppTheme.getTheme().scaffoldBackgroundColor,
-                             child: Column(
-                               children: <Widget>[
-                                 getSearchBarUI(),
-                                 getTimeDateUI(),
-                                 getSearchButton(),
-                               ],
-                             ),
+                               child: Column(
+                                 children: <Widget>[
+                                   getSearchBarUI(),
+                                   getTimeDateUI(),
+                                   getSearchButton(),
+                                 ],
+                               )
                            ),
                           getFilterBarUI(),
                           getFlightDetails(),
@@ -465,8 +465,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             int b2a = 0;
 
             List<FlightRouteObject> departures = List();
+            List<String> departureStopOverCity = List();
             List<FlightRouteObject> returns = List();
-
+            List<String> returnStopOverCity = List();
             // get all flight routes
             List<FlightRouteObject> routes = flight.routes;
 
@@ -474,6 +475,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             if (typeOfTripSelected == 1) {
               for (FlightRouteObject route in flight.routes) {
                 departures.add(route);
+                departureStopOverCity.add(route.cityTo);
                 if (route.cityTo != flight.cityTo) {
                   a2b++;
                 } else {
@@ -483,6 +485,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             } else if (typeOfTripSelected == 0) {
               for (FlightRouteObject route in flight.routes) {
                 departures.add(route);
+                departureStopOverCity.add(route.cityTo);
                 if (route.cityTo != flight.cityTo) {
                   a2b++;
                 } else {
@@ -492,6 +495,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
               for (FlightRouteObject route in flight.routes.reversed) {
                 returns.add(route);
+                returnStopOverCity.add(route.cityTo);
                 if (route.cityFrom != flight.cityTo) {
                   b2a++;
                 } else {
@@ -630,7 +634,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 color: const Color(0xFFEDEDED)),
                                             child: Text(
                                               (a2b > 0
-                                                  ? "$a2b Stopover"
+                                                  ? "$a2b Stopover in " + departureStopOverCity.join(',')
                                                   : "Direct"),
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
@@ -831,7 +835,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                           0xFFEDEDED)),
                                                   child: Text(
                                                     (b2a > 0
-                                                        ? "$b2a Stopover"
+                                                        ? "$b2a Stopover in " + returnStopOverCity.join(',')
                                                         : "Direct"),
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
@@ -1062,10 +1066,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     fontSize: 19.0,
                     fontWeight: FontWeight.bold)),
             onPressed: () {
-              setState(() {
-                _isSearched = true;
-              });
-
               if (!_clickedSearch &&
                   selectedDeparture != null &&
                   selectedArrival != null) {
@@ -1079,25 +1079,25 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   _displayLoadMore = false;
                 });
 
-//                try {
-//                  flyLinebloc.searchFlight(
-//                      selectedDeparture.type + ":" + selectedDeparture.code,
-//                      selectedArrival.type + ":" + selectedArrival.code,
-//                      formatAllDay.format(startDate),
-//                      formatAllDay.format(startDate),
-//                      typeOfTripSelected == 0 ? "round" : "oneway",
-//                      formatAllDay.format(endDate),
-//                      formatAllDay.format(endDate),
-//                      ad.toString(),
-//                      "0",
-//                      "0",
-//                      selectedClassOfServiceValue,
-//                      "USD",
-//                      this.offset.toString(),
-//                      this.perPage.toString());
-//                } catch (e) {
-//                  print(e);
-//                }
+                try {
+                  flyLinebloc.searchFlight(
+                      selectedDeparture.type + ":" + selectedDeparture.code,
+                      selectedArrival.type + ":" + selectedArrival.code,
+                      formatAllDay.format(startDate),
+                      formatAllDay.format(startDate),
+                      typeOfTripSelected == 0 ? "round" : "oneway",
+                      formatAllDay.format(endDate),
+                      formatAllDay.format(endDate),
+                      ad.toString(),
+                      "0",
+                      "0",
+                      selectedClassOfServiceValue,
+                      "USD",
+                      this.offset.toString(),
+                      this.perPage.toString());
+                } catch (e) {
+                  print(e);
+                }
               }
             },
           ),

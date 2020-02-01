@@ -904,10 +904,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         child: Container(
             margin: EdgeInsets.only(right: 16, top: 16),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+//              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
+                Text("Remove passenger",
+                    softWrap: true, style: TextStyle(color: Colors.red)),
                 Text("Add another passenger",
                     softWrap: true, style: TextStyle(color: Colors.lightBlue)),
               ],
@@ -928,7 +930,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 FlatButton(
-                  child: Text("Payment",
+                  child: Text("Check Out",
                       style: TextStyle(
                         color: Colors.white,
                           fontSize: 19.0, fontWeight: FontWeight.bold)),
