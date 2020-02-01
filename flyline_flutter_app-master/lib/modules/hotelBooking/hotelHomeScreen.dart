@@ -58,7 +58,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   bool isMap = false;
 
   final formatDates = intl.DateFormat("dd MMM");
-  final formatTime = intl.DateFormat("HH : mm a");
+  final formatTime = intl.DateFormat("hh : mm a");
   final formatAllDay = intl.DateFormat("dd/MM/yyyy");
 
   var typeOfTripSelected = 0;
@@ -442,12 +442,16 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     int a2b = 0;
                     int b2a = 0;
 
+                    List<FlightRouteObject> departures = List();
+                    List<FlightRouteObject> returns = List();
+
                     // get all flight routes
                     List<FlightRouteObject> routes = flight.routes;
 
                     // one way
                     if (typeOfTripSelected == 1) {
                       for (FlightRouteObject route in flight.routes) {
+                        departures.add(route);
                         if (route.cityTo != flight.cityTo) {
                           a2b++;
                         } else {
@@ -456,6 +460,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       } // round trip
                     } else if (typeOfTripSelected == 0) {
                       for (FlightRouteObject route in flight.routes) {
+                        departures.add(route);
                         if (route.cityTo != flight.cityTo) {
                           a2b++;
                         } else {
@@ -464,12 +469,19 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       }
 
                       for (FlightRouteObject route in flight.routes.reversed) {
+                        returns.add(route);
                         if (route.cityFrom != flight.cityTo) {
                           b2a++;
                         } else {
                           break;
                         }
                       }
+
+                      returns.forEach((i) {
+                        print(formatTime.format(i.localDeparture) +
+                            '-' +
+                            formatTime.format(i.localArrival));
+                      });
                     }
 
                     return Container(
@@ -547,14 +559,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                         .width /
                                                     2,
                                                 child: Text(
-                                                  formatTime.format(flight
-                                                          .routes[0]
+                                                  formatTime.format(departures[0]
                                                           .localDeparture) +
                                                       " " +
-                                                      flight.routes[0].flyFrom +
+                                                      departures[0].flyFrom +
                                                       " (" +
-                                                      flight
-                                                          .routes[0].cityFrom +
+                                                      departures[0].cityFrom +
                                                       ")",
                                                   textAlign: TextAlign.start,
                                                   style: TextStyle(
@@ -574,7 +584,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                         left: 5,
                                                         right: 5),
                                                     decoration: BoxDecoration(
-                                                        color: const Color(0xFFEDEDED)),
+                                                        color: const Color(
+                                                            0xFFEDEDED)),
                                                     child: Text(
                                                       flight.durationDeparture,
                                                       textAlign:
@@ -612,7 +623,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                         left: 5,
                                                         right: 5),
                                                     decoration: BoxDecoration(
-                                                        color: const Color(0xFFEDEDED)),
+                                                        color: const Color(
+                                                            0xFFEDEDED)),
                                                     child: Text(
                                                       (a2b > 0
                                                           ? "$a2b Stopover"
@@ -638,7 +650,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                     left: 5,
                                                     right: 5),
                                                 decoration: BoxDecoration(
-                                                    color: const Color(0xFFEDEDED)),
+                                                    color: const Color(
+                                                        0xFFEDEDED)),
                                                 child: Text(
                                                   selectedClassOfService,
                                                   textAlign: TextAlign.start,
@@ -659,13 +672,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                         .width /
                                                     2,
                                                 child: Text(
-                                                  formatTime.format(flight
-                                                          .routes[0]
+                                                  formatTime.format(departures[departures.length - 1]
                                                           .localArrival) +
                                                       " " +
-                                                      flight.routes[0].flyTo +
+                                                      departures[departures.length - 1].flyTo +
                                                       " (" +
-                                                      flight.routes[0].cityTo +
+                                                      departures[departures.length - 1].cityTo +
                                                       ")",
                                                   textAlign: TextAlign.start,
                                                   style: TextStyle(
@@ -764,14 +776,19 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                                   .width /
                                                               2,
                                                       child: Text(
-                                                        formatTime.format(flight
-                                                                .routes[1]
+                                                        formatTime.format(returns[
+                                                                    returns.length -
+                                                                        1]
                                                                 .localDeparture) +
                                                             " " +
-                                                            flight.routes[1]
+                                                            returns[returns
+                                                                        .length -
+                                                                    1]
                                                                 .flyFrom +
                                                             " (" +
-                                                            flight.routes[1]
+                                                            returns[returns
+                                                                        .length -
+                                                                    1]
                                                                 .cityFrom +
                                                             ")",
                                                         textAlign:
@@ -795,9 +812,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                                   bottom: 3,
                                                                   left: 5,
                                                                   right: 5),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  color: const Color(0xFFEDEDED)),
+                                                          decoration: BoxDecoration(
+                                                              color: const Color(
+                                                                  0xFFEDEDED)),
                                                           child: Text(
                                                             flight
                                                                 .durationReturn,
@@ -842,9 +859,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                                   bottom: 3,
                                                                   left: 5,
                                                                   right: 5),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  color: const Color(0xFFEDEDED)),
+                                                          decoration: BoxDecoration(
+                                                              color: const Color(
+                                                                  0xFFEDEDED)),
                                                           child: Text(
                                                             (b2a > 0
                                                                 ? "$b2a Stopover"
@@ -871,7 +888,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                           left: 5,
                                                           right: 5),
                                                       decoration: BoxDecoration(
-                                                          color: const Color(0xFFEDEDED)),
+                                                          color: const Color(
+                                                              0xFFEDEDED)),
                                                       child: Text(
                                                         selectedClassOfService,
                                                         textAlign:
@@ -896,15 +914,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                                   .width /
                                                               2,
                                                       child: Text(
-                                                        formatTime.format(flight
-                                                                .routes[1]
+                                                        formatTime.format(returns[
+                                                                    0]
                                                                 .localArrival) +
                                                             " " +
-                                                            flight.routes[1]
-                                                                .flyTo +
+                                                            returns[0].flyTo +
                                                             " (" +
-                                                            flight.routes[1]
-                                                                .cityTo +
+                                                            returns[0].cityTo +
                                                             ")",
                                                         textAlign:
                                                             TextAlign.start,
