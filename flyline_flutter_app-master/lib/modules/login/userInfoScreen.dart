@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:motel/appTheme.dart';
 import '../../main.dart';
 import 'loginScreen.dart';
@@ -39,6 +41,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     'cvc': null,
     'plan': null,
   };
+
+  var expDateController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -492,12 +496,24 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                     child: Container(
                                       height: 58,
                                       child: Center(
-                                        child: TextFormField(
+                                        child: TextField(
+                                          controller: expDateController,
+                                          onTap: () {
+                                            DatePicker.showDatePicker(context,
+                                                showTitleActions: true,
+                                                minTime: DateTime(1960, 1, 1),
+                                                maxTime: DateTime.now(), onChanged: (date) {
+                                                  print('change $date');
+                                                }, onConfirm: (date) {
+                                                  var formatter = new DateFormat('yyyy-MM-dd');
+                                                  expDateController.text = _formData['expiry'] = formatter.format(date);
+                                                }, currentTime: DateTime.now(), locale: LocaleType.en);
+                                          },
                                           maxLines: 1,
                                           onChanged: (String txt) {},
-                                          onSaved: (String value) {
-                                            _formData['expiry'] = value;
-                                          },
+//                                          onSaved: (String value) {
+//                                            _formData['expiry'] = value + "111";
+//                                          },
                                           style: TextStyle(
                                             fontSize: 16,
                                           ),
