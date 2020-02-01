@@ -530,19 +530,68 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               controller: genderControllers[position - 1],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
-              onTap: () {
-                SelectDialog.showModal<String>(context,
-                    searchBoxDecoration: InputDecoration(hintText: "Pick one"),
-                    label: "Gender",
-                    selectedValue: selectedGender,
-                    items: genders, onChange: (String selected) {
-                  setState(() {
-                    selectedGender = selected;
-                    selectedGenderValue =
-                        genderValues[genders.indexOf(selected)];
-                    genderControllers[position - 1].text = selected;
-                  });
+              onTap: () async {
+                List<Widget> items = List();
+                items.add(Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        //                    <--- top side
+                        color: AppTheme.getTheme().dividerColor,
+                      ),
+                    ),
+                  ),
+                  child: Container(),
+                ));
+                genders.forEach((item) {
+                  items.add(Container(
+                      margin: const EdgeInsets.only(
+                          left: 10.0,
+                          right: 10.0,
+                          top: 5.0,
+                          bottom: 5.0),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            //                    <--- top side
+                            color: AppTheme.getTheme().dividerColor,
+                          ),
+                        ),
+                      ),
+                      child: SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(context, item);
+                          setState(() {
+                            selectedGender = item;
+                            selectedGenderValue =
+                            genderValues[
+                            genders
+                                .indexOf(item)];
+                          });
+                        },
+                        child: Text(item),
+                      )));
                 });
+                await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SimpleDialog(
+                        title: const Text('Select Gender'),
+                        children: items,
+                      );
+                    });
+//                SelectDialog.showModal<String>(context,
+//                    searchBoxDecoration: InputDecoration(hintText: "Pick one"),
+//                    label: "Gender",
+//                    selectedValue: selectedGender,
+//                    items: genders, onChange: (String selected) {
+//                  setState(() {
+//                    selectedGender = selected;
+//                    selectedGenderValue =
+//                        genderValues[genders.indexOf(selected)];
+//                    genderControllers[position - 1].text = selected;
+//                  });
+//                });
               },
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               cursorColor: AppTheme.getTheme().primaryColor,
