@@ -75,7 +75,8 @@ class HotelListData {
       perNight: 170,
       isSelected: false,
       roomSizeTxt: '2R - 2A - 2C',
-      dateTxt: '${DateFormat("dd MMM").format(DateTime.now())} - ${DateFormat("dd MMM").format(DateTime.now().add(Duration(days: 2)))}',
+      dateTxt:
+          '${DateFormat("dd MMM").format(DateTime.now())} - ${DateFormat("dd MMM").format(DateTime.now().add(Duration(days: 2)))}',
     ),
     HotelListData(
       imagePath: 'assets/images/hotel_5.png',
@@ -96,26 +97,32 @@ class HotelListData {
     HotelListData(
       imagePath: 'assets/images/popular_1.jpg',
       titleTxt: 'Paris',
+      subTxt: 'PAR',
     ),
     HotelListData(
       imagePath: 'assets/images/popular_2.jpg',
       titleTxt: 'Spain',
+      subTxt: 'ES',
     ),
     HotelListData(
       imagePath: 'assets/images/popular_3.jpg',
       titleTxt: 'Vernazza',
+      subTxt: 'NAP',
     ),
     HotelListData(
       imagePath: 'assets/images/popular_4.jpg',
       titleTxt: 'London',
+      subTxt: 'LON',
     ),
     HotelListData(
       imagePath: 'assets/images/popular_5.jpg',
       titleTxt: 'Venice',
+      subTxt: 'VCE',
     ),
     HotelListData(
       imagePath: 'assets/images/popular_6.jpg',
       titleTxt: 'Honolulu',
+      subTxt: 'HNL',
     ),
   ];
 
@@ -123,49 +130,56 @@ class HotelListData {
     HotelListData(
       imagePath: 'assets/images/avatar1.jpg',
       titleTxt: 'Alexia Jane',
-      subTxt: 'This is located in a great spot close to shops and bars, very quiet location',
+      subTxt:
+          'This is located in a great spot close to shops and bars, very quiet location',
       rating: 8.0,
       dateTxt: 'Last update 21 May, 2019',
     ),
     HotelListData(
       imagePath: 'assets/images/avatar3.jpg',
       titleTxt: 'Jacky Depp',
-      subTxt: 'Good staff, very comfortable bed, very quiet location, place could do with an update',
+      subTxt:
+          'Good staff, very comfortable bed, very quiet location, place could do with an update',
       rating: 8.0,
       dateTxt: 'Last update 21 May, 2019',
     ),
     HotelListData(
       imagePath: 'assets/images/avatar5.jpg',
       titleTxt: 'Alex Carl',
-      subTxt: 'This is located in a great spot close to shops and bars, very quiet location',
+      subTxt:
+          'This is located in a great spot close to shops and bars, very quiet location',
       rating: 6.0,
       dateTxt: 'Last update 21 May, 2019',
     ),
     HotelListData(
       imagePath: 'assets/images/avatar2.jpg',
       titleTxt: 'May June',
-      subTxt: 'Good staff, very comfortable bed, very quiet location, place could do with an update',
+      subTxt:
+          'Good staff, very comfortable bed, very quiet location, place could do with an update',
       rating: 9.0,
       dateTxt: 'Last update 21 May, 2019',
     ),
     HotelListData(
       imagePath: 'assets/images/avatar4.jpg',
       titleTxt: 'Lesley Rivas',
-      subTxt: 'This is located in a great spot close to shops and bars, very quiet location',
+      subTxt:
+          'This is located in a great spot close to shops and bars, very quiet location',
       rating: 8.0,
       dateTxt: 'Last update 21 May, 2019',
     ),
     HotelListData(
       imagePath: 'assets/images/avatar6.jpg',
       titleTxt: 'Carlos Lasmar',
-      subTxt: 'Good staff, very comfortable bed, very quiet location, place could do with an update',
+      subTxt:
+          'Good staff, very comfortable bed, very quiet location, place could do with an update',
       rating: 7.0,
       dateTxt: 'Last update 21 May, 2019',
     ),
     HotelListData(
       imagePath: 'assets/images/avatar7.jpg',
       titleTxt: 'Oliver Smith',
-      subTxt: 'This is located in a great spot close to shops and bars, very quiet location',
+      subTxt:
+          'This is located in a great spot close to shops and bars, very quiet location',
       rating: 9.0,
       dateTxt: 'Last update 21 May, 2019',
     ),
@@ -173,31 +187,36 @@ class HotelListData {
 
   static List<HotelListData> romeList = [
     HotelListData(
-      imagePath: 'assets/images/room_1.jpg assets/images/room_2.jpg assets/images/room_3.jpg',
+      imagePath:
+          'assets/images/room_1.jpg assets/images/room_2.jpg assets/images/room_3.jpg',
       titleTxt: 'Deluxe Room',
       perNight: 180,
       dateTxt: 'Sleeps 3 people',
     ),
     HotelListData(
-      imagePath: 'assets/images/room_4.jpg assets/images/room_5.jpg assets/images/room_6.jpg',
+      imagePath:
+          'assets/images/room_4.jpg assets/images/room_5.jpg assets/images/room_6.jpg',
       titleTxt: 'Premium Room',
       perNight: 200,
       dateTxt: 'Sleeps 3 people + 2 children',
     ),
     HotelListData(
-      imagePath: 'assets/images/room_7.jpg assets/images/room_8.jpg assets/images/room_9.jpg',
+      imagePath:
+          'assets/images/room_7.jpg assets/images/room_8.jpg assets/images/room_9.jpg',
       titleTxt: 'Queen Room',
       perNight: 240,
       dateTxt: 'Sleeps 4 people + 4 children',
     ),
     HotelListData(
-      imagePath: 'assets/images/room_10.jpg assets/images/room_11.jpg assets/images/room_12.jpg',
+      imagePath:
+          'assets/images/room_10.jpg assets/images/room_11.jpg assets/images/room_12.jpg',
       titleTxt: 'King Room',
       perNight: 240,
       dateTxt: 'Sleeps 4 people + 4 children',
     ),
     HotelListData(
-      imagePath: 'assets/images/room_11.jpg assets/images/room_1.jpg assets/images/room_2.jpg',
+      imagePath:
+          'assets/images/room_11.jpg assets/images/room_1.jpg assets/images/room_2.jpg',
       titleTxt: 'Hollywood Twin Room',
       perNight: 260,
       dateTxt: 'Sleeps 4 people + 4 children',

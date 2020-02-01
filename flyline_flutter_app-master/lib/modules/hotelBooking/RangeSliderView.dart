@@ -4,18 +4,23 @@ import 'package:motel/appTheme.dart';
 class RangeSliderView extends StatefulWidget {
   final Function(RangeValues) onChnageRangeValues;
   final RangeValues values;
+  final RangeValues range;
 
-  const RangeSliderView({Key key, this.values, this.onChnageRangeValues}) : super(key: key);
+  const RangeSliderView({Key key, this.values, this.range, this.onChnageRangeValues}) : super(key: key);
   @override
   _RangeSliderViewState createState() => _RangeSliderViewState();
 }
 
 class _RangeSliderViewState extends State<RangeSliderView> {
   RangeValues _values;
+  double _max;
+  double _min;
 
   @override
   void initState() {
     _values = widget.values;
+    _min = widget.range.start;
+    _max = widget.range.end;
     super.initState();
   }
 
@@ -29,7 +34,7 @@ class _RangeSliderViewState extends State<RangeSliderView> {
               Row(
                 children: <Widget>[
                   Expanded(
-                    flex: _values.start.round(),
+                    flex: _values.start.round() - _min.round(),
                     child: SizedBox(),
                   ),
                   Container(
@@ -40,7 +45,7 @@ class _RangeSliderViewState extends State<RangeSliderView> {
                     ),
                   ),
                   Expanded(
-                    flex: 1000 - _values.start.round(),
+                    flex: _max.round() - _values.start.round(),
                     child: SizedBox(),
                   ),
                 ],
@@ -59,7 +64,7 @@ class _RangeSliderViewState extends State<RangeSliderView> {
                     ),
                   ),
                   Expanded(
-                    flex: 1000 - _values.end.round(),
+                    flex: _max.round() - _values.end.round(),
                     child: SizedBox(),
                   ),
                 ],
@@ -72,8 +77,8 @@ class _RangeSliderViewState extends State<RangeSliderView> {
             ),
             child: RangeSlider(
               values: _values,
-              min: 0.0,
-              max: 1000.0,
+              min: _min,
+              max: _max,
               activeColor: AppTheme.getTheme().primaryColor,
               inactiveColor: Colors.grey.withOpacity(0.4),
               divisions: 1000,

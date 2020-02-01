@@ -33,15 +33,15 @@ class PopularFilterListData {
   static List<PopularFilterListData> accomodationList = [
     PopularFilterListData(
       titleTxt: 'No Stops',
-      isSelected: true,
+      isSelected: false,
     ),
     PopularFilterListData(
       titleTxt: 'One Stop',
-      isSelected: true,
+      isSelected: false,
     ),
     PopularFilterListData(
       titleTxt: 'Two Stops',
-      isSelected: true,
+      isSelected: false,
     ),
   ];
 }

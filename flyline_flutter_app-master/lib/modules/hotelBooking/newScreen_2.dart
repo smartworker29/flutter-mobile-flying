@@ -55,24 +55,48 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     super.initState();
 
     flyLinebloc.bookFlight.stream.listen((Map onData) {
-      if (onData != null && _clickedBookFlight && onData['status'] != 200) {
-        Alert(
-          context: context,
-          title:
-              "There seemed to be an error when booking your flight, try again or contact FlyLine support, support@joinflyline.com",
-          buttons: [
-            DialogButton(
-              child: Text(
-                "Close",
-                style: TextStyle(color: Colors.white, fontSize: 20),
+      if (onData != null) {
+        if(_clickedBookFlight && onData['status'] != 200) {
+          Alert(
+            context: context,
+            title:
+            "There seemed to be an error when booking your flight, try again or contact FlyLine support, support@joinflyline.com",
+            buttons: [
+              DialogButton(
+                child: Text(
+                  "Close",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                width: 120,
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              width: 120,
-            ),
-          ],
-        ).show();
+            ],
+          ).show();
+        } else {
+          Alert(
+            context: context,
+            title:
+            "Book flight successfully",
+            buttons: [
+              DialogButton(
+                child: Text(
+                  "Close",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                width: 120,
+              ),
+            ],
+          ).show();
+        }
+       setState(() {
+         _clickedBookFlight = false;
+       });
       }
     });
   }
@@ -595,9 +619,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               margin:
                   EdgeInsets.only(top: MediaQuery.of(context).padding.top / 2),
               alignment: Alignment.center,
+
               child: Text(
                 "Payment",
                 style: TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
                 ),
@@ -611,15 +637,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   Widget getBookButton() {
     return Container(
-      height: 40,
+      height: 50,
       margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
-      decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue, width: 0.7)),
+      decoration: BoxDecoration(color: const Color(0xFF00AFF5),border: Border.all(color: const Color(0xFF00AFF5), width: 0.5)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(
             child: Text("Book Flight For" + Helper.formatNumber(tripTotal),
-                style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold)),
+                style: TextStyle(color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.bold)),
             onPressed: () {
               setState(() {
                 _clickedBookFlight = true;

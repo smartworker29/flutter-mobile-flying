@@ -3,6 +3,7 @@ import 'package:motel/appTheme.dart';
 import 'package:motel/models/settingListData.dart';
 import 'package:motel/modules/profile/editProfile.dart';
 import 'package:motel/modules/profile/heplCenterScreen.dart';
+import 'package:motel/modules/profile/myWebView.dart';
 import 'package:motel/modules/profile/settingsScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -65,7 +66,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HeplCenterScreen(),
+                                  builder: (context) => MyWebView(
+                                    title: "Frequently Asked Questions",
+                                    selectedUrl:
+                                    "https://joinflyline.com/faq",
+                                  ),
                                   fullscreenDialog: true,
                                 ),
                               );
@@ -191,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 70,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                child: Image.asset("assets/images/userImage.png"),
+                child: Image.asset("assets/images/user_img.png"),
               ),
             ),
           )

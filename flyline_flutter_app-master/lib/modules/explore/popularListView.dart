@@ -61,7 +61,10 @@ class _PopularListViewState extends State<PopularListView> with TickerProviderSt
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HotelHomeScreen(),
+                                  builder: (context) => HotelHomeScreen(
+                                      arrival: popularList[index].titleTxt,
+                                    arrivalCode: popularList[index].subTxt,
+                                  ),
                                   fullscreenDialog: true),
                             );
                           },

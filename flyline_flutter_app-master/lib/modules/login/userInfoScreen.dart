@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:motel/appTheme.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../main.dart';
 import 'loginScreen.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +42,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     'cvc': null,
     'plan': null,
   };
+
+  var expDateController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -106,25 +111,25 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                               text: TextSpan(
                                   text: '- As a reminder we\'ll email you',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: const Color(0xFF929292),
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                   ),
                                   children: <TextSpan>[
                                     TextSpan(
                                       text: ' 3 days',
                                       style: TextStyle(
-                                        color: AppTheme.getTheme().primaryColor,
+                                        color: const Color(0xFF929292),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     ),
                                     TextSpan(
                                       text: ' Before.',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: const Color(0xFF929292),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     )
                                   ]),
@@ -139,25 +144,25 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                               text: TextSpan(
                                   text: '- No Commitments.',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: const Color(0xFF929292),
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                   ),
                                   children: <TextSpan>[
                                     TextSpan(
                                       text: ' Cancel',
                                       style: TextStyle(
-                                        color: AppTheme.getTheme().primaryColor,
+                                        color: const Color(0xFF929292),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     ),
                                     TextSpan(
                                       text: ' at anytime.',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: const Color(0xFF929292),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     )
                                   ]),
@@ -492,12 +497,24 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                     child: Container(
                                       height: 58,
                                       child: Center(
-                                        child: TextFormField(
+                                        child: TextField(
+                                          controller: expDateController,
+                                          onTap: () {
+                                            DatePicker.showDatePicker(context,
+                                                showTitleActions: true,
+                                                minTime: DateTime(1960, 1, 1),
+                                                maxTime: DateTime.now(), onChanged: (date) {
+                                                  print('change $date');
+                                                }, onConfirm: (date) {
+                                                  var formatter = new DateFormat('yyyy-MM-dd');
+                                                  expDateController.text = _formData['expiry'] = formatter.format(date);
+                                                }, currentTime: DateTime.now(), locale: LocaleType.en);
+                                          },
                                           maxLines: 1,
                                           onChanged: (String txt) {},
-                                          onSaved: (String value) {
-                                            _formData['expiry'] = value;
-                                          },
+//                                          onSaved: (String value) {
+//                                            _formData['expiry'] = value + "111";
+//                                          },
                                           style: TextStyle(
                                             fontSize: 16,
                                           ),
@@ -737,6 +754,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     FocusScope.of(context).requestFocus(FocusNode());
     print("aaappppiii");
     print(widget.home);
+    print(widget.email);
     print(_formData['first_name']);
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final params = jsonEncode({
@@ -752,6 +770,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       'cvc': _formData['cvc'],
       'plan': _formData['plan'],
     });
+    print(params);
     http
         .post(
       'https://staging.joinflyline.com/api/get-started/',
@@ -763,22 +782,25 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       var jsonResponse = json.decode(response.body);
       print("Resssspoooonnnsseee");
       print(jsonResponse);
-      Navigator.pushNamedAndRemoveUntil(
-          context, Routes.TabScreen, (Route<dynamic> route) => false);
-      //   if (response.statusCode == 400) {
-      //     showToast(jsonResponse['error_description'],
-      //         duration: Duration(seconds: 3), position: ToastPosition.bottom);
-      //   } else if (response.statusCode == 200) {
-      //     if (jsonResponse['status'] == "error") {
-      //       showToast(jsonResponse['error'],
-      //           duration: Duration(seconds: 3), position: ToastPosition.bottom);
-      //     } else if (jsonResponse['status'] == "ok") {
-      //       showToast("Successfully Registered",
-      //           duration: Duration(seconds: 3), position: ToastPosition.bottom);
-      //       Navigator.pushNamedAndRemoveUntil(
-      //           context, Routes.TabScreen, (Route<dynamic> route) => false);
-      //     }
-      //   }
+
+      Alert(
+        context: context,
+        title:
+        "Signup successfully",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Close",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, Routes.TabScreen, (Route<dynamic> route) => false);
+            },
+            width: 120,
+          ),
+        ],
+      ).show();
     });
   }
 }

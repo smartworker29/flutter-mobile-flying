@@ -102,7 +102,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
               child: Container(
                 height: 48,
                 decoration: BoxDecoration(
-                  color: AppTheme.getTheme().primaryColor,
+                  color: const Color(0xFF00AFF5),
                   borderRadius: BorderRadius.all(Radius.circular(1.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
