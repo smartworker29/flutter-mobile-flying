@@ -148,6 +148,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               listOfFlights
                   .addAll(originalFlights.getRange(offset, offset + perPage));
             }
+            print(listOfFlights.length);
             offset = offset + perPage;
           });
         }
@@ -274,7 +275,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     : Expanded(
                         child: Column(children: <Widget>[
                           Container(
-                             key: stickyKey,
 //                             height: !this._isSearched
 //                                 ? (heightBox != -1 ? heightBox : null)
 //                                 : 0,
@@ -438,9 +438,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getFlightDetails() {
-    if (this._isSearched) {
-      return Container();
-    }
+
     return Container(
         child: Expanded(
       child: Container(
@@ -478,8 +476,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             if (typeOfTripSelected == 1) {
               for (FlightRouteObject route in flight.routes) {
                 departures.add(route);
-                departureStopOverCity.add(route.cityTo);
                 if (route.cityTo != flight.cityTo) {
+                  departureStopOverCity.add(route.cityTo);
                   a2b++;
                 } else {
                   break;
@@ -488,8 +486,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             } else if (typeOfTripSelected == 0) {
               for (FlightRouteObject route in flight.routes) {
                 departures.add(route);
-                departureStopOverCity.add(route.cityTo);
                 if (route.cityTo != flight.cityTo) {
+                  departureStopOverCity.add(route.cityTo);
                   a2b++;
                 } else {
                   break;
@@ -498,19 +496,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
               for (FlightRouteObject route in flight.routes.reversed) {
                 returns.add(route);
-                returnStopOverCity.add(route.cityTo);
+
                 if (route.cityFrom != flight.cityTo) {
+                  returnStopOverCity.add(route.cityTo);
                   b2a++;
                 } else {
                   break;
                 }
               }
-
-              returns.forEach((i) {
-                print(formatTime.format(i.localDeparture) +
-                    '-' +
-                    formatTime.format(i.localArrival));
-              });
             }
 
             return Container(
@@ -1429,6 +1422,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchBarUI() {
+    if (this._isSearched) {
+      return Container();
+    }
     return Column(
       children: <Widget>[
         Container(

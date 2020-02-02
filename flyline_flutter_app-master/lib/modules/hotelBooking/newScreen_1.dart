@@ -546,10 +546,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 genders.forEach((item) {
                   items.add(Container(
                       margin: const EdgeInsets.only(
-                          left: 10.0,
-                          right: 10.0,
-                          top: 5.0,
-                          bottom: 5.0),
+                          left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
@@ -564,9 +561,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           setState(() {
                             selectedGender = item;
                             selectedGenderValue =
-                            genderValues[
-                            genders
-                                .indexOf(item)];
+                                genderValues[genders.indexOf(item)];
+                            genderControllers[position - 1].text = item;
                           });
                         },
                         child: Text(item),
@@ -580,18 +576,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         children: items,
                       );
                     });
-//                SelectDialog.showModal<String>(context,
-//                    searchBoxDecoration: InputDecoration(hintText: "Pick one"),
-//                    label: "Gender",
-//                    selectedValue: selectedGender,
-//                    items: genders, onChange: (String selected) {
-//                  setState(() {
-//                    selectedGender = selected;
-//                    selectedGenderValue =
-//                        genderValues[genders.indexOf(selected)];
-//                    genderControllers[position - 1].text = selected;
-//                  });
-//                });
               },
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               cursorColor: AppTheme.getTheme().primaryColor,
@@ -886,34 +870,53 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getAddAnotherPassenger() {
-    return InkWell(
-        splashColor: Colors.transparent,
-        focusColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        onTap: () {
-          print("add another");
-          this.addPassenger();
-          setState(() {
-            travailInformationUIs
-                .add(this.getTravailInformationUI(this.numberOfPassengers));
-            print(travailInformationUIs.length);
-            print("======");
-          });
-        },
-        child: Container(
-            margin: EdgeInsets.only(right: 16, top: 16),
-            child: Row(
-//              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Text("Remove passenger",
-                    softWrap: true, style: TextStyle(color: Colors.red)),
-                Text("Add another passenger",
-                    softWrap: true, style: TextStyle(color: Colors.lightBlue)),
-              ],
-            )));
+    return Container(
+        margin: EdgeInsets.only(right: 16, top: 16, left: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Expanded(
+                child: this.numberOfPassengers > 1
+                    ? InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        onTap: () {
+                          if (this.numberOfPassengers > 1) {
+                            print('remove passenger');
+                            setState(() {
+                              travailInformationUIs.removeLast();
+                              this.numberOfPassengers--;
+                            });
+                          }
+                        },
+                        child: Text("Remove passenger",
+                            softWrap: true,
+                            style: TextStyle(color: Colors.red)))
+                    : Container()),
+            Expanded(
+                child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    onTap: () {
+                      print("add another");
+                      this.addPassenger();
+                      setState(() {
+                        travailInformationUIs.add(this
+                            .getTravailInformationUI(this.numberOfPassengers));
+                        print(travailInformationUIs.length);
+                      });
+                    },
+                    child: Text("Add another passenger",
+                        textAlign: TextAlign.right,
+                        softWrap: true,
+                        style: TextStyle(color: Colors.lightBlue)))),
+          ],
+        ));
   }
 
   Widget getSearchButton() {
@@ -932,8 +935,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 FlatButton(
                   child: Text("Check Out",
                       style: TextStyle(
-                        color: Colors.white,
-                          fontSize: 19.0, fontWeight: FontWeight.bold)),
+                          color: Colors.white,
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.bold)),
                   onPressed: () {
                     if (_checkFlightResponse.noAvailableForBooking) {
                       Alert(
