@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:motel/models/filterExplore.dart';
@@ -95,6 +96,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   FilterExplore filterExplore;
 
+  GlobalKey stickyKey = GlobalKey();
+  double heightBox = -1;
+
   @override
   void initState() {
     animationController = AnimationController(
@@ -149,6 +153,22 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         }
       }
     });
+
+    SchedulerBinding.instance.addPostFrameCallback((_) => this.getKey());
+  }
+
+  void getKey() {
+    var keyContext = stickyKey.currentContext;
+    if (keyContext != null) {
+      // widget is visible
+      final box = keyContext.findRenderObject() as RenderBox;
+      final pos = box.localToGlobal(Offset.zero);
+
+      setState(() {
+        heightBox = box.size.height;
+      });
+      print("height" + box.size.height.toString());
+    }
   }
 
   void getAirlineCodes() async {
@@ -254,15 +274,20 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     : Expanded(
                         child: Column(children: <Widget>[
                           Container(
-                            color: AppTheme.getTheme().scaffoldBackgroundColor,
-                            child: Column(
-                              children: <Widget>[
-                                getSearchBarUI(),
-                                getTimeDateUI(),
-                                getSearchButton(),
-                              ],
-                            ),
-                          ),
+                             key: stickyKey,
+//                             height: !this._isSearched
+//                                 ? (heightBox != -1 ? heightBox : null)
+//                                 : 0,
+//                             duration: Duration(milliseconds: 200),
+                             color: AppTheme.getTheme().scaffoldBackgroundColor,
+                               child: Column(
+                                 children: <Widget>[
+                                   getSearchBarUI(),
+                                   getTimeDateUI(),
+                                   getSearchButton(),
+                                 ],
+                               )
+                           ),
                           getFilterBarUI(),
                           getFlightDetails(),
                         ]),
@@ -413,612 +438,544 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getFlightDetails() {
+    if (this._isSearched) {
+      return Container();
+    }
     return Container(
         child: Expanded(
       child: Container(
-          child: AnimatedContainer(
-              duration: Duration(microseconds: 200),
-              child: ListView.builder(
-                padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-                scrollDirection: Axis.vertical,
-                itemCount: offset != 0
-                    ? listOfFlights.length + 1
-                    : listOfFlights.length,
-                itemBuilder: (context, index) {
-                  if (index != listOfFlights.length) {
-                    var flight = listOfFlights[index];
+          child: ListView.builder(
+        padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+        scrollDirection: Axis.vertical,
+        itemCount:
+            offset != 0 ? listOfFlights.length + 1 : listOfFlights.length,
+        itemBuilder: (context, index) {
+          if (index != listOfFlights.length) {
+            var flight = listOfFlights[index];
 
-                    if (flight == null && _isLoading) {
-                      return Container(
-                          height: 100,
-                          child: Center(
-                              child: CircularProgressIndicator(
-                            valueColor: new AlwaysStoppedAnimation<Color>(
-                                const Color(0xFF00AFF5)),
-                          )));
-                    }
+            if (flight == null && _isLoading) {
+              return Container(
+                  height: 100,
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(
+                        const Color(0xFF00AFF5)),
+                  )));
+            }
 
-                    // initialize
-                    int a2b = 0;
-                    int b2a = 0;
+            // initialize
+            int a2b = 0;
+            int b2a = 0;
 
-                    List<FlightRouteObject> departures = List();
-                    List<FlightRouteObject> returns = List();
+            List<FlightRouteObject> departures = List();
+            List<String> departureStopOverCity = List();
+            List<FlightRouteObject> returns = List();
+            List<String> returnStopOverCity = List();
+            // get all flight routes
+            List<FlightRouteObject> routes = flight.routes;
 
-                    // get all flight routes
-                    List<FlightRouteObject> routes = flight.routes;
+            // one way
+            if (typeOfTripSelected == 1) {
+              for (FlightRouteObject route in flight.routes) {
+                departures.add(route);
+                departureStopOverCity.add(route.cityTo);
+                if (route.cityTo != flight.cityTo) {
+                  a2b++;
+                } else {
+                  break;
+                }
+              } // round trip
+            } else if (typeOfTripSelected == 0) {
+              for (FlightRouteObject route in flight.routes) {
+                departures.add(route);
+                departureStopOverCity.add(route.cityTo);
+                if (route.cityTo != flight.cityTo) {
+                  a2b++;
+                } else {
+                  break;
+                }
+              }
 
-                    // one way
-                    if (typeOfTripSelected == 1) {
-                      for (FlightRouteObject route in flight.routes) {
-                        departures.add(route);
-                        if (route.cityTo != flight.cityTo) {
-                          a2b++;
-                        } else {
-                          break;
-                        }
-                      } // round trip
-                    } else if (typeOfTripSelected == 0) {
-                      for (FlightRouteObject route in flight.routes) {
-                        departures.add(route);
-                        if (route.cityTo != flight.cityTo) {
-                          a2b++;
-                        } else {
-                          break;
-                        }
-                      }
+              for (FlightRouteObject route in flight.routes.reversed) {
+                returns.add(route);
+                returnStopOverCity.add(route.cityTo);
+                if (route.cityFrom != flight.cityTo) {
+                  b2a++;
+                } else {
+                  break;
+                }
+              }
 
-                      for (FlightRouteObject route in flight.routes.reversed) {
-                        returns.add(route);
-                        if (route.cityFrom != flight.cityTo) {
-                          b2a++;
-                        } else {
-                          break;
-                        }
-                      }
+              returns.forEach((i) {
+                print(formatTime.format(i.localDeparture) +
+                    '-' +
+                    formatTime.format(i.localArrival));
+              });
+            }
 
-                      returns.forEach((i) {
-                        print(formatTime.format(i.localDeparture) +
-                            '-' +
-                            formatTime.format(i.localArrival));
-                      });
-                    }
-
-                    return Container(
-                      margin: EdgeInsets.only(left: 16, right: 16, top: 10),
-                      decoration: BoxDecoration(
-                        color: AppTheme.getTheme().backgroundColor,
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: AppTheme.getTheme().dividerColor,
-                              offset: Offset(0, 2),
-                              blurRadius: 8.0),
-                        ],
-                      ),
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        onTap: () {},
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              child: Row(
+            return Container(
+              margin: EdgeInsets.only(left: 16, right: 16, top: 10),
+              decoration: BoxDecoration(
+                color: AppTheme.getTheme().backgroundColor,
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: AppTheme.getTheme().dividerColor,
+                      offset: Offset(0, 2),
+                      blurRadius: 8.0),
+                ],
+              ),
+              child: InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                onTap: () {},
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only(
+                                    left: 16.0, top: 14, bottom: 14),
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: Text(
+                                  formatDates.format(flight.localDeparture) +
+                                      " | Departure",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 20, top: 6),
+                                    child: Container(
+                                      width: 1,
+                                      height: 120,
+                                      color: Colors.grey.withOpacity(1),
+                                    ),
+                                  ),
                                   Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
                                         padding: EdgeInsets.only(
-                                            left: 16.0, top: 14, bottom: 14),
+                                            left: 10, top: 5, bottom: 10),
+                                        margin: EdgeInsets.only(bottom: 8),
                                         width:
                                             MediaQuery.of(context).size.width /
                                                 2,
                                         child: Text(
-                                          formatDates.format(
-                                                  flight.localDeparture) +
-                                              " | Departure",
+                                          formatTime.format(departures[0]
+                                                  .localDeparture) +
+                                              " " +
+                                              departures[0].flyFrom +
+                                              " (" +
+                                              departures[0].cityFrom +
+                                              ")",
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w800),
                                         ),
                                       ),
                                       Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         children: <Widget>[
-                                          Padding(
+                                          Container(
+                                            margin: EdgeInsets.only(left: 10),
                                             padding: EdgeInsets.only(
-                                                left: 20, top: 6),
-                                            child: Container(
-                                              width: 1,
-                                              height: 120,
-                                              color: Colors.grey.withOpacity(1),
+                                                top: 3,
+                                                bottom: 3,
+                                                left: 5,
+                                                right: 5),
+                                            decoration: BoxDecoration(
+                                                color: const Color(0xFFEDEDED)),
+                                            child: Text(
+                                              flight.durationDeparture,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.lightBlue,
+                                                  fontWeight: FontWeight.w800),
                                             ),
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                padding: EdgeInsets.only(
-                                                    left: 10,
-                                                    top: 5,
-                                                    bottom: 10),
-                                                margin:
-                                                    EdgeInsets.only(bottom: 8),
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    2,
-                                                child: Text(
-                                                  formatTime.format(departures[0]
-                                                          .localDeparture) +
-                                                      " " +
-                                                      departures[0].flyFrom +
-                                                      " (" +
-                                                      departures[0].cityFrom +
-                                                      ")",
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w800),
-                                                ),
-                                              ),
-                                              Row(
-                                                children: <Widget>[
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 10),
-                                                    padding: EdgeInsets.only(
-                                                        top: 3,
-                                                        bottom: 3,
-                                                        left: 5,
-                                                        right: 5),
-                                                    decoration: BoxDecoration(
-                                                        color: const Color(
-                                                            0xFFEDEDED)),
-                                                    child: Text(
-                                                      flight.durationDeparture,
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          color:
-                                                              Colors.lightBlue,
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 10, right: 5),
-                                                    child: Image.network(
-                                                        'https://storage.googleapis.com/joinflyline/images/airlines/${flight.routes[0].airline}.png',
-                                                        width: 20.0,
-                                                        height: 20.0),
-                                                  ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 5, right: 5),
-                                                    child: Image.network(
-                                                        'https://storage.googleapis.com/joinflyline/images/airlines/${flight.routes[0].airline}.png',
-                                                        width: 20.0,
-                                                        height: 20.0),
-                                                  ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 5),
-                                                    padding: EdgeInsets.only(
-                                                        top: 3,
-                                                        bottom: 3,
-                                                        left: 5,
-                                                        right: 5),
-                                                    decoration: BoxDecoration(
-                                                        color: const Color(
-                                                            0xFFEDEDED)),
-                                                    child: Text(
-                                                      (a2b > 0
-                                                          ? "$a2b Stopover"
-                                                          : "Direct"),
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          color:
-                                                              Colors.lightBlue,
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    left: 10, top: 10),
-                                                padding: EdgeInsets.only(
-                                                    top: 3,
-                                                    bottom: 3,
-                                                    left: 5,
-                                                    right: 5),
-                                                decoration: BoxDecoration(
-                                                    color: const Color(
-                                                        0xFFEDEDED)),
-                                                child: Text(
-                                                  selectedClassOfService,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.lightBlue,
-                                                      fontWeight:
-                                                          FontWeight.w800),
-                                                ),
-                                              ),
-                                              Container(
-                                                padding: EdgeInsets.only(
-                                                    left: 10, top: 20),
-                                                margin:
-                                                    EdgeInsets.only(bottom: 3),
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    2,
-                                                child: Text(
-                                                  formatTime.format(departures[departures.length - 1]
-                                                          .localArrival) +
-                                                      " " +
-                                                      departures[departures.length - 1].flyTo +
-                                                      " (" +
-                                                      departures[departures.length - 1].cityTo +
-                                                      ")",
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w800),
-                                                ),
-                                              ),
-                                            ],
-                                          )
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 10, right: 5),
+                                            child: Image.network(
+                                                'https://storage.googleapis.com/joinflyline/images/airlines/${flight.routes[0].airline}.png',
+                                                width: 20.0,
+                                                height: 20.0),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 5, right: 5),
+                                            child: Image.network(
+                                                'https://storage.googleapis.com/joinflyline/images/airlines/${flight.routes[0].airline}.png',
+                                                width: 20.0,
+                                                height: 20.0),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 5),
+                                            padding: EdgeInsets.only(
+                                                top: 3,
+                                                bottom: 3,
+                                                left: 5,
+                                                right: 5),
+                                            decoration: BoxDecoration(
+                                                color: const Color(0xFFEDEDED)),
+                                            child: Text(
+                                              (a2b > 0
+                                                  ? "$a2b Stopover in " + departureStopOverCity.join(',')
+                                                  : "Direct"),
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.lightBlue,
+                                                  fontWeight: FontWeight.w800),
+                                            ),
+                                          ),
                                         ],
                                       ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.only(left: 10, top: 10),
+                                        padding: EdgeInsets.only(
+                                            top: 3,
+                                            bottom: 3,
+                                            left: 5,
+                                            right: 5),
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xFFEDEDED)),
+                                        child: Text(
+                                          selectedClassOfService,
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.lightBlue,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.only(left: 10, top: 20),
+                                        margin: EdgeInsets.only(bottom: 3),
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2,
+                                        child: Text(
+                                          formatTime.format(departures[
+                                                      departures.length - 1]
+                                                  .localArrival) +
+                                              " " +
+                                              departures[departures.length - 1]
+                                                  .flyTo +
+                                              " (" +
+                                              departures[departures.length - 1]
+                                                  .cityTo +
+                                              ")",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ),
                                     ],
-                                  ),
+                                  )
                                 ],
                               ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    (typeOfTripSelected == 1
+                        ? Container()
+                        : Container(
+                            padding:
+                                EdgeInsets.only(left: 16, top: 20, bottom: 10),
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Text(
+                              flight.nightsInDest.toString() +
+                                  " nights in " +
+                                  flight.cityTo,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
                             ),
-                            (typeOfTripSelected == 1
-                                ? Container()
-                                : Container(
-                                    padding: EdgeInsets.only(
-                                        left: 16, top: 20, bottom: 10),
-                                    width:
-                                        MediaQuery.of(context).size.width / 2,
-                                    child: Text(
-                                      flight.nightsInDest.toString() +
-                                          " nights in " +
-                                          flight.cityTo,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
+                          )),
+                    (typeOfTripSelected == 1
+                        ? Container()
+                        : Container(
+                            child: Row(
+                              children: <Widget>[
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          left: 16.0, top: 14, bottom: 14),
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      child: Text(
+                                        formatDates.format(startDate) +
+                                            " | Return",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
-                                  )),
-                            (typeOfTripSelected == 1
-                                ? Container()
-                                : Container(
-                                    child: Row(
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: <Widget>[
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.only(left: 20, top: 6),
+                                          child: Container(
+                                            width: 1,
+                                            height: 120,
+                                            color: Colors.grey.withOpacity(0.8),
+                                          ),
+                                        ),
                                         Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Container(
                                               padding: EdgeInsets.only(
-                                                  left: 16.0,
-                                                  top: 14,
-                                                  bottom: 14),
+                                                  left: 10, top: 5, bottom: 10),
+                                              margin:
+                                                  EdgeInsets.only(bottom: 8),
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width /
                                                   2,
                                               child: Text(
-                                                formatDates.format(startDate) +
-                                                    " | Return",
+                                                formatTime.format(returns[
+                                                            returns.length - 1]
+                                                        .localDeparture) +
+                                                    " " +
+                                                    returns[returns.length - 1]
+                                                        .flyFrom +
+                                                    " (" +
+                                                    returns[returns.length - 1]
+                                                        .cityFrom +
+                                                    ")",
                                                 textAlign: TextAlign.start,
                                                 style: TextStyle(
-                                                    fontSize: 16,
+                                                    fontSize: 14,
                                                     fontWeight:
-                                                        FontWeight.w600),
+                                                        FontWeight.w800),
                                               ),
                                             ),
                                             Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
                                               children: <Widget>[
-                                                Padding(
+                                                Container(
+                                                  margin:
+                                                      EdgeInsets.only(left: 10),
                                                   padding: EdgeInsets.only(
-                                                      left: 20, top: 6),
-                                                  child: Container(
-                                                    width: 1,
-                                                    height: 120,
-                                                    color: Colors.grey
-                                                        .withOpacity(0.8),
+                                                      top: 3,
+                                                      bottom: 3,
+                                                      left: 5,
+                                                      right: 5),
+                                                  decoration: BoxDecoration(
+                                                      color: const Color(
+                                                          0xFFEDEDED)),
+                                                  child: Text(
+                                                    flight.durationReturn,
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.lightBlue,
+                                                        fontWeight:
+                                                            FontWeight.w800),
                                                   ),
                                                 ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 10,
-                                                          top: 5,
-                                                          bottom: 10),
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 8),
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              2,
-                                                      child: Text(
-                                                        formatTime.format(returns[
-                                                                    returns.length -
-                                                                        1]
-                                                                .localDeparture) +
-                                                            " " +
-                                                            returns[returns
-                                                                        .length -
-                                                                    1]
-                                                                .flyFrom +
-                                                            " (" +
-                                                            returns[returns
-                                                                        .length -
-                                                                    1]
-                                                                .cityFrom +
-                                                            ")",
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w800),
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      children: <Widget>[
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 10),
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  top: 3,
-                                                                  bottom: 3,
-                                                                  left: 5,
-                                                                  right: 5),
-                                                          decoration: BoxDecoration(
-                                                              color: const Color(
-                                                                  0xFFEDEDED)),
-                                                          child: Text(
-                                                            flight
-                                                                .durationReturn,
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            style: TextStyle(
-                                                                fontSize: 14,
-                                                                color: Colors
-                                                                    .lightBlue,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 10,
-                                                                  right: 5),
-                                                          child: Image.network(
-                                                              'https://storage.googleapis.com/joinflyline/images/airlines/${flight.routes[1].airline}.png',
-                                                              width: 20.0,
-                                                              height: 20.0),
-                                                        ),
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 5,
-                                                                  right: 5),
-                                                          child: Image.network(
-                                                              'https://storage.googleapis.com/joinflyline/images/airlines/${flight.routes[1].airline}.png',
-                                                              width: 20.0,
-                                                              height: 20.0),
-                                                        ),
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 5),
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  top: 3,
-                                                                  bottom: 3,
-                                                                  left: 5,
-                                                                  right: 5),
-                                                          decoration: BoxDecoration(
-                                                              color: const Color(
-                                                                  0xFFEDEDED)),
-                                                          child: Text(
-                                                            (b2a > 0
-                                                                ? "$b2a Stopover"
-                                                                : "Direct"),
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            style: TextStyle(
-                                                                fontSize: 14,
-                                                                color: Colors
-                                                                    .lightBlue,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 10, top: 10),
-                                                      padding: EdgeInsets.only(
-                                                          top: 3,
-                                                          bottom: 3,
-                                                          left: 5,
-                                                          right: 5),
-                                                      decoration: BoxDecoration(
-                                                          color: const Color(
-                                                              0xFFEDEDED)),
-                                                      child: Text(
-                                                        selectedClassOfService,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: Colors
-                                                                .lightBlue,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w800),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 10, top: 20),
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 3),
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              2,
-                                                      child: Text(
-                                                        formatTime.format(returns[
-                                                                    0]
-                                                                .localArrival) +
-                                                            " " +
-                                                            returns[0].flyTo +
-                                                            " (" +
-                                                            returns[0].cityTo +
-                                                            ")",
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w800),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 10, right: 5),
+                                                  child: Image.network(
+                                                      'https://storage.googleapis.com/joinflyline/images/airlines/${flight.routes[1].airline}.png',
+                                                      width: 20.0,
+                                                      height: 20.0),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 5, right: 5),
+                                                  child: Image.network(
+                                                      'https://storage.googleapis.com/joinflyline/images/airlines/${flight.routes[1].airline}.png',
+                                                      width: 20.0,
+                                                      height: 20.0),
+                                                ),
+                                                Container(
+                                                  margin:
+                                                      EdgeInsets.only(left: 5),
+                                                  padding: EdgeInsets.only(
+                                                      top: 3,
+                                                      bottom: 3,
+                                                      left: 5,
+                                                      right: 5),
+                                                  decoration: BoxDecoration(
+                                                      color: const Color(
+                                                          0xFFEDEDED)),
+                                                  child: Text(
+                                                    (b2a > 0
+                                                        ? "$b2a Stopover in " + returnStopOverCity.join(',')
+                                                        : "Direct"),
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.lightBlue,
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                  ),
+                                                ),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                            // Price and Book
-                            Container(
-                                margin: EdgeInsets.all(5.0),
-                                padding: EdgeInsets.all(15.0),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(
-                                      //                    <--- top side
-                                      color: AppTheme.getTheme().dividerColor,
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                        child: Center(
-                                            child: Text(
-                                      "Trip Price: \$" +
-                                          flight.price.toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 16,
-                                      ),
-                                    ))),
-                                    Expanded(
-                                        child: Center(
-                                      child: Container(
-                                        height: 40,
-                                        margin: EdgeInsets.only(
-                                            left: 20.0, right: 20),
-                                        decoration: BoxDecoration(
-                                            color: const Color(0xFF00AFF5),
-                                            border: Border.all(
-                                                width: 0.5,
-                                                color:
-                                                    const Color(0xFF00AFF5))),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            FlatButton(
-                                              child: Text("Book",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 19.0,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          newScreen1.HotelHomeScreen(
-                                                              routes:
-                                                                  flight.routes,
-                                                              ad: this.ad,
-                                                              ch: this.children,
-                                                              bookingToken: flight
-                                                                  .bookingToken,
-                                                              retailInfo:
-                                                                  flight.raw)),
-                                                );
-                                              },
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 10, top: 10),
+                                              padding: EdgeInsets.only(
+                                                  top: 3,
+                                                  bottom: 3,
+                                                  left: 5,
+                                                  right: 5),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xFFEDEDED)),
+                                              child: Text(
+                                                selectedClassOfService,
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.lightBlue,
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 10, top: 20),
+                                              margin:
+                                                  EdgeInsets.only(bottom: 3),
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2,
+                                              child: Text(
+                                                formatTime.format(returns[0]
+                                                        .localArrival) +
+                                                    " " +
+                                                    returns[0].flyTo +
+                                                    " (" +
+                                                    returns[0].cityTo +
+                                                    ")",
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                              ),
                                             ),
                                           ],
-                                        ),
-                                      ),
-                                    )),
+                                        )
+                                      ],
+                                    ),
                                   ],
-                                ))
-                          ],
+                                ),
+                              ],
+                            ),
+                          )),
+                    // Price and Book
+                    Container(
+                        margin: EdgeInsets.all(5.0),
+                        padding: EdgeInsets.all(15.0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              //                    <--- top side
+                              color: AppTheme.getTheme().dividerColor,
+                            ),
+                          ),
                         ),
-                      ),
-                    );
-                  } else {
-                    return getLoadMoreButton();
-                  }
-                },
-              ))),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                                child: Center(
+                                    child: Text(
+                              "Trip Price: \$" + flight.price.toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w100,
+                                fontSize: 16,
+                              ),
+                            ))),
+                            Expanded(
+                                child: Center(
+                              child: Container(
+                                height: 40,
+                                margin: EdgeInsets.only(left: 20.0, right: 20),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF00AFF5),
+                                    border: Border.all(
+                                        width: 0.5,
+                                        color: const Color(0xFF00AFF5))),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    FlatButton(
+                                      child: Text("Book",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 19.0,
+                                              fontWeight: FontWeight.bold)),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  newScreen1.HotelHomeScreen(
+                                                      routes: flight.routes,
+                                                      ad: this.ad,
+                                                      ch: this.children,
+                                                      bookingToken:
+                                                          flight.bookingToken,
+                                                      retailInfo: flight.raw)),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )),
+                          ],
+                        ))
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return getLoadMoreButton();
+          }
+        },
+      )),
     ));
   }
 
@@ -1099,7 +1056,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchButton() {
-    if (_isSearched) {
+    if (this._isSearched) {
       return Container();
     }
     return Container(
@@ -1183,7 +1140,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getTimeDateUI() {
-    if (_isSearched) {
+    if (this._isSearched) {
       return Container();
     }
     return Padding(
@@ -1327,7 +1284,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             height: 8,
                           ),
                           Text(
-                            "$ad Adults",
+                            ad > 1 ? "$ad Adults": "$ad Adult",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
@@ -1435,37 +1392,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   children: items,
                                 );
                               });
-//                          SelectDialog.showModal<String>(context,
-//                              label: "Select Class of Service",
-//                              selectedValue: selectedClassOfService,
-//                              items: classOfServicesList,
-//                              itemBuilder:
-//                                  (BuildContext context, item, bool isSelected) {
-//                                return Container(
-//                                  decoration: !isSelected
-//                                      ? null
-//                                      : BoxDecoration(
-//                                    borderRadius: BorderRadius.circular(5),
-//                                    color: Colors.white,
-//                                    border: Border.all(
-//                                      color: Theme.of(context).primaryColor,
-//                                    ),
-//                                  ),
-//                                  child: ListTile(
-//
-//                                    selected: isSelected,
-//                                    title: Text(item),
-//                                  ),
-//                                );
-//                              },
-//                              onChange: (selected) {
-//                                setState(() {
-//                                  selectedClassOfService = selected;
-//                                  selectedClassOfServiceValue =
-//                                  classOfServicesValueList[
-//                                  classOfServicesList.indexOf(selected)];
-//                                });
-//                              });
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -1503,9 +1429,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchBarUI() {
-    if (_isSearched) {
-      return Container();
-    }
     return Column(
       children: <Widget>[
         Container(
@@ -1867,7 +1790,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   void filter(FilterExplore filter) {
-    print(filter.accomodationListData[0].isSelected);
+    var stop = filter.accomodationListData[0].isSelected
+        ? 0
+        : filter.accomodationListData[1].isSelected
+            ? 1
+            : filter.accomodationListData[2].isSelected ? 2 : -1;
 
     var items = this.originalFlights.where((i) {
       var airlineBool = filter.airlines.map(

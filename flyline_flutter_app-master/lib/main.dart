@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
     ));
     return MaterialApp(
       key: key,
-      title: 'Motel',
+      title: 'FlyLine',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.getTheme(),
       routes: routes,
