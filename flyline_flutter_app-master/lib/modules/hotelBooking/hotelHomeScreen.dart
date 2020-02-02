@@ -438,6 +438,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getFlightDetails() {
+    if (this._isSearched) {
+      return Container();
+    }
     return Container(
         child: Expanded(
       child: Container(
@@ -1053,6 +1056,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchButton() {
+    if (this._isSearched) {
+      return Container();
+    }
     return Container(
       margin: EdgeInsets.only(left: 16.0, right: 16, top: 2, bottom: 12),
       color: const Color(0xFF00AFF5),
@@ -1134,6 +1140,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getTimeDateUI() {
+    if (this._isSearched) {
+      return Container();
+    }
     return Padding(
       padding: const EdgeInsets.only(left: 18, bottom: 2),
       child: Row(
@@ -1275,7 +1284,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             height: 8,
                           ),
                           Text(
-                            "$ad Adults",
+                            ad > 1 ? "$ad Adults": "$ad Adult",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
