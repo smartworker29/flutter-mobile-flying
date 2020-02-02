@@ -49,7 +49,7 @@ class AppTheme {
       accentColor: secondaryColor,
       canvasColor: Colors.white,
       backgroundColor: const Color(0xFFF7F9FC),
-      scaffoldBackgroundColor: const Color(0xFFF6F6F6),
+      scaffoldBackgroundColor: const Color(0xFFF7F9FC),
       errorColor: const Color(0xFFB00020),
       buttonTheme: ButtonThemeData(
         colorScheme: colorScheme,
