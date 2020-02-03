@@ -503,7 +503,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             DatePicker.showDatePicker(context,
                                                 showTitleActions: true,
                                                 minTime: DateTime(1960, 1, 1),
-                                                maxTime: DateTime.now(), onChanged: (date) {
+                                                onChanged: (date) {
                                                   print('change $date');
                                                 }, onConfirm: (date) {
                                                   var formatter = new DateFormat('yyyy-MM-dd');

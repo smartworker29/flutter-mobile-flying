@@ -130,6 +130,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         .listen((List<FlightInformationObject> onData) {
       if (onData != null) {
         if (_clickedSearch || _loadMore) {
+          print('trigger');
           setState(() {
             this._loadMore = false;
             this._clickedSearch = false;
@@ -761,7 +762,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                               fontWeight: FontWeight.w800),
                                         ),
                                       ),
-                                      Row(
+                                      Wrap(
                                         children: <Widget>[
                                           Container(
                                             margin: EdgeInsets.only(left: 10),
@@ -812,7 +813,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                       departureStopOverCity
                                                           .join(',')
                                                   : "Direct"),
+                                              softWrap: true,
                                               textAlign: TextAlign.start,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.lightBlue,
@@ -1208,6 +1211,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           airlineBool.contains(true);
                     }).toList();
 
+                    print(items.length);
                     if ((offset + perPage) > items.length) {
                       listOfFlights
                           .addAll(items.getRange(offset, items.length));
@@ -1228,9 +1232,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       _displayLoadMore = true;
                     }
                   }
-
-                  offset = offset + perPage;
                   setState(() {
+                    _clickFlight = List(listOfFlights.length);
+                    offset = offset + perPage;
                     _loadMore = false;
                     _isLoading = false;
                   });

@@ -9,7 +9,6 @@ import 'package:motel/models/travelerInformation.dart';
 import 'package:motel/modules/hotelBooking/newScreen_2.dart' as newScreen2;
 import 'package:motel/network/blocs.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:select_dialog/select_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,20 +34,15 @@ class HotelHomeScreen extends StatefulWidget {
 
 class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
-  var personalItemBool = false;
-  var noHandBagBool = true;
-  var noCheckBagBool = true;
-  var oneCheckBagBool = false;
-  var twoCheckBagBool = false;
-
   int numberOfPassengers = 0;
 
   bool _checkFlight = false;
   bool _firstLoad = false;
 
   List<BagItem> carryOnSelectedList;
-  List<Map<String, bool>> carryOnCheckBoxes;
+  List<Map<int, bool>> carryOnCheckBoxes;
   List<BagItem> checkedBagageSelectedList;
+  List<Map<int, bool>> checkedBagageCheckBoxes;
 
   List<TextEditingController> firstNameControllers;
   List<TextEditingController> lastNameControllers;
@@ -56,8 +50,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   List<TextEditingController> genderControllers;
   List<TextEditingController> passportIdControllers;
   List<TextEditingController> passportExpirationControllers;
-
-  List<Widget> travailInformationUIs;
 
   static var genders = [
     "Male",
@@ -73,6 +65,26 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   List<BagItem> holdBags;
 
   bool _displayPayment = false;
+
+  void createCheckboxData() {
+    for (var i = 0; i < handBags.length; i++) {
+      if (i == 0) {
+        this.carryOnCheckBoxes.insert(numberOfPassengers - 1, Map());
+        this.carryOnCheckBoxes[numberOfPassengers - 1].addAll({i: true});
+      } else {
+        this.carryOnCheckBoxes[numberOfPassengers - 1].addAll({i: false});
+      }
+    }
+
+    for (var i = 0; i < holdBags.length; i++) {
+      if (i == 0) {
+        this.checkedBagageCheckBoxes.insert(numberOfPassengers - 1, Map());
+        this.checkedBagageCheckBoxes[numberOfPassengers - 1].addAll({i: true});
+      } else {
+        this.checkedBagageCheckBoxes[numberOfPassengers - 1].addAll({i: false});
+      }
+    }
+  }
 
   void addPassenger() async {
     numberOfPassengers++;
@@ -94,8 +106,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     carryOnSelectedList.add(null);
     checkedBagageSelectedList.add(null);
 
-    carryOnCheckBoxes.add(Map());
-
     if (numberOfPassengers == 1) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       firstNameController.text = prefs.getString('first_name');
@@ -108,7 +118,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   @override
   void initState() {
-    travailInformationUIs = List();
     firstNameControllers = List();
     lastNameControllers = List();
     dobControllers = List();
@@ -119,6 +128,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     checkedBagageSelectedList = List();
 
     carryOnCheckBoxes = List();
+    checkedBagageCheckBoxes = List();
 
     handBags = List();
     holdBags = List();
@@ -135,8 +145,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             _checkFlightResponse = response;
             handBags.addAll(response.baggage.combinations.handBag);
             holdBags.addAll(response.baggage.combinations.holdBag);
-            travailInformationUIs
-                .add(this.getTravailInformationUI(numberOfPassengers));
+
+            this.createCheckboxData();
             _firstLoad = true;
           }
         });
@@ -181,8 +191,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     child: Column(
                       children: <Widget>[
                         getFlightDetails(),
-                        Column(
-                          children: travailInformationUIs,
+                        ListView.builder(
+                            padding: const EdgeInsets.only(left: 0, right: 0),
+                            primary: false,
+                            shrinkWrap: true,
+                            itemCount: this.numberOfPassengers,
+                            // padding on top is only for we need spec for sider
+                            itemBuilder: (context, index) {
+                              return this.getTravailInformationUI(index);
+                            }
                         ),
                         getAddAnotherPassenger(),
                         getSearchButton()
@@ -202,14 +219,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     List<Widget> listOfHandBag = List();
     for (var i = 0; i < handBags.length; i++) {
       var bag = handBags[i];
-      var uuid = Uuid().v4();
-      if (i == 0) {
-        this.carryOnCheckBoxes[numberOfPassengers - 1] = Map();
-        this.carryOnCheckBoxes[numberOfPassengers - 1].addAll({uuid: true});
-      } else {
-        this.carryOnCheckBoxes[numberOfPassengers - 1].addAll({uuid: false});
-      }
-      this.carryOnSelectedList[numberOfPassengers - 1] = bag;
+      this.carryOnSelectedList[position] = bag;
       if (bag.indices.length == 0) {
         listOfHandBag.add(Container(
           width: MediaQuery.of(context).size.width,
@@ -228,12 +238,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               //mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Checkbox(
-                  value: carryOnCheckBoxes[numberOfPassengers - 1][uuid],
+                  value: carryOnCheckBoxes[position][i],
                   onChanged: (value) {
                     setState(() {
-                      personalItemBool = value;
-                      carryOnCheckBoxes[numberOfPassengers - 1][uuid] = value;
-                      carryOnSelectedList[numberOfPassengers - 1] = bag;
+                      carryOnCheckBoxes[position].updateAll((key, value) => value = false);
+                      carryOnCheckBoxes[position][i] = value;
+                      carryOnSelectedList[position] = bag;
                     });
                   },
                 ),
@@ -276,11 +286,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               //mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Checkbox(
-                  value: carryOnCheckBoxes[numberOfPassengers - 1][uuid],
+                  value: carryOnCheckBoxes[position][i],
                   onChanged: (value) {
-                    carryOnCheckBoxes[numberOfPassengers - 1][uuid] = value;
                     setState(() {
-                      carryOnSelectedList[numberOfPassengers - 1] = bag;
+                      carryOnCheckBoxes[position].updateAll((key, value) => value = false);
+                      carryOnCheckBoxes[position][i] = value;
+                      carryOnSelectedList[position] = bag;
                     });
                   },
                 ),
@@ -312,7 +323,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     for (var i = 0; i < holdBags.length; i++) {
       var bag = holdBags[i];
       if (bag.indices.length == 0) {
-        checkedBagageSelectedList[numberOfPassengers - 1] = bag;
+        checkedBagageSelectedList[position ] = bag;
         listOfHoldBag.add(Container(
           width: MediaQuery.of(context).size.width,
           margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
@@ -330,11 +341,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               //mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Checkbox(
-                  value: noCheckBagBool,
+                  value: checkedBagageCheckBoxes[position][i],
                   onChanged: (value) {
                     setState(() {
-                      checkedBagageSelectedList[numberOfPassengers - 1] = bag;
-                      noCheckBagBool = value;
+                      checkedBagageCheckBoxes[position].updateAll((key, value) => value = false);
+                      checkedBagageCheckBoxes[position][i] = value;
+                      checkedBagageSelectedList[position ] = bag;
                     });
                   },
                 ),
@@ -386,11 +398,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               //mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Checkbox(
-                  value: oneCheckBagBool,
+                  value: checkedBagageCheckBoxes[position][i],
                   onChanged: (value) {
                     setState(() {
-                      checkedBagageSelectedList[numberOfPassengers - 1] = bag;
-                      oneCheckBagBool = value;
+                      checkedBagageCheckBoxes[position].updateAll((key, value) => value = false);
+                      checkedBagageCheckBoxes[position][i] = value;
+                      checkedBagageSelectedList[position ] = bag;
                     });
                   },
                 ),
@@ -417,8 +430,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         Container(
           width: MediaQuery.of(context).size.width,
           margin: const EdgeInsets.only(top: 8, bottom: 8),
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(left: 16.0, top: 10),
+          padding: EdgeInsets.only(left: 16.0),
           child: Text(
             "Traveler Information",
             textAlign: TextAlign.start,
@@ -439,7 +451,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             width: MediaQuery.of(context).size.width / 4,
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: firstNameControllers[numberOfPassengers - 1],
+              controller: firstNameControllers[position ],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -465,7 +477,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: lastNameControllers[numberOfPassengers - 1],
+              controller: lastNameControllers[position ],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -491,7 +503,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: dobControllers[position - 1],
+              controller: dobControllers[position ],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {
@@ -501,7 +513,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     maxTime: DateTime.now(), onChanged: (date) {
                   print('change $date');
                 }, onConfirm: (date) {
-                  dobControllers[position - 1].text =
+                  dobControllers[position ].text =
                       Helper.getDateViaDate(date, 'yyyy-MM-dd');
                 }, currentTime: DateTime.now(), locale: LocaleType.en);
               },
@@ -527,7 +539,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: genderControllers[position - 1],
+              controller: genderControllers[position ],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () async {
@@ -562,7 +574,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             selectedGender = item;
                             selectedGenderValue =
                                 genderValues[genders.indexOf(item)];
-                            genderControllers[position - 1].text = item;
+                            genderControllers[position ].text = item;
                           });
                         },
                         child: Text(item),
@@ -611,7 +623,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: passportIdControllers[numberOfPassengers - 1],
+              controller: passportIdControllers[position ],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -637,7 +649,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: passportExpirationControllers[numberOfPassengers - 1],
+              controller: passportExpirationControllers[position ],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -887,7 +899,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           if (this.numberOfPassengers > 1) {
                             print('remove passenger');
                             setState(() {
-                              travailInformationUIs.removeLast();
+                              this.carryOnCheckBoxes.removeLast();
+                              this.checkedBagageCheckBoxes.removeLast();
+                              this.carryOnSelectedList.removeLast();
+                              this.checkedBagageSelectedList.removeLast();
+
                               this.numberOfPassengers--;
                             });
                           }
@@ -904,12 +920,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     hoverColor: Colors.transparent,
                     onTap: () {
                       print("add another");
-                      this.addPassenger();
-                      setState(() {
-                        travailInformationUIs.add(this
-                            .getTravailInformationUI(this.numberOfPassengers));
-                        print(travailInformationUIs.length);
-                      });
+                     setState(() {
+                       this.addPassenger();
+                       this.createCheckboxData();
+                     });
                     },
                     child: Text("Add another passenger",
                         textAlign: TextAlign.right,
@@ -963,7 +977,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       List<TravelerInformation> lists = List();
                       int index = 0;
 
-                      travailInformationUIs.forEach((f) {
+                      for(int index = 0; index < this.numberOfPassengers; index++) {
                         var uuid = new Uuid();
                         carryOnSelectedList[index].uuid = uuid.v4();
 
@@ -980,8 +994,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                 carryOnSelectedList[index],
                                 checkedBagageSelectedList[index]);
                         lists.add(travelerInformation);
-                        index++;
-                      });
+                      }
 
                       carryOnSelectedList.forEach((f) {
                         print(f.jsonSerialize);
