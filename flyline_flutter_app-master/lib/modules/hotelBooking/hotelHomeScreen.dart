@@ -1143,6 +1143,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                       routes: flight.routes,
                                                       ad: this.ad,
                                                       ch: this.children,
+                                                      typeOfTripSelected: this.typeOfTripSelected,
+                                                      selectedClassOfService: this.selectedClassOfService,
+                                                      flight: flight,
                                                       bookingToken:
                                                           flight.bookingToken,
                                                       retailInfo: flight.raw)),

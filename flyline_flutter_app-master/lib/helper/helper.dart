@@ -39,6 +39,15 @@ class Helper {
     return " \$" + f.format(price);
   }
 
+  static costNumber(double total, double conversationAmount, double amount) {
+    if (amount == 0) {
+      return 0.0;
+    }
+
+    double price = (conversationAmount / total) * amount;
+    return price;
+  }
+
   static getCostNumber(double total, double conversationAmount, double amount) {
     if (amount == 0) {
       return amount;

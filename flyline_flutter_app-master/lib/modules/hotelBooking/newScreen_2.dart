@@ -48,7 +48,17 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   void initState() {
     priceOnPassenger = Helper.getCostNumber(widget.flightResponse.total,
         widget.flightResponse.conversion.amount, widget.flightResponse.total);
-    priceOnBaggage = 0;
+
+    widget.travelerInformations.forEach((t) {
+      priceOnBaggage += Helper.costNumber(
+              widget.flightResponse.total,
+              widget.flightResponse.conversion.amount,
+              t.carryOnSelected.price.amount) +
+          Helper.costNumber(
+              widget.flightResponse.total,
+              widget.flightResponse.conversion.amount,
+              t.checkedBagageSelected.price.amount);
+    });
     tripTotal = priceOnPassenger + priceOnBaggage;
 
     this.getAccountInfo();
@@ -56,11 +66,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
     flyLinebloc.bookFlight.stream.listen((Map onData) {
       if (onData != null) {
-        if(_clickedBookFlight && onData['status'] != 200) {
+        if (_clickedBookFlight && onData['status'] != 200) {
           Alert(
             context: context,
             title:
-            "There seemed to be an error when booking your flight, try again or contact FlyLine support, support@joinflyline.com",
+                "There seemed to be an error when booking your flight, try again or contact FlyLine support, support@joinflyline.com",
             buttons: [
               DialogButton(
                 child: Text(
@@ -77,8 +87,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         } else {
           Alert(
             context: context,
-            title:
-            "Book flight successfully",
+            title: "Book flight successfully",
             buttons: [
               DialogButton(
                 child: Text(
@@ -94,9 +103,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             ],
           ).show();
         }
-       setState(() {
-         _clickedBookFlight = false;
-       });
+        setState(() {
+          _clickedBookFlight = false;
+        });
       }
     });
   }
@@ -482,7 +491,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     padding: EdgeInsets.only(left: 10, top: 5),
                                     margin: EdgeInsets.only(bottom: 3),
                                     child: Text(
-                                      "\$0 ",
+                                      Helper.formatNumber(priceOnBaggage),
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                           fontSize: 13,
@@ -619,7 +628,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               margin:
                   EdgeInsets.only(top: MediaQuery.of(context).padding.top / 2),
               alignment: Alignment.center,
-
               child: Text(
                 "Payment",
                 style: TextStyle(
@@ -638,13 +646,18 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     return Container(
       height: 50,
       margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
-      decoration: BoxDecoration(color: const Color(0xFF00AFF5),border: Border.all(color: const Color(0xFF00AFF5), width: 0.5)),
+      decoration: BoxDecoration(
+          color: const Color(0xFF00AFF5),
+          border: Border.all(color: const Color(0xFF00AFF5), width: 0.5)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(
             child: Text("Book Flight For" + Helper.formatNumber(tripTotal),
-                style: TextStyle(color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 19.0,
+                    fontWeight: FontWeight.bold)),
             onPressed: () {
               setState(() {
                 _clickedBookFlight = true;
