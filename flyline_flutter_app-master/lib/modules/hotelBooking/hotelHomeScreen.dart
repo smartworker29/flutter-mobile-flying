@@ -809,9 +809,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 color: const Color(0xFFEDEDED)),
                                             child: Text(
                                               (a2b > 0
-                                                  ? "$a2b Stopover in " +
-                                                      departureStopOverCity
-                                                          .join(',')
+                                                  ? (a2b > 1 ? "$a2b Stopovers" : "$a2b Stopover")
                                                   : "Direct"),
                                               softWrap: true,
                                               textAlign: TextAlign.start,
@@ -1014,9 +1012,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                           0xFFEDEDED)),
                                                   child: Text(
                                                     (b2a > 0
-                                                        ? "$b2a Stopover in " +
-                                                            returnStopOverCity
-                                                                .join(',')
+                                                        ?  (b2a > 1 ? "$b2a Stopovers" : "$b2a Stopover")
                                                         : "Direct"),
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
