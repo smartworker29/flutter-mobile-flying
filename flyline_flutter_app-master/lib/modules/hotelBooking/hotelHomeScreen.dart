@@ -277,20 +277,24 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       )
                     : Expanded(
                         child: Column(children: <Widget>[
-                          Container(
-//                             height: !this._isSearched
-//                                 ? (heightBox != -1 ? heightBox : null)
-//                                 : 0,
-//                             duration: Duration(milliseconds: 200),
-                              color:
-                                  AppTheme.getTheme().scaffoldBackgroundColor,
-                              child: Column(
-                                children: <Widget>[
-                                  getSearchBarUI(),
-                                  getTimeDateUI(),
-                                  getSearchButton(),
-                                ],
-                              )),
+                          AnimatedOpacity(
+                              // If the widget is visible, animate to 0.0 (invisible).
+                              // If the widget is hidden, animate to 1.0 (fully visible).
+                              opacity: !this._isSearched ? 1.0 : 0.0,
+                              duration: Duration(milliseconds: 1000),
+                              // The green box must be a child of the AnimatedOpacity widget.
+                              child: (this._isSearched
+                                  ? Container()
+                                  : Container(
+                                      color: AppTheme.getTheme()
+                                          .scaffoldBackgroundColor,
+                                      child: Column(
+                                        children: <Widget>[
+                                          getSearchBarUI(),
+                                          getTimeDateUI(),
+                                          getSearchButton(),
+                                        ],
+                                      )))),
                           getFilterBarUI(),
                           getFlightDetails(),
                         ]),
@@ -1076,7 +1080,20 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             ),
                           )),
                     // Price and Book
-                    _clickFlight[index] != null && _clickFlight[index] ? this.getFlightDetailItems(departures, returns, flight) : Container(),
+                    AnimatedOpacity(
+                        // If the widget is visible, animate to 0.0 (invisible).
+                        // If the widget is hidden, animate to 1.0 (fully visible).
+                        opacity:
+                            _clickFlight[index] != null && _clickFlight[index]
+                                ? 1.0
+                                : 0.0,
+                        duration: Duration(milliseconds: 500),
+                        // The green box must be a child of the AnimatedOpacity widget.
+                        child:
+                            _clickFlight[index] != null && _clickFlight[index]
+                                ? this.getFlightDetailItems(
+                                    departures, returns, flight)
+                                : Container()),
                     Container(
                         margin: EdgeInsets.all(5.0),
                         padding: EdgeInsets.all(15.0),
@@ -1228,9 +1245,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchButton() {
-    if (this._isSearched) {
-      return Container();
-    }
     return Container(
       margin: EdgeInsets.only(left: 16.0, right: 16, top: 2, bottom: 12),
       color: const Color(0xFF00AFF5),
@@ -1312,9 +1326,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getTimeDateUI() {
-    if (this._isSearched) {
-      return Container();
-    }
     return Padding(
       padding: const EdgeInsets.only(left: 18, bottom: 2),
       child: Row(
@@ -1601,9 +1612,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchBarUI() {
-    if (this._isSearched) {
-      return Container();
-    }
     return Column(
       children: <Widget>[
         Container(
