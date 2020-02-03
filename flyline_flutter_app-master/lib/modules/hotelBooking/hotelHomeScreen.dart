@@ -331,7 +331,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     ? flight.durationDeparture
                     : flight.durationReturn),
             textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 13.6, fontWeight: FontWeight.w800),
           ),
         ),
       ],
@@ -375,7 +375,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                    padding: EdgeInsets.only(left: 10, top: 5),
+                                    padding: EdgeInsets.only(left: 10, top: 14),
                                     margin: EdgeInsets.only(bottom: 3),
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -386,13 +386,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                               route.localArrival, "hh:mm a"),
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 12.8,
                                           fontWeight: FontWeight.w800),
                                     ),
                                   ),
                                   Container(
                                     padding: EdgeInsets.only(left: 10, top: 5),
-                                    margin: EdgeInsets.only(bottom: 3),
+                                    margin: EdgeInsets.only(bottom: 14),
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       route.cityFrom +
@@ -406,8 +406,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                           Helper.duration(route.duration),
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w800),
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ],
@@ -445,7 +445,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                         .localArrival.millisecondsSinceEpoch)) +
                             ' layover',
                         textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 12)))
+                        style: TextStyle(fontSize: 12.5)))
                 : Container()),
           ],
         ),
@@ -721,8 +721,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       " | Departure",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800),
                                 ),
                               ),
                               Row(
@@ -734,7 +734,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     child: Container(
                                       width: 1,
                                       height: 120,
-                                      color: Colors.grey.withOpacity(1),
+                                      color: Colors.grey.withOpacity(.4),
                                     ),
                                   ),
                                   Column(
@@ -758,7 +758,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                               ")",
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 13.6,
                                               fontWeight: FontWeight.w800),
                                         ),
                                       ),
@@ -777,9 +777,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                               flight.durationDeparture,
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
-                                                  fontSize: 14,
+                                                  fontSize: 13.2,
                                                   color: Colors.lightBlue,
-                                                  fontWeight: FontWeight.w800),
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                           ),
                                           Container(
@@ -817,9 +817,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                               textAlign: TextAlign.start,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                  fontSize: 14,
+                                                  fontSize: 13.2,
                                                   color: Colors.lightBlue,
-                                                  fontWeight: FontWeight.w800),
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                           ),
                                         ],
@@ -838,9 +838,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                           selectedClassOfService,
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 13.2,
                                               color: Colors.lightBlue,
-                                              fontWeight: FontWeight.w800),
+                                              fontWeight: FontWeight.w600),
                                         ),
                                       ),
                                       Container(
@@ -863,7 +863,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                               ")",
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 13.2,
                                               fontWeight: FontWeight.w800),
                                         ),
                                       ),
@@ -889,7 +889,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 14,
+                                  fontSize: 13.2,
                                   fontWeight: FontWeight.w600),
                             ),
                           )),
@@ -913,7 +913,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.w600),
+                                            fontWeight: FontWeight.w800),
                                       ),
                                     ),
                                     Row(
@@ -928,7 +928,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                           child: Container(
                                             width: 1,
                                             height: 120,
-                                            color: Colors.grey.withOpacity(0.8),
+                                            color: Colors.grey.withOpacity(.4),
                                           ),
                                         ),
                                         Column(
@@ -957,7 +957,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                     ")",
                                                 textAlign: TextAlign.start,
                                                 style: TextStyle(
-                                                    fontSize: 14,
+                                                    fontSize: 13.2,
                                                     fontWeight:
                                                         FontWeight.w800),
                                               ),
@@ -979,10 +979,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                     flight.durationReturn,
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
-                                                        fontSize: 14,
+                                                        fontSize: 13.2,
                                                         color: Colors.lightBlue,
                                                         fontWeight:
-                                                            FontWeight.w800),
+                                                            FontWeight.w600),
                                                   ),
                                                 ),
                                                 Container(
@@ -1020,10 +1020,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                         : "Direct"),
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
-                                                        fontSize: 14,
+                                                        fontSize: 13.2,
                                                         color: Colors.lightBlue,
                                                         fontWeight:
-                                                            FontWeight.w800),
+                                                            FontWeight.w600),
                                                   ),
                                                 ),
                                               ],
@@ -1043,15 +1043,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 selectedClassOfService,
                                                 textAlign: TextAlign.start,
                                                 style: TextStyle(
-                                                    fontSize: 14,
+                                                    fontSize: 13.2,
                                                     color: Colors.lightBlue,
                                                     fontWeight:
-                                                        FontWeight.w800),
+                                                        FontWeight.w600),
                                               ),
                                             ),
                                             Container(
                                               padding: EdgeInsets.only(
-                                                  left: 10, top: 20),
+                                                  left: 10, top: 20, bottom: 18),
                                               margin:
                                                   EdgeInsets.only(bottom: 3),
                                               width: MediaQuery.of(context)
@@ -1068,7 +1068,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                     ")",
                                                 textAlign: TextAlign.start,
                                                 style: TextStyle(
-                                                    fontSize: 14,
+                                                    fontSize: 13.2,
                                                     fontWeight:
                                                         FontWeight.w800),
                                               ),
@@ -1115,7 +1115,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     child: Text(
                               "Trip Price: \$" + flight.price.toString(),
                               style: TextStyle(
-                                fontWeight: FontWeight.w100,
+                                fontWeight: FontWeight.w800,
                                 fontSize: 16,
                               ),
                             ))),
