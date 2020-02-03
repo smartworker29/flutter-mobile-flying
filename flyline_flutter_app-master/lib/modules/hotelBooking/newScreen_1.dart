@@ -924,7 +924,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       return Column(
         children: <Widget>[
           Container(
-            height: 40,
+            height: 50,
             margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
             decoration: BoxDecoration(
                 color: const Color(0xFF00AFF5),
@@ -1008,7 +1008,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               ],
             ),
           ),
-          SizedBox(height: 38)
+          SizedBox(height: 100)
         ],
       );
     }
