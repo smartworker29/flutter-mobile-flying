@@ -623,7 +623,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               child: Text(
                 "Payment",
                 style: TextStyle(
-                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
                 ),
