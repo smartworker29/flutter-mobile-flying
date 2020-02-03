@@ -563,7 +563,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           maxLines: 1,
                                           onChanged: (String txt) {},
                                           onSaved: (String value) {
-                                            _formData['expiry'] = value;
+                                            _formData['cvc'] = value;
                                           },
                                           style: TextStyle(
                                             fontSize: 16,

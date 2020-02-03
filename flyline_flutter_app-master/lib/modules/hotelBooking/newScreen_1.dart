@@ -11,12 +11,16 @@ import 'package:motel/network/blocs.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:intl/intl.dart' as intl;
 
 class HotelHomeScreen extends StatefulWidget {
   List<FlightRouteObject> routes;
   final int ad;
   final int ch;
   final String bookingToken;
+  final int typeOfTripSelected;
+  final String selectedClassOfService;
+  final FlightInformationObject flight;
   final Map<String, dynamic> retailInfo;
 
   HotelHomeScreen(
@@ -25,6 +29,9 @@ class HotelHomeScreen extends StatefulWidget {
       this.ad,
       this.ch,
       this.bookingToken,
+      this.flight,
+      this.selectedClassOfService,
+      this.typeOfTripSelected,
       this.retailInfo})
       : super(key: key);
 
@@ -65,12 +72,19 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   List<BagItem> holdBags;
 
   bool _displayPayment = false;
+  bool _clickFlight = false;
+
+  final formatDates = intl.DateFormat("dd MMM");
+  final formatTime = intl.DateFormat("hh : mm a");
+  final formatAllDay = intl.DateFormat("dd/MM/yyyy");
+
 
   void createCheckboxData() {
     for (var i = 0; i < handBags.length; i++) {
       if (i == 0) {
         this.carryOnCheckBoxes.insert(numberOfPassengers - 1, Map());
         this.carryOnCheckBoxes[numberOfPassengers - 1].addAll({i: true});
+        carryOnSelectedList[numberOfPassengers - 1] = handBags[0];
       } else {
         this.carryOnCheckBoxes[numberOfPassengers - 1].addAll({i: false});
       }
@@ -80,6 +94,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       if (i == 0) {
         this.checkedBagageCheckBoxes.insert(numberOfPassengers - 1, Map());
         this.checkedBagageCheckBoxes[numberOfPassengers - 1].addAll({i: true});
+        checkedBagageSelectedList[numberOfPassengers - 1] = holdBags[0];
       } else {
         this.checkedBagageCheckBoxes[numberOfPassengers - 1].addAll({i: false});
       }
@@ -190,7 +205,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   Container(
                     child: Column(
                       children: <Widget>[
-                        getFlightDetails(),
+//                        getFlightDetails(),
+                        flightDetail(),
                         ListView.builder(
                             padding: const EdgeInsets.only(left: 0, right: 0),
                             primary: false,
@@ -199,8 +215,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             // padding on top is only for we need spec for sider
                             itemBuilder: (context, index) {
                               return this.getTravailInformationUI(index);
-                            }
-                        ),
+                            }),
                         getAddAnotherPassenger(),
                         getSearchButton()
                       ],
@@ -219,7 +234,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     List<Widget> listOfHandBag = List();
     for (var i = 0; i < handBags.length; i++) {
       var bag = handBags[i];
-      this.carryOnSelectedList[position] = bag;
       if (bag.indices.length == 0) {
         listOfHandBag.add(Container(
           width: MediaQuery.of(context).size.width,
@@ -241,7 +255,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   value: carryOnCheckBoxes[position][i],
                   onChanged: (value) {
                     setState(() {
-                      carryOnCheckBoxes[position].updateAll((key, value) => value = false);
+                      carryOnCheckBoxes[position]
+                          .updateAll((key, value) => value = false);
                       carryOnCheckBoxes[position][i] = value;
                       carryOnSelectedList[position] = bag;
                     });
@@ -289,7 +304,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   value: carryOnCheckBoxes[position][i],
                   onChanged: (value) {
                     setState(() {
-                      carryOnCheckBoxes[position].updateAll((key, value) => value = false);
+                      carryOnCheckBoxes[position]
+                          .updateAll((key, value) => value = false);
                       carryOnCheckBoxes[position][i] = value;
                       carryOnSelectedList[position] = bag;
                     });
@@ -323,7 +339,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     for (var i = 0; i < holdBags.length; i++) {
       var bag = holdBags[i];
       if (bag.indices.length == 0) {
-        checkedBagageSelectedList[position ] = bag;
         listOfHoldBag.add(Container(
           width: MediaQuery.of(context).size.width,
           margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
@@ -344,9 +359,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   value: checkedBagageCheckBoxes[position][i],
                   onChanged: (value) {
                     setState(() {
-                      checkedBagageCheckBoxes[position].updateAll((key, value) => value = false);
+                      checkedBagageCheckBoxes[position]
+                          .updateAll((key, value) => value = false);
                       checkedBagageCheckBoxes[position][i] = value;
-                      checkedBagageSelectedList[position ] = bag;
+                      checkedBagageSelectedList[position] = bag;
                     });
                   },
                 ),
@@ -401,9 +417,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   value: checkedBagageCheckBoxes[position][i],
                   onChanged: (value) {
                     setState(() {
-                      checkedBagageCheckBoxes[position].updateAll((key, value) => value = false);
+                      checkedBagageCheckBoxes[position]
+                          .updateAll((key, value) => value = false);
                       checkedBagageCheckBoxes[position][i] = value;
-                      checkedBagageSelectedList[position ] = bag;
+                      checkedBagageSelectedList[position] = bag;
                     });
                   },
                 ),
@@ -451,7 +468,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             width: MediaQuery.of(context).size.width / 4,
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: firstNameControllers[position ],
+              controller: firstNameControllers[position],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -477,7 +494,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: lastNameControllers[position ],
+              controller: lastNameControllers[position],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -503,7 +520,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: dobControllers[position ],
+              controller: dobControllers[position],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {
@@ -513,7 +530,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     maxTime: DateTime.now(), onChanged: (date) {
                   print('change $date');
                 }, onConfirm: (date) {
-                  dobControllers[position ].text =
+                  dobControllers[position].text =
                       Helper.getDateViaDate(date, 'yyyy-MM-dd');
                 }, currentTime: DateTime.now(), locale: LocaleType.en);
               },
@@ -539,7 +556,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: genderControllers[position ],
+              controller: genderControllers[position],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () async {
@@ -574,7 +591,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             selectedGender = item;
                             selectedGenderValue =
                                 genderValues[genders.indexOf(item)];
-                            genderControllers[position ].text = item;
+                            genderControllers[position].text = item;
                           });
                         },
                         child: Text(item),
@@ -623,7 +640,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: passportIdControllers[position ],
+              controller: passportIdControllers[position],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -649,7 +666,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           child: Container(
             padding: EdgeInsets.only(left: 10),
             child: TextField(
-              controller: passportExpirationControllers[position ],
+              controller: passportExpirationControllers[position],
               textAlign: TextAlign.start,
               onChanged: (String txt) {},
               onTap: () {},
@@ -694,7 +711,417 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     );
   }
 
-  Widget getFlightDetails() {
+  Widget flightDetail() {
+    // initialize
+    int a2b = 0;
+    int b2a = 0;
+
+    List<FlightRouteObject> departures = List();
+    List<String> departureStopOverCity = List();
+    List<FlightRouteObject> returns = List();
+    List<String> returnStopOverCity = List();
+    // get all flight routes
+    List<FlightRouteObject> routes = widget.routes;
+
+    // one way
+    if (widget.typeOfTripSelected == 1) {
+      for (FlightRouteObject route in widget.routes) {
+        departures.add(route);
+        if (route.cityTo != widget.flight.cityTo) {
+          departureStopOverCity.add(route.cityTo);
+          a2b++;
+        } else {
+          break;
+        }
+      } // round trip
+    } else if (widget.typeOfTripSelected == 0) {
+      for (FlightRouteObject route in widget.routes) {
+        departures.add(route);
+        if (route.cityTo != widget.flight.cityTo) {
+          departureStopOverCity.add(route.cityTo);
+          a2b++;
+        } else {
+          break;
+        }
+      }
+
+      for (FlightRouteObject route in widget.routes.reversed) {
+        returns.add(route);
+
+        if (route.cityFrom != widget.flight.cityTo) {
+          returnStopOverCity.add(route.cityTo);
+          b2a++;
+        } else {
+          break;
+        }
+      }
+    }
+    return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      focusColor: Colors.transparent,
+      onTap: () {
+        setState(() {
+            _clickFlight = !_clickFlight;
+        });
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 16.0, top: 14, bottom: 14),
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: Text(
+                        formatDates.format(widget.flight.localDeparture) +
+                            " | Departure",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 20, top: 6),
+                          child: Container(
+                            width: 1,
+                            height: 120,
+                            color: Colors.grey.withOpacity(1),
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              padding:
+                                  EdgeInsets.only(left: 10, top: 5, bottom: 10),
+                              margin: EdgeInsets.only(bottom: 8),
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Text(
+                                formatTime
+                                        .format(departures[0].localDeparture) +
+                                    " " +
+                                    departures[0].flyFrom +
+                                    " (" +
+                                    departures[0].cityFrom +
+                                    ")",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w800),
+                              ),
+                            ),
+                            Wrap(
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                  padding: EdgeInsets.only(
+                                      top: 3, bottom: 3, left: 5, right: 5),
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFEDEDED)),
+                                  child: Text(
+                                    widget.flight.durationDeparture,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.lightBlue,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10, right: 5),
+                                  child: Image.network(
+                                      'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[0].airline}.png',
+                                      width: 20.0,
+                                      height: 20.0),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 5, right: 5),
+                                  child: Image.network(
+                                      'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[0].airline}.png',
+                                      width: 20.0,
+                                      height: 20.0),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 5),
+                                  padding: EdgeInsets.only(
+                                      top: 3, bottom: 3, left: 5, right: 5),
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFEDEDED)),
+                                  child: Text(
+                                    (a2b > 0
+                                        ? (a2b > 1
+                                            ? "$a2b Stopovers"
+                                            : "$a2b Stopover")
+                                        : "Direct"),
+                                    softWrap: true,
+                                    textAlign: TextAlign.start,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.lightBlue,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 10, top: 10),
+                              padding: EdgeInsets.only(
+                                  top: 3, bottom: 3, left: 5, right: 5),
+                              decoration:
+                                  BoxDecoration(color: const Color(0xFFEDEDED)),
+                              child: Text(
+                                widget.selectedClassOfService,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.lightBlue,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 10, top: 20),
+                              margin: EdgeInsets.only(bottom: 3),
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Text(
+                                formatTime.format(
+                                        departures[departures.length - 1]
+                                            .localArrival) +
+                                    " " +
+                                    departures[departures.length - 1].flyTo +
+                                    " (" +
+                                    departures[departures.length - 1].cityTo +
+                                    ")",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w800),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          (widget.typeOfTripSelected == 1
+              ? Container()
+              : Container(
+                  padding: EdgeInsets.only(left: 16, top: 20, bottom: 10),
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: Text(
+                    widget.flight.nightsInDest.toString() +
+                        " nights in " +
+                        widget.flight.cityTo,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
+                  ),
+                )),
+          (widget.typeOfTripSelected == 1
+              ? Container()
+              : Container(
+                  child: Row(
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(
+                                left: 16.0, top: 14, bottom: 14),
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Text(
+                              formatDates.format(widget.flight.localArrival) +
+                                  " | Return",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, top: 6),
+                                child: Container(
+                                  width: 1,
+                                  height: 120,
+                                  color: Colors.grey.withOpacity(0.8),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: 10, top: 5, bottom: 10),
+                                    margin: EdgeInsets.only(bottom: 8),
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    child: Text(
+                                      formatTime.format(
+                                              returns[returns.length - 1]
+                                                  .localDeparture) +
+                                          " " +
+                                          returns[returns.length - 1].flyFrom +
+                                          " (" +
+                                          returns[returns.length - 1].cityFrom +
+                                          ")",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Container(
+                                        margin: EdgeInsets.only(left: 10),
+                                        padding: EdgeInsets.only(
+                                            top: 3,
+                                            bottom: 3,
+                                            left: 5,
+                                            right: 5),
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xFFEDEDED)),
+                                        child: Text(
+                                          widget.flight.durationReturn,
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.lightBlue,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.only(left: 10, right: 5),
+                                        child: Image.network(
+                                            'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[1].airline}.png',
+                                            width: 20.0,
+                                            height: 20.0),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.only(left: 5, right: 5),
+                                        child: Image.network(
+                                            'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[1].airline}.png',
+                                            width: 20.0,
+                                            height: 20.0),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 5),
+                                        padding: EdgeInsets.only(
+                                            top: 3,
+                                            bottom: 3,
+                                            left: 5,
+                                            right: 5),
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xFFEDEDED)),
+                                        child: Text(
+                                          (b2a > 0
+                                              ? (b2a > 1
+                                                  ? "$b2a Stopovers"
+                                                  : "$b2a Stopover")
+                                              : "Direct"),
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.lightBlue,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10, top: 10),
+                                    padding: EdgeInsets.only(
+                                        top: 3, bottom: 3, left: 5, right: 5),
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xFFEDEDED)),
+                                    child: Text(
+                                      widget.selectedClassOfService,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.lightBlue,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(left: 10, top: 20),
+                                    margin: EdgeInsets.only(bottom: 3),
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    child: Text(
+                                      formatTime
+                                              .format(returns[0].localArrival) +
+                                          " " +
+                                          returns[0].flyTo +
+                                          " (" +
+                                          returns[0].cityTo +
+                                          ")",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )),
+          // Price and Book
+          AnimatedOpacity(
+            // If the widget is visible, animate to 0.0 (invisible).
+            // If the widget is hidden, animate to 1.0 (fully visible).
+              opacity:
+              _clickFlight
+                  ? 1.0
+                  : 0.0,
+              duration: Duration(milliseconds: 500),
+              // The green box must be a child of the AnimatedOpacity widget.
+              child:
+              _clickFlight
+                  ? this.getFlightDetailItems()
+                  : Container()),
+          Container(
+              margin: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    //                    <--- top side
+                    color: AppTheme.getTheme().dividerColor,
+                  ),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+
+  Widget getFlightDetailItems() {
     List<Widget> lists = List();
     for (var i = 0; i < widget.routes.length; i++) {
       FlightRouteObject route = widget.routes[i];
@@ -920,10 +1347,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     hoverColor: Colors.transparent,
                     onTap: () {
                       print("add another");
-                     setState(() {
-                       this.addPassenger();
-                       this.createCheckboxData();
-                     });
+                      setState(() {
+                        this.addPassenger();
+                        this.createCheckboxData();
+                      });
                     },
                     child: Text("Add another passenger",
                         textAlign: TextAlign.right,
@@ -975,9 +1402,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       ).show();
                     } else {
                       List<TravelerInformation> lists = List();
-                      int index = 0;
-
-                      for(int index = 0; index < this.numberOfPassengers; index++) {
+                      for (int index = 0;
+                          index < this.numberOfPassengers;
+                          index++) {
                         var uuid = new Uuid();
                         carryOnSelectedList[index].uuid = uuid.v4();
 
