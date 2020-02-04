@@ -1815,7 +1815,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             originalFlights.length.toString() +
-                                " flights found",
+                                " Flights Found",
                             style: TextStyle(
                               fontWeight: FontWeight.w100,
                               fontSize: 16,
