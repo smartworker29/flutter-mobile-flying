@@ -62,8 +62,8 @@ class FlyLineRepository {
     return _flyLineProvider.book(bookRequest);
   }
 
-  Future<List<FlylineDeal>> randomDeals() {
-    return _flyLineProvider.randomDeals();
+  Future<List<FlylineDeal>> randomDeals(int page) {
+    return _flyLineProvider.randomDeals(page);
   }
 
   Future<List<BookedFlight>> pastOrUpcomingFlightSummary(

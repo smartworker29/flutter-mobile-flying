@@ -193,7 +193,7 @@ class FlyLineProvider {
     return { "status": response.statusCode };
   }
 
-  Future<List<FlylineDeal>> randomDeals() async {
+  Future<List<FlylineDeal>> randomDeals(int page) async {
     print('randomDeals');
     var token = await getAuthToken();
 
@@ -202,7 +202,7 @@ class FlyLineProvider {
     dio.options.headers["Authorization"] = "Token $token";
 
     List<FlylineDeal> deals = List<FlylineDeal>();
-    var url = "$baseUrl/api/deals/";
+    var url = "$baseUrl/api/deals/?page=" + page.toString();
 
     print(url);
     try {
@@ -220,6 +220,7 @@ class FlyLineProvider {
       for (dynamic i in response.data["results"]) {
         deals.add(FlylineDeal.fromJson(i));
       }
+      print(deals.length);
     }
     return deals;
   }

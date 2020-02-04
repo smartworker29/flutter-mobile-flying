@@ -108,7 +108,11 @@ class FlyLineBloc {
   }
 
   Future<List<FlylineDeal>> randomDeals() async {
-    List<FlylineDeal> response = await _repository.randomDeals();
+    List<FlylineDeal> response = List();
+    response.addAll(await _repository.randomDeals(1));
+    response.addAll(await _repository.randomDeals(2));
+    response.addAll(await _repository.randomDeals(3));
+    response.addAll(await _repository.randomDeals(4));
     _subjectRandomDeals.sink.add(response);
 
     return response;
