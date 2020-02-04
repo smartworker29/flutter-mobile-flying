@@ -125,7 +125,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                     },
                     child: Center(
                       child: Text(
-                        "Login",
+                        "Log In",
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,

@@ -171,7 +171,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     decoration: new InputDecoration(
                                       errorText: null,
                                       border: InputBorder.none,
-                                      hintText: "Email Address",
+                                      hintText: "Enter your email",
                                       hintStyle: TextStyle(
                                           color: AppTheme.getTheme()
                                               .disabledColor),
@@ -224,7 +224,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     decoration: new InputDecoration(
                                       errorText: null,
                                       border: InputBorder.none,
-                                      hintText: "Password",
+                                      hintText: "Enter your password",
                                       hintStyle: TextStyle(
                                           color: AppTheme.getTheme()
                                               .disabledColor),
@@ -280,7 +280,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 },
                                 child: Center(
                                   child: Text(
-                                    "Continue",
+                                    "Next",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 16,
@@ -294,7 +294,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
-                            "By signing up, you agree to FlyLine Terms of\nServices and Privacy Policy.",
+                            "By signing up, you agree to FlyLine Terms of\nService and Privacy Policy.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14,
@@ -308,7 +308,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              "Already have account?.",
+                              "Already have account?",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -329,7 +329,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  "Log in",
+                                  "Log In",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,

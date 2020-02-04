@@ -108,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       bottom: 24.0 + MediaQuery.of(context).padding.bottom,
                       top: 16),
                   child: Text(
-                    "Already have account? Log in",
+                    "Already have account? Log In",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 14,

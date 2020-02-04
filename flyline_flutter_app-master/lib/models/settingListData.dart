@@ -45,7 +45,7 @@ class SettingsListData {
     //   iconData: FontAwesomeIcons.gift,
     // ),
     SettingsListData(
-      titleTxt: 'Frequently Asked Questions',
+      titleTxt: 'Frequently asked questions',
       isSelected: false,
       iconData: FontAwesomeIcons.infoCircle,
     ),
@@ -92,7 +92,7 @@ class SettingsListData {
 //      iconData: Icons.keyboard_arrow_right,
 //    ),
     SettingsListData(
-      titleTxt: 'Log out',
+      titleTxt: 'Log Out',
       isSelected: false,
       iconData: Icons.keyboard_arrow_right,
     )
