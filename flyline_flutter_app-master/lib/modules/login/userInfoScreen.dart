@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
@@ -808,22 +809,31 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       'plan': _formData['plan'],
     });
     print(params);
-    http
-        .post(
-      'https://staging.joinflyline.com/api/get-started/',
-      headers: {'Content-Type': 'application/json'},
-      body: params,
-    )
-        .then((http.Response response) async {
-      //   print(response.body);
 
-      print(response.statusCode);
-      var jsonResponse = json.decode(response.body);
-      print("Resssspoooonnnsseee");
-      print(jsonResponse);
+    try {
+      http
+          .post(
+        'https://staging.joinflyline.com/api/get-started/',
+        headers: {'Content-Type': 'application/json'},
+        body: params,
+      )
+          .then((http.Response response) async {
+        //   print(response.body);
 
-      Navigator.pushNamedAndRemoveUntil(
-          context, Routes.TabScreen, (Route<dynamic> route) => false);
-    });
+        print(response.statusCode);
+        var jsonResponse = json.decode(response.body);
+        print("Resssspoooonnnsseee");
+        print(jsonResponse);
+
+
+        Navigator.pushNamedAndRemoveUntil(
+            context, Routes.TabScreen, (Route<dynamic> route) => false);
+      });
+    } on DioError catch (e) {
+      var result = e.response.statusCode.toString();
+      print(result);
+    } on Error catch (e) {
+      print(e);
+    }
   }
 }
