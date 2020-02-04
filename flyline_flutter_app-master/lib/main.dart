@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:motel/appTheme.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'introductionScreen.dart';
 import 'modules/bottomTab/bottomTabScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  OneSignal.shared.init(
+      "905d4559-c3bb-442c-bed5-93a097da8a7e",
+      iOSSettings: {
+        OSiOSSettings.autoPrompt: false,
+        OSiOSSettings.inAppLaunchUrl: true
+      }
+  );
+  OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
