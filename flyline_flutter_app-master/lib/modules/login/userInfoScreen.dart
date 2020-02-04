@@ -816,13 +816,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         body: params,
       ).then((http.Response response) async {
         var jsonResponse = json.decode(response.body);
-        print(jsonResponse);
-        print("A new user has registered successfully.................");
-
-        flyLinebloc.tryLogin(widget.email, widget.password);
-
-        Navigator.pushNamedAndRemoveUntil(
-            context, Routes.TabScreen, (Route<dynamic> route) => false);
+        if (response.statusCode == 200) {
+          print("A new user has registered successfully.................");
+          await flyLinebloc.tryLogin(widget.email, widget.password);
+          Navigator.pushNamedAndRemoveUntil(context, Routes.TabScreen, (Route<dynamic> route) => false);
+        }
       });
     } on DioError catch (e) {
       var result = e.response.statusCode.toString();
