@@ -188,12 +188,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
     if (widget.departure != null) {
       selectedDeparture = departure = LocationObject(widget.departureCode,
-          widget.departureCode, "city", widget.departure, "");
+          widget.departureCode, "city", widget.departure, "", null);
     }
 
     if (widget.arrival != null) {
       selectedArrival = arrival = LocationObject(
-          widget.arrivalCode, widget.arrivalCode, "city", widget.arrival, "");
+          widget.arrivalCode, widget.arrivalCode, "city", widget.arrival, "", null);
     }
   }
 

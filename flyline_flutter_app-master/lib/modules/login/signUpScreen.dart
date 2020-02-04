@@ -272,7 +272,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          UserInfoScreen(home, email, password),
+                                          UserInfoScreen(home, email, password, selectedHomeAirport),
                                     ),
                                   );
                                   //   Navigator.pushNamed(

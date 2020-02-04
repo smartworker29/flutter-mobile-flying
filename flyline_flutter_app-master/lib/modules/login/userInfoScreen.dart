@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:motel/appTheme.dart';
+import 'package:motel/models/locations.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../main.dart';
 import 'loginScreen.dart';
@@ -14,7 +15,9 @@ class UserInfoScreen extends StatefulWidget {
   String home;
   String email;
   String password;
-  UserInfoScreen(this.home, this.email, this.password);
+  LocationObject selectedHomeAirport;
+
+  UserInfoScreen(this.home, this.email, this.password, this.selectedHomeAirport);
   @override
   _UserInfoScreenState createState() => _UserInfoScreenState();
 }
@@ -758,7 +761,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     print(_formData['first_name']);
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final params = jsonEncode({
-      'home_airport': widget.home,
+      'home_airport': widget.selectedHomeAirport.raw,
       'email': widget.email,
       'password': widget.password,
       'first_name': _formData['first_name'],
