@@ -72,12 +72,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   List<BagItem> holdBags;
 
   bool _displayPayment = false;
-  bool _clickFlight = false;
+  bool _clickFlightDeparture = false;
+  bool _clickFlightArrival = false;
 
   final formatDates = intl.DateFormat("dd MMM");
   final formatTime = intl.DateFormat("hh : mm a");
   final formatAllDay = intl.DateFormat("dd/MM/yyyy");
-
 
   void createCheckboxData() {
     for (var i = 0; i < handBags.length; i++) {
@@ -449,7 +449,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           margin: const EdgeInsets.only(top: 8, bottom: 8),
           padding: EdgeInsets.only(left: 16.0),
           child: Text(
-            (this.numberOfPassengers <= 1 ? "Traveler Information" : "Traveler Information (Passenger $numberOfPassengers)"),
+            (this.numberOfPassengers <= 1
+                ? "Traveler Information"
+                : "Traveler Information (Passenger $numberOfPassengers)"),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
@@ -756,185 +758,207 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         }
       }
     }
-    return InkWell(
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      focusColor: Colors.transparent,
-      onTap: () {
-        setState(() {
-            _clickFlight = !_clickFlight;
-        });
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(left: 16.0, top: 14, bottom: 14),
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: Text(
-                        formatDates.format(widget.flight.localDeparture) +
-                            " | Departure",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 20, top: 6),
-                          child: Container(
-                            width: 1,
-                            height: 120,
-                            color: Colors.grey.withOpacity(1),
-                          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        InkWell(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            onTap: () {
+              setState(() {
+                _clickFlightDeparture = !_clickFlightDeparture;
+              });
+            },
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        padding:
+                            EdgeInsets.only(left: 16.0, top: 14, bottom: 14),
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: Text(
+                          formatDates.format(widget.flight.localDeparture) +
+                              " | Departure",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding:
-                                  EdgeInsets.only(left: 10, top: 5, bottom: 10),
-                              margin: EdgeInsets.only(bottom: 8),
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: Text(
-                                formatTime
-                                        .format(departures[0].localDeparture) +
-                                    " " +
-                                    departures[0].flyFrom +
-                                    " (" +
-                                    departures[0].cityFrom +
-                                    ")",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w800),
-                              ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 20, top: 6),
+                            child: Container(
+                              width: 1,
+                              height: 120,
+                              color: Colors.grey.withOpacity(1),
                             ),
-                            Wrap(
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  padding: EdgeInsets.only(
-                                      top: 3, bottom: 3, left: 5, right: 5),
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xFFEDEDED)),
-                                  child: Text(
-                                    widget.flight.durationDeparture,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.lightBlue,
-                                        fontWeight: FontWeight.w800),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only(
+                                    left: 10, top: 5, bottom: 10),
+                                margin: EdgeInsets.only(bottom: 8),
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: Text(
+                                  formatTime.format(
+                                          departures[0].localDeparture) +
+                                      " " +
+                                      departures[0].flyFrom +
+                                      " (" +
+                                      departures[0].cityFrom +
+                                      ")",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ),
+                              Wrap(
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    padding: EdgeInsets.only(
+                                        top: 3, bottom: 3, left: 5, right: 5),
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xFFEDEDED)),
+                                    child: Text(
+                                      widget.flight.durationDeparture,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.lightBlue,
+                                          fontWeight: FontWeight.w800),
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 10, right: 5),
-                                  child: Image.network(
-                                      'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[0].airline}.png',
-                                      width: 20.0,
-                                      height: 20.0),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 5, right: 5),
-                                  child: Image.network(
-                                      'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[0].airline}.png',
-                                      width: 20.0,
-                                      height: 20.0),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 5),
-                                  padding: EdgeInsets.only(
-                                      top: 3, bottom: 3, left: 5, right: 5),
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xFFEDEDED)),
-                                  child: Text(
-                                    (a2b > 0
-                                        ? (a2b > 1
-                                            ? "$a2b Stopovers"
-                                            : "$a2b Stopover")
-                                        : "Direct"),
-                                    softWrap: true,
-                                    textAlign: TextAlign.start,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.lightBlue,
-                                        fontWeight: FontWeight.w800),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10, right: 5),
+                                    child: Image.network(
+                                        'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[0].airline}.png',
+                                        width: 20.0,
+                                        height: 20.0),
                                   ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 5, right: 5),
+                                    child: Image.network(
+                                        'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[0].airline}.png',
+                                        width: 20.0,
+                                        height: 20.0),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 5),
+                                    padding: EdgeInsets.only(
+                                        top: 3, bottom: 3, left: 5, right: 5),
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xFFEDEDED)),
+                                    child: Text(
+                                      (a2b > 0
+                                          ? (a2b > 1
+                                              ? "$a2b Stopovers"
+                                              : "$a2b Stopover")
+                                          : "Direct"),
+                                      softWrap: true,
+                                      textAlign: TextAlign.start,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.lightBlue,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 10, top: 10),
+                                padding: EdgeInsets.only(
+                                    top: 3, bottom: 3, left: 5, right: 5),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFEDEDED)),
+                                child: Text(
+                                  widget.selectedClassOfService,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.lightBlue,
+                                      fontWeight: FontWeight.w800),
                                 ),
-                              ],
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10, top: 10),
-                              padding: EdgeInsets.only(
-                                  top: 3, bottom: 3, left: 5, right: 5),
-                              decoration:
-                                  BoxDecoration(color: const Color(0xFFEDEDED)),
-                              child: Text(
-                                widget.selectedClassOfService,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.lightBlue,
-                                    fontWeight: FontWeight.w800),
                               ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: 10, top: 20),
-                              margin: EdgeInsets.only(bottom: 3),
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: Text(
-                                formatTime.format(
-                                        departures[departures.length - 1]
-                                            .localArrival) +
-                                    " " +
-                                    departures[departures.length - 1].flyTo +
-                                    " (" +
-                                    departures[departures.length - 1].cityTo +
-                                    ")",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w800),
+                              Container(
+                                padding: EdgeInsets.only(left: 10, top: 20),
+                                margin: EdgeInsets.only(bottom: 3),
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: Text(
+                                  formatTime.format(
+                                          departures[departures.length - 1]
+                                              .localArrival) +
+                                      " " +
+                                      departures[departures.length - 1].flyTo +
+                                      " (" +
+                                      departures[departures.length - 1].cityTo +
+                                      ")",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800),
+                                ),
                               ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          (widget.typeOfTripSelected == 1
-              ? Container()
-              : Container(
-                  padding: EdgeInsets.only(left: 16, top: 20, bottom: 10),
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: Text(
-                    widget.flight.nightsInDest.toString() +
-                        " nights in " +
-                        widget.flight.cityTo,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600),
+                            ],
+                          )
+                        ],
+                      ),
+                      AnimatedOpacity(
+                          // If the widget is visible, animate to 0.0 (invisible).
+                          // If the widget is hidden, animate to 1.0 (fully visible).
+                          opacity: _clickFlightDeparture ? 1.0 : 0.0,
+                          duration: Duration(milliseconds: 500),
+                          // The green box must be a child of the AnimatedOpacity widget.
+                          child: _clickFlightDeparture && a2b >= 1
+                              ? this
+                                  .getFlightDetailItems(departures, "departure")
+                              : Container()),
+                    ],
                   ),
-                )),
-          (widget.typeOfTripSelected == 1
-              ? Container()
-              : Container(
+                ],
+              ),
+            )),
+        (widget.typeOfTripSelected == 1
+            ? Container()
+            : Container(
+                padding: EdgeInsets.only(left: 16, top: 20, bottom: 10),
+                width: MediaQuery.of(context).size.width / 2,
+                child: Text(
+                  widget.flight.nightsInDest.toString() +
+                      " nights in " +
+                      widget.flight.cityTo,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600),
+                ),
+              )),
+        (widget.typeOfTripSelected == 1
+            ? Container()
+            : InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                onTap: () {
+                  setState(() {
+                    _clickFlightArrival = !_clickFlightArrival;
+                  });
+                },
+                child: Container(
                   child: Row(
                     children: <Widget>[
                       Column(
@@ -1087,44 +1111,41 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               )
                             ],
                           ),
+                          AnimatedOpacity(
+                            // If the widget is visible, animate to 0.0 (invisible).
+                            // If the widget is hidden, animate to 1.0 (fully visible).
+                              opacity: _clickFlightArrival ? 1.0 : 0.0,
+                              duration: Duration(milliseconds: 500),
+                              // The green box must be a child of the AnimatedOpacity widget.
+                              child: _clickFlightArrival && b2a >= 1
+                                  ? this
+                                  .getFlightDetailItems(returns, "return")
+                                  : Container())
                         ],
                       ),
                     ],
                   ),
-                )),
-          // Price and Book
-          AnimatedOpacity(
-            // If the widget is visible, animate to 0.0 (invisible).
-            // If the widget is hidden, animate to 1.0 (fully visible).
-              opacity:
-              _clickFlight
-                  ? 1.0
-                  : 0.0,
-              duration: Duration(milliseconds: 500),
-              // The green box must be a child of the AnimatedOpacity widget.
-              child:
-              _clickFlight
-                  ? this.getFlightDetailItems()
-                  : Container()),
-          Container(
-              margin: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    //                    <--- top side
-                    color: AppTheme.getTheme().dividerColor,
-                  ),
+                ))),
+        // Price and Book
+
+        Container(
+            margin: EdgeInsets.all(5.0),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  //                    <--- top side
+                  color: AppTheme.getTheme().dividerColor,
                 ),
-              )),
-        ],
-      ),
+              ),
+            )),
+      ],
     );
   }
 
-  Widget getFlightDetailItems() {
+  List<Widget> getFlightDetailItemUI(List<FlightRouteObject> routes) {
     List<Widget> lists = List();
-    for (var i = 0; i < widget.routes.length; i++) {
-      FlightRouteObject route = widget.routes[i];
+    for (var i = 0; i < routes.length; i++) {
+      FlightRouteObject route = routes[i];
       lists.add(Container(
         padding: EdgeInsets.only(bottom: 5),
         decoration: BoxDecoration(
@@ -1141,21 +1162,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(left: 16.0, top: 10),
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: Text(
-                          Helper.getDateViaDate(
-                                  route.localDeparture, "dd MMM") +
-                              " | " +
-                              (route.returnFlight == 0
-                                  ? "Departure"
-                                  : "Return"),
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w600),
-                        ),
-                      ),
                       Container(
                         width: MediaQuery.of(context).size.width - 32,
                         alignment: Alignment.centerLeft,
@@ -1249,6 +1255,27 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         ),
       ));
     }
+    return lists;
+  }
+
+  Widget getFlightDetailItems(List<FlightRouteObject> routes, String type) {
+    List<Widget> lists = List();
+    lists
+        .add(Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+      Container(
+        padding: EdgeInsets.only(left: 16.0, top: 10),
+        child: Text(
+          type == "departure"
+              ? "Departure | Duration: " +
+                  widget.flight.durationDeparture.toString()
+              : "Return | Duration: " + widget.flight.durationReturn.toString(),
+          textAlign: TextAlign.start,
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+        ),
+      )
+    ]));
+    lists.addAll(getFlightDetailItemUI(routes));
+
     return Column(
       children: lists,
     );
@@ -1362,95 +1389,94 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   Widget getSearchButton() {
     return Column(
-        children: <Widget>[
-          Container(
-            height: 50,
-            margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
-            decoration: BoxDecoration(
-                color: const Color(0xFF00AFF5),
-                border: Border.all(color: const Color(0xFF00AFF5), width: 0.5)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FlatButton(
-                  child: Text("Check Out",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19.0,
-                          fontWeight: FontWeight.bold)),
-                  onPressed: () {
-                    print(_checkFlightResponse.flightsChecked);
-                    print(_checkFlightResponse.flightsInvalid);
-                    if (_checkFlightResponse.noAvailableForBooking) {
-                      Alert(
-                        context: context,
-                        title:
-                            "Sorry, seems like the flight does not exist. Please choose another one.",
-                        buttons: [
-                          DialogButton(
-                            child: Text(
-                              "OKAY",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                            width: 120,
+      children: <Widget>[
+        Container(
+          height: 50,
+          margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
+          decoration: BoxDecoration(
+              color: const Color(0xFF00AFF5),
+              border: Border.all(color: const Color(0xFF00AFF5), width: 0.5)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                child: Text("Check Out",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19.0,
+                        fontWeight: FontWeight.bold)),
+                onPressed: () {
+                  print(_checkFlightResponse.flightsChecked);
+                  print(_checkFlightResponse.flightsInvalid);
+                  if (_checkFlightResponse.noAvailableForBooking) {
+                    Alert(
+                      context: context,
+                      title:
+                          "Sorry, seems like the flight does not exist. Please choose another one.",
+                      buttons: [
+                        DialogButton(
+                          child: Text(
+                            "OKAY",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
-                        ],
-                      ).show();
-                    } else {
-                      List<TravelerInformation> lists = List();
-                      for (int index = 0;
-                          index < this.numberOfPassengers;
-                          index++) {
-                        var uuid = new Uuid();
-                        carryOnSelectedList[index].uuid = uuid.v4();
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                          width: 120,
+                        ),
+                      ],
+                    ).show();
+                  } else {
+                    List<TravelerInformation> lists = List();
+                    for (int index = 0;
+                        index < this.numberOfPassengers;
+                        index++) {
+                      var uuid = new Uuid();
+                      carryOnSelectedList[index].uuid = uuid.v4();
 
-                        var uuid2 = new Uuid();
-                        checkedBagageSelectedList[index].uuid = uuid2.v4();
-                        TravelerInformation travelerInformation =
-                            TravelerInformation(
-                                firstNameControllers[index].text,
-                                lastNameControllers[index].text,
-                                dobControllers[index].text,
-                                genderControllers[index].text,
-                                passportIdControllers[index].text,
-                                passportExpirationControllers[index].text,
-                                carryOnSelectedList[index],
-                                checkedBagageSelectedList[index]);
-                        lists.add(travelerInformation);
-                      }
-
-                      carryOnSelectedList.forEach((f) {
-                        print(f.jsonSerialize);
-                      });
-
-                      checkedBagageSelectedList.forEach((f) {
-                        print(f.jsonSerialize);
-                      });
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => newScreen2.HotelHomeScreen(
-                                  numberOfPassengers: numberOfPassengers,
-                                  travelerInformations: lists,
-                                  flightResponse: _checkFlightResponse,
-                                  retailInfo: widget.retailInfo,
-                                  bookingToken: widget.bookingToken,
-                                )),
-                      );
+                      var uuid2 = new Uuid();
+                      checkedBagageSelectedList[index].uuid = uuid2.v4();
+                      TravelerInformation travelerInformation =
+                          TravelerInformation(
+                              firstNameControllers[index].text,
+                              lastNameControllers[index].text,
+                              dobControllers[index].text,
+                              genderControllers[index].text,
+                              passportIdControllers[index].text,
+                              passportExpirationControllers[index].text,
+                              carryOnSelectedList[index],
+                              checkedBagageSelectedList[index]);
+                      lists.add(travelerInformation);
                     }
-                  },
-                ),
-              ],
-            ),
+
+                    carryOnSelectedList.forEach((f) {
+                      print(f.jsonSerialize);
+                    });
+
+                    checkedBagageSelectedList.forEach((f) {
+                      print(f.jsonSerialize);
+                    });
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => newScreen2.HotelHomeScreen(
+                                numberOfPassengers: numberOfPassengers,
+                                travelerInformations: lists,
+                                flightResponse: _checkFlightResponse,
+                                retailInfo: widget.retailInfo,
+                                bookingToken: widget.bookingToken,
+                              )),
+                    );
+                  }
+                },
+              ),
+            ],
           ),
-          SizedBox(height: 100)
-        ],
-      );
+        ),
+        SizedBox(height: 100)
+      ],
+    );
   }
 }
