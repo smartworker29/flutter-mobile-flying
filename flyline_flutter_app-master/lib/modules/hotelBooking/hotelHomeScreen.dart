@@ -705,24 +705,33 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
+                      child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
                                 padding: EdgeInsets.only(
-                                    left: 16.0, top: 14, bottom: 14),
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: Text(
-                                  formatDates.format(flight.localDeparture) +
-                                      " | Departure",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w800),
+                                    left: 16.0, top: 14, bottom: 14, right: 16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      formatDates.format(flight.localDeparture) +
+                                          " | Departure",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                    ((a2b >= 1 || b2a >= 1) ?
+                                    Text(
+                                      "Tap to view more info",
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          color: const Color(0xFFAAAAAA),
+                                          fontSize: 9),
+                                    ): Container())
+                                  ],
                                 ),
                               ),
                               Row(
@@ -790,7 +799,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 width: 20.0,
                                                 height: 20.0),
                                           ),
-                                          (a2b > 1 ? Container(
+                                          (a2b >= 1 ? Container(
                                             margin: EdgeInsets.only(
                                                 left: 5, right: 5),
                                             child: Image.network(
@@ -871,8 +880,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               ),
                             ],
                           ),
-                        ],
-                      ),
                     ),
                     (typeOfTripSelected == 1
                         ? Container()
@@ -993,7 +1000,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                       width: 20.0,
                                                       height: 20.0),
                                                 ),
-                                                (b2a > 1 ? Container(
+                                                (b2a >= 1 ? Container(
                                                   margin: EdgeInsets.only(
                                                       left: 5, right: 5),
                                                   child: Image.network(

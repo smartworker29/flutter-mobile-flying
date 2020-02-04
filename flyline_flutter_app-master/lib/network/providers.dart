@@ -76,15 +76,20 @@ class FlyLineProvider {
 
     List<LocationObject> locations = List<LocationObject>();
 
+    term = term.toString().replaceAll(" ", "+");
+    var url = "$baseUrl/api/locations/query/?term=$term&locale=en-US&location_types[]=city&location_types[]=airport";
     try {
-      response = await dio.get("$baseUrl/api/locations/query/?term=$term");
+      response = await dio.get(url);
     } catch (e) {
       log(e.toString());
     }
 
     if (response.statusCode == 200) {
       for (dynamic i in response.data["locations"]) {
-        locations.add(LocationObject.fromJson(i));
+
+        if (i['type'] != 'subdivision') {
+          locations.add(LocationObject.fromJson(i));
+        }
       }
     }
     return locations;
