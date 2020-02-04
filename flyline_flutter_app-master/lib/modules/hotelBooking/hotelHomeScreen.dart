@@ -721,7 +721,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       " | Departure",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w800),
                                 ),
                               ),
@@ -790,14 +790,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 width: 20.0,
                                                 height: 20.0),
                                           ),
-                                          Container(
+                                          (a2b > 1 ? Container(
                                             margin: EdgeInsets.only(
                                                 left: 5, right: 5),
                                             child: Image.network(
                                                 'https://storage.googleapis.com/joinflyline/images/airlines/${flight.routes[0].airline}.png',
                                                 width: 20.0,
                                                 height: 20.0),
-                                          ),
+                                          ): Container()),
                                           Container(
                                             margin: EdgeInsets.only(left: 5),
                                             padding: EdgeInsets.only(
@@ -906,7 +906,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       width:
                                           MediaQuery.of(context).size.width / 2,
                                       child: Text(
-                                        formatDates.format(startDate) +
+                                        formatDates.format(returns[
+                                        returns.length - 1]
+                                            .localDeparture) +
                                             " | Return",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
@@ -991,14 +993,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                       width: 20.0,
                                                       height: 20.0),
                                                 ),
-                                                Container(
+                                                (b2a > 1 ? Container(
                                                   margin: EdgeInsets.only(
                                                       left: 5, right: 5),
                                                   child: Image.network(
                                                       'https://storage.googleapis.com/joinflyline/images/airlines/${flight.routes[1].airline}.png',
                                                       width: 20.0,
                                                       height: 20.0),
-                                                ),
+                                                ): Container()),
                                                 Container(
                                                   margin:
                                                       EdgeInsets.only(left: 5),
