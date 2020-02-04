@@ -174,14 +174,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Text(
                     travelerName,
                     style: new TextStyle(
-                      fontSize: 22,
+                      fontSize: 24,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   Text(
                     "View and edit traveler info",
                     style: new TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       color: AppTheme.getTheme().disabledColor,
                     ),
                   ),

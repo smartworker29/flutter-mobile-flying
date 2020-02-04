@@ -113,7 +113,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     decoration: new InputDecoration(
                                       errorText: null,
                                       border: InputBorder.none,
-                                      hintText: "Your Email",
+                                      hintText: "Enter your email",
                                       hintStyle: TextStyle(
                                           color: AppTheme.getTheme()
                                               .disabledColor),

@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: new InputDecoration(
                                 errorText: null,
                                 border: InputBorder.none,
-                                hintText: "Your Email",
+                                hintText: "Enter your email",
                                 hintStyle: TextStyle(color: AppTheme.getTheme().disabledColor),
                               ),),),
                             ),
@@ -153,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   decoration: new InputDecoration(
                                     errorText: null,
                                     border: InputBorder.none,
-                                    hintText: "Password",
+                                    hintText: "Enter your password",
                                     hintStyle: TextStyle(color: AppTheme.getTheme().disabledColor),
                                   ),
                                 ),
@@ -234,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 child: Center(
                                   child: Text(
-                                    "Login",
+                                    "Log In",
                                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
                                   ),
                                 ),
@@ -327,7 +327,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Padding(
           padding: const EdgeInsets.only(top: 4, left: 24),
           child: Text(
-            "Log in",
+            "Log In",
             style: new TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w700,
