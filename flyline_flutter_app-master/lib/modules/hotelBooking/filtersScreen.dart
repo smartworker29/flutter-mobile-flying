@@ -65,10 +65,10 @@ class _FiltersScreenState extends State<FiltersScreen> {
                         height: 1,
                       ),
                       popularFilter(),
-                      Divider(
-                        height: 1,
-                      ),
-                      distanceViewUI(),
+//                      Divider(
+//                        height: 1,
+//                      ),
+//                      distanceViewUI(),
                       Divider(
                         height: 1,
                       ),

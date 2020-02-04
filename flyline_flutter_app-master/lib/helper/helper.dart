@@ -31,17 +31,17 @@ class Helper {
 
   static cost(double total, double conversationAmount, double amount) {
     if (amount == 0) {
-      return " \$0.0";
+      return " \$0.00";
     }
 
     double price = (conversationAmount / total) * amount;
-    var f = new NumberFormat("###.0#", "en_US");
+    var f = new NumberFormat("###.00", "en_US");
     return " \$" + f.format(price);
   }
 
   static costNumber(double total, double conversationAmount, double amount) {
     if (amount == 0) {
-      return 0.0;
+      return 0.00;
     }
 
     double price = (conversationAmount / total) * amount;
@@ -57,7 +57,11 @@ class Helper {
   }
 
   static formatNumber(double number) {
-    var f = new NumberFormat("###.0#", "en_US");
+    if (number == 0) {
+      return " \$0.00";
+    }
+
+    var f = new NumberFormat("###.00", "en_US");
     return " \$" + f.format(number);
   }
 

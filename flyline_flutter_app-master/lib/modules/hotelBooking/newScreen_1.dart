@@ -156,8 +156,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     flyLinebloc.checkFlightData.stream.listen((CheckFlightResponse response) {
       if (response != null && _checkFlight) {
         setState(() {
+          _checkFlightResponse = response;
           if (!_firstLoad) {
-            _checkFlightResponse = response;
             handBags.addAll(response.baggage.combinations.handBag);
             holdBags.addAll(response.baggage.combinations.holdBag);
 
@@ -449,7 +449,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           margin: const EdgeInsets.only(top: 8, bottom: 8),
           padding: EdgeInsets.only(left: 16.0),
           child: Text(
-            "Traveler Information",
+            (this.numberOfPassengers <= 1 ? "Traveler Information" : "Traveler Information (Passenger $numberOfPassengers)"),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
@@ -621,7 +621,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(left: 16.0, top: 16),
           child: Text(
-            "Only required on International",
+            "Only required on international flights",
             textAlign: TextAlign.start,
             style: TextStyle(
                 color: Colors.grey, fontSize: 13, fontWeight: FontWeight.w600),
@@ -1361,8 +1361,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getSearchButton() {
-    if (_displayPayment) {
-      return Column(
+    return Column(
         children: <Widget>[
           Container(
             height: 50,
@@ -1380,6 +1379,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           fontSize: 19.0,
                           fontWeight: FontWeight.bold)),
                   onPressed: () {
+                    print(_checkFlightResponse.flightsChecked);
+                    print(_checkFlightResponse.flightsInvalid);
                     if (_checkFlightResponse.noAvailableForBooking) {
                       Alert(
                         context: context,
@@ -1451,7 +1452,5 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           SizedBox(height: 100)
         ],
       );
-    }
-    return Container();
   }
 }
