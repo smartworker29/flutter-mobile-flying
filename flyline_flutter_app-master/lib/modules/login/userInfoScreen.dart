@@ -514,10 +514,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             DatePicker.showPicker(
                                               context,
                                               showTitleActions: true,
-                                              pickerModel: CustomDatePickerModel(
-                                                  currentTime: DateTime.now(),
-                                                  minTime: DateTime(1960, 1, 1),
-                                                  locale: LocaleType.en),
+                                              pickerModel:
+                                                  CustomDatePickerModel(
+                                                      currentTime:
+                                                          DateTime.now(),
+                                                      minTime:
+                                                          DateTime(1960, 1, 1),
+                                                      locale: LocaleType.en),
                                               onChanged: (date) {
                                                 print('change $date');
                                               },
@@ -819,43 +822,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       print("Resssspoooonnnsseee");
       print(jsonResponse);
 
-      if (response.statusCode == 200) {
-        Alert(
-          context: context,
-          title: "Signup successfully",
-          buttons: [
-            DialogButton(
-              child: Text(
-                "Close",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, Routes.TabScreen, (Route<dynamic> route) => false);
-              },
-              width: 120,
-            ),
-          ],
-        ).show();
-      } else {
-        var jsonResponse = json.decode(response.body);
-        Alert(
-          context: context,
-          title: "Signup unsuccessfully",
-          buttons: [
-            DialogButton(
-              child: Text(
-                "Close",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-              width: 120,
-            ),
-          ],
-        ).show();
-      }
+      Navigator.pushNamedAndRemoveUntil(
+          context, Routes.TabScreen, (Route<dynamic> route) => false);
     });
   }
 }
