@@ -32,6 +32,10 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     "Basic (\$49.99/yr)",
     "Pro (\$79.99/yr)",
   ];
+  List<String> planValues = [
+    "basic",
+    "pro",
+  ];
   final Map<String, dynamic> _formData = {
     'home_airport': null,
     'email': null,
@@ -316,7 +320,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                     },
                                     onSaved: (String value) {
                                       print("onSaved");
-                                      _formData['plan'] = value;
+
+                                      _formData['plan'] = planValues[planList.indexOf(value)];
                                     },
                                     decoration:
                                         InputDecoration.collapsed(hintText: ''),
@@ -509,7 +514,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                                 onChanged: (date) {
                                                   print('change $date');
                                                 }, onConfirm: (date) {
-                                                  var formatter = new DateFormat('yyyy-MM-dd');
+                                                  var formatter = new DateFormat('MM/yy');
                                                   expDateController.text = _formData['expiry'] = formatter.format(date);
                                                 }, currentTime: DateTime.now(), locale: LocaleType.en);
                                           },
@@ -782,28 +787,52 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     )
         .then((http.Response response) async {
       //   print(response.body);
+
+      print(response.statusCode);
       var jsonResponse = json.decode(response.body);
       print("Resssspoooonnnsseee");
       print(jsonResponse);
 
-      Alert(
-        context: context,
-        title:
-        "Signup successfully",
-        buttons: [
-          DialogButton(
-            child: Text(
-              "Close",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+      if (response.statusCode == 200) {
+        Alert(
+          context: context,
+          title:
+          "Signup successfully",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Close",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, Routes.TabScreen, (Route<dynamic> route) => false);
+              },
+              width: 120,
             ),
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, Routes.TabScreen, (Route<dynamic> route) => false);
-            },
-            width: 120,
-          ),
-        ],
-      ).show();
+          ],
+        ).show();
+      } else {
+        var jsonResponse = json.decode(response.body);
+        Alert(
+          context: context,
+          title:
+          "Signup unsuccessfully",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Close",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              width: 120,
+            ),
+          ],
+        ).show();
+      }
+
     });
   }
 }
