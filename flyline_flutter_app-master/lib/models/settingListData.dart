@@ -77,7 +77,7 @@ class SettingsListData {
 //      iconData: FontAwesomeIcons.gift,
 //    ),
     SettingsListData(
-      titleTxt: 'Terms of Services',
+      titleTxt: 'Terms of Service',
       isSelected: false,
       iconData: Icons.keyboard_arrow_right,
     ),

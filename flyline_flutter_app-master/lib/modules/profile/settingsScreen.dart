@@ -46,12 +46,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       if (index == 2) {
                         MyApp.restartApp(context);
                       } else if (index == 0) {
-                        // Terms of Services
+                        // Terms of Service
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => MyWebView(
-                              title: "Terms of Services",
+                              title: "Terms of Service",
                               selectedUrl:
                                   "https://joinflyline.com/terms-of-services",
                             ),

@@ -446,7 +446,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(top: 8, bottom: 8),
+          margin: const EdgeInsets.only(top: 28, bottom: 10),
           padding: EdgeInsets.only(left: 16.0),
           child: Text(
             (this.numberOfPassengers <= 1
@@ -683,7 +683,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(top: 15, bottom: 10),
+          margin: const EdgeInsets.only(top: 28, bottom: 10),
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(left: 16.0, top: 10),
           child: Text(
@@ -697,7 +697,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(top: 15, bottom: 10),
+          margin: const EdgeInsets.only(top: 28, bottom: 10),
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(left: 16.0, top: 10),
           child: Text(

@@ -177,7 +177,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(left: 16.0, top: 10),
           child: Text(
-            "Check out",
+            "Check Out",
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
@@ -402,13 +402,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(left: 16.0, top: 10),
+                          padding: EdgeInsets.only(left: 16.0, top: 20),
                           width: MediaQuery.of(context).size.width / 2,
                           child: Text(
                             "Trip Summary",
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w600),
+                                fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                         ),
                         Container(
@@ -436,23 +436,23 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   Expanded(
                                     child: Container(
                                       padding:
-                                          EdgeInsets.only(left: 10, top: 5),
-                                      margin: EdgeInsets.only(bottom: 3),
+                                          EdgeInsets.only(left: 10, top: 6),
+                                      margin: EdgeInsets.only(bottom: 6),
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         widget.numberOfPassengers.toString() +
                                             " Passenger",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w800),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                     ),
                                   ),
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.only(left: 10, top: 5),
-                                    margin: EdgeInsets.only(bottom: 3),
+                                    padding: EdgeInsets.only(left: 10, top: 6),
+                                    margin: EdgeInsets.only(bottom: 6),
                                     child: Text(
                                       Helper.cost(
                                           widget.flightResponse.total,
@@ -461,8 +461,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                           widget.flightResponse.total),
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w800),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ],
@@ -474,15 +474,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   Expanded(
                                     child: Container(
                                       padding:
-                                          EdgeInsets.only(left: 10, top: 5),
-                                      margin: EdgeInsets.only(bottom: 3),
+                                          EdgeInsets.only(left: 10, top: 6),
+                                      margin: EdgeInsets.only(bottom: 6),
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         "Bagage",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w800),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                     ),
                                   ),
@@ -494,8 +494,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       Helper.formatNumber(priceOnBaggage),
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w800),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ],
@@ -514,8 +514,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                         "Automatic Check-in",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w800),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                     ),
                                   ),
@@ -527,8 +527,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       "Free ",
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w800),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ],
