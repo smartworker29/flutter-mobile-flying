@@ -792,12 +792,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     FocusScope.of(context).requestFocus(FocusNode());
     print("aaappppiii");
     print(widget.home);
-    print(widget.email);
+    print(widget.email.trim());
     print(_formData['first_name']);
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final params = jsonEncode({
       'home_airport': widget.selectedHomeAirport.raw,
-      'email': widget.email,
+      'email': widget.email.trim(),
       'password': widget.password,
       'first_name': _formData['first_name'],
       'last_name': _formData['last_name'],
@@ -818,7 +818,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         var jsonResponse = json.decode(response.body);
         if (response.statusCode == 200) {
           print("A new user has registered successfully.................");
-          await flyLinebloc.tryLogin(widget.email, widget.password);
+          await flyLinebloc.tryLogin(widget.email.trim(), widget.password);
           Navigator.pushNamedAndRemoveUntil(context, Routes.TabScreen, (Route<dynamic> route) => false);
         }
       });
