@@ -21,9 +21,14 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+repositories {
+    maven { url 'https://maven.google.com' }
+}
 
 android {
     compileSdkVersion 28
@@ -37,8 +42,13 @@ android {
     }
 
     defaultConfig {
+        manifestPlaceholders = [
+            onesignal_app_id: '905d4559-c3bb-442c-bed5-93a097da8a7e',
+            // Project number pulled from dashboard, local value is ignored.
+            onesignal_google_project_number: 'REMOTE'
+        ]
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.motel"
+        applicationId "com.wanderift.flyline"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
@@ -60,6 +70,7 @@ flutter {
 }
 
 dependencies {
+    implementation 'com.onesignal:OneSignal:[3.11.2, 3.99.99]'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
