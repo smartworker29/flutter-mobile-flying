@@ -58,7 +58,7 @@ class FlylineDeal {
     return this.cityFromName +
         " -> " +
         this.cityToName +
-        ", Round Trip | " +
+        ", RT | " +
         departureTime +
         " - " +
         returnTime;
