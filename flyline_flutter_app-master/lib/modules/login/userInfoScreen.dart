@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/models/locations.dart';
 import 'package:motel/modules/login/customDatePickerModel.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:motel/network/blocs.dart';
 import '../../main.dart';
 import 'loginScreen.dart';
 import 'package:http/http.dart' as http;
@@ -33,11 +33,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> planList = [
     "Basic (\$49.99/yr)",
-    "Premium (\$79.99/yr)",
+    "Pro (\$79.99/yr)",
   ];
   List<String> planValues = [
     "basic",
-    "premium",
+    "pro",
   ];
   final Map<String, dynamic> _formData = {
     'home_airport': null,
@@ -808,23 +808,18 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       'cvc': _formData['cvc'],
       'plan': _formData['plan'],
     });
-    print(params);
-
+    
     try {
-      http
-          .post(
+      http.post(
         'https://staging.joinflyline.com/api/get-started/',
         headers: {'Content-Type': 'application/json'},
         body: params,
-      )
-          .then((http.Response response) async {
-        //   print(response.body);
-
-        print(response.statusCode);
+      ).then((http.Response response) async {
         var jsonResponse = json.decode(response.body);
-        print("Resssspoooonnnsseee");
         print(jsonResponse);
+        print("A new user has registered successfully.................");
 
+        flyLinebloc.tryLogin(widget.email, widget.password);
 
         Navigator.pushNamedAndRemoveUntil(
             context, Routes.TabScreen, (Route<dynamic> route) => false);
