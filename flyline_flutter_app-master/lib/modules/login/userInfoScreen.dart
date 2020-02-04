@@ -5,6 +5,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/models/locations.dart';
+import 'package:motel/modules/login/customDatePickerModel.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../main.dart';
 import 'loginScreen.dart';
@@ -17,7 +18,8 @@ class UserInfoScreen extends StatefulWidget {
   String password;
   LocationObject selectedHomeAirport;
 
-  UserInfoScreen(this.home, this.email, this.password, this.selectedHomeAirport);
+  UserInfoScreen(
+      this.home, this.email, this.password, this.selectedHomeAirport);
   @override
   _UserInfoScreenState createState() => _UserInfoScreenState();
 }
@@ -321,7 +323,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                     onSaved: (String value) {
                                       print("onSaved");
 
-                                      _formData['plan'] = planValues[planList.indexOf(value)];
+                                      _formData['plan'] =
+                                          planValues[planList.indexOf(value)];
                                     },
                                     decoration:
                                         InputDecoration.collapsed(hintText: ''),
@@ -508,15 +511,38 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                         child: TextField(
                                           controller: expDateController,
                                           onTap: () {
-                                            DatePicker.showDatePicker(context,
-                                                showTitleActions: true,
-                                                minTime: DateTime(1960, 1, 1),
-                                                onChanged: (date) {
-                                                  print('change $date');
-                                                }, onConfirm: (date) {
-                                                  var formatter = new DateFormat('MM/yy');
-                                                  expDateController.text = _formData['expiry'] = formatter.format(date);
-                                                }, currentTime: DateTime.now(), locale: LocaleType.en);
+                                            DatePicker.showPicker(
+                                              context,
+                                              showTitleActions: true,
+                                              pickerModel: CustomDatePickerModel(
+                                                  currentTime: DateTime.now(),
+                                                  minTime: DateTime(1960, 1, 1),
+                                                  locale: LocaleType.en),
+                                              onChanged: (date) {
+                                                print('change $date');
+                                              },
+                                              onConfirm: (date) {
+                                                var formatter =
+                                                    new DateFormat('MM/yy');
+                                                expDateController.text =
+                                                    _formData['expiry'] =
+                                                        formatter.format(date);
+                                              },
+                                            );
+//                                            DatePicker.showDatePicker(context,
+//                                                showTitleActions: true,
+//                                                minTime: DateTime(1960, 1, 1),
+//                                                onChanged: (date) {
+//                                              print('change $date');
+//                                            }, onConfirm: (date) {
+//                                              var formatter =
+//                                                  new DateFormat('MM/yy');
+//                                              expDateController.text =
+//                                                  _formData['expiry'] =
+//                                                      formatter.format(date);
+//                                            },
+//                                                currentTime: DateTime.now(),
+//                                                locale: LocaleType.en);
                                           },
                                           maxLines: 1,
                                           onChanged: (String txt) {},
@@ -796,8 +822,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       if (response.statusCode == 200) {
         Alert(
           context: context,
-          title:
-          "Signup successfully",
+          title: "Signup successfully",
           buttons: [
             DialogButton(
               child: Text(
@@ -816,8 +841,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         var jsonResponse = json.decode(response.body);
         Alert(
           context: context,
-          title:
-          "Signup unsuccessfully",
+          title: "Signup unsuccessfully",
           buttons: [
             DialogButton(
               child: Text(
@@ -832,7 +856,6 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           ],
         ).show();
       }
-
     });
   }
 }
