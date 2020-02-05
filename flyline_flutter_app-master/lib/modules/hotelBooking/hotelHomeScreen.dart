@@ -331,7 +331,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     ? flight.durationDeparture
                     : flight.durationReturn),
             textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 13.6, fontWeight: FontWeight.w800),
+            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
           ),
         ),
       ],
