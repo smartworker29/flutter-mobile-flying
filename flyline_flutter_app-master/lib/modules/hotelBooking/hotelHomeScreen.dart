@@ -1092,13 +1092,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         // If the widget is visible, animate to 0.0 (invisible).
                         // If the widget is hidden, animate to 1.0 (fully visible).
                         opacity:
-                            _clickFlight[index] != null && _clickFlight[index]
+                        index < _clickFlight.length && _clickFlight[index] != null && _clickFlight[index]
                                 ? 1.0
                                 : 0.0,
                         duration: Duration(milliseconds: 500),
                         // The green box must be a child of the AnimatedOpacity widget.
                         child:
-                            _clickFlight[index] != null && _clickFlight[index]
+                        index < _clickFlight.length && _clickFlight[index] != null && _clickFlight[index]
                                 ? this.getFlightDetailItems(
                                     departures, returns, flight)
                                 : Container()),
@@ -2003,14 +2003,16 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       listOfFlights = List();
       _displayLoadMore = true;
       if (offset > items.length) {
-        print('fill');
+        print("items.length:" + items.length.toString());
         listOfFlights.addAll(items.getRange(0, items.length));
         _displayLoadMore = false;
       } else {
         print(offset - perPage);
         listOfFlights.addAll(items.getRange(0, offset - perPage));
       }
+      print( listOfFlights.length);
       filterExplore = filter;
+      _clickFlight = List(listOfFlights.length);
     });
   }
 }
