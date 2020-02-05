@@ -14,3 +14,20 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+## HOW TO BUILD
+
+### IOS
+
+Refs: https://flutter.dev/docs/deployment/ios
+- open Runner.xcworkspace
+- run Product > Build
+- run Product > Archive
+- click validate and distribute
+
+### ANDROID
+
+Refs: https://flutter.dev/docs/deployment/android
+- run `flutter build appbundle`
+- run `flutter build apk --split-per-abi  '
