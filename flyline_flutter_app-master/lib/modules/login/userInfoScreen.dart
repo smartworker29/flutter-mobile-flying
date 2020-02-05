@@ -33,11 +33,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> planList = [
     "Basic (\$49.99/yr)",
-    "Pro (\$79.99/yr)",
+    "Premium (\$79.99/yr)",
   ];
   List<String> planValues = [
     "basic",
-    "pro",
+    "premium",
   ];
   final Map<String, dynamic> _formData = {
     'home_airport': null,
