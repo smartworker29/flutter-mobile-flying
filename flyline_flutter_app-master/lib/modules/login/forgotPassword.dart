@@ -17,7 +17,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   Future<dynamic> forgotPasswordApiCall() async {
     String url =
-        'https://staging.joinflyline.com/api/password_reset/'; // here i am checking with my own api
+        'https://joinflyline.com/api/password_reset/'; // here i am checking with my own api
     response =
         await http.post(url, body: {"email": emailTextController.text});
     statusCode=response.statusCode;

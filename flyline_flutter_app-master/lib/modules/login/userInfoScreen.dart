@@ -811,7 +811,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     
     try {
       http.post(
-        'https://staging.joinflyline.com/api/get-started/',
+        'https://joinflyline.com/api/get-started/',
         headers: {'Content-Type': 'application/json'},
         body: params,
       ).then((http.Response response) async {

@@ -15,7 +15,7 @@ import '../models/flylineDeal.dart';
 import '../models/locations.dart';
 
 class FlyLineProvider {
-  final baseUrl = "https://staging.joinflyline.com";
+  final baseUrl = "https://joinflyline.com";
 
   Future<String> getAuthToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -42,6 +42,7 @@ class FlyLineProvider {
     Dio dio = Dio();
 
     String credentials = email + ":" + password;
+    print('logging in with ' + credentials);
     String encoded = base64Encode(utf8.encode(credentials));
     var auth = "Basic $encoded";
 
@@ -52,6 +53,7 @@ class FlyLineProvider {
     } on DioError catch (e) {
       result = e.toString();
       print(result);
+      print(e.response.data);
     } on Error catch (e) {
       print(e);
     }
@@ -122,7 +124,7 @@ class FlyLineProvider {
     var url =
         "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD&subdivision=NY";
 
-//    url = 'https://staging.joinflyline.com/api/search/?fly_from=city:NYC&fly_to=city:LAX&date_from=31%2F01%2F2020&date_to=31%2F01%2F2020&type=round&return_from=31%2F01%2F2020&return_to=31%2F01%2F2020&adults=1&infants=0&children=0&selected_cabins=M&curr=USD';
+//    url = 'https://joinflyline.com/api/search/?fly_from=city:NYC&fly_to=city:LAX&date_from=31%2F01%2F2020&date_to=31%2F01%2F2020&type=round&return_from=31%2F01%2F2020&return_to=31%2F01%2F2020&adults=1&infants=0&children=0&selected_cabins=M&curr=USD';
     print("Search url: " + url);
     try {
       response = await dio.get(url);
