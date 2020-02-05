@@ -8,16 +8,6 @@ import 'modules/bottomTab/bottomTabScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  OneSignal.shared.init(
-      "905d4559-c3bb-442c-bed5-93a097da8a7e",
-      iOSSettings: {
-        OSiOSSettings.autoPrompt: false,
-        OSiOSSettings.inAppLaunchUrl: true
-      }
-  );
-  OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
-
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -43,6 +33,26 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Key key = new UniqueKey();
+
+  @override
+  void initState() {
+    super.initState();
+
+    this.initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    if (!mounted) return;
+
+    await OneSignal.shared.init(
+        "905d4559-c3bb-442c-bed5-93a097da8a7e",
+        iOSSettings: {
+          OSiOSSettings.autoPrompt: true,
+          OSiOSSettings.inAppLaunchUrl: true
+        }
+    );
+    OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
+  }
 
   void restartApp() {
     this.setState(() {
