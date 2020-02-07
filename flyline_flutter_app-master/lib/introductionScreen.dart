@@ -6,6 +6,7 @@ import 'package:motel/appTheme.dart';
 import 'package:motel/main.dart';
 import 'package:motel/modules/login/loginScreen.dart';
 import 'package:motel/modules/login/signUpScreen.dart';
+import 'package:motel/modules/profile/myWebView.dart';
 
 class IntroductionScreen extends StatefulWidget {
   @override
@@ -116,65 +117,64 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                 ),
               ],
             )),
-            Container(
-                child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 48, right: 48, bottom: 8, top: 32),
-                  child: Container(
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF00AFF5),
-                      borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: AppTheme.getTheme().dividerColor,
-                          blurRadius: 8,
-                          offset: Offset(4, 4),
-                        ),
-                      ],
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 48, right: 48, bottom: 8, top: 32),
+              child: Container(
+                height: 48,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF00AFF5),
+                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: AppTheme.getTheme().dividerColor,
+                      blurRadius: 8,
+                      offset: Offset(4, 4),
                     ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                        highlightColor: Colors.transparent,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()),
-                          );
-                        },
-                        child: Center(
-                          child: Text(
-                            "Log In",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
-                                color: Colors.white),
-                          ),
-                        ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoginScreen()),
+                      );
+                    },
+                    child: Center(
+                      child: Text(
+                        "Log In",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: Colors.white),
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 48, right: 48, bottom: 32, top: 8),
-                  child: Material(
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).padding.bottom,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 60, right: 60, bottom: 32, top: 8),
+              child: Row(
+                children: <Widget>[
+                  Material(
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(1.0)),
                       highlightColor: Colors.transparent,
-                      onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(context,
-                            Routes.TabScreen, (Route<dynamic> route) => false);
-                      },
+                      onTap: () {},
                       child: Center(
                         child: Text(
-                          "Continue as Guest",
+                          "Flyline",
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
@@ -183,12 +183,101 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                       ),
                     ),
                   ),
+                  Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                    highlightColor: Colors.transparent,
+                    onTap: () {},
+                    child: Center(
+                      child: Text(
+                        " - ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: AppTheme.getTheme().disabledColor),
+                      ),
+                    ),
+                  ),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).padding.bottom,
-                )
-              ],
-            ))
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                      highlightColor: Colors.transparent,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyWebView(
+                              title: "Terms of Service",
+                              selectedUrl:
+                              "https://joinflyline.com/terms-of-services",
+                            ),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                      child: Center(
+                        child: Text(
+                          "Terms of Use",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: AppTheme.getTheme().disabledColor),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                      highlightColor: Colors.transparent,
+                      onTap: () {},
+                      child: Center(
+                        child: Text(
+                          " | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: AppTheme.getTheme().disabledColor),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                      highlightColor: Colors.transparent,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyWebView(
+                              title: "Privacy Policy",
+                              selectedUrl:
+                              "https://joinflyline.com/privacy-policy",
+                            ),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                      child: Center(
+                        child: Text(
+                          "Privacy Policy",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: AppTheme.getTheme().disabledColor),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ),
           ],
         ),
       ),
