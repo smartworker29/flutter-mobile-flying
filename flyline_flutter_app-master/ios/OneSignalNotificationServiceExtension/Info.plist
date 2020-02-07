@@ -27,6 +27,10 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>NotificationService</string>
 	</dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location is used to display user's location on a map</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location is used to display user's location on a map</string>
 	<key>OneSignal_app_groups_key</key>
 	<string>group.com.wanderlift.flyline.onesignal</string>
 	<key>io.flutter.embedded_views_preview</key>

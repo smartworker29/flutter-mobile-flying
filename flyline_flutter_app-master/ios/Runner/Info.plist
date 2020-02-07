@@ -22,6 +22,10 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location is used to display user's location on a map</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location is used to display user's location on a map</string>
 	<key>OneSignal_app_groups_key</key>
 	<string>group.com.wanderlift.flyline.onesignal</string>
 	<key>UIBackgroundModes</key>
@@ -51,9 +55,5 @@
 	<true/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Location is used to display user&apos;s location on a map</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location is used to display user&apos;s location on a map</string>
 </dict>
 </plist>
