@@ -43,18 +43,18 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
       assetsImage: 'assets/images/bg_introduction3.png',
     ));
 
-    sliderTimer = Timer.periodic(Duration(seconds: 4), (timer) {
-      if (currentShowIndex == 0) {
-        pageController.animateTo(MediaQuery.of(context).size.width,
-            duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
-      } else if (currentShowIndex == 1) {
-        pageController.animateTo(MediaQuery.of(context).size.width * 2,
-            duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
-      } else if (currentShowIndex == 2) {
-        pageController.animateTo(0,
-            duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
-      }
-    });
+//    sliderTimer = Timer.periodic(Duration(seconds: 4), (timer) {
+//      if (currentShowIndex == 0) {
+//        pageController.animateTo(MediaQuery.of(context).size.width,
+//            duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
+//      } else if (currentShowIndex == 1) {
+//        pageController.animateTo(MediaQuery.of(context).size.width * 2,
+//            duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
+//      } else if (currentShowIndex == 2) {
+//        pageController.animateTo(0,
+//            duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
+//      }
+//    });
     super.initState();
   }
 
@@ -84,8 +84,8 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                     )
                   ),
                   child: PageView(
+//                    physics: NeverScrollableScrollPhysics(),
                     controller: pageController,
-                    pageSnapping: true,
                     onPageChanged: (index) {
                       setState(() {
                         currentShowIndex = index;
@@ -163,8 +163,9 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 50, right: 40, bottom: 32, top: 8),
+                   bottom: 32, top: 8),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Material(
                     color: Colors.transparent,
