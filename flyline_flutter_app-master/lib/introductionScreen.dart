@@ -309,7 +309,7 @@ class PagePopup extends StatelessWidget {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 25.0, left: 45, right: 45),
+          margin: EdgeInsets.only(top: 25.0, left: 30, right: 30),
           child: Text(
             imageData.subText,
             textAlign: TextAlign.center,
