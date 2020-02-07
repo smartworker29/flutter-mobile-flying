@@ -22,12 +22,12 @@ samples, guidance on mobile development, and a full API reference.
 
 Refs: https://flutter.dev/docs/deployment/ios
 - open Runner.xcworkspace
-- run Product > Build
-- run Product > Archive
-- click validate and distribute
+- select Product > Build
+- select Product > Archive
+- select validate and distribute app
 
 ### ANDROID
 
 Refs: https://flutter.dev/docs/deployment/android
 - run `flutter build appbundle`
-- run `flutter build apk --split-per-abi  '
+- run `flutter build apk --split-per-abi`

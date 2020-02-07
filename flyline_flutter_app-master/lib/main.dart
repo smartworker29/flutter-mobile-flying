@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:motel/appTheme.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'introductionScreen.dart';
 import 'modules/bottomTab/bottomTabScreen.dart';
@@ -16,7 +17,10 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  static restartApp(BuildContext context) {
+  static restartApp(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+
     final _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
 
     state.restartApp();

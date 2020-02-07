@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_page_indicator/flutter_page_indicator.dart';
 import 'package:motel/appTheme.dart';
+import 'package:motel/main.dart';
 import 'package:motel/modules/login/loginScreen.dart';
 import 'package:motel/modules/login/signUpScreen.dart';
 
@@ -24,21 +25,21 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
       titleText: 'Stop Paying Retail',
       subText:
           'We source flights from 250+ airlines and \nsell them directly to you with zero markup.',
-      assetsImage: 'assets/images/introduction1.png',
+      assetsImage: 'assets/images/bg_introduction1.png',
     ));
 
     pageViewModelData.add(PageViewData(
       titleText: 'Virtual Interlining',
       subText:
           'We connect one-way flights from \ndifferent carriers to deliver the best savings.',
-      assetsImage: 'assets/images/introduction2.png',
+      assetsImage: 'assets/images/bg_introduction2.png',
     ));
 
     pageViewModelData.add(PageViewData(
       titleText: 'Always the Cheapest',
       subText:
           'We will always display the cheapest \nfare, whether it is a public or FlyLine fare.',
-      assetsImage: 'assets/images/introduction3.png',
+      assetsImage: 'assets/images/bg_introduction3.png',
     ));
 
     sliderTimer = Timer.periodic(Duration(seconds: 4), (timer) {
@@ -69,114 +70,125 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
         backgroundColor: AppTheme.getTheme().backgroundColor,
         body: Column(
           children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).padding.top,
-            ),
             Expanded(
-              child: PageView(
-                controller: pageController,
-                pageSnapping: true,
-                onPageChanged: (index) {
-                  currentShowIndex = index;
-                },
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  PagePopup(imageData: pageViewModelData[0]),
-                  PagePopup(imageData: pageViewModelData[1]),
-                  PagePopup(imageData: pageViewModelData[2]),
-                ],
-              ),
-            ),
-            PageIndicator(
-              layout: PageIndicatorLayout.WARM,
-              size: 10.0,
-              controller: pageController,
-              space: 5.0,
-              count: 3,
-              color: AppTheme.getTheme().dividerColor,
-              activeColor: AppTheme.getTheme().primaryColor,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 48, right: 48, bottom: 8, top: 32),
-              child: Container(
-                height: 48,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF00AFF5),
-                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: AppTheme.getTheme().dividerColor,
-                      blurRadius: 8,
-                      offset: Offset(4, 4),
-                    ),
-                  ],
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                    highlightColor: Colors.transparent,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                      );
+                child: Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF00AFF5),
+                    image: DecorationImage(
+                      image: AssetImage(pageViewModelData[currentShowIndex].assetsImage),
+                      fit: BoxFit.cover,
+                    )
+                  ),
+                  child: PageView(
+                    controller: pageController,
+                    pageSnapping: true,
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentShowIndex = index;
+                      });
                     },
-                    child: Center(
-                      child: Text(
-                        "Log In",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                            color: Colors.white),
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      PagePopup(imageData: pageViewModelData[0]),
+                      PagePopup(imageData: pageViewModelData[1]),
+                      PagePopup(imageData: pageViewModelData[2]),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 10.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: Center(
+                    child: PageIndicator(
+                      layout: PageIndicatorLayout.WARM,
+                      size: 15.0,
+                      controller: pageController,
+                      space: 10.0,
+                      count: 3,
+                      color: const Color(0xFFFFFFFF),
+                      activeColor: AppTheme.getTheme().primaryColor,
+                    )
+                  ),
+                ),
+              ],
+            )),
+            Container(
+                child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 48, right: 48, bottom: 8, top: 32),
+                  child: Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF00AFF5),
+                      borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: AppTheme.getTheme().dividerColor,
+                          blurRadius: 8,
+                          offset: Offset(4, 4),
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                        highlightColor: Colors.transparent,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                          );
+                        },
+                        child: Center(
+                          child: Text(
+                            "Log In",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                color: Colors.white),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 48, right: 48, bottom: 32, top: 8),
-              child: Container(
-                height: 48,
-                decoration: BoxDecoration(
-                  color: AppTheme.getTheme().backgroundColor,
-                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: AppTheme.getTheme().dividerColor,
-                      blurRadius: 8,
-                      offset: Offset(4, 4),
-                    ),
-                  ],
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                    highlightColor: Colors.transparent,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignUpScreen()),
-                      );
-                    },
-                    child: Center(
-                      child: Text(
-                        "Start 14 Day Free Trial",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 16),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 48, right: 48, bottom: 32, top: 8),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                      highlightColor: Colors.transparent,
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(context,
+                            Routes.TabScreen, (Route<dynamic> route) => false);
+                      },
+                      child: Center(
+                        child: Text(
+                          "Continue as Guest",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: AppTheme.getTheme().disabledColor),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).padding.bottom,
-            )
+                SizedBox(
+                  height: MediaQuery.of(context).padding.bottom,
+                )
+              ],
+            ))
           ],
         ),
       ),
@@ -192,46 +204,30 @@ class PagePopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Expanded(
-          flex: 8,
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 60, left: 16, right: 16),
-                child: Image.asset(
-                  imageData.assetsImage,
-                  fit: BoxFit.cover,
-                ),
+        Container(
+          child: Text(
+            imageData.titleText,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 34,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFFFFFFFF),
             ),
           ),
         ),
-        Expanded(
-          child: Container(
-            child: Text(
-              imageData.titleText,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
+        Container(
+          margin: EdgeInsets.only(top: 25.0, left: 50, right: 50),
+          child: Text(
+            imageData.subText,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              color: const Color(0xFFFFFFFF),
             ),
           ),
-        ),
-        Expanded(
-          child: Container(
-            child: Text(
-              imageData.subText,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15.2,
-                fontWeight: FontWeight.w500,
-                color: AppTheme.getTheme().disabledColor,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: SizedBox(),
         ),
       ],
     );
