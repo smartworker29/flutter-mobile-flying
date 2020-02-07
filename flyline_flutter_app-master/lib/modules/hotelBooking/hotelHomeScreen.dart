@@ -167,7 +167,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     if (keyContext != null) {
       // widget is visible
       final box = keyContext.findRenderObject() as RenderBox;
-      final pos = box.localToGlobal(Offset.zero);
 
       setState(() {
         heightBox = box.size.height;
@@ -640,8 +639,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             List<String> departureStopOverCity = List();
             List<FlightRouteObject> returns = List();
             List<String> returnStopOverCity = List();
-            // get all flight routes
-            List<FlightRouteObject> routes = flight.routes;
 
             // one way
             if (typeOfTripSelected == 1) {
