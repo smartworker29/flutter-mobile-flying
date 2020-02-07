@@ -163,7 +163,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 60, right: 60, bottom: 32, top: 8),
+                  left: 50, right: 40, bottom: 32, top: 8),
               child: Row(
                 children: <Widget>[
                   Material(
@@ -220,7 +220,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                       },
                       child: Center(
                         child: Text(
-                          "Terms of Use",
+                          "Terms of Service",
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
