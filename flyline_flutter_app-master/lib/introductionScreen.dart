@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_page_indicator/flutter_page_indicator.dart';
 import 'package:motel/appTheme.dart';
-import 'package:motel/main.dart';
 import 'package:motel/modules/login/loginScreen.dart';
-import 'package:motel/modules/login/signUpScreen.dart';
 import 'package:motel/modules/profile/myWebView.dart';
 
 class IntroductionScreen extends StatefulWidget {
@@ -79,12 +77,11 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                   decoration: BoxDecoration(
                     color: const Color(0xFF00AFF5),
                     image: DecorationImage(
-                      image: AssetImage(pageViewModelData[currentShowIndex].assetsImage),
+                      image: AssetImage('assets/images/bg_introduction2.png'),
                       fit: BoxFit.cover,
                     )
                   ),
                   child: PageView(
-//                    physics: NeverScrollableScrollPhysics(),
                     controller: pageController,
                     onPageChanged: (index) {
                       setState(() {
