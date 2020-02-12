@@ -1983,18 +1983,21 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   void filter(FilterExplore filter) {
     var stop = filter.accomodationListData[0].isSelected
-        ? 0
+        ? 1
         : filter.accomodationListData[1].isSelected
-            ? 1
-            : filter.accomodationListData[2].isSelected ? 2 : -1;
+            ? 2
+            : filter.accomodationListData[2].isSelected ? 3 : 0;
 
     var items = this.originalFlights.where((i) {
       var airlineBool = filter.airlines.map(
           (item) => item["isSelected"] && i.airlines.contains(item["code"]));
 
-      return i.price >= filter.priceFrom.round() &&
-          i.price <= filter.priceTo.round() &&
-          airlineBool.contains(true);
+      int a2b = i.routes.where((r) => r.returnFlight == 0).toList().length;
+      int b2a = i.routes.where((r) => r.returnFlight == 1).toList().length;
+
+      return (i.price >= filter.priceFrom.round() &&
+          i.price <= filter.priceTo.round()) &&
+          airlineBool.contains(true) && (stop > 0 && (a2b == stop || b2a == stop));
     }).toList();
     setState(() {
       listOfFlights = List();
