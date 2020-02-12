@@ -1359,7 +1359,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          left: 4, right: 4, top: 20, bottom: 20),
+                          left: 0, right: 0, top: 20, bottom: 20),
                       child: InkWell(
                         onTap: () async {
                           final List<DateTime> picked =
