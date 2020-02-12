@@ -157,141 +157,143 @@ class _EditProfileState extends State<EditProfile> {
                     top: MediaQuery.of(context).padding.top, bottom: 16),
                 child: appBar(),
               ),
-              Container(
-                height: 440,
-                child: ListView.builder(
-                  padding: EdgeInsets.only(
-                      bottom: 16 + MediaQuery.of(context).padding.bottom),
-                  itemCount: account != null ? account.jsonSerialize.length : 0,
-                  itemBuilder: (context, index) {
-                    return index == 0
-                        ? getProfileUI()
-                        : InkWell(
-                            onTap: () {},
-                            child: Column(
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, right: 16),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 16.0, bottom: 16, top: 16),
-                                          child: Text(
-                                            account.jsonSerialize[index]['key'],
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 16,
-                                              color: AppTheme.getTheme()
-                                                  .disabledColor
-                                                  .withOpacity(0.3),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 16.0, bottom: 1, top: 1),
-                                          child: Container(
-                                            child: TextField(
-                                              onTap: () async {
-                                                if (index == 3) {
-                                                  DatePicker.showDatePicker(context,
-                                                      showTitleActions: true,
-                                                      minTime: DateTime(1960, 1, 1),
-                                                      maxTime: DateTime.now(), onChanged: (date) {
-                                                        print('change $date');
-                                                      }, onConfirm: (date) {
-                                                        var formatter = new DateFormat('yyyy-MM-dd');
-                                                        dobController.text = formatter.format(date);
-                                                      }, currentTime: DateTime.now(), locale: LocaleType.en);
-                                                } else if (index == 4) {
-                                                  List<Widget> items = List();
-                                                  items.add(Container(
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                        bottom: BorderSide(
-                                                          //                    <--- top side
-                                                          color: AppTheme.getTheme().dividerColor,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    child: Container(),
-                                                  ));
-                                                  genders.forEach((item) {
-                                                    items.add(Container(
-                                                        margin: const EdgeInsets.only(
-                                                            left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
-                                                        decoration: BoxDecoration(
-                                                          border: Border(
-                                                            bottom: BorderSide(
-                                                              //                    <--- top side
-                                                              color: AppTheme.getTheme().dividerColor,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        child: SimpleDialogOption(
-                                                          onPressed: () {
-                                                            Navigator.pop(context, item);
-                                                            setState(() {
-                                                              selectedGender = item;
-                                                              selectedGenderValue =
-                                                              genderValues[genders.indexOf(item)];
-                                                              genderController.text = selectedGender;
-                                                            });
-                                                          },
-                                                          child: Text(item),
-                                                        )));
-                                                  });
-                                                  await showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext context) {
-                                                        return SimpleDialog(
-                                                          title: const Text('Select Gender'),
-                                                          children: items,
-                                                        );
-                                                      });
-                                                }
-                                              },
-                                              readOnly: (index == 3 || index == 4),
-                                              maxLines: 1,
-                                              onChanged: (String txt) {},
-                                              controller: getController(index),
-                                              keyboardType: TextInputType.text,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                // color: AppTheme.dark_grey,
-                                              ),
-                                              cursorColor: AppTheme.getTheme()
-                                                  .primaryColor,
-                                              decoration: new InputDecoration(
-                                                errorText: null,
-                                                border: InputBorder.none,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, right: 16),
-                                  child: Divider(
-                                    height: 1,
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                  },
-                ),
-              ),
+             Expanded(
+               flex: 3,
+               child: ListView.builder(
+                 primary: false,
+                 padding: EdgeInsets.only(
+                     bottom: 16 + MediaQuery.of(context).padding.bottom),
+                 itemCount: account != null ? account.jsonSerialize.length : 0,
+                 itemBuilder: (context, index) {
+                   return index == 0
+                       ? getProfileUI()
+                       : InkWell(
+                     onTap: () {},
+                     child: Column(
+                       children: <Widget>[
+                         Padding(
+                           padding:
+                           const EdgeInsets.only(left: 8, right: 16),
+                           child: Row(
+                             children: <Widget>[
+                               Expanded(
+                                 child: Padding(
+                                   padding: const EdgeInsets.only(
+                                       left: 16.0, bottom: 16, top: 16),
+                                   child: Text(
+                                     account.jsonSerialize[index]['key'],
+                                     style: TextStyle(
+                                       fontWeight: FontWeight.w500,
+                                       fontSize: 16,
+                                       color: AppTheme.getTheme()
+                                           .disabledColor
+                                           .withOpacity(0.3),
+                                     ),
+                                   ),
+                                 ),
+                               ),
+                               Expanded(
+                                 child: Padding(
+                                   padding: const EdgeInsets.only(
+                                       right: 16.0, bottom: 1, top: 1),
+                                   child: Container(
+                                     child: TextField(
+                                       onTap: () async {
+                                         if (index == 3) {
+                                           DatePicker.showDatePicker(context,
+                                               showTitleActions: true,
+                                               minTime: DateTime(1960, 1, 1),
+                                               maxTime: DateTime.now(), onChanged: (date) {
+                                                 print('change $date');
+                                               }, onConfirm: (date) {
+                                                 var formatter = new DateFormat('yyyy-MM-dd');
+                                                 dobController.text = formatter.format(date);
+                                               }, currentTime: DateTime.now(), locale: LocaleType.en);
+                                         } else if (index == 4) {
+                                           List<Widget> items = List();
+                                           items.add(Container(
+                                             decoration: BoxDecoration(
+                                               border: Border(
+                                                 bottom: BorderSide(
+                                                   //                    <--- top side
+                                                   color: AppTheme.getTheme().dividerColor,
+                                                 ),
+                                               ),
+                                             ),
+                                             child: Container(),
+                                           ));
+                                           genders.forEach((item) {
+                                             items.add(Container(
+                                                 margin: const EdgeInsets.only(
+                                                     left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+                                                 decoration: BoxDecoration(
+                                                   border: Border(
+                                                     bottom: BorderSide(
+                                                       //                    <--- top side
+                                                       color: AppTheme.getTheme().dividerColor,
+                                                     ),
+                                                   ),
+                                                 ),
+                                                 child: SimpleDialogOption(
+                                                   onPressed: () {
+                                                     Navigator.pop(context, item);
+                                                     setState(() {
+                                                       selectedGender = item;
+                                                       selectedGenderValue =
+                                                       genderValues[genders.indexOf(item)];
+                                                       genderController.text = selectedGender;
+                                                     });
+                                                   },
+                                                   child: Text(item),
+                                                 )));
+                                           });
+                                           await showDialog(
+                                               context: context,
+                                               builder: (BuildContext context) {
+                                                 return SimpleDialog(
+                                                   title: const Text('Select Gender'),
+                                                   children: items,
+                                                 );
+                                               });
+                                         }
+                                       },
+                                       readOnly: (index == 3 || index == 4),
+                                       maxLines: 1,
+                                       onChanged: (String txt) {},
+                                       controller: getController(index),
+                                       keyboardType: TextInputType.text,
+                                       style: TextStyle(
+                                         fontSize: 16,
+                                         // color: AppTheme.dark_grey,
+                                       ),
+                                       cursorColor: AppTheme.getTheme()
+                                           .primaryColor,
+                                       decoration: new InputDecoration(
+                                         errorText: null,
+                                         border: InputBorder.none,
+                                       ),
+                                     ),
+                                   ),
+                                 ),
+                               )
+                             ],
+                           ),
+                         ),
+                         Padding(
+                           padding: const EdgeInsets.only(
+                               left: 16, right: 16),
+                           child: Divider(
+                             height: 1,
+                           ),
+                         )
+                       ],
+                     ),
+                   );
+                 },
+               ),
+             ),
               Expanded(
+                flex: 1,
                   child: Column(
                 children: <Widget>[
                   Container(
