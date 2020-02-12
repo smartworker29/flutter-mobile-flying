@@ -256,6 +256,7 @@ class _EditProfileState extends State<EditProfile> {
                                                       });
                                                 }
                                               },
+                                              readOnly: (index == 3 || index == 4),
                                               maxLines: 1,
                                               onChanged: (String txt) {},
                                               controller: getController(index),
