@@ -26,10 +26,11 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController tempController;
 
   static var genders = [
+    "Unselected",
     "Male",
     "Female",
   ];
-  static var genderValues = ["0", "1"];
+  static var genderValues = ["1", "0", "1"];
 
   var selectedGender = genders[0];
   var selectedGenderValue = genderValues[0];
@@ -208,20 +209,50 @@ class _EditProfileState extends State<EditProfile> {
                                                         dobController.text = formatter.format(date);
                                                       }, currentTime: DateTime.now(), locale: LocaleType.en);
                                                 } else if (index == 4) {
-                                                  SelectDialog.showModal<String>(context,
-                                                      searchBoxDecoration:
-                                                      InputDecoration(hintText: "Pick one"),
-                                                      label: "Gender",
-                                                      selectedValue: selectedGender,
-                                                      items: genders,
-                                                      onChange: (String selected) {
-                                                        setState(() {
-                                                          selectedGender = selected;
-                                                          selectedGenderValue =
-                                                          genderValues[
-                                                          genders.indexOf(selected)];
-                                                          genderController.text = selectedGender;
-                                                        });
+                                                  List<Widget> items = List();
+                                                  items.add(Container(
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          //                    <--- top side
+                                                          color: AppTheme.getTheme().dividerColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Container(),
+                                                  ));
+                                                  genders.forEach((item) {
+                                                    items.add(Container(
+                                                        margin: const EdgeInsets.only(
+                                                            left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+                                                        decoration: BoxDecoration(
+                                                          border: Border(
+                                                            bottom: BorderSide(
+                                                              //                    <--- top side
+                                                              color: AppTheme.getTheme().dividerColor,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        child: SimpleDialogOption(
+                                                          onPressed: () {
+                                                            Navigator.pop(context, item);
+                                                            setState(() {
+                                                              selectedGender = item;
+                                                              selectedGenderValue =
+                                                              genderValues[genders.indexOf(item)];
+                                                              genderController.text = selectedGender;
+                                                            });
+                                                          },
+                                                          child: Text(item),
+                                                        )));
+                                                  });
+                                                  await showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return SimpleDialog(
+                                                          title: const Text('Select Gender'),
+                                                          children: items,
+                                                        );
                                                       });
                                                 }
                                               },
@@ -275,6 +306,10 @@ class _EditProfileState extends State<EditProfile> {
                                   fontSize: 19.0,
                                   fontWeight: FontWeight.bold)),
                           onPressed: () {
+                            if (genderController.text == "Unselected") {
+                              return;
+                            }
+
                             flyLinebloc.updateAccountInfo(
                               firstNameController.text,
                               lastNameController.text,

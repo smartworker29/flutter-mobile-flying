@@ -8,7 +8,8 @@ class HomeExploreSliderView extends StatefulWidget {
   final double opValue;
   final VoidCallback click;
 
-  const HomeExploreSliderView({Key key, this.opValue = 0.0, this.click}) : super(key: key);
+  const HomeExploreSliderView({Key key, this.opValue = 0.0, this.click})
+      : super(key: key);
   @override
   _HomeExploreSliderViewState createState() => _HomeExploreSliderViewState();
 }
@@ -40,11 +41,14 @@ class _HomeExploreSliderViewState extends State<HomeExploreSliderView> {
 
     sliderTimer = Timer.periodic(Duration(seconds: 4), (timer) {
       if (currentShowIndex == 0) {
-        pageController.animateTo(MediaQuery.of(context).size.width, duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
+        pageController.animateTo(MediaQuery.of(context).size.width,
+            duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
       } else if (currentShowIndex == 1) {
-        pageController.animateTo(MediaQuery.of(context).size.width * 2, duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
+        pageController.animateTo(MediaQuery.of(context).size.width * 2,
+            duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
       } else if (currentShowIndex == 2) {
-        pageController.animateTo(0, duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
+        pageController.animateTo(0,
+            duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
       }
     });
     super.initState();
@@ -106,7 +110,8 @@ class PagePopup extends StatelessWidget {
   final PageViewData imageData;
   final double opValue;
 
-  const PagePopup({Key key, this.imageData, this.opValue: 0.0}) : super(key: key);
+  const PagePopup({Key key, this.imageData, this.opValue: 0.0})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +125,12 @@ class PagePopup extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
+        Opacity(
+            opacity: 0.3,
+            child: Container(
+                decoration: new BoxDecoration(
+              color: const Color(0xFF000000),
+            ))),
         Positioned(
           bottom: 16,
           left: 24,
@@ -134,7 +145,7 @@ class PagePopup extends StatelessWidget {
                     imageData.titleText,
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      fontSize: 26,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),

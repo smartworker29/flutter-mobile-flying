@@ -23,21 +23,21 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
     pageViewModelData.add(PageViewData(
       titleText: 'Stop Paying Retail',
       subText:
-          'We source flights from 250+ airlines and \nsell them directly to you with zero markup.',
+          'We source flights from over 250 airlines and sell them directly to you with zero markups.',
       assetsImage: 'assets/images/bg_introduction1.png',
     ));
 
     pageViewModelData.add(PageViewData(
       titleText: 'Virtual Interlining',
       subText:
-          'We connect one-way flights from \ndifferent carriers to deliver the best savings.',
+          'We connect one-way flights from different carriers to deliver the best savings.',
       assetsImage: 'assets/images/bg_introduction2.png',
     ));
 
     pageViewModelData.add(PageViewData(
       titleText: 'Always the Cheapest',
       subText:
-          'We will always display the cheapest \nfare, whether it is a public or FlyLine fare.',
+          'We will always display the cheapest fare, whether it is a public or FlyLine fare.',
       assetsImage: 'assets/images/bg_introduction3.png',
     ));
 
