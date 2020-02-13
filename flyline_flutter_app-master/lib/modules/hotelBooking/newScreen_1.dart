@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/helper/helper.dart';
@@ -58,6 +59,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   List<TextEditingController> passportIdControllers;
   List<TextEditingController> passportExpirationControllers;
 
+  ScrollController scrollController = new ScrollController(initialScrollOffset: 300.0, keepScrollOffset: true);
+
   static var genders = [
     "Male",
     "Female",
@@ -100,6 +103,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       }
     }
   }
+
 
   void addPassenger() async {
     numberOfPassengers++;
@@ -153,11 +157,18 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     _checkFlight = true;
     super.initState();
 
+    SchedulerBinding.instance.addPostFrameCallback((_) => {
+      scrollController.animateTo(-50.0, duration: Duration(milliseconds: 1), curve: Curves.ease)
+    });
+
     flyLinebloc.checkFlightData.stream.listen((CheckFlightResponse response) {
       if (response != null && _checkFlight) {
+
         setState(() {
           _checkFlightResponse = response;
           if (!_firstLoad) {
+//            scrollController.animateTo(-50.0,
+//                duration: Duration(milliseconds: 1), curve: Curves.ease);
             handBags.addAll(response.baggage.combinations.handBag);
             holdBags.addAll(response.baggage.combinations.holdBag);
 
@@ -182,23 +193,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   void dispose() {
     _checkFlight = false;
     _firstLoad = false;
+    scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          InkWell(
-            splashColor: Colors.transparent,
-            focusColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: SingleChildScrollView(
+      body:SingleChildScrollView(
+              controller: scrollController,
               child: Column(
                 children: <Widget>[
                   getAppBarUI(),
@@ -208,6 +211,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 //                        getFlightDetails(),
                         flightDetail(),
                         ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
                             padding: const EdgeInsets.only(left: 0, right: 0),
                             primary: false,
                             shrinkWrap: true,
@@ -224,9 +228,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 ],
               ),
             ),
-          ),
-        ],
-      ),
     );
   }
 
