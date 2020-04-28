@@ -4,6 +4,7 @@ import 'package:motel/appTheme.dart';
 import 'package:motel/introductionScreen.dart';
 import 'package:motel/main.dart';
 import 'package:motel/modules/home/guest_home.dart' as guest_home;
+import 'package:motel/modules/menuitems/FlyLine_premium_page.dart';
 import 'package:motel/network/blocs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -305,14 +306,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               BorderRadius.all(Radius.circular(1.0)),
                               highlightColor: Colors.transparent,
                               onTap: () {
-                                // setState(() {
-                                //   isLogginClicked =
-                                //   true; // update the state of the class to show color change
-                                // });
-                                // isCalledOnce = true;
-                                // flyLinebloc.tryLogin(
-                                //     emailController.text.toString(),
-                                //     passwordController.text.toString());
+                                
+                                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>PremiumPage()),
+                                );
 
                                
                               },

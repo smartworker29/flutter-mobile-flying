@@ -13,6 +13,7 @@ import 'package:motel/modules/datepicker/datepicker_screen.dart';
 import 'package:motel/modules/bookingflow/sort_flights.dart';
 import 'package:motel/modules/bookingflow/search_results_screen.dart';
 import 'package:motel/modules/login/loginScreen.dart';
+import 'package:motel/modules/menuitems/FlyLine_premium_page.dart';
 import 'package:motel/modules/menuitems/account_details.dart';
 import 'package:motel/modules/menuitems/membership_plans.dart';
 import 'package:motel/modules/menuitems/payment.dart';
@@ -1199,7 +1200,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PremiumPage()),
+                            builder: (context) => MembershipPlansScreen()),
                       );
                     },
                   ),
@@ -3180,7 +3181,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SortFlightsPage()));
+                              builder: (context) => PremiumPage()));
                       // _scaffoldKey.currentState.openDrawer();
                       // setState(() {
                       //   _isSearched = false;
