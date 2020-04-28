@@ -1,4 +1,4 @@
-import 'package:motel/models/flightInformation.dart';
+import 'package:motel/models/flight_information.dart';
 import 'package:motel/models/popularFilterList.dart';
 
 class FilterExplore {

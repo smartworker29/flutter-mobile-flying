@@ -14,13 +14,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   GlobalKey<FormState> formKey = new GlobalKey();
   var response;
   int statusCode;
+  bool textTappted = false;
 
   Future<dynamic> forgotPasswordApiCall() async {
     String url =
         'https://joinflyline.com/api/password_reset/'; // here i am checking with my own api
-    response =
-        await http.post(url, body: {"email": emailTextController.text});
-    statusCode=response.statusCode;
+    response = await http.post(url, body: {"email": emailTextController.text});
+    statusCode = response.statusCode;
 
     //this is output i got
 
@@ -62,16 +62,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 16.0, bottom: 16.0, left: 24, right: 24),
+                              top: 20, bottom: 20, left: 50, right: 50),
                           child: Row(
                             children: <Widget>[
                               Text(
-                                "Enter your email to reset your password.",
-                                textAlign: TextAlign.start,
+                                "We will send a verification code to your \n registered email address.",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontFamily: "Gilroy",
+                                  fontSize: 16,
+                                  height: 1.5,
                                   fontWeight: FontWeight.w500,
-                                  color: AppTheme.getTheme().disabledColor,
+                                  color: Color(0xFF8E969F),
                                 ),
                               ),
                             ],
@@ -83,21 +85,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             decoration: BoxDecoration(
                               color: AppTheme.getTheme().backgroundColor,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(1)),
+                                  BorderRadius.all(Radius.circular(15)),
                               // border: Border.all(
                               //   color: HexColor("#757575").withOpacity(0.6),
                               // ),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                  color: AppTheme.getTheme().dividerColor,
-                                  blurRadius: 8,
-                                  offset: Offset(4, 4),
-                                ),
-                              ],
+                              // boxShadow: <BoxShadow>[
+                              //   BoxShadow(
+                              //     color: AppTheme.getTheme().dividerColor,
+                              //     blurRadius: 8,
+                              //     offset: Offset(4, 4),
+                              //   ),
+                              // ],
                             ),
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(left: 16, right: 16),
+                                  const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 20,),
                               child: Container(
                                 height: 48,
                                 child: Center(
@@ -105,18 +107,26 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     controller: emailTextController,
                                     maxLines: 1,
                                     onChanged: (String txt) {},
+                                    onTap: () {
+                                      setState(() {
+                                        textTappted = true;
+                                      });
+                                    },
                                     style: TextStyle(
                                       fontSize: 16,
                                     ),
                                     cursorColor:
                                         AppTheme.getTheme().primaryColor,
                                     decoration: new InputDecoration(
+                                      fillColor: Colors.white,
+                                      filled: true,
                                       errorText: null,
                                       border: InputBorder.none,
-                                      hintText: "Enter your email",
+                                      hintText: "Enter your email address...",
                                       hintStyle: TextStyle(
-                                          color: AppTheme.getTheme()
-                                              .disabledColor),
+                                        fontWeight: FontWeight.w500,
+                                          fontFamily: "Gilroy",
+                                          color: Color(0xFFC7C9D1)),
                                     ),
                                     // ignore: missing_return
                                     validator: (value) {
@@ -136,9 +146,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           child: Container(
                             height: 48,
                             decoration: BoxDecoration(
-                              color: AppTheme.getTheme().primaryColor,
+                              color: textTappted
+                                  ? Color.fromRGBO(0, 174, 239, 1)
+                                  : Color.fromRGBO(199, 201, 209, 1),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(1)),
+                                  BorderRadius.all(Radius.circular(27)),
                               boxShadow: <BoxShadow>[
                                 BoxShadow(
                                   color: AppTheme.getTheme().dividerColor,
@@ -157,66 +169,78 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 onTap: () async {
                                   if (formKey.currentState.validate()) {
                                     await forgotPasswordApiCall();
-                                    if(statusCode==200){
+                                    if (statusCode == 200) {
 //                                      Navigator.pop(context);
-                                      return Alert(context:context,title: "Please check your email, we have sent you instructions to reset your password",
+                                      return Alert(
+                                        context: context,
+                                        title:
+                                            "Please check your email, we have sent you instructions to reset your password",
                                         buttons: [
                                           DialogButton(
                                             child: Text(
                                               "OKAY",
-                                              style: TextStyle(color: Colors.white, fontSize: 20),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20),
                                             ),
-                                            onPressed: () { Navigator.pop(context);
-                                            Navigator.pop(context);
+                                            onPressed: () {
+                                              Navigator.pop(context);
                                             },
                                             width: 120,
                                           ),
                                         ],
-
-
-
-                                       ).show();
-
-
-                                    }
-                                    else if (response.statusCode==500){
-                                      return Alert(context:context,title: "something went wrong, try again later",
+                                      ).show();
+                                    } else if (response.statusCode == 500) {
+                                      return Alert(
+                                        context: context,
+                                        title:
+                                            "something went wrong, try again later",
                                         buttons: [
                                           DialogButton(
                                             child: Text(
                                               "OKAY",
-                                              style: TextStyle(color: Colors.white, fontSize: 20),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20),
                                             ),
-                                            onPressed: () { Navigator.pop(context);
-                                            Navigator.pop(context);
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
                                             },
-
                                             width: 120,
                                           ),
-                                        ],).show();
-                                    }
-                                    else{
-                                      return Alert(context: context,title:"Email doesn't exist ",
+                                        ],
+                                      ).show();
+                                    } else {
+                                      return Alert(
+                                        context: context,
+                                        title: "Email doesn't exist ",
                                         buttons: [
                                           DialogButton(
                                             child: Text(
                                               "OKAY",
-                                              style: TextStyle(color: Colors.white, fontSize: 20),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20),
                                             ),
-                                            onPressed: () { Navigator.pop(context);
-                                            Navigator.pop(context);
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
                                             },
                                             width: 120,
                                           ),
-                                        ],).show();
+                                        ],
+                                      ).show();
                                     }
-                                }},
+                                  }
+                                },
 
                                 child: Center(
                                   child: Text(
-                                    "Send",
+                                    "Send Verification Code",
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "Gilroy",
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 16,
                                         color: Colors.white),
                                   ),
@@ -260,23 +284,26 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.arrow_back),
+                    child: Icon(Icons.arrow_back_ios),
                   ),
                 ),
               ),
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 4, left: 24),
-          child: Text(
-            "Forgot Password",
-            style: new TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 146, left: 49.5, right: 49.5),
+            child: Text(
+              "Forgot Password",
+              style: new TextStyle(
+                  fontFamily: "Gilroy",
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
+                  color: Color.fromRGBO(14, 49, 120, 1)),
             ),
           ),
-        ),
+        )
       ],
     );
   }

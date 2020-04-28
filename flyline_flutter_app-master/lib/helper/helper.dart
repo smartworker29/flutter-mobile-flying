@@ -19,7 +19,7 @@ class Helper {
     }
 
     if (duration.inHours != 0) {
-      d.add(duration.inHours.remainder(60).toString() + "h");
+      d.add(duration.inHours.toString() + "h");
     }
 
     if (duration.inMinutes != 0) {

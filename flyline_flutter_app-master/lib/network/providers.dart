@@ -1,17 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:motel/models/bookRequest.dart';
-import 'package:motel/models/checkFlightResponse.dart';
-import 'package:motel/models/recentlFlightSearch.dart';
+import 'package:motel/models/book_request.dart';
+import 'package:motel/models/check_flight_response.dart';
+import 'package:motel/models/recent_flight_search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/account.dart';
-import '../models/bookedFlight.dart';
-import '../models/flightInformation.dart';
-import '../models/flylineDeal.dart';
+import '../models/booked_flight.dart';
+import '../models/flight_information.dart';
+import '../models/flyline_deal.dart';
 import '../models/locations.dart';
 
 class FlyLineProvider {
@@ -198,6 +199,34 @@ class FlyLineProvider {
     }
 
     return { "status": response.statusCode };
+  }
+
+  Future<List<FlylineDeal>> randomDealsForGuest(int size) async {
+//    print('randomDeals');
+//    var token = await getAuthToken();
+
+    Response response;
+    Dio dio = Dio();
+
+    List<FlylineDeal> deals = List<FlylineDeal>();
+    var url = "https://staging.joinflyline.com/api/deals/?size=" + size.toString();
+
+    print(url);
+    try {
+      response = await dio.get(url);
+    } on DioError catch (e) {
+      log(e.response.toString());
+    } catch (e) {
+      print(e.toString());
+      log(e.toString());
+    }
+
+    if (response.statusCode == 200) {
+      for (dynamic i in response.data["results"]) {
+        deals.add(FlylineDeal.fromJson(i));
+      }
+    }
+    return deals;
   }
 
   Future<List<FlylineDeal>> randomDeals(int size) async {

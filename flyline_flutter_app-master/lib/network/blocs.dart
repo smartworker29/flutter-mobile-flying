@@ -1,20 +1,26 @@
-import 'package:motel/models/bookRequest.dart';
-import 'package:motel/models/recentlFlightSearch.dart';
+import 'package:motel/models/book_request.dart';
+import 'package:motel/models/recent_flight_search.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/account.dart';
-import '../models/checkFlightResponse.dart';
-import '../models/bookedFlight.dart';
-import '../models/flightInformation.dart';
-import '../models/flylineDeal.dart';
+import '../models/check_flight_response.dart';
+import '../models/booked_flight.dart';
+import '../models/flight_information.dart';
+import '../models/flyline_deal.dart';
 import '../models/locations.dart';
 import 'repositories.dart';
 
 class FlyLineBloc {
   final FlyLineRepository _repository = FlyLineRepository();
 
-  final BehaviorSubject<String> _token = BehaviorSubject<String>();
+  BehaviorSubject<String> _token = BehaviorSubject<String>();
 
+  set token(String value) {
+    _token.add(value);
+  }
+
+
+  BehaviorSubject<String> get tokenData => _token;
   final BehaviorSubject<List<LocationObject>> _subjectlocationItems =
       BehaviorSubject<List<LocationObject>>();
 
@@ -108,7 +114,7 @@ class FlyLineBloc {
   }
 
   Future<List<FlylineDeal>> randomDeals() async {
-    List<FlylineDeal> response = await _repository.randomDeals(20);
+    List<FlylineDeal> response = await _repository.randomDeals(50);
     _subjectRandomDeals.sink.add(response);
 
     return response;

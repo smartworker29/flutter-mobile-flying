@@ -1,33 +1,29 @@
-# motel
+# README #
 
-A new Flutter project.
+This README would normally document whatever steps are necessary to get your application up and running.
 
-## Getting Started
+### What is this repository for? ###
 
-This project is a starting point for a Flutter application.
+* Quick summary
+* Version
+* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
-A few resources to get you started if this is your first Flutter project:
+### How do I get set up? ###
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+* Summary of set up
+* Configuration
+* Dependencies
+* Database configuration
+* How to run tests
+* Deployment instructions
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Contribution guidelines ###
 
+* Writing tests
+* Code review
+* Other guidelines
 
-## HOW TO BUILD
+### Who do I talk to? ###
 
-### IOS
-
-Refs: https://flutter.dev/docs/deployment/ios
-- open Runner.xcworkspace
-- select Product > Build
-- select Product > Archive
-- select validate and distribute app
-
-### ANDROID
-
-Refs: https://flutter.dev/docs/deployment/android
-- run `flutter build appbundle`
-- run `flutter build apk --split-per-abi`
+* Repo owner or admin
+* Other community or team contact

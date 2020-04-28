@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:motel/appTheme.dart';
-import 'package:motel/testScreen.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'introductionScreen.dart';
-import 'modules/bottomTab/bottomTabScreen.dart';
+import 'modules/home/logged_home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,20 +42,20 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
     this.initPlatformState();
   }
 
   Future<void> initPlatformState() async {
     if (!mounted) return;
 
-    await OneSignal.shared.init("905d4559-c3bb-442c-bed5-93a097da8a7e",
+    await OneSignal.shared.init(
+        "905d4559-c3bb-442c-bed5-93a097da8a7e",
         iOSSettings: {
           OSiOSSettings.autoPrompt: true,
           OSiOSSettings.inAppLaunchUrl: true
-        });
-    OneSignal.shared
-        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+        }
+    );
+    OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
   }
 
   void restartApp() {
@@ -90,17 +90,24 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.getTheme(),
       routes: routes,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'), // English
+      ],
     );
   }
 
   var routes = <String, WidgetBuilder>{
-//    Routes.SPLASH: (BuildContext context) => IntroductionScreen(),
-    Routes.SPLASH: (BuildContext context) => TestScreen(),
-    Routes.TabScreen: (BuildContext context) => new BottomTabScreen(),
+    Routes.SPLASH: (BuildContext context) => IntroductionScreen(),
+     Routes.SearchScreen: (BuildContext context) => HotelHomeScreen(),
+
   };
 }
 
 class Routes {
+  static const String SearchScreen = "/home/logged_home";
   static const String SPLASH = "/";
-  static const String TabScreen = "/bottomTab/bottomTabScreen";
 }

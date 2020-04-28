@@ -86,7 +86,7 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.onesignal:OneSignal:[3.11.2, 3.99.99]'
+    implementation 'com.onesignal:OneSignal:3.12.7'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

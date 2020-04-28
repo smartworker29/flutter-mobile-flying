@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:motel/models/bookRequest.dart';
-import 'package:motel/models/checkFlightResponse.dart';
-import 'package:motel/models/recentlFlightSearch.dart';
+import 'package:motel/models/book_request.dart';
+import 'package:motel/models/check_flight_response.dart';
+import 'package:motel/models/recent_flight_search.dart';
 
 import '../models/account.dart';
-import '../models/bookedFlight.dart';
-import '../models/flightInformation.dart';
-import '../models/flylineDeal.dart';
+import '../models/booked_flight.dart';
+import '../models/flight_information.dart';
+import '../models/flyline_deal.dart';
 import '../models/locations.dart';
 import 'providers.dart';
 
@@ -63,7 +63,7 @@ class FlyLineRepository {
   }
 
   Future<List<FlylineDeal>> randomDeals(int size) {
-    return _flyLineProvider.randomDeals(size);
+    return _flyLineProvider.randomDealsForGuest(size);
   }
 
   Future<List<BookedFlight>> pastOrUpcomingFlightSummary(
