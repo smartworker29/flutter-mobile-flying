@@ -13,6 +13,7 @@ import 'package:motel/modules/datepicker/datepicker_screen.dart';
 import 'package:motel/modules/bookingflow/sort_flights.dart';
 import 'package:motel/modules/bookingflow/search_results_screen.dart';
 import 'package:motel/modules/login/loginScreen.dart';
+import 'package:motel/modules/menuitems/help_center.dart';
 import 'package:motel/modules/signup/flyline_premium.dart';
 import 'package:motel/modules/menuitems/account_details.dart';
 import 'package:motel/modules/menuitems/deal_feed.dart';
@@ -1335,7 +1336,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AccountDetailsScreen()),
+                            builder: (context) => HelpCenterScreen()),
                       );
                     },
                   ),
