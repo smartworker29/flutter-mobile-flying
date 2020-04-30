@@ -21,9 +21,9 @@ dependencies:
   shared_preferences: ^0.5.3+5
   ##shared_preferences: 0.5.6
   dio_cookie_manager: 1.0.0
- ## flushbar: ^1.10.0
-  #flushbar: 1.9.1
-  flushbar: 1.6.0
+  flushbar: ^1.10.0
+  # flushbar: 1.9.1
+  # flushbar: 1.6.0
   simple_autocomplete_formfield: 0.2.4
   date_range_picker: ^1.0.5
   duration: 2.0.8
@@ -75,7 +75,7 @@ flutter:
     - assets/images/logotype.png
     - assets/images/user.jpg
     - assets/images/add.png
-    
+    - assets/images/question.png
     - assets/images/originaline.png
 
   fonts:

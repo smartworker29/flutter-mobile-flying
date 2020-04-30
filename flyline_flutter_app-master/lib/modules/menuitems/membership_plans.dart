@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 
 class MembershipPlansScreen extends StatefulWidget {
@@ -36,17 +33,17 @@ class _MembershipPlansScreenState extends State<MembershipPlansScreen> {
                         child: InkWell(
                           child: Icon(
                             Icons.arrow_back_ios,
-                            size: 25,
+                            size: 20,
                           ),
-                          onTap: (){
+                          onTap: () {
                             Navigator.pop(context);
                           },
                         ),
                       ),
                       Text(
-                        "Subscriptions",
+                        "FlyLine Premium",
                         style: TextStyle(
-                            fontFamily: "AvenirNext",
+                            fontFamily: "Gilroy",
                             fontWeight: FontWeight.bold,
                             color: Color.fromRGBO(14, 49, 120, 1),
                             fontSize: 18),
@@ -59,361 +56,179 @@ class _MembershipPlansScreenState extends State<MembershipPlansScreen> {
                           borderRadius: BorderRadius.all(Radius.circular(50)),
                         ),
                         child: Image.asset(
-                          'assets/images/question.jpg',
+                          'assets/images/question.png',
                           height: 16,
                           width: 16,
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.0),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey[200],
-                                  offset: Offset(0, 0), //(x,y)
-                                  blurRadius: 10.0,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(30, 24, 30, 12),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        "Meta Search",
-                                        style: TextStyle(
-                                            fontFamily: "AvenirNext",
-                                            fontWeight: FontWeight.w800,
-                                            color:
-                                                Color.fromRGBO(14, 49, 120, 1),
-                                            fontSize: 18),
-                                      ),
-                                      Text(
-                                        "Free",
-                                        style: TextStyle(
-                                            fontFamily: "AvenirNext",
-                                            fontWeight: FontWeight.w800,
-                                            color:
-                                                Color.fromRGBO(14, 49, 120, 1),
-                                            fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  color: Color.fromRGBO(231, 233, 240, 1),
-                                  height: 1,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(30, 24, 20, 20),
-                                  child: Text(
-                                    "Our meta search feature is free, and it always will be, have confidence knowing you are always getting the best price on the net",
-                                    style: TextStyle(
-                                        fontFamily: "AvenirNext",
-                                        fontWeight: FontWeight.normal,
-                                        color: Color.fromRGBO(142, 150, 159, 1),
-                                        fontSize: 13),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.0),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey[200],
-                                  offset: Offset(0, 0), //(x,y)
-                                  blurRadius: 10.0,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(30, 24, 30, 12),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        "FlyLine Basic",
-                                        style: TextStyle(
-                                            fontFamily: "AvenirNext",
-                                            fontWeight: FontWeight.w800,
-                                            color:
-                                                Color.fromRGBO(14, 49, 120, 1),
-                                            fontSize: 18),
-                                      ),
-                                      Text(
-                                        "\$49.99/yr",
-                                        style: TextStyle(
-                                            fontFamily: "AvenirNext",
-                                            fontWeight: FontWeight.w800,
-                                            color:
-                                                Color.fromRGBO(14, 49, 120, 1),
-                                            fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  color: Color.fromRGBO(231, 233, 240, 1),
-                                  height: 1,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(30, 24, 20, 20),
-                                  child: Text(
-                                    "Get a taste of the perks and savings FlyLine has to offer with FlyLine Basic",
-                                    style: TextStyle(
-                                        fontFamily: "AvenirNext",
-                                        fontWeight: FontWeight.normal,
-                                        color: Color.fromRGBO(142, 150, 159, 1),
-                                        fontSize: 13),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(30, 24, 80, 20),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            "- Meta Fares",
-                                            style: TextStyle(
-                                                fontFamily: "AvenirNext",
-                                                fontWeight: FontWeight.normal,
-                                                color: Color.fromRGBO(
-                                                    14, 49, 120, 1),
-                                                fontSize: 13),
-                                          ),
-                                          Text(
-                                            "- Max of 6 bookings",
-                                            style: TextStyle(
-                                                fontFamily: "AvenirNext",
-                                                fontWeight: FontWeight.normal,
-                                                color: Color.fromRGBO(
-                                                    14, 49, 120, 1),
-                                                fontSize: 13),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            "- FlyLine Fares",
-                                            style: TextStyle(
-                                                fontFamily: "AvenirNext",
-                                                fontWeight: FontWeight.normal,
-                                                color: Color.fromRGBO(
-                                                    14, 49, 120, 1),
-                                                fontSize: 13),
-                                          ),
-                                          Text(
-                                            "- Deal Alerts",
-                                            style: TextStyle(
-                                                fontFamily: "AvenirNext",
-                                                fontWeight: FontWeight.normal,
-                                                color: Color.fromRGBO(
-                                                    14, 49, 120, 1),
-                                                fontSize: 13),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(80, 12, 80, 12),
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                    color: Color.fromRGBO(0, 174, 239, 1),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey[200],
-                                        offset: Offset(0, 0), //(x,y)
-                                        blurRadius: 10.0,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    "Start 14 Day Free Trial",
-                                    style: TextStyle(
-                                        fontFamily: "AvenirNext",
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                        fontSize: 13),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.0),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey[200],
-                                  offset: Offset(0, 0), //(x,y)
-                                  blurRadius: 10.0,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(30, 24, 30, 12),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        "FlyLine Premium",
-                                        style: TextStyle(
-                                            fontFamily: "AvenirNext",
-                                            fontWeight: FontWeight.w800,
-                                            color:
-                                                Color.fromRGBO(14, 49, 120, 1),
-                                            fontSize: 18),
-                                      ),
-                                      Text(
-                                        "\$79.99/yr",
-                                        style: TextStyle(
-                                            fontFamily: "AvenirNext",
-                                            fontWeight: FontWeight.w800,
-                                            color:
-                                                Color.fromRGBO(14, 49, 120, 1),
-                                            fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  color: Color.fromRGBO(231, 233, 240, 1),
-                                  height: 1,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(30, 24, 20, 20),
-                                  child: Text(
-                                    "Get the most out of FlyLine with FlyLine Premium. Save time and money.",
-                                    style: TextStyle(
-                                        fontFamily: "AvenirNext",
-                                        fontWeight: FontWeight.normal,
-                                        color: Color.fromRGBO(142, 150, 159, 1),
-                                        fontSize: 13),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(30, 24, 80, 20),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            "- Meta Fares",
-                                            style: TextStyle(
-                                                fontFamily: "AvenirNext",
-                                                fontWeight: FontWeight.normal,
-                                                color: Color.fromRGBO(
-                                                    14, 49, 120, 1),
-                                                fontSize: 13),
-                                          ),
-                                          Text(
-                                            "- Unlimited bookings",
-                                            style: TextStyle(
-                                                fontFamily: "AvenirNext",
-                                                fontWeight: FontWeight.normal,
-                                                color: Color.fromRGBO(
-                                                    14, 49, 120, 1),
-                                                fontSize: 13),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            "- FlyLine Fares",
-                                            style: TextStyle(
-                                                fontFamily: "AvenirNext",
-                                                fontWeight: FontWeight.normal,
-                                                color: Color.fromRGBO(
-                                                    14, 49, 120, 1),
-                                                fontSize: 13),
-                                          ),
-                                          Text(
-                                            "- Additional User",
-                                            style: TextStyle(
-                                                fontFamily: "AvenirNext",
-                                                fontWeight: FontWeight.normal,
-                                                color: Color.fromRGBO(
-                                                    14, 49, 120, 1),
-                                                fontSize: 13),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(80, 10, 80, 12),
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                    color: Color.fromRGBO(0, 174, 239, 1),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey[200],
-                                        offset: Offset(0, 0), //(x,y)
-                                        blurRadius: 10.0,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    "Start 14 Day Free Trial",
-                                    style: TextStyle(
-                                        fontFamily: "AvenirNext",
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                        fontSize: 13),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  SubscriptionItem(
+                    title: 'FlyLine Basic',
+                    items: [
+                      'FlyLine Meta Search',
+                      'Direct Airline Booking',
+                      'Co - Pilot Lite',
+                      'Up to 3 Travelers on a Booking',
+                    ],
+                    onSignup: () {
+                      print('do FlyBasic');
+                    },
+                    onLearnMore: () {
+                      print('do learnMore Basic');
+                    },
+                  ),
+                  SubscriptionItem(
+                    title: 'FlyLine Premium',
+                    items: [
+                      'Cash Back Booking - 6% Max',
+                      'FlyLine Meta Search',
+                      'Direct Airline Booking',
+                      'Co - Pilot Pro',
+                    ],
+                    onSignup: () {
+                      print('do Premium');
+                    },
+                    onLearnMore: () {
+                      print('do learnMore Premium');
+                    },
                   )
                 ],
               ),
             ),
           ),
         ));
+  }
+}
+
+class CheckedLineItem extends StatelessWidget {
+  final String content;
+
+  const CheckedLineItem({Key key, this.content: ''}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 16),
+      child: Row(
+        children: <Widget>[
+          Image.asset(
+            'assets/images/check.png',
+            height: 20,
+            width: 20,
+          ),
+          SizedBox(
+            width: 16,
+          ),
+          Text(
+            '$content',
+            style: TextStyle(
+                fontFamily: "AvenirNext",
+                color: Color.fromRGBO(58, 63, 92, 1),
+                fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SubscriptionItem extends StatelessWidget {
+  final String title;
+  final List<String> items;
+  final VoidCallback onSignup;
+  final VoidCallback onLearnMore;
+  const SubscriptionItem(
+      {Key key, this.title, this.items, this.onSignup, this.onLearnMore})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      shadowColor: Colors.grey[200],
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      margin: const EdgeInsets.fromLTRB(20, 9, 20, 9),
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.fromLTRB(27, 19, 27, 11),
+              alignment: Alignment.topLeft,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      '$title',
+                      style: TextStyle(
+                          fontFamily: "AvenirNext",
+                          fontWeight: FontWeight.w800,
+                          color: Color.fromRGBO(14, 49, 120, 1),
+                          fontSize: 18),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: onLearnMore,
+                    child: Text(
+                      'Learn More',
+                      style: TextStyle(
+                          fontFamily: "AvenirNext",
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(0, 174, 239, 1),
+                          fontSize: 10),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              height: 1,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            ...items.map(
+              (e) => CheckedLineItem(
+                content: e,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
+              height: 40,
+              margin: EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                color: Color.fromRGBO(0, 174, 239, 1),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey[200],
+                    offset: Offset(0, 0), //(x,y)
+                    blurRadius: 10.0,
+                  ),
+                ],
+              ),
+              child: FlatButton(
+                child: Text(
+                  "Sign Up",
+                  style: TextStyle(
+                      fontFamily: "AvenirNext",
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 13),
+                ),
+                onPressed: onSignup,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
