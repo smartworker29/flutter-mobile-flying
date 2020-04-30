@@ -13,7 +13,7 @@ import 'package:motel/modules/datepicker/datepicker_screen.dart';
 import 'package:motel/modules/bookingflow/sort_flights.dart';
 import 'package:motel/modules/bookingflow/search_results_screen.dart';
 import 'package:motel/modules/login/loginScreen.dart';
-import 'package:motel/modules/menuitems/FlyLine_premium_page.dart';
+import 'package:motel/modules/signup/flyline_premium.dart';
 import 'package:motel/modules/menuitems/account_details.dart';
 import 'package:motel/modules/menuitems/deal_feed.dart';
 import 'package:motel/modules/menuitems/membership_plans.dart';

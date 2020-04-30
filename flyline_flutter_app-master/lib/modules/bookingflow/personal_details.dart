@@ -246,7 +246,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               text: "Trip Total : ",
                               style: TextStyle(
                                 fontFamily: 'Gilroy',
-                                color: Color(0xff8e969f),
+                                color: Color(0xff0e3178),
                                 fontSize: 17,
                                 fontWeight: FontWeight.w700,
                                 fontStyle: FontStyle.normal,
@@ -256,9 +256,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               text: "  \$ " +
                                   widget.flight.price.toStringAsFixed(2),
                               style: TextStyle(
-                                fontFamily: 'AvenirNext',
-                                color: Color(0xff3a3f5c),
-                                fontSize: 16,
+                                fontFamily: 'Gilroy',
+                                color: Color(0xff0e3178),
+                                fontSize: 17,
                                 fontWeight: FontWeight.w700,
                                 fontStyle: FontStyle.normal,
                               ),
@@ -586,7 +586,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             right: 20,
             left: 20,
             top: 30,
-            bottom: 10,
+            bottom: 20,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

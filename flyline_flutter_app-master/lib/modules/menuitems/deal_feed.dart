@@ -112,7 +112,7 @@ class _DealFeedState extends State<DealFeed> {
                                         color: Color(0xFF0E3178)),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(left: 8),
+                                    margin: EdgeInsets.only(left: 14),
                                       padding: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                           color: Color(0x1A00AEEF),
@@ -122,7 +122,7 @@ class _DealFeedState extends State<DealFeed> {
                                         "Flyline Deal",
                                         style: TextStyle(
                                             fontFamily: 'Gilroy',
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.w500,
                                             fontSize: 12,
                                             color: Color(0xFF00AEEF)),
                                       )),
@@ -144,7 +144,7 @@ class _DealFeedState extends State<DealFeed> {
                                               airlines[i],
                                               style: TextStyle(
                                                   fontFamily: 'Gilroy',
-                                                  fontWeight: FontWeight.bold,
+                                                  fontWeight: FontWeight.w500,
                                                   fontSize: 12,
                                                   color: Color(0xFF00AEEF)),
                                             ));

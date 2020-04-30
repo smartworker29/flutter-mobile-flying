@@ -4,7 +4,7 @@ import 'package:motel/appTheme.dart';
 import 'package:motel/introductionScreen.dart';
 import 'package:motel/main.dart';
 import 'package:motel/modules/home/guest_home.dart' as guest_home;
-import 'package:motel/modules/menuitems/FlyLine_premium_page.dart';
+import 'package:motel/modules/signup/flyline_premium.dart';
 import 'package:motel/network/blocs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -44,6 +44,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                 placeholder: 'Card Number',
                 maxLength: 19,
                 inputType: TextInputType.number,
+
               ),
             ),
             Container(
@@ -51,6 +52,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
               child: RoundTextEditField(
                 isDateTime: false,
                 inputType: TextInputType.text,
+
                 placeholder: 'Name on Card',
               ),
             ),

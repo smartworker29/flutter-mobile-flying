@@ -18,7 +18,7 @@ class BookingCompletePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Gilroy',
-                    color: Color(0xff0e3178),
+                    color: Color(0xff8e969f),
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal,

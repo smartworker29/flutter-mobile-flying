@@ -47,7 +47,7 @@ class _PremiumPageState extends State<PremiumPage> {
               child: _checkList(),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 16, left: 36, right: 36),
+              padding: const EdgeInsets.only(top: 40, left: 36, right: 36),
               child: _button1(),
             ),
             Padding(
@@ -70,9 +70,9 @@ class _PremiumPageState extends State<PremiumPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(right: 36.0, left: 36.0),
+            padding: EdgeInsets.only(top: 20.0, right: 36.0, left: 36.0),
             child: Text(
-              'Continue with FlyLine Basic',
+              'Continue with FlyLine Free',
               style: TextStyle(fontSize: 14.0, color: Colors.white,fontWeight: FontWeight.w600),
             ),
           ),
@@ -88,7 +88,7 @@ class _PremiumPageState extends State<PremiumPage> {
         children: <Widget>[
           Flexible(child:Container(
             padding: EdgeInsets.only(right: 36.0, left: 36.0),
-            child: Image.asset('assets/images/ic_logo.png',fit: BoxFit.fitWidth,),),
+            child: Image.asset('assets/images/premium_logo.png',fit: BoxFit.fitWidth,),),
           ),
         ],
       ),
@@ -101,7 +101,7 @@ class _PremiumPageState extends State<PremiumPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(right: 36.0, left: 36.0),
+            padding: EdgeInsets.only(top: 10.0, right: 36.0, left: 36.0),
             child: Text(
               'FlyLine Premium',
               style: TextStyle(
@@ -125,8 +125,8 @@ class _PremiumPageState extends State<PremiumPage> {
             child: Container(
               padding: EdgeInsets.only(right: 36.0, left: 36.0),
               child: Text(
-                'Get the most savings on FlyLine when you upgrade to Premiun',
-                style: TextStyle(fontSize: 14.0, color: Colors.white),
+                'Maxiumize savings on FlyLine when you upgrade to FlyLine Premiun',
+                style: TextStyle(fontSize: 14.0, color: Colors.white, height: 1.4,),
                 textAlign: TextAlign.center,
                 maxLines: 2,
               ),
@@ -249,7 +249,7 @@ class _PremiumPageState extends State<PremiumPage> {
             'Or pay annually and save',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 10.0,
+              fontSize: 12.0,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -273,14 +273,13 @@ class _PremiumPageState extends State<PremiumPage> {
         child: Material(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(44.0)),
-          elevation: 4.0,
           color: Colors.white,
           clipBehavior: Clip.antiAlias,
           child: MaterialButton(
             height: 44.0,
             color: Colors.white,
             child: Text('\$11.99 per month',
-                style: TextStyle(fontSize: 16.0, color: Color(0xFF0E3178),fontWeight: FontWeight.w600)),
+                style: TextStyle(fontSize: 16.0, color: Color(0xFF0E3178),fontWeight: FontWeight.bold,)),
             onPressed: () {},
           ),
         ),
@@ -295,14 +294,13 @@ class _PremiumPageState extends State<PremiumPage> {
         child: Material(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(44.0)),
-          elevation: 4.0,
           color: Colors.white,
           clipBehavior: Clip.antiAlias,
           child: MaterialButton(
             height: 44.0,
             color: Colors.white,
             child: Text('\$59.99 | 12 Months',
-                style: TextStyle(fontSize: 16.0, color: Color(0xFF0E3178),fontWeight: FontWeight.w600)),
+                style: TextStyle(fontSize: 16.0, color: Color(0xFF0E3178),fontWeight: FontWeight.bold,)),
             onPressed: () {},
           ),
         ),
