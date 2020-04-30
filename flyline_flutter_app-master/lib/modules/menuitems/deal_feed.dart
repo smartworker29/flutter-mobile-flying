@@ -43,7 +43,7 @@ class _DealFeedState extends State<DealFeed> {
           ),
           centerTitle: true,
           title: Text(
-            'Deals',
+            'Deal Feed',
             style: TextStyle(
                 fontFamily: 'Gilroy',
                 fontWeight: FontWeight.bold,
@@ -93,10 +93,10 @@ class _DealFeedState extends State<DealFeed> {
                         height: 150,
                         padding: EdgeInsets.all(8),
                         child: Card(
-                          elevation: 5,
+                          elevation: 0,
                           shape: RoundedRectangleBorder(
                             side: BorderSide(color: Colors.white70, width: 2),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           child: Container(
                             padding:

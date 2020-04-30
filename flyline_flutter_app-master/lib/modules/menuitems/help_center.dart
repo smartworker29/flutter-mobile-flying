@@ -29,8 +29,8 @@ class HelpCenterScreen extends StatelessWidget {
           style: TextStyle(
               fontFamily: "Gilroy",
               fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(58, 63, 92, 1),
-              fontSize: 18),
+              color: Color(0xFF0E3178),
+              fontSize: 20),
         ),
         centerTitle: true,
         actions: <Widget>[
