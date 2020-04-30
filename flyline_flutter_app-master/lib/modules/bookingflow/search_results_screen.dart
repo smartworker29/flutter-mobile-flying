@@ -1107,16 +1107,11 @@ class _SearchResultsState extends State<SearchResults>
           height: 40,
           // margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
           decoration: BoxDecoration(
-              color: const Color(0xFF00AFF5),
-              //   border: Border.all(color: const Color(0xFF00AFF5), width: 0.5)),
-              // padding: EdgeInsets.all(12),
-              // decoration: BoxDecoration(
-              //   color: Colors.blue,
               borderRadius: BorderRadius.circular(25)),
           child: Center(
             child: Text("Load More",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: const Color(0xFF00AFF5),
                     fontSize: 19.0,
                     fontWeight: FontWeight.bold)),
           ),
