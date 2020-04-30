@@ -16,7 +16,7 @@ import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart' as intl;
 
 class HotelHomeScreen extends StatefulWidget {
-  List<FlightRouteObject> routes;
+  final List<FlightRouteObject> routes;
   final int ad;
   final int ch;
   final String bookingToken;
@@ -47,6 +47,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   bool _checkFlight = false;
   bool _firstLoad = false;
+  double tripTotal = 0;
+  double priceOnPassenger = 0;
+  double priceOnBaggage = 0;
+
+  bool _clickedBookFlight = false;
 
   List<BagItem> carryOnSelectedList;
   List<Map<int, bool>> carryOnCheckBoxes;
@@ -115,6 +120,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     TextEditingController passportIdController = TextEditingController();
     TextEditingController passportExpirationController =
         TextEditingController();
+
+       // tripTotal = priceOnPassenger + priceOnBaggage;
 
     firstNameControllers.add(firstNameController);
     lastNameControllers.add(lastNameController);
@@ -253,6 +260,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               ),
                             ),
                             TextSpan(
+                             // text: Helper.formatNumber(tripTotal),
                               text: "  \$ " +
                                   widget.flight.price.toStringAsFixed(2),
                               style: TextStyle(

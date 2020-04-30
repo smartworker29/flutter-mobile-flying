@@ -1,31 +1,24 @@
 import 'dart:convert';
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart' as ui_help;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:intl/intl.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/models/filterExplore.dart';
 import 'package:motel/modules/datepicker/datepicker_screen.dart';
 import 'package:motel/modules/bookingflow/search_results_screen.dart';
+import 'package:motel/modules/login/signUp.dart';
 import 'package:motel/modules/menuitems/deal_feed.dart';
 import 'package:motel/modules/menuitems/terms_of_service.dart';
-import 'package:motel/modules/menuitems/payment.dart';
 import 'package:motel/modules/bookingflow/sort_flights.dart';
-import 'package:motel/modules/datepicker/datepicker_screen.dart';
 import 'package:motel/modules/bookingflow/trip_details.dart' as trip_details;
-import 'package:motel/modules/bookingflow/results.dart' as hhs;
 import 'package:motel/modules/login/loginScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_autocomplete_formfield/simple_autocomplete_formfield.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
-
 import '../../appTheme.dart';
 import '../../models/flight_information.dart';
 import '../../models/locations.dart';
@@ -269,43 +262,19 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             child: Column(
               children: <Widget>[
                 getAppBarUI(),
-                // isMap
-                //     ? Expanded(
-                //   child: Column(
-                //     children: <Widget>[
-                //      // getSearchBarUI(),
-                //      // getTimeDateUI(),
-                //       //getSearchButton(),
-                //     ],
-                //   ),
-                // )
-                //     :
                 Expanded(
                   child: Column(children: <Widget>[
-                    // AnimatedOpacity(
-                    // If the widget is visible, animate to 0.0 (invisible).
-                    // If the widget is hidden, animate to 1.0 (fully visible).
-                    // opacity: !this._isSearched ? 1.0 : 0.0,
-                    // duration: Duration(milliseconds: 1000),
-                    // The green box must be a child of the AnimatedOpacity widget.
-                    // child: (this._isSearched
-                    // ? Container()
-                    // :
                     Container(
-                        color: Color.fromRGBO(247, 249, 252, 1),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            selectJourney(),
-                            tabsHeader(),
-                            tabsContent(),
-                          ],
-                        )),
-                    //  )
-                    // ),
-                    //  getFilterBarUI(),
-//TODO:uncomment below line, I didn't knew Its purpose and its displaying an empty box of size(height:30,width:screenWidth)
-                    //  getFlightDetails(),
+                      color: Color.fromRGBO(247, 249, 252, 1),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          selectJourney(),
+                          tabsHeader(),
+                          tabsContent(),
+                        ],
+                      ),
+                    ),
                   ]),
                 )
               ],
@@ -704,7 +673,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                         : "Departure",
                                     style: departureDate != null
                                         ? TextStyle()
-                                        : TextStyle(color: kPlaceHolderColor),
+                                        : TextStyle(
+                                            // color: kPlaceHolderColor
+                                            fontStyle: FontStyle.normal,
+                                            fontFamily: 'Gilroy',
+                                            color: Color(0xff3a3f5c),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                   ),
                                 ),
                                 Image.asset("assets/images/calendar.png",
@@ -755,7 +731,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                           style: arrivalDate != null
                                               ? TextStyle()
                                               : TextStyle(
-                                                  color: kPlaceHolderColor),
+                                                  // color: kPlaceHolderColor
+                                                  fontStyle: FontStyle.normal,
+                                                  fontFamily: 'Gilroy',
+                                                  color: Color(0xff3a3f5c),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                         ),
                                       ),
                                       Image.asset("assets/images/calendar.png",
@@ -1482,9 +1464,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                               DealFeed()),
+                        MaterialPageRoute(builder: (context) => DealFeed()),
                       );
                     },
                   ),
@@ -1609,7 +1589,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       color: Color(0xFF113377),
                     ),
                     onTap: () {
-                      _logOut();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignUpScreen()));
                     },
                   ),
                 ],
@@ -3389,6 +3372,7 @@ class LocationSearchUI extends StatefulWidget {
   final Function(LocationObject value, bool type) notifyParent;
   final title;
   final isDeparture;
+
   final LocationObject city;
 
   LocationSearchUI(this.title, this.isDeparture,
@@ -3414,72 +3398,6 @@ class _LocationSearchUIState extends State<LocationSearchUI>
 
   @override
   Widget build(BuildContext context) {
-    //  return Form(
-    //    key: _formKey,
-    //         child: SimpleAutocompleteFormField<LocationObject>(
-    //          itemToString: (location) {
-    //            if (location != null) {
-    //              return location.name +
-    //                  " " +
-    //                  location.subdivisionName +
-    //                  " " +
-    //                  location.countryCode;
-    //            }
-
-    //            return widget.city != null ? widget.city.name : null;
-    //          },
-    //          textAlign: TextAlign.start,
-    //          itemBuilder:
-    //          (context, location) =>
-    //          Padding(
-    //            padding: const EdgeInsets.all(8.0),
-    //            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    //         Container(
-    //                decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-    //                child: Row(children: <Widget>[
-    //                  Icon(Icons.location_on),
-    //                  Text(
-    //                 location.name +
-    //                      " " +
-    //                     location.subdivisionName +
-    //                      " " +
-    //                     location.countryCode,
-    //                  style: TextStyle(fontWeight: FontWeight.bold)),
-
-    //                ],),
-    //              ),
-    //              ]),
-    //          ),
-
-    //          onSearch: (search) async {
-    //            if (search.length > 0) {
-    //              var response = flyLinebloc.locationQuery(search);
-    //              return response;
-    //            } else
-    //              return null;
-    //          },
-    //          onChanged: (value) => widget.notifyParent(value, widget.isDeparture),
-    //          onSaved: (value) => widget.notifyParent(value, widget.isDeparture),
-    //          validator: (location) =>
-    //              location.name == null ? 'Invalid location.' : null,
-    //          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-    //           decoration: InputDecoration(
-    //              // border: OutlineInputBorder(),
-    //               hintText: "Select " + widget.title + " City or Airport",),
-    //         //  decoration: InputDecoration(
-    //         //    border: InputBorder.none,
-    //         //    hintStyle: TextStyle(
-    //         //      color:
-    //         //      Color(
-    //         //        0xFF8e969f,
-    //         //      ),
-    //         //      fontSize: 16,
-    //         //    ),
-    //         //    hintText: "Select " + widget.title + " City or Airport",
-    //         //  ),
-    // ),
-    //  );
-
     return TypeAheadFormField<LocationObject>(
       autovalidate: true,
       transitionBuilder: (context, suggestionsBox, controller) {
@@ -3492,8 +3410,6 @@ class _LocationSearchUIState extends State<LocationSearchUI>
             " " +
             location.countryCode;
 
-        // "${location.name + location.subdivisionName + location.countryCode}";
-
         widget.notifyParent(location, widget.isDeparture);
       },
       getImmediateSuggestions: true,
@@ -3503,17 +3419,23 @@ class _LocationSearchUIState extends State<LocationSearchUI>
         elevation: 8,
       ),
       textFieldConfiguration: TextFieldConfiguration(
-          //// onChanged: (value) => widget.notifyParent(value, widget.isDeparture),
-          // onSubmitted: (value) => widget.notifyParent(value, widget.isDeparture),
-
           controller: _typeAheadController,
           autofocus: true,
-          style: DefaultTextStyle.of(context)
-              .style
-              .copyWith(fontStyle: FontStyle.normal),
+          style: DefaultTextStyle.of(context).style.copyWith(
+                fontStyle: FontStyle.normal,
+                fontFamily: 'Gilroy',
+                color: Color(0xff3a3f5c),
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
           decoration: InputDecoration.collapsed(
-            hintText: "Select " + widget.title + " City or Airport",
-          ),
+              hintText: "Select " + widget.title + " City or Airport",
+              hintStyle: TextStyle(
+                fontFamily: 'Gilroy',
+                color: Color(0xff3a3f5c),
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              )),
           textAlign: TextAlign.start),
       suggestionsCallback: (search) async {
         if (search.length > 0) {
@@ -3546,75 +3468,6 @@ class _LocationSearchUIState extends State<LocationSearchUI>
           ],
         );
       },
-    );
-  }
-}
-
-class SideDrawer extends StatefulWidget {
-  const SideDrawer({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  _SideDrawerState createState() => _SideDrawerState();
-}
-
-class _SideDrawerState extends State<SideDrawer> {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 1.0, //20.0,
-      child: ListView(
-        children: <Widget>[
-          Container(
-            color: Colors.red,
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                  title: Text('name'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HotelHomeScreen()));
-                  },
-                ),
-                ListTile(
-                  title: Text('firstname'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HotelHomeScreen()));
-                  },
-                ),
-                ListTile(
-                  title: Text('adress'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HotelHomeScreen()));
-                  },
-                ),
-                ListTile(
-                  title: Text('username'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HotelHomeScreen()));
-                  },
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 }

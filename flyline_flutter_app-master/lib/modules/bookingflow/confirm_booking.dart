@@ -4,7 +4,6 @@ import 'package:motel/appTheme.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/models/book_request.dart' as BookRequest;
 import 'package:motel/modules/bookingflow/booking_complete.dart';
-import 'package:motel/modules/bookingflow/confirm_booking.dart' as confirm_booking;
 import 'package:motel/models/check_flight_response.dart';
 import 'package:motel/models/traveler_information.dart';
 import 'package:motel/network/blocs.dart';

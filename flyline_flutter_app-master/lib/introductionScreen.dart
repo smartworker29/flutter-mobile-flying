@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:motel/modules/home/guest_home.dart' as guest_page;
 import 'package:motel/appTheme.dart';
 import 'package:motel/main.dart';
 import 'package:motel/modules/login/loginScreen.dart';

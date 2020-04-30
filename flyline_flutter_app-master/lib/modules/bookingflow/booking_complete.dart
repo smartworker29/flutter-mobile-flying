@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:motel/modules/home/logged_home.dart' as logged_home;
 
 class BookingCompletePage extends StatelessWidget {
   @override
@@ -39,7 +40,8 @@ class BookingCompletePage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                       Navigator.pop(context);
+                       Navigator.push(context,MaterialPageRoute(builder: (context)=>logged_home.HotelHomeScreen()
+                       ));
                     },
                     color: Color(0xff24aaf1),
                     shape: RoundedRectangleBorder(
