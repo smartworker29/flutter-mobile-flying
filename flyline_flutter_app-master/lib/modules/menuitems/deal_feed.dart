@@ -67,7 +67,7 @@ class _DealFeedState extends State<DealFeed> {
             ),
           ),
           elevation: 0,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
         ),
         body: dealItems.isEmpty
             ? Center(child: CircularProgressIndicator())

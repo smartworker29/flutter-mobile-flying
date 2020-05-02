@@ -38,14 +38,6 @@ class HelpCenterScreen extends StatelessWidget {
             height: 50,
             width: 50,
             padding: const EdgeInsets.all(8.0),
-            child: Material(
-              shape: new CircleBorder(),
-              child: Icon(
-                Icons.close,
-                color: Color.fromRGBO(58, 63, 92, 1),
-                size: 16,
-              ),
-            ),
           )
         ],
       ),

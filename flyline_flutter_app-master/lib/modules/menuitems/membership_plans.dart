@@ -52,13 +52,7 @@ class _MembershipPlansScreenState extends State<MembershipPlansScreen> {
                         padding: EdgeInsets.all(12),
                         margin: EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(255, 255, 255, 1),
                           borderRadius: BorderRadius.all(Radius.circular(50)),
-                        ),
-                        child: Image.asset(
-                          'assets/images/question.png',
-                          height: 16,
-                          width: 16,
                         ),
                       ),
                     ],

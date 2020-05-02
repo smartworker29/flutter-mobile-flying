@@ -157,7 +157,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 24, right: 24, top: 16, bottom: 8),
+                            left: 24, right: 24, top: 16, bottom: 0),
                         child: Container(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8, right: 8),
@@ -251,6 +251,114 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       )
                                           : null,
                                       hintText: "Enter your password",
+                                      hintStyle: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "Gilroy",
+                                          color: Color(0xFFC7C9D1)),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 24, right: 24, top: 0, bottom: 8),
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  height: 68,
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                        left: 0, right: 0, top: 0, bottom: 22),
+                                    child: SizedBox(
+                                      height: double.infinity,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.getTheme()
+                                              .backgroundColor,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
+                                          // boxShadow: <BoxShadow>[
+                                          //   BoxShadow(
+                                          //     color: AppTheme.getTheme().dividerColor,
+                                          //     blurRadius: 8,
+                                          //     offset: Offset(4, 4),
+                                          //   ),
+                                          // ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 68,
+                                  child: TextField(
+                                    obscureText: true,
+                                    maxLines: 1,
+                                    controller: passwordController,
+                                    keyboardType: TextInputType.text,
+                                    onChanged: (String txt) {
+                                      setState(() {
+                                        if (txt == "")
+                                          passwordpressed = false;
+                                        else
+                                          passwordpressed =
+                                          true; // update the state of the class to show color change
+                                        isLogginClicked = false;
+                                      });
+                                    },
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      // color: AppTheme.dark_grey,
+                                    ),
+                                    cursorColor:
+                                    AppTheme.getTheme().primaryColor,
+                                    decoration: new InputDecoration(
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      // errorText: isLogginClicked?"Please enter a valid password":null,
+                                      contentPadding:
+                                      const EdgeInsets.all(15.0),
+                                      border: new OutlineInputBorder(
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(15.0),
+                                        ),
+                                      ),
+                                      enabledBorder: const OutlineInputBorder(
+                                        // width: 0.0 produces a thin "hairline" border
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(15.0),
+                                        ),
+                                        borderSide: const BorderSide(
+                                            color: Colors.transparent,
+                                            width: 0.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(15.0),
+                                        ),
+                                        borderSide: BorderSide(
+                                            color: HexColor("#0e3178"),
+                                            width: 1.0),
+                                      ),
+                                      errorBorder: isLogginClicked
+                                          ? OutlineInputBorder(
+                                        borderRadius:
+                                        const BorderRadius.all(
+                                          const Radius.circular(15.0),
+                                        ),
+                                        borderSide: BorderSide(
+                                            color: HexColor("#ff6784"),
+                                            width: 1.0),
+                                      )
+                                          : null,
+                                      hintText: "Enter your home airport",
                                       hintStyle: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontFamily: "Gilroy",
