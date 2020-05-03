@@ -21,7 +21,11 @@ dependencies:
   shared_preferences: ^0.5.3+5
   ##shared_preferences: 0.5.6
   dio_cookie_manager: 1.0.0
+<<<<<<< HEAD
   # flushbar: ^1.10.0
+=======
+  flushbar: 1.6.0
+>>>>>>> 05c0bbf02e6e2f5d796b818fe187a0d835d8e674
   # flushbar: 1.9.1
  
  

@@ -15,7 +15,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       backgroundColor: Color(0xFFF7F9FC),
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Payment Details', style: TextStyle(fontFamily: 'Gilroy', fontWeight: FontWeight.bold, color: Color(0xFF0E3178)),),
+        title: Text('Payment Details', style: TextStyle(fontFamily: 'Gilroy', fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF0E3178)),),
         leading: Container(
           margin: EdgeInsets.only(left: 16),
           width: 40,

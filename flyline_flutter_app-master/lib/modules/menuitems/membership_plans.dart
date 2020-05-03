@@ -46,19 +46,13 @@ class _MembershipPlansScreenState extends State<MembershipPlansScreen> {
                             fontFamily: "Gilroy",
                             fontWeight: FontWeight.bold,
                             color: Color.fromRGBO(14, 49, 120, 1),
-                            fontSize: 18),
+                            fontSize: 20),
                       ),
                       Container(
                         padding: EdgeInsets.all(12),
                         margin: EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(255, 255, 255, 1),
                           borderRadius: BorderRadius.all(Radius.circular(50)),
-                        ),
-                        child: Image.asset(
-                          'assets/images/question.png',
-                          height: 16,
-                          width: 16,
                         ),
                       ),
                     ],
@@ -110,7 +104,7 @@ class CheckedLineItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 8),
       child: Row(
         children: <Widget>[
           Image.asset(
@@ -124,7 +118,7 @@ class CheckedLineItem extends StatelessWidget {
           Text(
             '$content',
             style: TextStyle(
-                fontFamily: "AvenirNext",
+                fontFamily: "Gilroy",
                 color: Color.fromRGBO(58, 63, 92, 1),
                 fontSize: 14),
           ),
@@ -146,8 +140,6 @@ class SubscriptionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      
-     // shadowColor: Colors.grey[200],
       color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15)),
@@ -165,8 +157,8 @@ class SubscriptionItem extends StatelessWidget {
                     child: Text(
                       '$title',
                       style: TextStyle(
-                          fontFamily: "AvenirNext",
-                          fontWeight: FontWeight.w800,
+                          fontFamily: "Gilroy",
+                          fontWeight: FontWeight.w700,
                           color: Color.fromRGBO(14, 49, 120, 1),
                           fontSize: 18),
                       textAlign: TextAlign.left,
@@ -177,10 +169,10 @@ class SubscriptionItem extends StatelessWidget {
                     child: Text(
                       'Learn More',
                       style: TextStyle(
-                          fontFamily: "AvenirNext",
-                          fontWeight: FontWeight.bold,
+                          fontFamily: "Gilroy",
+                          fontWeight: FontWeight.w600,
                           color: Color.fromRGBO(0, 174, 239, 1),
-                          fontSize: 10),
+                          fontSize: 12),
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -188,7 +180,7 @@ class SubscriptionItem extends StatelessWidget {
               ),
             ),
             Divider(
-              height: 1,
+              height: .5,
             ),
             SizedBox(
               height: 10,
@@ -203,7 +195,8 @@ class SubscriptionItem extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
-              height: 40,
+              height: 45,
+              width: 350,
               margin: EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.0),
@@ -220,10 +213,10 @@ class SubscriptionItem extends StatelessWidget {
                 child: Text(
                   "Sign Up",
                   style: TextStyle(
-                      fontFamily: "AvenirNext",
-                      fontWeight: FontWeight.w600,
+                      fontFamily: "Gilroy",
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontSize: 13),
+                      fontSize: 16),
                 ),
                 onPressed: onSignup,
               ),

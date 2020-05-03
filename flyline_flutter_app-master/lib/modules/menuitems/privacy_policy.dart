@@ -37,11 +37,10 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
         title: new Text("Privacy Policy",
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontFamily: 'Gilroy',
-              color: Color(0xff3a3f5c),
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              fontStyle: FontStyle.normal,
+                fontFamily: 'Gilroy',
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Color(0xFF0E3178),
             )),
       ),
       body: new Container(
