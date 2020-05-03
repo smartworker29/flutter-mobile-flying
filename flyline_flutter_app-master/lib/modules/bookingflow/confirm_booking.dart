@@ -695,13 +695,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   Widget getAppBarUI() {
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.getTheme().backgroundColor,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: AppTheme.getTheme().dividerColor,
-              offset: Offset(0, 2),
-              blurRadius: 8.0),
-        ],
+        color: Colors.white,
+        
       ),
       child: Padding(
         padding: EdgeInsets.only(
@@ -712,12 +707,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               alignment: Alignment.centerLeft,
               width: AppBar().preferredSize.height + 40,
               height: AppBar().preferredSize.height,
-              child: Material(
-                color: Colors.transparent,
+              child: Container(
+                height: 40.0,
+                width: 40.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFFF7F9FC),
+                ),
                 child: InkWell(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(32.0),
-                  ),
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -799,7 +796,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 RichText(
                   text: new TextSpan(children: [
                     new TextSpan(
-                      text: "Total \$ ",
+                      text: "Total: \$ ",
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff0e3178),
