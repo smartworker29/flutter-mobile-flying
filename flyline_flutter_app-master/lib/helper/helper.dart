@@ -31,12 +31,12 @@ class Helper {
 
   static cost(double total, double conversationAmount, double amount) {
     if (amount == 0) {
-      return " \$0.00";
+      return " \$ 0.00";
     }
 
     double price = (conversationAmount / total) * amount;
     var f = new NumberFormat("###.00", "en_US");
-    return " \$" + f.format(price);
+    return  f.format(price);
   }
 
   static costNumber(double total, double conversationAmount, double amount) {
@@ -58,11 +58,11 @@ class Helper {
 
   static formatNumber(double number) {
     if (number == 0) {
-      return " \$0.00";
+      return " \$  0.00";
     }
 
     var f = new NumberFormat("###.00", "en_US");
-    return " \$" + f.format(number);
+    return  f.format(number);
   }
 
   static age(DateTime birthDate) {

@@ -201,6 +201,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   @override
   Widget build(BuildContext context) {
+     double tripP = widget.flight.price;
+     var triptotal = (tripP*numberOfPassengers).toStringAsFixed(2);
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -230,14 +232,16 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   text: "Trip Total : ",
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
-                                    color: Color(0xff8e969f),
+                                    color: Color(0xff0e3178),
                                     fontSize: 17,
                                     fontWeight: FontWeight.w700,
                                     fontStyle: FontStyle.normal,
                                   ),
                                 ),
                                 new TextSpan(
-                                  text: "  \$ " + widget.flight.price.toStringAsFixed(2),
+                                  text: "  \$ " + (tripP*numberOfPassengers).toStringAsFixed(2),
+                                  
+                                  // text: "  \$ " + widget.flight.price.toStringAsFixed(2),
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     color: Color(0xff0e3178),
@@ -281,11 +285,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           ),
                         ),
                         onTap: (){
+                          
+                          var totaltriprice = (tripP*numberOfPassengers).toStringAsFixed(2);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
                                       personal_details.HotelHomeScreen(
+                                        numberofpass: numberOfPassengers,
+                                        totalPrice:totaltriprice,
                                           routes: widget.flight.routes,
                                           ad: this.widget.ad,
                                           //ch: this.widget.children,
@@ -797,6 +805,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget flightDetail() {
+    double tripP = widget.flight.price;
     // initialize
     int a2b = 0;
     int b2a = 0;
@@ -881,7 +890,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               RichText(
                                   text: TextSpan(children: [
                                 TextSpan(
-                                    text: "Departure : ",
+                                    text: "Departure :   ",
                                     style: TextStyle(
                                       fontFamily: 'Gilroy',
                                       color: Color(0xff0e3178),
@@ -895,15 +904,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     //     .format(widget.flight.localDeparture),
                                     style: TextStyle(
                                       fontFamily: 'Gilroy',
-                                      color: Color(0xffb1b1b1),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xff0e3178),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,
                                     )),
                               ])),
                               ((a2b >= 1 || b2a >= 1)
                                   ? Text(
-                                      "More Info",
+                                      "",
                                       style: TextStyle(
                                         fontFamily: 'AvenirNext',
                                         color: Color(0xff00aeef),
@@ -946,12 +955,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       new TextSpan(
                                           text: formatTime.format(departures[0]
                                                   .localDeparture) +
-                                              " ",
+                                              " - ",
                                           style: TextStyle(
                                             fontFamily: 'Gilroy',
-                                            color: Color(0xff3a3f5c),
+                                            color: Color(0xff000000),
                                             fontSize: 14,
-                                            fontWeight: FontWeight.w700,
+                                            fontWeight: FontWeight.w600,
                                             fontStyle: FontStyle.normal,
                                           )),
                                       new TextSpan(
@@ -960,10 +969,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                             departures[0].cityFrom +
                                             ")",
                                         style: TextStyle(
-                                          fontFamily: 'AvenirNext',
-                                          color: Color(0xff3a3f5c),
+                                          fontFamily: 'Gilroy',
+                                          color: Color(0xff000000),
                                           fontSize: 14,
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.w600,
                                           fontStyle: FontStyle.normal,
                                         ),
                                       ),
@@ -1032,10 +1041,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                   .localArrival) +
                                               " ",
                                           style: TextStyle(
-                                            fontFamily: 'AvenirNext',
-                                            color: Color(0xff3a3f5c),
+                                            fontFamily: 'Gilroy',
+                                            color: Color(0xff000000),
                                             fontSize: 14,
-                                            fontWeight: FontWeight.w700,
+                                            fontWeight: FontWeight.w600,
                                             fontStyle: FontStyle.normal,
                                           )),
                                       new TextSpan(
@@ -1046,10 +1055,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 .cityTo +
                                             ")",
                                         style: TextStyle(
-                                          fontFamily: 'AvenirNext',
-                                          color: Color(0xff3a3f5c),
+                                          fontFamily: 'Gilroy',
+                                          color: Color(0xff000000),
                                           fontSize: 14,
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.w600,
                                           fontStyle: FontStyle.normal,
                                         ),
                                       ),
@@ -1122,7 +1131,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                   color:
                                                       const Color(0xff0e3178),
                                                   fontWeight: FontWeight.w600,
-                                                  fontFamily: "AvenirNext",
+                                                  fontFamily: "Gilroy",
                                                   fontStyle: FontStyle.normal,
                                                   fontSize: 12.0),
                                               textAlign: TextAlign.center),
@@ -1159,7 +1168,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                     color:
                                                         const Color(0xff0e3178),
                                                     fontWeight: FontWeight.w600,
-                                                    fontFamily: "AvenirNext",
+                                                    fontFamily: "Gilroy",
                                                     fontStyle: FontStyle.normal,
                                                     fontSize: 12.0),
                                                 textAlign: TextAlign.center)),
@@ -1191,7 +1200,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                     color:
                                                         const Color(0xff0e3178),
                                                     fontWeight: FontWeight.w600,
-                                                    fontFamily: "AvenirNext",
+                                                    fontFamily: "Gilroy",
                                                     fontStyle: FontStyle.normal,
                                                     fontSize: 12.0),
                                                 textAlign: TextAlign.center)),
@@ -1226,13 +1235,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             ),
                           ),
                           Text(
-                              widget.flight.nightsInDest.toString() +
-                                  " nights in " +
+                              widget.flight.nightsInDest.toString() +     
+                                  " night(s) in " +
                                   widget.flight.cityTo,
                               style: const TextStyle(
                                   color: const Color(0xff8e969f),
                                   fontWeight: FontWeight.w600,
-                                  fontFamily: "AvenirNext",
+                                  fontFamily: "Gilroy",
                                   fontStyle: FontStyle.normal,
                                   fontSize: 12.0),
                               textAlign: TextAlign.left),
@@ -1275,7 +1284,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                 child: RichText(
                                     text: TextSpan(children: [
                                   TextSpan(
-                                      text: "Return : ",
+                                      text: "Return :   ",
                                       style: TextStyle(
                                           fontFamily: 'Gilroy',
                                           color: Color(0xff0e3178),
@@ -1290,9 +1299,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       //         .localDeparture),
                                       style: TextStyle(
                                         fontFamily: 'Gilroy',
-                                        color: Color(0xffb1b1b1),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xff0e3178),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
                                         fontStyle: FontStyle.normal,
                                       )),
                                 ])),
@@ -1324,12 +1333,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 text: formatTime.format(returns[
                                                             returns.length - 1]
                                                         .localDeparture) +
-                                                    " ",
+                                                    " - ",
                                                 style: TextStyle(
-                                                  fontFamily: 'AvenirNext',
-                                                  color: Color(0xff3a3f5c),
+                                                  fontFamily: 'Gilroy',
+                                                  color: Color(0xff000000),
                                                   fontSize: 14,
-                                                  fontWeight: FontWeight.w700,
+                                                  fontWeight: FontWeight.w600,
                                                   fontStyle: FontStyle.normal,
                                                 )),
                                             new TextSpan(
@@ -1340,10 +1349,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                       .cityFrom +
                                                   ")",
                                               style: TextStyle(
-                                                fontFamily: 'AvenirNext',
-                                                color: Color(0xff3a3f5c),
+                                                fontFamily: 'Gilroy',
+                                                color: Color(0xff000000),
                                                 fontSize: 14,
-                                                fontWeight: FontWeight.w400,
+                                                fontWeight: FontWeight.w600,
                                                 fontStyle: FontStyle.normal,
                                               ),
                                             ),
@@ -1413,12 +1422,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 text: formatTime.format(
                                                         returns[0]
                                                             .localArrival) +
-                                                    " ",
+                                                    " - ",
                                                 style: TextStyle(
-                                                  fontFamily: 'AvenirNext',
-                                                  color: Color(0xff3a3f5c),
+                                                  fontFamily: 'Gilroy',
+                                                  color: Color(0xff000000),
                                                   fontSize: 14,
-                                                  fontWeight: FontWeight.w700,
+                                                  fontWeight: FontWeight.w600,
                                                   fontStyle: FontStyle.normal,
                                                 )),
                                             new TextSpan(
@@ -1427,10 +1436,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                   returns[0].cityTo +
                                                   ")",
                                               style: TextStyle(
-                                                fontFamily: 'AvenirNext',
-                                                color: Color(0xff3a3f5c),
+                                                fontFamily: 'Gilroy',
+                                                color: Color(0xff000000),
                                                 fontSize: 14,
-                                                fontWeight: FontWeight.w400,
+                                                fontWeight: FontWeight.w600,
                                                 fontStyle: FontStyle.normal,
                                               ),
                                             ),
@@ -1506,7 +1515,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontFamily:
-                                                            "AvenirNext",
+                                                            "Gilroy",
                                                         fontStyle:
                                                             FontStyle.normal,
                                                         fontSize: 12.0),
@@ -1547,7 +1556,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           fontFamily:
-                                                              "AvenirNext",
+                                                              "Gilroy",
                                                           fontStyle:
                                                               FontStyle.normal,
                                                           fontSize: 12.0),
@@ -1584,7 +1593,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           fontFamily:
-                                                              "AvenirNext",
+                                                              "Gilroy",
                                                           fontStyle:
                                                               FontStyle.normal,
                                                           fontSize: 12.0),
@@ -1641,10 +1650,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             child: new Text(
                               "Passengers:  ",
                               style: TextStyle(
-                                fontFamily: 'AvenirNext',
+                                fontFamily: 'Gilroy',
                                 color: Color(0xff8e969f),
                                 fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                                 fontStyle: FontStyle.normal,
                               ),
                             ),
@@ -1653,22 +1662,22 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  numberOfPassengers.toString() + ' Adult',
+                                  numberOfPassengers.toString() + ' Adult' + ' ',
                                   style: TextStyle(
-                                    fontFamily: 'AvenirNext',
-                                    color: Color(0xff3a3f5c),
+                                    fontFamily: 'Gilroy',
+                                    color: Color(0xff000000),
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FontStyle.normal,
                                   ),
                                 ),
                               ),
-                              InkWell(
+                              GestureDetector(
                                 child: Container(
                                   child: Text(
-                                    "  + Add More",
+                                    "Add More",
                                     style: TextStyle(
-                                      fontFamily: 'AvenirNext',
+                                      fontFamily: 'Gilroy',
                                       color: Color(0xff00aeef),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
@@ -1676,7 +1685,17 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     ),
                                   ),
                                 ),
-                                onTap: () => getAddAnotherPassenger(),
+                                onTap:(){
+                                  
+
+                                 //  getAddAnotherPassenger();
+                                   setState(() {
+                                     numberOfPassengers++;
+                                   
+                                     
+                                   });
+                                   
+                                   }
                               ),
                             ],
                           ),
@@ -1693,10 +1712,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           child: Text(
                             "Trip Price:",
                             style: TextStyle(
-                              fontFamily: 'AvenirNext',
+                              fontFamily: 'Gilroy',
                               color: Color(0xff8e969f),
                               fontSize: 14,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w500,
                               fontStyle: FontStyle.normal,
                             ),
                           ),
@@ -1714,8 +1733,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               child: Center(
                                 child: Text(
                                   "  \$ " + widget.flight.price.toStringAsFixed(2),
+                                  // (tripP*numberOfPassengers).toString(),
+                                  // tripP.toString(),
+                                  
                                   style: TextStyle(
-                                    fontFamily: 'AvenirNext',
+                                    fontFamily: 'Gilroy',
                                     color: Color(0xff00aeef),
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,

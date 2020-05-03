@@ -15,7 +15,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       backgroundColor: Color(0xFFF7F9FC),
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Payment', style: TextStyle(fontFamily: 'Gilroy', fontWeight: FontWeight.bold, color: Color(0xFF0E3178)),),
+        title: Text('Payment Details', style: TextStyle(fontFamily: 'Gilroy', fontWeight: FontWeight.bold, color: Color(0xFF0E3178)),),
         leading: Container(
           margin: EdgeInsets.only(left: 16),
           width: 40,
@@ -44,6 +44,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                 placeholder: 'Card Number',
                 maxLength: 19,
                 inputType: TextInputType.number,
+
               ),
             ),
             Container(
@@ -51,6 +52,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
               child: RoundTextEditField(
                 isDateTime: false,
                 inputType: TextInputType.text,
+
                 placeholder: 'Name on Card',
               ),
             ),

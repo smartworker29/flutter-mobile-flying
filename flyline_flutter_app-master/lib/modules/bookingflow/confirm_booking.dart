@@ -16,7 +16,8 @@ class HotelHomeScreen extends StatefulWidget {
   final List<TravelerInformation> travelerInformations;
   final Map<String, dynamic> retailInfo;
   final String bookingToken;
-  final double totalPrice;
+  final String totalPrice;
+  
 
   HotelHomeScreen(
       {Key key,
@@ -25,7 +26,9 @@ class HotelHomeScreen extends StatefulWidget {
       this.flightResponse,
       this.retailInfo,
       this.bookingToken,
-      this.totalPrice})
+      this.totalPrice, 
+      int numberofpass,
+      })
       : super(key: key);
 
   @override
@@ -796,7 +799,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 RichText(
                   text: new TextSpan(children: [
                     new TextSpan(
-                      text: "Total",
+                      text: "Total \$ ",
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff0e3178),
@@ -807,7 +810,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     ),
                     new TextSpan(
                       //text: Helper.formatNumber(tripTotal),
-                      text:Helper.formatNumber(widget.totalPrice),
+                      text:widget.totalPrice,
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff0e3178),

@@ -1,3 +1,4 @@
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -16,10 +17,14 @@ import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart' as intl;
 
 class HotelHomeScreen extends StatefulWidget {
+  final CheckFlightResponse flightResponse;
+  final List<TravelerInformation> travelerInformations;
   final List<FlightRouteObject> routes;
   final int ad;
+  int numberofpass;
   final int ch;
   final String bookingToken;
+  final String totalPrice;
   final int typeOfTripSelected;
   final String selectedClassOfService;
   final FlightInformationObject flight;
@@ -27,6 +32,9 @@ class HotelHomeScreen extends StatefulWidget {
 
   HotelHomeScreen(
       {Key key,
+      this.numberofpass,
+      this.flightResponse,
+      this.travelerInformations,
       this.routes,
       this.ad,
       this.ch,
@@ -34,7 +42,8 @@ class HotelHomeScreen extends StatefulWidget {
       this.flight,
       this.selectedClassOfService,
       this.typeOfTripSelected,
-      this.retailInfo})
+      this.retailInfo,
+      this.totalPrice})
       : super(key: key);
 
   @override
@@ -44,6 +53,7 @@ class HotelHomeScreen extends StatefulWidget {
 class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
   int numberOfPassengers = 0;
+  bool _isChecked = false;
 
   bool _checkFlight = false;
   bool _firstLoad = false;
@@ -121,7 +131,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     TextEditingController passportExpirationController =
         TextEditingController();
 
-       // tripTotal = priceOnPassenger + priceOnBaggage;
+    // tripTotal = priceOnPassenger + priceOnBaggage;
 
     firstNameControllers.add(firstNameController);
     lastNameControllers.add(lastNameController);
@@ -159,6 +169,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
     handBags = List();
     holdBags = List();
+
+    // for (var i = 0; i < handBags.length; i++) {
+
+    //   var bag = handBags[i];
+    //   var a = Helper.cost(_checkFlightResponse.total,
+    //                 _checkFlightResponse.conversion.amount, bag.price.amount);
+    //   }
+
+    // tripTotal = priceOnPassenger + priceOnBaggage;
 
     addPassenger();
     flyLinebloc.checkFlights(widget.bookingToken, 0, widget.ch, widget.ad);
@@ -207,171 +226,185 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFF7F9FC),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          children: <Widget>[
-            getAppBarUI(),
-            pageIndicator(),
-            Expanded(
-                child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Container(
-                      child: Column(
+  
+      
+       var tprice =   double.parse(widget.totalPrice);
+       double bprice = double.parse(_baggagePrice().toString());
+
+      var ttprice = bprice  +  tprice;
+      var tripTotal =_isChecked ? (ttprice.toStringAsFixed(2)):tprice.toStringAsFixed(2);
+      
+
+      // Helper.formatNumber(priceOnBaggage);
+
+      return Scaffold(
+        backgroundColor: Color(0xFFF7F9FC),
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: Column(
+            children: <Widget>[
+              getAppBarUI(),
+              pageIndicator(),
+              Expanded(
+                  child: SingleChildScrollView(
+                      controller: scrollController,
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                padding:
+                                    const EdgeInsets.only(left: 0, right: 0),
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: this.numberOfPassengers,
+                                //     // padding on top is only for we need spec for sider
+                                itemBuilder: (context, index) {
+                                  return this.getTravailInformationUI(index);
+                                }),
+                            // getAddAnotherPassenger(),
+                            //  getSearchButton()
+                          ],
+                        ),
+                      ))),
+              Container(
+                height: 80.0,
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                          child: Wrap(
                         children: <Widget>[
-                          ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.only(left: 0, right: 0),
-                              primary: false,
-                              shrinkWrap: true,
-                              itemCount: this.numberOfPassengers,
-                              //     // padding on top is only for we need spec for sider
-                              itemBuilder: (context, index) {
-                                return this.getTravailInformationUI(index);
-                              }),
-                          //getAddAnotherPassenger(),
-                          //  getSearchButton()
+                          
+                          RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                text: "Trip Total : \$ ",
+                                style: TextStyle(
+                                  fontFamily: 'Gilroy',
+                                  color: Color(0xff0e3178),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                              ),
+                              TextSpan(                                
+                                text:  tripTotal,
+                                style: TextStyle(
+                                  fontFamily: 'Gilroy',
+                                  color: Color(0xff0e3178),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                              ),
+                            ]),
+                          ),
                         ],
-                      ),
-                    ))),
-            Container(
-              height: 80.0,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20.0, left: 20.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: Row(
-                      children: <Widget>[
-                        RichText(
-                          text: TextSpan(children: [
-                            TextSpan(
-                              text: "Trip Total : ",
-                              style: TextStyle(
-                                fontFamily: 'Gilroy',
-                                color: Color(0xff8e969f),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
+                      )),
+                      Expanded(
+                        child: InkWell(
+                          child: Container(
+                            padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                            width: 199,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Color(0xff00aeef),
+                              borderRadius: BorderRadius.circular(27),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color(0x3300a3da),
+                                    offset: Offset(0, 5),
+                                    blurRadius: 20,
+                                    spreadRadius: 0),
+                              ],
                             ),
-                            TextSpan(
-                             // text: Helper.formatNumber(tripTotal),
-                              text: "  \$ " +
-                                  widget.flight.price.toStringAsFixed(2),
-                              style: TextStyle(
-                                fontFamily: 'AvenirNext',
-                                color: Color(0xff3a3f5c),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
-                            ),
-                          ]),
-                        ),
-                      ],
-                    )),
-                    Expanded(
-                      child: InkWell(
-                        child: Container(
-                          padding: EdgeInsets.only(left: 40.0, right: 40.0),
-                          width: 199,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Color(0xff00aeef),
-                            borderRadius: BorderRadius.circular(27),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Color(0x3300a3da),
-                                  offset: Offset(0, 5),
-                                  blurRadius: 20,
-                                  spreadRadius: 0),
-                            ],
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Next",
-                              style: TextStyle(
-                                fontFamily: 'Gilroy',
-                                color: Color(0xffffffff),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
+                            child: Center(
+                              child: Text(
+                                "Next",
+                                style: TextStyle(
+                                  fontFamily: 'Gilroy',
+                                  color: Color(0xffffffff),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                ),
                               ),
                             ),
                           ),
+                          onTap: () {
+                            // Navigator.push(
+                            //                 context,
+                            //                 MaterialPageRoute(
+                            //                     builder: (context) =>
+                            //                        payment_details.HotelHomeScreen(
+                            //                          numberOfPassengers: numberOfPassengers,
+                            //          travelerInformations: lists,
+                            //           flightResponse: _checkFlightResponse,
+                            //           retailInfo: widget.retailInfo,
+                            //           bookingToken: widget.bookingToken,
+
+                            //                         )
+                            //               ));
+
+                            List<TravelerInformation> lists = List();
+                            for (int index = 0;
+                                index < this.numberOfPassengers;
+                                index++) {
+                              var uuid = Uuid();
+                              carryOnSelectedList[index].uuid = uuid.v4();
+
+                              var uuid2 = Uuid();
+                              checkedBagageSelectedList[index].uuid =
+                                  uuid2.v4();
+                              TravelerInformation travelerInformation =
+                                  TravelerInformation(
+                                      firstNameControllers[index].text,
+                                      lastNameControllers[index].text,
+                                      dobControllers[index].text,
+                                      genderControllers[index].text,
+                                      passportIdControllers[index].text,
+                                      passportExpirationControllers[index].text,
+                                      carryOnSelectedList[index],
+                                      checkedBagageSelectedList[index]);
+                              lists.add(travelerInformation);
+                            }
+
+                            carryOnSelectedList.forEach((f) {
+                              print(f.jsonSerialize);
+                            });
+
+                            checkedBagageSelectedList.forEach((f) {
+                              print(f.jsonSerialize);
+                            });
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      payment_details.HotelHomeScreen(
+                                        triptotal:tripTotal,
+                                        nOfPassengers: widget.numberofpass,
+                                        travelerInformations: lists,
+                                        flightResponse: _checkFlightResponse,
+                                        retailInfo: widget.retailInfo,
+                                        bookingToken: widget.bookingToken,
+                                      )),
+                            );
+                          },
                         ),
-                        onTap: () {
-                          // Navigator.push(
-                          //                 context,
-                          //                 MaterialPageRoute(
-                          //                     builder: (context) =>
-                          //                        payment_details.HotelHomeScreen(
-                          //                          numberOfPassengers: numberOfPassengers,
-                          //          travelerInformations: lists,
-                          //           flightResponse: _checkFlightResponse,
-                          //           retailInfo: widget.retailInfo,
-                          //           bookingToken: widget.bookingToken,
-
-                          //                         )
-                          //               ));
-
-                          List<TravelerInformation> lists = List();
-                          for (int index = 0;
-                              index < this.numberOfPassengers;
-                              index++) {
-                            var uuid = Uuid();
-                            carryOnSelectedList[index].uuid = uuid.v4();
-
-                            var uuid2 = Uuid();
-                            checkedBagageSelectedList[index].uuid = uuid2.v4();
-                            TravelerInformation travelerInformation =
-                                TravelerInformation(
-                                    firstNameControllers[index].text,
-                                    lastNameControllers[index].text,
-                                    dobControllers[index].text,
-                                    genderControllers[index].text,
-                                    passportIdControllers[index].text,
-                                    passportExpirationControllers[index].text,
-                                    carryOnSelectedList[index],
-                                    checkedBagageSelectedList[index]);
-                            lists.add(travelerInformation);
-                          }
-
-                          carryOnSelectedList.forEach((f) {
-                            print(f.jsonSerialize);
-                          });
-
-                          checkedBagageSelectedList.forEach((f) {
-                            print(f.jsonSerialize);
-                          });
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    payment_details.HotelHomeScreen(
-                                      numberOfPassengers: numberOfPassengers,
-                                      travelerInformations: lists,
-                                      flightResponse: _checkFlightResponse,
-                                      retailInfo: widget.retailInfo,
-                                      bookingToken: widget.bookingToken,
-                                    )),
-                          );
-                        },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    
   }
 
   Widget pageIndicator() {
@@ -386,10 +419,50 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     );
   }
 
+   _baggagePrice() {
+ 
+
+   
+    for (var i = 0; i < holdBags.length; i++) {
+      var bag = holdBags[i];
+      var abc = 
+      // Text(                  
+                  Helper.cost(_checkFlightResponse.total,
+                   _checkFlightResponse.conversion.amount, bag.price.amount);
+                  // textAlign: TextAlign.start,
+                  // style: TextStyle(
+                  //   fontFamily: 'Gilroy',
+                  //   color: Color(0xff3a3f5c),
+                  //   fontSize: 14,
+                  //   fontWeight: FontWeight.w500,
+                  //   fontStyle: FontStyle.normal,
+                  // ),
+                // );
+      if (bag.indices.length == 0) {
+        Container();
+      } else {
+        
+        return (abc);
+        
+       
+      }
+    }
+    // return 
+      //  Text(bag);
+        // Column(
+        //   children: <Widget>[] + listOfHoldBag,
+        // );
+     
+  }
+
   Widget getTravailInformationUI(int position) {
+    var totalTripPrice = "  \$ " + widget.flight.price.toStringAsFixed(2);
+    print(totalTripPrice);
+
     List<Widget> listOfHandBag = List();
     for (var i = 0; i < handBags.length; i++) {
       var bag = handBags[i];
+
       if (bag.indices.length == 0) {
         listOfHandBag.add(Container(
           padding: EdgeInsets.only(left: 10),
@@ -419,7 +492,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   fontStyle: FontStyle.normal,
                 ),
               ),
-              Text('   Free',
+              Text(
+                '   Free',
                 // Helper.cost(_checkFlightResponse.total,
                 //     _checkFlightResponse.conversion.amount, bag.price.amount),
                 textAlign: TextAlign.start,
@@ -434,104 +508,22 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             ],
           ),
         ));
-      } 
-      else {
-        listOfHandBag.add(Container(
-          // padding: EdgeInsets.only(left: 10),
-          // width: MediaQuery.of(context).size.width,
-          // child: Row(
-          //   //mainAxisAlignment: MainAxisAlignment.start,
-          //   children: <Widget>[
-          //     Checkbox(
-          //       value: carryOnCheckBoxes[position][i],
-          //       onChanged: (value) {
-          //         setState(() {
-          //           carryOnCheckBoxes[position]
-          //               .updateAll((key, value) => value = false);
-          //          carryOnCheckBoxes[position][i] = value;
-          //           carryOnSelectedList[position] = bag;
-          //         });
-          //       },
-          //     ),
-          //     Text(
-          //       "No Hand Baggage",
-          //       textAlign: TextAlign.start,
-          //       style: TextStyle(
-          //         fontFamily: 'Gilroy',
-          //         color: Color(0xff3a3f5c),
-          //         fontSize: 14,
-          //         fontWeight: FontWeight.w500,
-          //         fontStyle: FontStyle.normal,
-          //       ),
-          //     ),
-          //     Text(
-          //       Helper.cost(_checkFlightResponse.total,
-          //           _checkFlightResponse.conversion.amount, bag.price.amount),
-          //       textAlign: TextAlign.start,
-          //       style: TextStyle(
-          //         fontFamily: 'Gilroy',
-          //         color: Color(0xff3a3f5c),
-          //         fontSize: 14,
-          //         fontWeight: FontWeight.w500,
-          //         fontStyle: FontStyle.normal,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-        ));
+      } else {
+        listOfHandBag.add(Container());
       }
     }
 
     List<Widget> listOfHoldBag = List();
     for (var i = 0; i < holdBags.length; i++) {
       var bag = holdBags[i];
+      var aer = Helper.cost(_checkFlightResponse.total,
+          _checkFlightResponse.conversion.amount, bag.price.amount);
       if (bag.indices.length == 0) {
-
-        
-        listOfHoldBag.add(Container(
-          // padding: EdgeInsets.only(left: 10),
-          // width: MediaQuery.of(context).size.width,
-          // child: Row(
-          //   //mainAxisAlignment: MainAxisAlignment.start,
-          //   children: <Widget>[
-          //     Checkbox(
-          //       value: checkedBagageCheckBoxes[position][i],
-          //       onChanged: (value) {
-          //         setState(() {
-          //           checkedBagageCheckBoxes[position]
-          //               .updateAll((key, value) => value = false);
-          //           checkedBagageCheckBoxes[position][i] = value;
-          //           checkedBagageSelectedList[position] = bag;
-          //         });
-          //       },
-          //     ),
-          //     Text("No Checked bagage",
-          //         textAlign: TextAlign.start,
-          //         style: TextStyle(
-          //           fontFamily: 'Gilroy',
-          //           color: Color(0xff3a3f5c),
-          //           fontSize: 14,
-          //           fontWeight: FontWeight.w500,
-          //           fontStyle: FontStyle.normal,
-          //         )),
-          //     Text(
-          //       Helper.cost(_checkFlightResponse.total,
-          //           _checkFlightResponse.conversion.amount, bag.price.amount),
-          //       textAlign: TextAlign.start,
-          //       style: TextStyle(
-          //         fontFamily: 'Gilroy',
-          //         color: Color(0xff3a3f5c),
-          //         fontSize: 14,
-          //         fontWeight: FontWeight.w500,
-          //         fontStyle: FontStyle.normal,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-        ));
-      } 
-      else {
+        listOfHoldBag.add(Container());
+      } else {
         List<Widget> rows = List();
+        // var aer =  Helper.cost(_checkFlightResponse.total,
+        //             _checkFlightResponse.conversion.amount, bag.price.amount);
         for (var i = 0; i < bag.indices.length; i++) {
           rows.add(Text(
             "Checked Baggage",
@@ -543,48 +535,49 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               fontWeight: FontWeight.w500,
               fontStyle: FontStyle.normal,
             ),
-          )
-          
-          );
+          ));
         }
-        listOfHoldBag.add(Container(
-          padding: EdgeInsets.only(left: 10),
-          width: MediaQuery.of(context).size.width,
-          child: Row(
-            //mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Checkbox(
-                value: checkedBagageCheckBoxes[position][i],
-                onChanged: (value) {
-                  setState(() {
-                    checkedBagageCheckBoxes[position]
-                        .updateAll((key, value) => value = false);
-                    checkedBagageCheckBoxes[position][i] = value;
-                    checkedBagageSelectedList[position] = bag;
-                  });
-                },
-              ),
-             
-              Column(
-                children: rows,
-              ),
-               Text(' ( '+ i.toString() +' )'+ ' '),
-              Text(
-                Helper.cost(_checkFlightResponse.total,
-                    _checkFlightResponse.conversion.amount, bag.price.amount),
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontFamily: 'Gilroy',
-                  color: Color(0xff3a3f5c),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.normal,
+        listOfHoldBag.add(
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              //mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Checkbox(
+                  value: checkedBagageCheckBoxes[position][i],
+                  onChanged: (value) {
+                    setState(() {
+                      _isChecked = !_isChecked;
+
+                      checkedBagageCheckBoxes[position]
+                          .updateAll((key, value) => value = false);
+                      checkedBagageCheckBoxes[position][i] = value;
+                      checkedBagageSelectedList[position] = bag;
+                    });
+                  },
                 ),
-              ),
-              
-            ],
+                Column(
+                  children: rows,
+                ),
+                Text(' ( ' + i.toString() + ' )' + ' '),
+                Text(
+                  aer,
+                  // Helper.cost(_checkFlightResponse.total,
+                  //     _checkFlightResponse.conversion.amount, bag.price.amount),
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    color: Color(0xff3a3f5c),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ));
+        );
       }
     }
     return Column(
@@ -594,7 +587,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             right: 20,
             left: 20,
             top: 30,
-            bottom: 10,
+            bottom: 20,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2929,7 +2922,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       print("add another");
                       setState(() {
                         this.addPassenger();
-                               this.createCheckboxData();
+                        this.createCheckboxData();
                       });
                     },
                     child: Text("Add another passenger",

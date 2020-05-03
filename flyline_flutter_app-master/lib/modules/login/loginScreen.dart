@@ -112,7 +112,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   controller: emailController,
                                   keyboardType: TextInputType.emailAddress,
                                   style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    color: Color(0xff3a3f5c),
                                     fontSize: 16,
+                                    fontWeight: FontWeight.w500,
                                     // color: AppTheme.dark_grey,
                                   ),
                                   cursorColor: AppTheme.getTheme().primaryColor,
@@ -145,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     hintText: "Enter your email",
                                     hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w500,
+                                        fontWeight: FontWeight.w500,
                                         fontFamily: "Gilroy",
                                         color: Color(0xFFC7C9D1)),
                                   ),
@@ -206,7 +209,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                       });
                                     },
                                     style: TextStyle(
+                                      fontFamily: 'Gilroy',
+                                      color: Color(0xff3a3f5c),
                                       fontSize: 16,
+                                      fontWeight: FontWeight.w500,
                                       // color: AppTheme.dark_grey,
                                     ),
                                     cursorColor:
@@ -323,7 +329,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         "Log In",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.bold,
                                             fontFamily: 'Gilroy Bold',
                                             fontSize: 16,
                                             color: Colors.white),
@@ -439,7 +445,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 10),
             child: Text(
-              "Log in to your FlyLine Account ",
+              "Log into your FlyLine Account ",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.w500,

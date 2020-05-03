@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/main.dart';
 import 'package:motel/modules/login/loginScreen.dart';
-import 'package:motel/modules/login/signUp.dart';
+import 'package:motel/modules/signup/signUp.dart';
 import 'package:motel/network/blocs.dart';
 import 'package:page_indicator/page_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';

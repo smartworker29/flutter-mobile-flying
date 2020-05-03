@@ -13,20 +13,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class HotelHomeScreen extends StatefulWidget {
-  final int numberOfPassengers;
-  
+  int nOfPassengers;
+  final int numberOfPassengers;  
   final CheckFlightResponse flightResponse;
   final List<TravelerInformation> travelerInformations;
   final Map<String, dynamic> retailInfo;
   final String bookingToken;
+  final String triptotal;
 
   HotelHomeScreen(
       {Key key,
+      this.nOfPassengers,
       this.numberOfPassengers,
       this.travelerInformations,
       this.flightResponse,
       this.retailInfo,
-      this.bookingToken})
+      this.bookingToken, 
+       numberofpass,
+       this. triptotal})
       : super(key: key);
 
   @override
@@ -154,19 +158,21 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                 },
-                child: Column(
-                  children: <Widget>[
-                    getAppBarUI(),
-                    pageIndicator(),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          getTripDetails(),
-                          getCheckoutUI(),
-                        ],
-                      ),
-                    )
-                  ],
+                child: SingleChildScrollView(
+                                  child: Column(
+                    children: <Widget>[
+                      getAppBarUI(),
+                      pageIndicator(),
+                      Container(
+                        child: Column(
+                          children: <Widget>[
+                            getTripDetails(),
+                            getCheckoutUI(),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -198,13 +204,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
           width: MediaQuery.of(context).size.width,
          // margin: const EdgeInsets.only(top: 8, bottom: 8),
           alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(left: 16.0,),
+          padding: EdgeInsets.only(left: 16.0, bottom: 10.0),
           child: new Text(
             "Payment Info",
             style: TextStyle(
-              fontFamily: 'AvenirNext',
-              color: Color(0xff3a3f5c),
-              fontSize: 16,
+              color: Color(0xff0e3178),
+              fontSize: 18,
               fontWeight: FontWeight.w700,
               fontStyle: FontStyle.normal,
             ),
@@ -379,6 +384,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getTripDetails() {
+    var tripprice =  Helper.cost(
+                                                  widget.flightResponse.total,
+                                                  widget.flightResponse
+                                                      .conversion.amount,
+                                                  widget.flightResponse.total);
     return Column(
       children: <Widget>[
         Container(
@@ -398,14 +408,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(left: 16.0, top: 20),
+                          padding: EdgeInsets.only(left: 16.0, top: 40,),
                           width: MediaQuery.of(context).size.width / 2,
                           child: new Text(
                             "Trip Summary",
                             style: TextStyle(
-                              fontFamily: 'AvenirNext',
-                              color: Color(0xff3a3f5c),
-                              fontSize: 16,
+                              fontFamily: 'Gilroy',
+                              color: Color(0xff0e3178),
+                              fontSize: 18,
                               fontWeight: FontWeight.w700,
                               fontStyle: FontStyle.normal,
                             ),
@@ -430,63 +440,89 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     child: new Text(
                                       "Passengers:  ",
                                       style: TextStyle(
-                                        fontFamily: 'AvenirNext',
+                                        fontFamily: 'Gilroy',
                                         color: Color(0xff8e969f),
                                         fontSize: 14,
-                                        fontWeight: FontWeight.w400,
+                                        fontWeight: FontWeight.w500,
                                         fontStyle: FontStyle.normal,
                                       ),
                                     ),
                                   ),
                                   Row(
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          widget.numberOfPassengers.toString() +
-                                              ' Adult',
-                                          style: TextStyle(
-                                            fontFamily: 'AvenirNext',
-                                            color: Color(0xff3a3f5c),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle: FontStyle.normal,
-                                          ),
-                                        ),
-                                      ),
-                                      InkWell(
-                                          child: Container(
-                                            child: Text(
-                                              "  + Add More",
-                                              style: TextStyle(
-                                                fontFamily: 'AvenirNext',
-                                                color: Color(0xff00aeef),
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle: FontStyle.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          onTap: () => {}
-                                          //getAddAnotherPassenger(),
-                                          ),
-                                    ],
+                            children: <Widget>[
+                              Container(
+                                child: Text(
+                                  widget.nOfPassengers.toString() + ' Adult' + ' ',
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    color: Color(0xff000000),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.normal,
                                   ),
-                                  // Container(
-                                  //   alignment: Alignment.centerLeft,
-                                  //   padding: EdgeInsets.only(left: 10, top: 6),
-                                  //   margin: EdgeInsets.only(bottom: 6),
-                                  //   child: Text(
-                                  //     Helper.cost(
-                                  //         widget.flightResponse.total,
-                                  //         widget
-                                  //             .flightResponse.conversion.amount,
-                                  //         widget.flightResponse.total),
-                                  //     textAlign: TextAlign.start,
-                                  //     style: TextStyle(
-                                  //         fontSize: 12,
-                                  //         fontWeight: FontWeight.w600),
-                                  //   ),
+                                ),
+                              ),
+                              GestureDetector(
+                                child: Container(
+                                  child: Text(
+                                    "Add More",
+                                    style: TextStyle(
+                                      fontFamily: 'Gilroy',
+                                      color: Color(0xff00aeef),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                  ),
+                                ),
+                                onTap:(){
+                                  
+
+                                 //  getAddAnotherPassenger();
+                                   setState(() {
+                                     widget.nOfPassengers++;
+                                   
+                                     
+                                   });
+                                   
+                                   }
+                              ),
+                            ],
+                          ),
+                                  // Row(
+                                  //   children: <Widget>[
+                                  //     Container(
+                                  //       child: Text(
+                                  //         widget.nOfPassengers.toString() +
+                                  //             ' Adult',
+                                  //         style: TextStyle(
+                                  //           fontFamily: 'Gilroy',
+                                  //           color: Color(0xff000000),
+                                  //           fontSize: 14,
+                                  //           fontWeight: FontWeight.w600,
+                                  //           fontStyle: FontStyle.normal,
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //     InkWell(
+                                  //         child: Container(
+                                  //           child: Text(
+                                  //             "  + Add More",
+                                  //             style: TextStyle(
+                                  //               fontFamily: 'Gilroy',
+                                  //               color: Color(0xff00aeef),
+                                  //               fontSize: 14,
+                                  //               fontWeight: FontWeight.w600,
+                                  //               fontStyle: FontStyle.normal,
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //         onTap: () => {}
+                                  //         //getAddAnotherPassenger(),
+                                  //         ),
+                                  //   ],
                                   // ),
+                               
                                 ],
                               ),
                               Padding(
@@ -499,10 +535,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       child: Text(
                                         "Trip Price:",
                                         style: TextStyle(
-                                          fontFamily: 'AvenirNext',
+                                          fontFamily: 'Gilroy',
                                           color: Color(0xff8e969f),
                                           fontSize: 14,
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.w500,
                                           fontStyle: FontStyle.normal,
                                         ),
                                       ),
@@ -519,15 +555,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                             color: Color(0xffE5F7FE),
                                           ),
                                           child: Center(
-                                            child: Text(
-                                              Helper.cost(
-                                                  widget.flightResponse.total,
-                                                  widget.flightResponse
-                                                      .conversion.amount,
-                                                  widget.flightResponse.total),
+                                            child: Text('\$ ' +
+                                             tripprice,
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
-                                                fontFamily: 'AvenirNext',
+                                                fontFamily: 'Gilroy',
                                                 color: Color(0xff00aeef),
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
@@ -551,12 +583,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     child: Container(
                                       alignment: Alignment.centerLeft,
                                       child: new Text(
-                                        "Bagage:",
+                                        "Baggage:",
                                         style: TextStyle(
-                                          fontFamily: 'AvenirNext',
+                                          fontFamily: 'Gilroy',
                                           color: Color(0xff8e969f),
                                           fontSize: 14,
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.w500,
                                           fontStyle: FontStyle.normal,
                                         ),
                                       ),
@@ -574,7 +606,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                         Helper.formatNumber(priceOnBaggage),
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
-                                          fontFamily: 'AvenirNext',
+                                          fontFamily: 'Gilroy',
                                           color: Color(0xff00aeef),
                                           fontSize: 14,
                                           fontWeight: FontWeight.w700,
@@ -785,21 +817,21 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     RichText(
                       text: new TextSpan(children: [
                         new TextSpan(
-                          text: "Trip Total : ",
+                          text: "Trip Total : \$ ",
                           style: TextStyle(
                             fontFamily: 'Gilroy',
-                            color: Color(0xff8e969f),
+                            color: Color(0xff0e3178),
                             fontSize: 17,
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
                           ),
                         ),
                         new TextSpan(
-                         text:  Helper.formatNumber(tripTotal),
+                         text:  widget.triptotal,
                           style: TextStyle(
-                            fontFamily: 'AvenirNext',
-                            color: Color(0xff3a3f5c),
-                            fontSize: 16,
+                            fontFamily: 'Gilroy',
+                            color: Color(0xff0e3178),
+                            fontSize: 17,
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
                           ),
@@ -842,7 +874,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
                List<TravelerInformation> lists = List();
                       for (int index = 0;
-                          index < this.widget.numberOfPassengers;
+                          index < widget.nOfPassengers;
                           index++) {
                         var uuid = new Uuid();
                        //widget.carryOnSelectedList[index].uuid = uuid.v4();
@@ -875,7 +907,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         context,
                         MaterialPageRoute(
                             builder: (context) =>confirm_booking.HotelHomeScreen(
-                              totalPrice:tripTotal,
+                                totalPrice:widget.triptotal,
                                   numberOfPassengers: widget.numberOfPassengers,
                                   travelerInformations: lists,
                                  flightResponse: widget.flightResponse,

@@ -69,11 +69,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 "We will send a verification code to your \n registered email address.",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontSize: 16,
-                                  height: 1.5,
                                   fontWeight: FontWeight.w500,
-                                  color: Color(0xFF8E969F),
+                                  color: HexColor("#8E969F"),
+                                  fontSize: 16,
+                                  fontFamily: "Gilroy",
+                                  height: 1.4,
                                 ),
                               ),
                             ],
@@ -113,7 +113,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       });
                                     },
                                     style: TextStyle(
+                                      fontFamily: 'Gilroy',
+                                      color: Color(0xff3a3f5c),
                                       fontSize: 16,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                     cursorColor:
                                         AppTheme.getTheme().primaryColor,
@@ -122,9 +125,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       filled: true,
                                       errorText: null,
                                       border: InputBorder.none,
-                                      hintText: "Enter your email address...",
+                                      hintText: "Enter your email",
                                       hintStyle: TextStyle(
-                                        fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w500,
                                           fontFamily: "Gilroy",
                                           color: Color(0xFFC7C9D1)),
                                     ),
@@ -151,13 +154,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   : Color.fromRGBO(199, 201, 209, 1),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(27)),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                  color: AppTheme.getTheme().dividerColor,
-                                  blurRadius: 8,
-                                  offset: Offset(4, 4),
-                                ),
-                              ],
                             ),
                             child: Material(
                               color: Colors.transparent,
@@ -239,8 +235,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   child: Text(
                                     "Send Verification Code",
                                     style: TextStyle(
-                                        fontFamily: "Gilroy",
                                         fontWeight: FontWeight.bold,
+                                        fontFamily: 'Gilroy Bold',
                                         fontSize: 16,
                                         color: Colors.white),
                                   ),

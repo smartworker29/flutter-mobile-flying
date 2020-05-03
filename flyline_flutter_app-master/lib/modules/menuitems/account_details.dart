@@ -142,7 +142,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Traveller Details',
+          'Traveler Details',
           style: TextStyle(
               fontFamily: 'Gilroy',
               fontWeight: FontWeight.bold,
@@ -185,6 +185,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                 child: TextFormField(
                   controller: firstNameController,
                   keyboardType: TextInputType.text,
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    color: Color(0xff3a3f5c),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    // color: AppTheme.dark_grey,
+                  ),
                   decoration: InputDecoration(
                     isDense: true,
                     border: InputBorder.none,
@@ -210,6 +217,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                 child: TextFormField(
                   controller: lastNameController,
                   keyboardType: TextInputType.text,
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    color: Color(0xff3a3f5c),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    // color: AppTheme.dark_grey,
+                  ),
                   decoration: InputDecoration(
                     isDense: true,
                     border: InputBorder.none,
@@ -238,6 +252,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       child: TextFormField(
                         controller: dobController,
                         keyboardType: TextInputType.text,
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff3a3f5c),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          // color: AppTheme.dark_grey,
+                        ),
                         decoration: InputDecoration(
                           isDense: true,
                           border: InputBorder.none,
@@ -314,7 +335,10 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       controller: genderController,
                       keyboardType: TextInputType.text,
                       style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xff3a3f5c),
                         fontSize: 16,
+                        fontWeight: FontWeight.w500,
                         // color: AppTheme.dark_grey,
                       ),
                       decoration: new InputDecoration(
@@ -337,6 +361,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                 child: TextFormField(
                   controller: emailController,
                   keyboardType: TextInputType.text,
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    color: Color(0xff3a3f5c),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    // color: AppTheme.dark_grey,
+                  ),
                   decoration: InputDecoration(
                     isDense: true,
                     border: InputBorder.none,
@@ -362,6 +393,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                 child: TextFormField(
                   controller: phoneController,
                   keyboardType: TextInputType.text,
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    color: Color(0xff3a3f5c),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    // color: AppTheme.dark_grey,
+                  ),
                   decoration: InputDecoration(
                     isDense: true,
                     border: InputBorder.none,
@@ -390,6 +428,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       child: TextFormField(
                         controller: passportController,
                         keyboardType: TextInputType.text,
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff3a3f5c),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          // color: AppTheme.dark_grey,
+                        ),
                         decoration: InputDecoration(
                           isDense: true,
                           border: InputBorder.none,
@@ -417,10 +462,17 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       child: TextFormField(
                         //  controller: passportController,
                         keyboardType: TextInputType.text,
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff3a3f5c),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          // color: AppTheme.dark_grey,
+                        ),
                         decoration: InputDecoration(
                           isDense: true,
                           border: InputBorder.none,
-                          hintText: 'Passport Expiry Date',
+                          hintText: 'Passport Exp',
                         ),
                         validator: (value) {
                           if (value.isEmpty) {
@@ -445,10 +497,17 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                 child: TextFormField(
                   // controller: lastNameController,
                   keyboardType: TextInputType.text,
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    color: Color(0xff3a3f5c),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    // color: AppTheme.dark_grey,
+                  ),
                   decoration: InputDecoration(
                     isDense: true,
                     border: InputBorder.none,
-                    hintText: 'Known Traveller Number',
+                    hintText: 'Known Traveler Number',
                   ),
                   // validator: (value) {
                   //   if (value.isEmpty) {
@@ -470,6 +529,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                 child: TextFormField(
                   controller: tempController,
                   keyboardType: TextInputType.text,
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    color: Color(0xff3a3f5c),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    // color: AppTheme.dark_grey,
+                  ),
                   decoration: InputDecoration(
                     isDense: true,
                     border: InputBorder.none,
@@ -497,8 +563,9 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       child: Text(
                         'Save',
                         style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Gilroy Bold',
+                            fontSize: 16,
                             color: Colors.white),
                       ),
                       onPressed: () {
