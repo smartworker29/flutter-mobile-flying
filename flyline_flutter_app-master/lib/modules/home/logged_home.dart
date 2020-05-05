@@ -246,44 +246,25 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        key: _scaffoldKey,
-        drawer: _drawerbuild(context),
-        body: InkWell(
-          splashColor: Colors.transparent,
-          focusColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          hoverColor: Colors.transparent,
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: Container(
-            color: Colors.white,
+    return Scaffold(
+      key: _scaffoldKey,
+      drawer: _drawerbuild(context),
+      body: Column(
+        children: <Widget>[
+          getAppBarUI(),
+          Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                getAppBarUI(),
-                Expanded(
-                  child: Column(children: <Widget>[
-                    Container(
-                        color: Color.fromRGBO(247, 249, 252, 1),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            selectJourney(),
-                            tabsHeader(),
-                            tabsContent(),
-                          ],
-                        )),
-                  ]),
-                )
+                selectJourney(),
+                tabsHeader(),
+                tabsContent(),
               ],
             ),
-          ),
-        ),
-        resizeToAvoidBottomPadding: false,
+          )
+        ],
       ),
+      resizeToAvoidBottomPadding: false,
     );
   }
 
@@ -681,7 +662,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                           .format(DateTime.parse(departureDate))
                                       : "Departure",
                                   style: departureDate != null
-                                      ? TextStyle()
+                                      ? TextStyle(
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'Gilroy',
+                                          color: Color(0xFF3D415E),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        )
                                       : TextStyle(
                                           // color: kPlaceHolderColor
                                           fontStyle: FontStyle.normal,
@@ -738,7 +725,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                     arrivalDate.toString()))
                                             : "Return",
                                         style: arrivalDate != null
-                                            ? TextStyle()
+                                            ? TextStyle(
+                                                fontStyle: FontStyle.normal,
+                                                fontFamily: 'Gilroy',
+                                                color: Color(0xFF3D415E),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              )
                                             : TextStyle(
                                                 // color: kPlaceHolderColor
                                                 fontStyle: FontStyle.normal,
