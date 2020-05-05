@@ -196,13 +196,6 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                                 color: HexColor("00aeef"),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(27.0)),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    color: AppTheme.getTheme().dividerColor,
-                                    blurRadius: 8,
-                                    offset: Offset(4, 4),
-                                  ),
-                                ],
                               ),
                               child: Material(
                                 color: Colors.transparent,
@@ -241,13 +234,6 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                                color: HexColor("00aeef"),
                                borderRadius:
                                    BorderRadius.all(Radius.circular(27.0)),
-                               boxShadow: <BoxShadow>[
-                                 BoxShadow(
-                                   color: AppTheme.getTheme().dividerColor,
-                                   blurRadius: 8,
-                                   offset: Offset(4, 4),
-                                 ),
-                               ],
                              ),
                              child: Material(
                                color: Colors.transparent,

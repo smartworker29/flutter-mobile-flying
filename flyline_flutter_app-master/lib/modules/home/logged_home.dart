@@ -949,15 +949,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                              boxShadow: cabin == "economy"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.2),
-                                        blurRadius: 30,
-                                        offset: Offset(0, 15),
-                                      ),
-                                    ]
-                                  : [],
                               borderRadius: BorderRadius.circular(20),
                               color: cabin == "economy"
                                   ? Colors.white
@@ -994,15 +985,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                              boxShadow: cabin == "business"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.2),
-                                        blurRadius: 30,
-                                        offset: Offset(0, 15),
-                                      ),
-                                    ]
-                                  : [],
                               borderRadius: BorderRadius.circular(20),
                               color: cabin == "business"
                                   ? Colors.white
@@ -1049,15 +1031,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                              boxShadow: cabin == "fClass"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.2),
-                                        blurRadius: 30,
-                                        offset: Offset(0, 15),
-                                      ),
-                                    ]
-                                  : [],
                               borderRadius: BorderRadius.circular(20),
                               color: cabin == "fClass"
                                   ? Colors.white
@@ -2444,15 +2417,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   Widget getSearchButton() {
     return Container(
-      margin: EdgeInsets.only(left: 16.0, right: 16, top: 10, bottom: 12),
+      margin: EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Color.fromRGBO(0, 174, 239, 0.3),
-              offset: Offset(0, 0),
-              blurRadius: 30.0),
-        ],
         color: Color.fromRGBO(0, 174, 239, 1),
       ),
       child: Row(
@@ -2463,7 +2430,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Gilroy Bold',
-                    fontSize: 16.0,
+                    fontSize: 18.0,
                     fontWeight: FontWeight.w700)),
             onPressed: () {
               if (!_clickedSearch &&
