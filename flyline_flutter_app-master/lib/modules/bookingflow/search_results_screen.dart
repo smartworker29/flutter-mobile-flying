@@ -395,7 +395,7 @@ class _SearchResultsState extends State<SearchResults>
                 //           _hideSendingProgressBar();
                 //       });
                 //       });
-                return Loader();
+                return null;
                 // Center(child:
                 //  Loader()
                 // CircularProgressIndicator()
