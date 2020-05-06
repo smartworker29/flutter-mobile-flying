@@ -22,10 +22,8 @@ class FlightWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Placeholder(
-                fallbackWidth: MediaQuery.of(context).size.width / 2 - 32,
-                fallbackHeight: 253,
-              ),
+              Image.asset('assets/images/sort_flight.png',
+                  width: MediaQuery.of(context).size.width / 2 - 32),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
