@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/main.dart';
@@ -26,7 +27,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
 
   void _checkIsLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var data = await prefs.getString("token_data");
+    var data = prefs.getString("token_data");
     print(data.toString() + "DDDDDDDDDDDDDDDDDDDDDDDDDD");
     if (data != null) {
       if (data.isEmpty) {
@@ -47,7 +48,8 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   @override
   void initState() {
     _checkIsLogin();
-    pageViewModelData.add(PageViewData(style: TextStyle(fontFamily: 'Gilroy',fontWeight: FontWeight.bold),
+    pageViewModelData.add(PageViewData(
+      style: TextStyle(fontFamily: 'Gilroy', fontWeight: FontWeight.bold),
       titleText: 'Stop Paying Retail',
       subText:
           'We source flights from over 250 airlines and sell them directly to you with zero markups.',
@@ -96,10 +98,10 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                               child: InkWell(
                                 onTap: () {
                                   Navigator.push(
-                                     context,
-                                     MaterialPageRoute(
-                                         builder: (context) => LoginScreen()),
-                                   );
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginScreen()),
+                                  );
                                   // pageController.animateToPage(
                                   //     (currentShowIndex + 1) % 3,
                                   //     duration: Duration(seconds: 1),
@@ -110,26 +112,25 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                                 highlightColor: Colors.transparent,
                                 child: Center(
                                   child: RichText(
-                                        text: TextSpan(
-                                          text: 'Already have an account? ',
+                                    text: TextSpan(
+                                      text: 'Already have an account? ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'Gilroy',
+                                          fontSize: 16,
+                                          color: HexColor("#8e969f")),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'Log In',
                                           style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: 'Gilroy',
-                                        fontSize: 16,
-                                        color: HexColor("#8e969f")),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                text:
-                                                    'Log In',
-                                                style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: 'Gilroy-Bold',
-                                        fontSize: 16,
-                                        color: HexColor("#00AEEF")),),
-                                          ],
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: 'Gilroy-Bold',
+                                              fontSize: 16,
+                                              color: HexColor("#00AEEF")),
                                         ),
-                                      ),
-                                
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -140,34 +141,33 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                       fit: StackFit.expand,
                       children: <Widget>[
                         Container(
-                          decoration: BoxDecoration(
-                            color: AppTheme.introColor,
-                          ),
-                          child: PageIndicatorContainer(
-                            child:PageView(
-                            controller: pageController,
-                            onPageChanged: (index) {
-                              setState(() {
-                                currentShowIndex = index;
-                              });
-                            },
-                            scrollDirection: Axis.horizontal,
-                            children: <Widget>[
-                              PagePopup(imageData: pageViewModelData[0]),
-                              PagePopup(imageData: pageViewModelData[1]),
-                              PagePopup(imageData: pageViewModelData[2]),
-                            ],
-                          ),
-                          align: IndicatorAlign.bottom,
-                            indicatorColor:  HexColor("#e7e9f0"),
-                            indicatorSelectorColor: HexColor("#0e3178"),
-                            padding: EdgeInsets.only(left: 25,right: 25),
-                            length: 3,
-                            indicatorSpace:20.0 ,
-                            shape: IndicatorShape.roundRectangleShape(size: Size(45,9),cornerSize: Size(4,4)),
-
-                          )
-                        ),
+                            decoration: BoxDecoration(
+                              color: AppTheme.introColor,
+                            ),
+                            child: PageIndicatorContainer(
+                              child: PageView(
+                                controller: pageController,
+                                onPageChanged: (index) {
+                                  setState(() {
+                                    currentShowIndex = index;
+                                  });
+                                },
+                                scrollDirection: Axis.horizontal,
+                                children: <Widget>[
+                                  PagePopup(imageData: pageViewModelData[0]),
+                                  PagePopup(imageData: pageViewModelData[1]),
+                                  PagePopup(imageData: pageViewModelData[2]),
+                                ],
+                              ),
+                              align: IndicatorAlign.bottom,
+                              indicatorColor: HexColor("#e7e9f0"),
+                              indicatorSelectorColor: HexColor("#0e3178"),
+                              padding: EdgeInsets.only(left: 25, right: 25),
+                              length: 3,
+                              indicatorSpace: 20.0,
+                              shape: IndicatorShape.roundRectangleShape(
+                                  size: Size(45, 9), cornerSize: Size(4, 4)),
+                            )),
 //                      Positioned(
 //                        bottom: 20.0,
 //                        left: 0.0,
@@ -213,7 +213,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                                     child: Text(
                                       "Next",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold ,
+                                          fontWeight: FontWeight.bold,
                                           fontFamily: 'Gilroy',
                                           fontSize: 16,
                                           letterSpacing: 1.4,
@@ -228,39 +228,39 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                             padding: const EdgeInsets.only(
                                 left: 70, right: 70, bottom: 30, top: 37),
                             child: Container(
-                             height: 50,
-                            width: 235,
-                             decoration: BoxDecoration(
-                               color: HexColor("00aeef"),
-                               borderRadius:
-                                   BorderRadius.all(Radius.circular(27.0)),
-                             ),
-                             child: Material(
-                               color: Colors.transparent,
-                               child: InkWell(
-                                 borderRadius:
-                                     BorderRadius.all(Radius.circular(1.0)),
-                                 highlightColor: Colors.transparent,
-                                 onTap: () {
-                                   Navigator.push(
-                                     context,
-                                     MaterialPageRoute(
-                                         builder: (context) => SignUpScreen()),
-                                   );
-                                 },
-                                 child: Center(
-                                   child: Text(
-                                     "Continue",
-                                     style: TextStyle(
-                                         fontWeight: FontWeight.bold,
-                                         fontFamily: 'Gilroy-Bold',
-                                         fontSize: 16,
-                                         color: Colors.white),
-                                   ),
-                                 ),
-                               ),
-                             ),
+                              height: 50,
+                              width: 235,
+                              decoration: BoxDecoration(
+                                color: HexColor("00aeef"),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(27.0)),
                               ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                  highlightColor: Colors.transparent,
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SignUpScreen()),
+                                    );
+                                  },
+                                  child: Center(
+                                    child: Text(
+                                      "Continue",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Gilroy-Bold',
+                                          fontSize: 16,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                     // SizedBox(
                     //   height: MediaQuery.of(context).padding.bottom,
@@ -278,7 +278,8 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => LoginScreen()),
+                                            builder: (context) =>
+                                                LoginScreen()),
                                       );
                                     },
                                     borderRadius:
@@ -287,25 +288,22 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                                     child: Center(
                                       child: RichText(
                                         text: TextSpan(
-
-                                          style: 
-                                          TextStyle(
-                                              color: HexColor('#0e3178'),  
+                                          style: TextStyle(
+                                              color: HexColor('#0e3178'),
                                               fontFamily: 'Gilroy',
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12.0),
                                           children: <TextSpan>[
                                             TextSpan(
-
-
                                                 style: TextStyle(
-                                                  fontFamily: 'Gilroy',
-                                                  fontWeight: FontWeight.bold,
-                                                    color: HexColor('#00aeef'))),
+                                                    fontFamily: 'Gilroy',
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        HexColor('#00aeef'))),
                                           ],
                                         ),
                                       ),
-                                    ),                                 
+                                    ),
                                   ),
                                 ),
                               ],
@@ -316,14 +314,12 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                             child: Center(
                               child: RichText(
                                 text: TextSpan(
-
                                   style: TextStyle(
                                       color: HexColor('#0e3178'),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.0),
                                   children: <TextSpan>[
                                     TextSpan(
-
                                         style: TextStyle(
                                             color: HexColor('#00aeef'))),
                                   ],
@@ -348,9 +344,11 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
             isLogin = false;
             Navigator.pushNamedAndRemoveUntil(
                 context, Routes.SearchScreen, (Route<dynamic> route) => false);
-          }else{
-          return Center(child: CircularProgressIndicator(),);
-        }
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
         }
       });
   }
@@ -388,7 +386,7 @@ class PagePopup extends StatelessWidget {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top:15, left: 30, right: 30),
+          margin: EdgeInsets.only(top: 15, left: 30, right: 30),
           child: Text(
             imageData.subText,
             textAlign: TextAlign.center,
@@ -396,7 +394,9 @@ class PagePopup extends StatelessWidget {
                 fontSize: 16, color: HexColor("#8e969f"), height: 1.5),
           ),
         ),
-        SizedBox(height: 40,)
+        SizedBox(
+          height: 40,
+        )
       ],
     );
   }
@@ -408,5 +408,5 @@ class PageViewData {
   final String assetsImage;
   final TextStyle style;
 
-  PageViewData({this.titleText, this.subText, this.assetsImage,this.style});
+  PageViewData({this.titleText, this.subText, this.assetsImage, this.style});
 }

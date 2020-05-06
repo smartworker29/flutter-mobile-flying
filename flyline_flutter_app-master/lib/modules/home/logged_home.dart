@@ -685,12 +685,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   style: departureDate != null
                                       ? TextStyle()
                                       : TextStyle(
-                                          // color: kPlaceHolderColor
-                                          fontStyle: FontStyle.normal,
-                                          fontFamily: 'Gilroy',
-                                          color: Color(0xff3a3f5c),
-                                          fontSize: 16,
                                           fontWeight: FontWeight.w500,
+                                          fontFamily: "Gilroy",
+                                          color: Color(0xFFC7C9D1),
                                         ),
                                 ),
                               ),
@@ -742,12 +739,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                         style: arrivalDate != null
                                             ? TextStyle()
                                             : TextStyle(
-                                                // color: kPlaceHolderColor
-                                                fontStyle: FontStyle.normal,
-                                                fontFamily: 'Gilroy',
-                                                color: Color(0xff3a3f5c),
-                                                fontSize: 16,
                                                 fontWeight: FontWeight.w500,
+                                                fontFamily: "Gilroy",
+                                                color: Color(0xFFC7C9D1),
                                               ),
                                       ),
                                     ),
@@ -3314,35 +3308,8 @@ class _LocationSearchUIState extends State<LocationSearchUI>
           // color: AppTheme.dark_grey,
         ),
         cursorColor: AppTheme.getTheme().primaryColor,
-        decoration: new InputDecoration(
-          errorText: null,
-          fillColor: Colors.white,
-          filled: true,
-          contentPadding: const EdgeInsets.all(15.0),
-          border: new OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(15.0),
-            ),
-          ),
-          enabledBorder: const OutlineInputBorder(
-            // width: 0.0 produces a thin "hairline" border
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(15.0),
-            ),
-            borderSide: const BorderSide(color: Colors.transparent, width: 0.0),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(15.0),
-            ),
-            borderSide: BorderSide(color: HexColor("#0e3178"), width: 1.0),
-          ),
+        decoration: InputDecoration(
           hintText: "Select " + widget.title + " City or Airport",
-          hintStyle: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontFamily: "Gilroy",
-            color: Color(0xFFC7C9D1),
-          ),
         ),
         textAlign: TextAlign.start,
       ),

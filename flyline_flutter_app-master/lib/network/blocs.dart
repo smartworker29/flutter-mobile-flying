@@ -168,6 +168,7 @@ class FlyLineBloc {
     _subjectPastFlights.close();
     _subjectUpcomingFlights.close();
     _subjectBookFlight.close();
+    _subjectMetaFlightItems.close();
   }
 
   BehaviorSubject<String> get loginResponse => _token;

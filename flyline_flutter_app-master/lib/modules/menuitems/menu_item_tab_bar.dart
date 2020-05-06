@@ -27,26 +27,29 @@ class MenuItemTabBar extends StatelessWidget {
           fontSize: 14,
           height: 2,
         ),
+        labelPadding: EdgeInsets.zero,
         tabs: [
-          ...tabs.map((t) => t.length != tabs.indexOf(t)
-              ? Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      right: BorderSide(
-                        color: Color.fromRGBO(231, 233, 240, 1),
-                        width: 1,
-                        style: BorderStyle.solid,
+          ...tabs.map(
+            (t) => (tabs.length - 1) != tabs.indexOf(t)
+                ? Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        right: BorderSide(
+                          color: Color.fromRGBO(231, 233, 240, 1),
+                          width: 1,
+                          style: BorderStyle.solid,
+                        ),
                       ),
                     ),
-                  ),
-                  child: Tab(
+                    child: Tab(
+                      child: Text(t),
+                    ),
+                  )
+                : Tab(
                     child: Text(t),
                   ),
-                )
-              : Tab(
-                  child: Text(t),
-                )),
+          ),
         ],
       ),
     );

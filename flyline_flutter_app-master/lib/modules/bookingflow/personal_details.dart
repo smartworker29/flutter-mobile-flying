@@ -1,8 +1,9 @@
-
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:motel/appTheme.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/models/check_flight_response.dart';
@@ -14,14 +15,13 @@ import 'package:motel/network/blocs.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-import 'package:intl/intl.dart' as intl;
 
 class HotelHomeScreen extends StatefulWidget {
   final CheckFlightResponse flightResponse;
   final List<TravelerInformation> travelerInformations;
   final List<FlightRouteObject> routes;
   final int ad;
-  int numberofpass;
+  final int numberofpass;
   final int ch;
   final String bookingToken;
   final String totalPrice;
@@ -60,8 +60,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   double tripTotal = 0;
   double priceOnPassenger = 0;
   double priceOnBaggage = 0;
-
-  bool _clickedBookFlight = false;
 
   List<BagItem> carryOnSelectedList;
   List<Map<int, bool>> carryOnCheckBoxes;
@@ -226,185 +224,179 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-  
-      
-       var tprice =   double.parse(widget.totalPrice);
-       double bprice = double.parse(_baggagePrice().toString());
+    var tprice = double.parse(widget.totalPrice);
+    double bprice = double.parse(_baggagePrice().toString());
 
-      var ttprice = bprice  +  tprice;
-      var tripTotal =_isChecked ? (ttprice.toStringAsFixed(2)):tprice.toStringAsFixed(2);
-      
+    var ttprice = bprice + tprice;
+    var tripTotal =
+        _isChecked ? (ttprice.toStringAsFixed(2)) : tprice.toStringAsFixed(2);
 
-      // Helper.formatNumber(priceOnBaggage);
+    // Helper.formatNumber(priceOnBaggage);
 
-      return Scaffold(
-        backgroundColor: Color(0xFFF7F9FC),
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            children: <Widget>[
-              getAppBarUI(),
-              pageIndicator(),
-              Expanded(
-                  child: SingleChildScrollView(
-                      controller: scrollController,
-                      child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                padding:
-                                    const EdgeInsets.only(left: 0, right: 0),
-                                primary: false,
-                                shrinkWrap: true,
-                                itemCount: this.numberOfPassengers,
-                                //     // padding on top is only for we need spec for sider
-                                itemBuilder: (context, index) {
-                                  return this.getTravailInformationUI(index);
-                                }),
-                            // getAddAnotherPassenger(),
-                            //  getSearchButton()
-                          ],
-                        ),
-                      ))),
-              Container(
-                height: 80.0,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20.0, left: 20.0),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                          child: Wrap(
+    return Scaffold(
+      backgroundColor: Color(0xFFF7F9FC),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: Column(
+          children: <Widget>[
+            getAppBarUI(),
+            pageIndicator(),
+            Expanded(
+                child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Container(
+                      child: Column(
                         children: <Widget>[
-                          
-                          RichText(
-                            text: TextSpan(children: [
-                              TextSpan(
-                                text: "Trip Total : \$ ",
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  color: Color(0xff0e3178),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                              ),
-                              TextSpan(                                
-                                text:  tripTotal,
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  color: Color(0xff0e3178),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                              ),
-                            ]),
-                          ),
+                          ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.only(left: 0, right: 0),
+                              primary: false,
+                              shrinkWrap: true,
+                              itemCount: this.numberOfPassengers,
+                              //     // padding on top is only for we need spec for sider
+                              itemBuilder: (context, index) {
+                                return this.getTravailInformationUI(index);
+                              }),
+                          // getAddAnotherPassenger(),
+                          //  getSearchButton()
                         ],
-                      )),
-                      Expanded(
-                        child: InkWell(
-                          child: Container(
-                            padding: EdgeInsets.only(left: 40.0, right: 40.0),
-                            width: 199,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Color(0xff00aeef),
-                              borderRadius: BorderRadius.circular(27),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Color(0x3300a3da),
-                                    offset: Offset(0, 5),
-                                    blurRadius: 20,
-                                    spreadRadius: 0),
-                              ],
+                      ),
+                    ))),
+            Container(
+              height: 80.0,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Wrap(
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(children: [
+                            TextSpan(
+                              text: "Trip Total : \$ ",
+                              style: TextStyle(
+                                fontFamily: 'Gilroy',
+                                color: Color(0xff0e3178),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                              ),
                             ),
-                            child: Center(
-                              child: Text(
-                                "Next",
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  color: Color(0xffffffff),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                ),
+                            TextSpan(
+                              text: tripTotal,
+                              style: TextStyle(
+                                fontFamily: 'Gilroy',
+                                color: Color(0xff0e3178),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                          ]),
+                        ),
+                      ],
+                    )),
+                    Expanded(
+                      child: InkWell(
+                        child: Container(
+                          padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                          width: 199,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Color(0xff00aeef),
+                            borderRadius: BorderRadius.circular(27),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Color(0x3300a3da),
+                                  offset: Offset(0, 5),
+                                  blurRadius: 20,
+                                  spreadRadius: 0),
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Next",
+                              style: TextStyle(
+                                fontFamily: 'Gilroy',
+                                color: Color(0xffffffff),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
                               ),
                             ),
                           ),
-                          onTap: () {
-                            // Navigator.push(
-                            //                 context,
-                            //                 MaterialPageRoute(
-                            //                     builder: (context) =>
-                            //                        payment_details.HotelHomeScreen(
-                            //                          numberOfPassengers: numberOfPassengers,
-                            //          travelerInformations: lists,
-                            //           flightResponse: _checkFlightResponse,
-                            //           retailInfo: widget.retailInfo,
-                            //           bookingToken: widget.bookingToken,
-
-                            //                         )
-                            //               ));
-
-                            List<TravelerInformation> lists = List();
-                            for (int index = 0;
-                                index < this.numberOfPassengers;
-                                index++) {
-                              var uuid = Uuid();
-                              carryOnSelectedList[index].uuid = uuid.v4();
-
-                              var uuid2 = Uuid();
-                              checkedBagageSelectedList[index].uuid =
-                                  uuid2.v4();
-                              TravelerInformation travelerInformation =
-                                  TravelerInformation(
-                                      firstNameControllers[index].text,
-                                      lastNameControllers[index].text,
-                                      dobControllers[index].text,
-                                      genderControllers[index].text,
-                                      passportIdControllers[index].text,
-                                      passportExpirationControllers[index].text,
-                                      carryOnSelectedList[index],
-                                      checkedBagageSelectedList[index]);
-                              lists.add(travelerInformation);
-                            }
-
-                            carryOnSelectedList.forEach((f) {
-                              print(f.jsonSerialize);
-                            });
-
-                            checkedBagageSelectedList.forEach((f) {
-                              print(f.jsonSerialize);
-                            });
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      payment_details.HotelHomeScreen(
-                                        triptotal:tripTotal,
-                                        nOfPassengers: widget.numberofpass,
-                                        travelerInformations: lists,
-                                        flightResponse: _checkFlightResponse,
-                                        retailInfo: widget.retailInfo,
-                                        bookingToken: widget.bookingToken,
-                                      )),
-                            );
-                          },
                         ),
+                        onTap: () {
+                          // Navigator.push(
+                          //                 context,
+                          //                 MaterialPageRoute(
+                          //                     builder: (context) =>
+                          //                        payment_details.HotelHomeScreen(
+                          //                          numberOfPassengers: numberOfPassengers,
+                          //          travelerInformations: lists,
+                          //           flightResponse: _checkFlightResponse,
+                          //           retailInfo: widget.retailInfo,
+                          //           bookingToken: widget.bookingToken,
+
+                          //                         )
+                          //               ));
+
+                          List<TravelerInformation> lists = List();
+                          for (int index = 0;
+                              index < this.numberOfPassengers;
+                              index++) {
+                            var uuid = Uuid();
+                            carryOnSelectedList[index].uuid = uuid.v4();
+
+                            var uuid2 = Uuid();
+                            checkedBagageSelectedList[index].uuid = uuid2.v4();
+                            TravelerInformation travelerInformation =
+                                TravelerInformation(
+                                    firstNameControllers[index].text,
+                                    lastNameControllers[index].text,
+                                    dobControllers[index].text,
+                                    genderControllers[index].text,
+                                    passportIdControllers[index].text,
+                                    passportExpirationControllers[index].text,
+                                    carryOnSelectedList[index],
+                                    checkedBagageSelectedList[index]);
+                            lists.add(travelerInformation);
+                          }
+
+                          carryOnSelectedList.forEach((f) {
+                            print(f.jsonSerialize);
+                          });
+
+                          checkedBagageSelectedList.forEach((f) {
+                            print(f.jsonSerialize);
+                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    payment_details.HotelHomeScreen(
+                                      triptotal: tripTotal,
+                                      nOfPassengers: widget.numberofpass,
+                                      travelerInformations: lists,
+                                      flightResponse: _checkFlightResponse,
+                                      retailInfo: widget.retailInfo,
+                                      bookingToken: widget.bookingToken,
+                                    )),
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
-      );
-    
+      ),
+    );
   }
 
   Widget pageIndicator() {
@@ -419,40 +411,33 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     );
   }
 
-   _baggagePrice() {
- 
-
-   
+  _baggagePrice() {
     for (var i = 0; i < holdBags.length; i++) {
       var bag = holdBags[i];
-      var abc = 
-      // Text(                  
-                  Helper.cost(_checkFlightResponse.total,
-                   _checkFlightResponse.conversion.amount, bag.price.amount);
-                  // textAlign: TextAlign.start,
-                  // style: TextStyle(
-                  //   fontFamily: 'Gilroy',
-                  //   color: Color(0xff3a3f5c),
-                  //   fontSize: 14,
-                  //   fontWeight: FontWeight.w500,
-                  //   fontStyle: FontStyle.normal,
-                  // ),
-                // );
+      var abc =
+          // Text(
+          Helper.cost(_checkFlightResponse.total,
+              _checkFlightResponse.conversion.amount, bag.price.amount);
+      // textAlign: TextAlign.start,
+      // style: TextStyle(
+      //   fontFamily: 'Gilroy',
+      //   color: Color(0xff3a3f5c),
+      //   fontSize: 14,
+      //   fontWeight: FontWeight.w500,
+      //   fontStyle: FontStyle.normal,
+      // ),
+      // );
       if (bag.indices.length == 0) {
         Container();
       } else {
-        
         return (abc);
-        
-       
       }
     }
-    // return 
-      //  Text(bag);
-        // Column(
-        //   children: <Widget>[] + listOfHoldBag,
-        // );
-     
+    // return
+    //  Text(bag);
+    // Column(
+    //   children: <Widget>[] + listOfHoldBag,
+    // );
   }
 
   Widget getTravailInformationUI(int position) {
