@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:motel/models/account.dart';
+import 'package:motel/modules/menuitems/menu_item_app_bar.dart';
 import 'package:motel/network/blocs.dart';
-import 'package:motel/widgets/app_bar_pop_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountDetailsScreen extends StatefulWidget {
@@ -141,37 +141,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top, left: 8, right: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    AppBarPopIcon(),
-                    Expanded(
-                      child: Text(
-                        'Account Details',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Gilroy',
-                          color: Color(0xff3a3f5c),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(),
-                    )
-                  ],
-                ),
-              ),
-            ),
+            MenuItemAppBar(title: "Account Details"),
             SizedBox(
               height: 20,
             ),
