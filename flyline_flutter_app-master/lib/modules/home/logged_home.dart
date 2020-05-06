@@ -25,6 +25,7 @@ import '../../models/flight_information.dart';
 import '../../models/locations.dart';
 import '../../network/blocs.dart';
 import '../calendar/calendarPopupView.dart';
+import 'dart:math' as math;
 
 const kLabelTextColor = Color(0xff0e3178);
 const kPlaceHolderColor = Color(0xFFa2a1b4);
@@ -380,7 +381,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               child: Image.network(
                                 "https://storage.googleapis.com/joinflyline/images/airlines/${route.airline}.png",
                                 height: 20,
-                                width: 20,
+                                scale: 25,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -663,17 +664,17 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       : "Departure",
                                   style: departureDate != null
                                       ? TextStyle(
-                                          fontStyle: FontStyle.normal,
+                                          // fontStyle: FontStyle.normal,
                                           fontFamily: 'Gilroy',
                                           color: Color(0xFF3D415E),
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                         )
                                       : TextStyle(
-                                          // color: kPlaceHolderColor
+                                          color: kPlaceHolderColor,
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'Gilroy',
-                                          color: Color(0xff3a3f5c),
+                                          // color: Color(0xff3a3f5c),
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -733,10 +734,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 fontWeight: FontWeight.w500,
                                               )
                                             : TextStyle(
-                                                // color: kPlaceHolderColor
+                                                color: kPlaceHolderColor,
                                                 fontStyle: FontStyle.normal,
                                                 fontFamily: 'Gilroy',
-                                                color: Color(0xff3a3f5c),
+                                                // color: Color(0xff3a3f5c),
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -752,9 +753,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => DatePickerScreen(
-                                        shouldChooseMultipleDates:
-                                            activeTab == _TABS.ROUND_TRIP,
-                                      ),
+                                            shouldChooseMultipleDates:
+                                                activeTab == _TABS.ROUND_TRIP,
+                                          ),
                                     ));
                                 if (newDateTime == null) return;
                                 setState(() {
@@ -1145,9 +1146,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    trailing: Image.asset(
+                      'assets/images/arrow.png',
+                      scale: 25,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1172,9 +1173,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    trailing: Image.asset(
+                      'assets/images/arrow.png',
+                      scale: 25,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1199,9 +1200,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    trailing: Image.asset(
+                      'assets/images/arrow.png',
+                      scale: 25,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1225,9 +1226,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    trailing: Image.asset(
+                      'assets/images/arrow.png',
+                      scale: 25,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1252,9 +1253,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    trailing: Image.asset(
+                      'assets/images/arrow.png',
+                      scale: 25,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1278,9 +1279,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    trailing: Image.asset(
+                      'assets/images/arrow.png',
+                      scale: 25,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1305,9 +1306,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    trailing: Image.asset(
+                      'assets/images/arrow.png',
+//                      width: 20,
+                      scale: 25,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1331,9 +1333,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    trailing: Image.asset(
+                      'assets/images/arrow.png',
+                      scale: 25,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1361,9 +1363,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    trailing: Image.asset(
+                      'assets/images/arrow.png',
+                      scale: 25,
                     ),
                     onTap: () {
                       _logOut();
@@ -3049,23 +3051,23 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     showDialog(
       context: context,
       builder: (BuildContext context) => CalendarPopupView(
-        barrierDismissible: true,
-        minimumDate: DateTime.now(),
-        //  maximumDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 10),
-        initialEndDate: endDate,
-        initialStartDate: startDate,
-        onApplyClick: (DateTime startData, DateTime endData) {
-          setState(() {
-            if (startData != null && endData != null) {
-              startDate = startData;
-              endDate = endData;
-            }
-          });
-        },
-        onCancelClick: () {
-          Navigator.pop(context);
-        },
-      ),
+            barrierDismissible: true,
+            minimumDate: DateTime.now(),
+            //  maximumDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 10),
+            initialEndDate: endDate,
+            initialStartDate: startDate,
+            onApplyClick: (DateTime startData, DateTime endData) {
+              setState(() {
+                if (startData != null && endData != null) {
+                  startDate = startData;
+                  endDate = endData;
+                }
+              });
+            },
+            onCancelClick: () {
+              Navigator.pop(context);
+            },
+          ),
     );
   }
 
@@ -3103,7 +3105,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: const Color(0xfff7f9fc)),
-                        child: Center(child: Icon(Icons.arrow_back_ios))),
+                        child: Center(
+                            child: Image.asset(
+                          'assets/images/menu.png',
+                          width: 20,
+                        ))),
                   ),
                 ),
               ),
@@ -3191,7 +3197,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: const Color(0xfff7f9fc)),
-                      child: Center(child: Icon(Icons.arrow_back_ios))),
+                      child: Center(
+                        child: Transform.rotate(
+                          angle: -math.pi / 1.0,
+                          child: Image.asset(
+                            'assets/images/arrow.png',
+                            scale: 25,
+                          ),
+                        ),
+                      )),
                 ),
               ),
             ),
@@ -3244,6 +3258,7 @@ class LocationSearchUI extends StatefulWidget {
   final Function(LocationObject value, bool type) notifyParent;
   final title;
   final isDeparture;
+
   // final TextStyle;
   final LocationObject city;
 

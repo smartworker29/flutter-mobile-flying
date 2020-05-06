@@ -5,23 +5,22 @@ import 'package:motel/modules/datepicker/flutter_calendar_carousel.dart';
 import 'dart:io' show Platform;
 
 class DatePickerScreen extends StatelessWidget {
-
   final DateTime startingDate;
   final bool shouldChooseMultipleDates;
-  List<DateTime> selectedDates=List();
+  List<DateTime> selectedDates = List();
 
-  DatePickerScreen({Key key, this.startingDate, this.shouldChooseMultipleDates=false}) : super(key: key);
+  DatePickerScreen(
+      {Key key, this.startingDate, this.shouldChooseMultipleDates = false})
+      : super(key: key);
 
-  List<DateTime> generateMonths(){
-    DateTime date=startingDate??DateTime.now();
-    return List<DateTime>.generate(12, (i) =>
-        date.add(Duration(days: i*30)));
+  List<DateTime> generateMonths() {
+    DateTime date = startingDate ?? DateTime.now();
+    return List<DateTime>.generate(12, (i) => date.add(Duration(days: i * 30)));
   }
 
   @override
   Widget build(BuildContext context) {
-
-    List<DateTime> monthsToShow=generateMonths();
+    List<DateTime> monthsToShow = generateMonths();
 
     Widget getAppBarUI() {
       return Container(
@@ -55,10 +54,12 @@ class DatePickerScreen extends StatelessWidget {
                               shape: BoxShape.circle,
                               color: const Color(0xfff7f9fc)),
                           child: Center(
-                            child: Icon(Platform.isAndroid?Icons.arrow_back:Icons.arrow_back_ios),
+                            child: Icon(Platform.isAndroid
+                                ? Icons.arrow_back
+                                : Icons.arrow_back_ios),
                           )
-                        // Image.asset("assets/images/left.png"),
-                      ),
+                          // Image.asset("assets/images/left.png"),
+                          ),
                     ),
                   ),
                 ),
@@ -98,31 +99,71 @@ class DatePickerScreen extends StatelessWidget {
           children: <Widget>[
             getAppBarUI(),
             Container(
-              height: MediaQuery.of(context).size.height -//Screen Height
-                  (AppBar().preferredSize.height+10)-//AppBar Height
-                  MediaQuery.of(context).padding.top,//StatusBar Height
-              child: ListView.builder(itemBuilder: (context,index){
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: CalendarCarousel(
+              height: MediaQuery.of(context).size.height - //Screen Height
+                  (AppBar().preferredSize.height + 10) - //AppBar Height
+                  MediaQuery.of(context).padding.top, //StatusBar Height
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: CalendarCarousel(
 //                    markedDatesMap: _markedDateMap,
 //                    selectedDateTime: [monthsToShow[index]],
-                    monthToShow: monthsToShow[index],
-                    height: 340,
-                    onDayPressed:(selectedDate,_){
-                      if(shouldChooseMultipleDates){
-                        selectedDates.add(selectedDate);
-                        if(selectedDates.length==2){
-                          DateTime dep=selectedDates[0].isBefore(selectedDates[1])?selectedDates[0]:selectedDates[1];
-                          DateTime ret=selectedDates[0].isAfter(selectedDates[1])?selectedDates[0]:selectedDates[1];
-                          DateResult dr=DateResult(dep, ret);
-                          Navigator.pop(context,dr);
-                        }
-                      } else Navigator.pop(context,DateResult(selectedDate,null));
-                    },
-                  ),
-                );
-              },
+                      
+                      headerTextStyle: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xFF0E3178),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      daysTextStyle: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xFF0E3178),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      todayTextStyle: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xFF00AEEF),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      weekendTextStyle: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xFF0E3178),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      weekdayTextStyle: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xFF0E3178),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      monthToShow: monthsToShow[index],
+                      height: 340,
+                      onDayPressed: (selectedDate, _) {
+                        if (shouldChooseMultipleDates) {
+                          selectedDates.add(selectedDate);
+                          if (selectedDates.length == 2) {
+                            DateTime dep =
+                                selectedDates[0].isBefore(selectedDates[1])
+                                    ? selectedDates[0]
+                                    : selectedDates[1];
+                            DateTime ret =
+                                selectedDates[0].isAfter(selectedDates[1])
+                                    ? selectedDates[0]
+                                    : selectedDates[1];
+                            DateResult dr = DateResult(dep, ret);
+                            Navigator.pop(context, dr);
+                          }
+                        } else
+                          Navigator.pop(
+                              context, DateResult(selectedDate, null));
+                      },
+                    ),
+                  );
+                },
                 shrinkWrap: true,
                 itemCount: monthsToShow.length,
               ),
@@ -134,7 +175,7 @@ class DatePickerScreen extends StatelessWidget {
   }
 }
 
-class DateResult{
+class DateResult {
   final DateTime _departureDate;
   final DateTime _returnDate;
 
@@ -142,5 +183,4 @@ class DateResult{
 
   get departureDate => _departureDate;
   get returnDate => _returnDate;
-
 }
