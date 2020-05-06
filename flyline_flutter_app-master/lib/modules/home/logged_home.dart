@@ -1191,7 +1191,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 28),
                     title: new Text(
-                      "Payment Details",
+                      "Travel Wallet",
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff8e969f),
@@ -1217,7 +1217,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 28),
                     title: new Text(
-                      "Trip Management",
+                      "Manage Trips",
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff8e969f),
@@ -1297,7 +1297,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 28),
                     title: Text(
-                      "Terms of Service",
+                      "Terms & Privacy",
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff8e969f),
@@ -1316,33 +1316,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           context,
                           MaterialPageRoute(
                               builder: (context) => TermsOfUsePage()));
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Privacy Policy",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PrivacyPolicyPage()),
-                      );
                     },
                   ),
                   Expanded(
