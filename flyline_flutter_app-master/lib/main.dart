@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:motel/appTheme.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -47,15 +46,6 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initPlatformState() async {
     if (!mounted) return;
-
-    await OneSignal.shared.init(
-        "905d4559-c3bb-442c-bed5-93a097da8a7e",
-        iOSSettings: {
-          OSiOSSettings.autoPrompt: true,
-          OSiOSSettings.inAppLaunchUrl: true
-        }
-    );
-    OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
   }
 
   void restartApp() {
