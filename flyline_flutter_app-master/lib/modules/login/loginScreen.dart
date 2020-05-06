@@ -1,6 +1,5 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/introductionScreen.dart';
 import 'package:motel/main.dart';
@@ -148,9 +147,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     hintText: "Enter your email",
                                     hintStyle: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: "Gilroy",
-                                        color: Color(0xFFC7C9D1)),
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "Gilroy",
+                                      color: Color(0xFFC7C9D1),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           : null,
                                       hintText: "Enter your password",
                                       hintStyle: TextStyle(
-                                        fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w500,
                                           fontFamily: "Gilroy",
                                           color: Color(0xFFC7C9D1)),
                                     ),
@@ -432,7 +432,6 @@ class _LoginScreenState extends State<LoginScreen> {
               style: new TextStyle(
                 color: HexColor("#0e3178"),
                 fontFamily: "Gilroy",
-                
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),

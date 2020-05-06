@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -18,7 +19,6 @@ import 'package:motel/modules/menuitems/deal_feed.dart';
 import 'package:motel/modules/menuitems/help_center.dart';
 import 'package:motel/modules/menuitems/membership_plans.dart';
 import 'package:motel/modules/menuitems/payment.dart';
-import 'package:motel/modules/menuitems/privacy_policy.dart';
 import 'package:motel/modules/menuitems/terms_of_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,7 +27,6 @@ import '../../models/flight_information.dart';
 import '../../models/locations.dart';
 import '../../network/blocs.dart';
 import '../calendar/calendarPopupView.dart';
-import 'dart:math' as math;
 
 const kLabelTextColor = Color(0xff0e3178);
 const kPlaceHolderColor = Color(0xFFa2a1b4);
@@ -3305,24 +3304,48 @@ class _LocationSearchUIState extends State<LocationSearchUI>
         elevation: 8,
       ),
       textFieldConfiguration: TextFieldConfiguration(
-          controller: _typeAheadController,
-          autofocus: true,
-          style: DefaultTextStyle.of(context).style.copyWith(
-                fontStyle: FontStyle.normal,
-                fontFamily: 'Gilroy',
-                color: Color(0xff3a3f5c),
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-          decoration: InputDecoration.collapsed(
-              hintText: "Select " + widget.title + " City or Airport",
-              hintStyle: TextStyle(
-                fontFamily: 'Gilroy',
-                color: Color(0xff3a3f5c),
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              )),
-          textAlign: TextAlign.start),
+        controller: _typeAheadController,
+        autofocus: true,
+        style: TextStyle(
+          fontFamily: 'Gilroy',
+          color: Color(0xff3a3f5c),
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          // color: AppTheme.dark_grey,
+        ),
+        cursorColor: AppTheme.getTheme().primaryColor,
+        decoration: new InputDecoration(
+          errorText: null,
+          fillColor: Colors.white,
+          filled: true,
+          contentPadding: const EdgeInsets.all(15.0),
+          border: new OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(15.0),
+            ),
+          ),
+          enabledBorder: const OutlineInputBorder(
+            // width: 0.0 produces a thin "hairline" border
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(15.0),
+            ),
+            borderSide: const BorderSide(color: Colors.transparent, width: 0.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(15.0),
+            ),
+            borderSide: BorderSide(color: HexColor("#0e3178"), width: 1.0),
+          ),
+          hintText: "Select " + widget.title + " City or Airport",
+          hintStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontFamily: "Gilroy",
+            color: Color(0xFFC7C9D1),
+          ),
+        ),
+        textAlign: TextAlign.start,
+      ),
       suggestionsCallback: (search) {
         if (search.length > 0) {
           return flyLinebloc.locationQuery(search);
