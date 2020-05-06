@@ -663,17 +663,17 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       : "Departure",
                                   style: departureDate != null
                                       ? TextStyle(
-                                          fontStyle: FontStyle.normal,
+                                          // fontStyle: FontStyle.normal,
                                           fontFamily: 'Gilroy',
                                           color: Color(0xFF3D415E),
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                         )
                                       : TextStyle(
-                                          // color: kPlaceHolderColor
+                                          color: kPlaceHolderColor,
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'Gilroy',
-                                          color: Color(0xff3a3f5c),
+                                          // color: Color(0xff3a3f5c),
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -733,10 +733,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 fontWeight: FontWeight.w500,
                                               )
                                             : TextStyle(
-                                                // color: kPlaceHolderColor
+                                                color: kPlaceHolderColor,
                                                 fontStyle: FontStyle.normal,
                                                 fontFamily: 'Gilroy',
-                                                color: Color(0xff3a3f5c),
+                                                // color: Color(0xff3a3f5c),
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -752,9 +752,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => DatePickerScreen(
-                                        shouldChooseMultipleDates:
-                                            activeTab == _TABS.ROUND_TRIP,
-                                      ),
+                                            shouldChooseMultipleDates:
+                                                activeTab == _TABS.ROUND_TRIP,
+                                          ),
                                     ));
                                 if (newDateTime == null) return;
                                 setState(() {
@@ -3047,23 +3047,23 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     showDialog(
       context: context,
       builder: (BuildContext context) => CalendarPopupView(
-        barrierDismissible: true,
-        minimumDate: DateTime.now(),
-        //  maximumDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 10),
-        initialEndDate: endDate,
-        initialStartDate: startDate,
-        onApplyClick: (DateTime startData, DateTime endData) {
-          setState(() {
-            if (startData != null && endData != null) {
-              startDate = startData;
-              endDate = endData;
-            }
-          });
-        },
-        onCancelClick: () {
-          Navigator.pop(context);
-        },
-      ),
+            barrierDismissible: true,
+            minimumDate: DateTime.now(),
+            //  maximumDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 10),
+            initialEndDate: endDate,
+            initialStartDate: startDate,
+            onApplyClick: (DateTime startData, DateTime endData) {
+              setState(() {
+                if (startData != null && endData != null) {
+                  startDate = startData;
+                  endDate = endData;
+                }
+              });
+            },
+            onCancelClick: () {
+              Navigator.pop(context);
+            },
+          ),
     );
   }
 
@@ -3296,14 +3296,38 @@ class _LocationSearchUIState extends State<LocationSearchUI>
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
-          decoration: InputDecoration.collapsed(
-              hintText: "Select " + widget.title + " City or Airport",
-              hintStyle: TextStyle(
-                fontFamily: 'Gilroy',
-                color: Color(0xff3a3f5c),
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              )),
+          decoration: InputDecoration(
+            hintText: "Select " + widget.title + " City or Airport",
+            hintStyle: TextStyle(
+              fontFamily: 'Gilroy',
+              color: Color(0xFFC7C9D1),
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+
+            ///Addding border
+            border: new OutlineInputBorder(
+              borderRadius: const BorderRadius.all(
+                const Radius.circular(15.0),
+              ),
+            ),
+            enabledBorder: const OutlineInputBorder(
+              // width: 0.0 produces a thin "hairline" border
+              borderRadius: const BorderRadius.all(
+                const Radius.circular(15.0),
+              ),
+              borderSide:
+                  const BorderSide(color: Colors.transparent, width: 0.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(
+                const Radius.circular(15.0),
+              ),
+              borderSide: BorderSide(color: HexColor("#0e3178"), width: 1.0),
+            ),
+
+            ///ending
+          ),
           textAlign: TextAlign.start),
       suggestionsCallback: (search) async {
         if (search.length > 0) {
