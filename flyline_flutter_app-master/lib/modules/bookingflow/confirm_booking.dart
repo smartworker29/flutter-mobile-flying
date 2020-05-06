@@ -873,6 +873,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               ),
             ),
             onTap: () {
+              print(widget.bookingToken,);
               Navigator.push(
                 context,
                 MaterialPageRoute(

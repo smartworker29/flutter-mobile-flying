@@ -75,7 +75,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   _TABS activeTab = _TABS.ROUND_TRIP;
   String departureDate;
   String arrivalDate;
-  int adults = 0;
+  int adults = 1;
   int kids = 0;
   String cabin = "economy";
 
@@ -836,7 +836,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                 ),
                               ),
                             ),
-                            Text(adults != null ? adults.toString() : ""),
+                            Text(adults != null ? adults.toString() : ''),
                             GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -2913,6 +2913,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             child: Column(
               children: <Widget>[
                 Container(
+                  height: 48,
                   width: double.infinity,
                   margin: const EdgeInsets.only(left: 8, right: 16),
                   decoration: BoxDecoration(
@@ -2921,14 +2922,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   ),
                   child: Container(
                       width: MediaQuery.of(context).size.width / 4,
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
+                      // padding: EdgeInsets.only(
+                      //   left: 10,
+                      // ),
                       child: LocationSearchUI("Departure", true,
                           notifyParent: refreshDepartureValue,
                           city: departure)),
                 ),
                 Container(
+                  height: 48,
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.only(
                       left: 8, right: 16, top: 20, bottom: 8),
@@ -2938,9 +2940,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   ),
                   child: Container(
                       width: MediaQuery.of(context).size.width / 4,
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
+                      // padding: EdgeInsets.only(
+                      //   left: 10,
+                      // ),
                       child: LocationSearchUI(
                         "Arrival",
                         false,
@@ -3296,7 +3298,26 @@ class _LocationSearchUIState extends State<LocationSearchUI>
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
-          decoration: InputDecoration.collapsed(
+          decoration: InputDecoration(
+              border: new OutlineInputBorder(
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(15.0),
+                ),
+              ),
+              enabledBorder: const OutlineInputBorder(
+                // width: 0.0 produces a thin "hairline" border
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(15.0),
+                ),
+                borderSide:
+                    const BorderSide(color: Colors.transparent, width: 0.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(15.0),
+                ),
+                borderSide: BorderSide(color: HexColor("#0e3178"), width: 1.0),
+              ),
               hintText: "Select " + widget.title + " City or Airport",
               hintStyle: TextStyle(
                 fontFamily: 'Gilroy',
