@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:motel/models/book_request.dart';
@@ -80,7 +79,8 @@ class FlyLineProvider {
     List<LocationObject> locations = List<LocationObject>();
 
     term = term.toString().replaceAll(" ", "+");
-    var url = "$baseUrl/api/locations/query/?term=$term&locale=en-US&location_types[]=city&location_types[]=airport";
+    var url =
+        "$baseUrl/api/locations/query/?term=$term&locale=en-US&location_types[]=city&location_types[]=airport";
     try {
       response = await dio.get(url);
     } catch (e) {
@@ -89,7 +89,6 @@ class FlyLineProvider {
 
     if (response.statusCode == 200) {
       for (dynamic i in response.data["locations"]) {
-
         if (i['type'] != 'subdivision') {
           locations.add(LocationObject.fromJson(i));
         }
@@ -116,19 +115,30 @@ class FlyLineProvider {
     var token = await getAuthToken();
 
     Response response;
-    Dio dio = Dio();
+    Dio dio = Dio(BaseOptions(baseUrl: '$baseUrl/api'));
+    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
     dio.options.headers["Authorization"] = "Token $token";
 
     List<FlightInformationObject> flights = List<FlightInformationObject>();
 //    var url =
 //        "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD&limit=$limit&offset=$offset";
-    var url =
-        "$baseUrl/api/search/?fly_from=$flyFrom&fly_to=$flyTo&date_from=$dateFrom&date_to=$dateTo&type=$type&return_from=$returnFrom&return_to=$returnTo&adults=$adults&infants=$infants&children=$children&selected_cabins=$selectedCabins&curr=USD&subdivision=NY";
-
 //    url = 'https://joinflyline.com/api/search/?fly_from=city:NYC&fly_to=city:LAX&date_from=31%2F01%2F2020&date_to=31%2F01%2F2020&type=round&return_from=31%2F01%2F2020&return_to=31%2F01%2F2020&adults=1&infants=0&children=0&selected_cabins=M&curr=USD';
-    print("Search url: " + url);
     try {
-      response = await dio.get(url);
+      response = await dio.get("/search/", queryParameters: {
+        "fly_from": flyFrom,
+        "fly_to": flyTo,
+        "date_from": dateFrom,
+        "date_to": dateTo,
+        "type": type,
+        "return_from": returnFrom,
+        "return_to": returnTo,
+        "adults": adults,
+        "infants": infants,
+        "children": children,
+        "selectedCabins": selectedCabins,
+        "curr": "USD",
+        "subdivision": "NY",
+      });
     } catch (e) {
       log(e.toString());
     }
@@ -139,6 +149,60 @@ class FlyLineProvider {
       }
     }
     return flights;
+  }
+
+  Future<List<FlightInformationObject>> searchMetaFlights(
+    String flyFrom,
+    String flyTo,
+    String startDate,
+    String returnDate,
+  ) async {
+    var token = await getAuthToken();
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: "$baseUrl/api",
+        contentType: "application/json;charset=utf-8",
+        followRedirects: true,
+        headers: {
+          "Authorization": "Token $token",
+          "Connection": "keep-alive",
+        },
+      ),
+    );
+    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+    List<FlightInformationObject> flightResults = [];
+    final payload = (kind) => {
+          "kind": kind,
+          "fly_from": flyFrom,
+          "fly_to": flyTo,
+          "start_date": startDate,
+          "return_date": returnDate
+        };
+    try {
+      final workers = await Future.wait([
+        dio.post("/request-scraper/", data: payload("skyscanner")),
+        dio.post("/request-scraper/", data: payload("kayak")),
+        dio.post("/request-scraper/", data: payload("tripadvisor")),
+      ]);
+
+      if (workers.every((w) => w.statusCode == 201)) {
+        final List ids = [...workers.map((w) => w.data['id'])];
+        final flights = await Future.wait(ids.map((id) => dio.get(
+              "/check-scraper-result/",
+              queryParameters: {"id": id},
+            )));
+        flights.forEach((f) {
+          if (f.statusCode == 200) {
+            for (dynamic i in f.data) {
+              flightResults.add(FlightInformationObject.fromJson(i));
+            }
+          }
+        });
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return flightResults;
   }
 
   Future<CheckFlightResponse> checkFlights(
@@ -187,18 +251,19 @@ class FlyLineProvider {
     prettyprint.split('\n').forEach((element) => print(element));
     print(json.encode(bookRequest.jsonSerialize));
     try {
-      response = await dio.post(url, data: json.encode(bookRequest.jsonSerialize));
+      response =
+          await dio.post(url, data: json.encode(bookRequest.jsonSerialize));
       print(response.toString());
       print(response.statusCode.toString());
     } on DioError catch (e) {
       result = e.response.statusCode.toString();
       print(result);
-      return { "status": e.response.statusCode };
+      return {"status": e.response.statusCode};
     } on Error catch (e) {
       print(e);
     }
 
-    return { "status": response.statusCode };
+    return {"status": response.statusCode};
   }
 
   Future<List<FlylineDeal>> randomDealsForGuest(int size) async {
@@ -209,7 +274,8 @@ class FlyLineProvider {
     Dio dio = Dio();
 
     List<FlylineDeal> deals = List<FlylineDeal>();
-    var url = "https://staging.joinflyline.com/api/deals/?size=" + size.toString();
+    var url =
+        "https://staging.joinflyline.com/api/deals/?size=" + size.toString();
 
     print(url);
     try {
@@ -368,15 +434,11 @@ class FlyLineProvider {
 
       if (gender.length > 0) {
         gender = (gender.toLowerCase() == 'male' ? 0 : 1).toString();
-        data.addAll({
-          "gender": gender
-        });
+        data.addAll({"gender": gender});
       }
 
       if (dob.length > 0) {
-        data.addAll({
-          "dob": dob
-        });
+        data.addAll({"dob": dob});
       }
       response = await dio.patch(url, data: data);
       print(response.toString());

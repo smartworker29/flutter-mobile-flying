@@ -1,25 +1,27 @@
 import 'dart:convert';
 import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart' as ui_help;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart' as ui_help;
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:intl/intl.dart';
 import 'package:motel/helper/helper.dart';
+import 'package:motel/modules/bookingflow/search_selector.dart';
 import 'package:motel/modules/datepicker/datepicker_screen.dart';
-import 'package:motel/modules/bookingflow/search_results_screen.dart';
 import 'package:motel/modules/login/loginScreen.dart';
-import 'package:motel/modules/menuitems/help_center.dart';
 import 'package:motel/modules/menuitems/account_details.dart';
 import 'package:motel/modules/menuitems/deal_feed.dart';
+import 'package:motel/modules/menuitems/help_center.dart';
 import 'package:motel/modules/menuitems/membership_plans.dart';
 import 'package:motel/modules/menuitems/payment.dart';
 import 'package:motel/modules/menuitems/privacy_policy.dart';
 import 'package:motel/modules/menuitems/terms_of_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../appTheme.dart';
 import '../../models/flight_information.dart';
 import '../../models/locations.dart';
@@ -246,25 +248,44 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: _drawerbuild(context),
-      body: Column(
-        children: <Widget>[
-          getAppBarUI(),
-          Expanded(
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: _drawerbuild(context),
+        body: InkWell(
+          splashColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Container(
+            color: Colors.white,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                selectJourney(),
-                tabsHeader(),
-                tabsContent(),
+                getAppBarUI(),
+                Expanded(
+                  child: Column(children: <Widget>[
+                    Container(
+                        color: Color.fromRGBO(247, 249, 252, 1),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            selectJourney(),
+                            tabsHeader(),
+                            tabsContent(),
+                          ],
+                        )),
+                  ]),
+                )
               ],
             ),
-          )
-        ],
+          ),
+        ),
+        resizeToAvoidBottomPadding: false,
       ),
-      resizeToAvoidBottomPadding: false,
     );
   }
 
@@ -662,13 +683,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                           .format(DateTime.parse(departureDate))
                                       : "Departure",
                                   style: departureDate != null
-                                      ? TextStyle(
-                                          fontStyle: FontStyle.normal,
-                                          fontFamily: 'Gilroy',
-                                          color: Color(0xFF3D415E),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        )
+                                      ? TextStyle()
                                       : TextStyle(
                                           // color: kPlaceHolderColor
                                           fontStyle: FontStyle.normal,
@@ -725,13 +740,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                     arrivalDate.toString()))
                                             : "Return",
                                         style: arrivalDate != null
-                                            ? TextStyle(
-                                                fontStyle: FontStyle.normal,
-                                                fontFamily: 'Gilroy',
-                                                color: Color(0xFF3D415E),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                              )
+                                            ? TextStyle()
                                             : TextStyle(
                                                 // color: kPlaceHolderColor
                                                 fontStyle: FontStyle.normal,
@@ -949,6 +958,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
+                              boxShadow: cabin == "economy"
+                                  ? [
+                                      BoxShadow(
+                                        color: Color.fromRGBO(20, 40, 160, 0.2),
+                                        blurRadius: 30,
+                                        offset: Offset(0, 15),
+                                      ),
+                                    ]
+                                  : [],
                               borderRadius: BorderRadius.circular(20),
                               color: cabin == "economy"
                                   ? Colors.white
@@ -985,6 +1003,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
+                              boxShadow: cabin == "business"
+                                  ? [
+                                      BoxShadow(
+                                        color: Color.fromRGBO(20, 40, 160, 0.2),
+                                        blurRadius: 30,
+                                        offset: Offset(0, 15),
+                                      ),
+                                    ]
+                                  : [],
                               borderRadius: BorderRadius.circular(20),
                               color: cabin == "business"
                                   ? Colors.white
@@ -1031,6 +1058,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
+                              boxShadow: cabin == "fClass"
+                                  ? [
+                                      BoxShadow(
+                                        color: Color.fromRGBO(20, 40, 160, 0.2),
+                                        blurRadius: 30,
+                                        offset: Offset(0, 15),
+                                      ),
+                                    ]
+                                  : [],
                               borderRadius: BorderRadius.circular(20),
                               color: cabin == "fClass"
                                   ? Colors.white
@@ -2417,9 +2453,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   Widget getSearchButton() {
     return Container(
-      margin: EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 16),
+      margin: EdgeInsets.only(left: 16.0, right: 16, top: 10, bottom: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+              color: Color.fromRGBO(0, 174, 239, 0.3),
+              offset: Offset(0, 0),
+              blurRadius: 30.0),
+        ],
         color: Color.fromRGBO(0, 174, 239, 1),
       ),
       child: Row(
@@ -2430,18 +2472,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Gilroy Bold',
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.w700)),
             onPressed: () {
               if (!_clickedSearch &&
                   selectedDeparture != null &&
                   selectedArrival != null) {
                 showSendingProgressBar();
-                Future.delayed(const Duration(milliseconds: 15000), () {
-                  setState(() {
-                    hideSendingProgressBar();
-                  });
-                });
                 setState(() {
                   offset = 0;
                   originalFlights = List();
@@ -2453,49 +2490,41 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 });
 
                 try {
-                  flyLinebloc.searchFlight(
-                      selectedDeparture.type + ":" + selectedDeparture.code,
-                      selectedArrival.type + ":" + selectedArrival.code,
-                      formatAllDay.format(DateTime.parse(departureDate)),
-                      formatAllDay.format(DateTime.parse(arrivalDate)),
-                      typeOfTripSelected == 0 ? "round" : "oneway",
-                      formatAllDay.format(DateTime.parse(departureDate)),
-                      formatAllDay.format(DateTime.parse(arrivalDate)),
-                      ad.toString(),
-                      "0",
-                      "0",
-                      selectedClassOfServiceValue,
-                      "USD",
-                      this.offset.toString(),
-                      this.perPage.toString());
+                  flyLinebloc
+                      .searchFlight(
+                        selectedDeparture.type + ":" + selectedDeparture.code,
+                        selectedArrival.type + ":" + selectedArrival.code,
+                        formatAllDay.format(DateTime.parse(departureDate)),
+                        formatAllDay.format(DateTime.parse(arrivalDate)),
+                        typeOfTripSelected == 0 ? "round" : "oneway",
+                        formatAllDay.format(DateTime.parse(departureDate)),
+                        formatAllDay.format(DateTime.parse(arrivalDate)),
+                        ad.toString(),
+                        "0",
+                        "0",
+                        selectedClassOfServiceValue,
+                        "USD",
+                        this.offset.toString(),
+                        this.perPage.toString(),
+                      )
+                      .then((_) => setState(() {
+                            hideSendingProgressBar();
+                          }));
                 } catch (e) {
                   print(e);
                 }
               }
 
               print(formatAllDay.format(DateTime.parse(departureDate)));
-              // var flight = listOfFlights[0];
-              // var flyingFrom= flight.flyFrom;
-              // var flyingTo = flight.flyTo;
-              var depDate = formatDates.format(DateTime.parse(departureDate));
-              var arrDate = formatDates.format(DateTime.parse(arrivalDate));
-
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      //hhs.HotelHomeScreen
-                      SearchResults(
-                        // routes: flight.routes,
-                        //  flyingFrom:flyingFrom,
-                        //  flyingTo: flyingTo,
-                        depDate: depDate,
-                        arrDate: arrDate,
-                        typeOfTripSelected: this.typeOfTripSelected,
-                      )));
-
-              print(typeOfTripSelected == 0
-                  ? 'Round-Trip Selected'
-                  : 'One-way Selected');
-              //  print(flight.routes);
+                builder: (BuildContext context) => SearchSelector(
+                  flyingFrom: 'FROM',
+                  flyingTo: 'TO',
+                  departureDate: DateTime.parse(departureDate),
+                  arrivalDate: DateTime.parse(arrivalDate),
+                  tripType: typeOfTripSelected,
+                ),
+              ));
             },
           ),
         ],
@@ -3268,6 +3297,7 @@ class _LocationSearchUIState extends State<LocationSearchUI>
   Widget build(BuildContext context) {
     return TypeAheadFormField<LocationObject>(
       autovalidate: true,
+      debounceDuration: Duration(seconds: 1),
       transitionBuilder: (context, suggestionsBox, controller) {
         return suggestionsBox;
       },
@@ -3305,10 +3335,9 @@ class _LocationSearchUIState extends State<LocationSearchUI>
                 fontWeight: FontWeight.w500,
               )),
           textAlign: TextAlign.start),
-      suggestionsCallback: (search) async {
+      suggestionsCallback: (search) {
         if (search.length > 0) {
-          var response = flyLinebloc.locationQuery(search);
-          return response;
+          return flyLinebloc.locationQuery(search);
         } else
           return null;
       },

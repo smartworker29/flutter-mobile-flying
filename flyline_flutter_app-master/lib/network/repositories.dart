@@ -54,7 +54,22 @@ class FlyLineRepository {
         limit);
   }
 
-  Future<CheckFlightResponse> checkFlights(bookingId, infants, children, adults) {
+  Future<List<FlightInformationObject>> searchMetaFlights(
+    String flyFrom,
+    String flyTo,
+    String startDate,
+    String returnDate,
+  ) {
+    return _flyLineProvider.searchMetaFlights(
+      flyFrom,
+      flyTo,
+      startDate,
+      returnDate,
+    );
+  }
+
+  Future<CheckFlightResponse> checkFlights(
+      bookingId, infants, children, adults) {
     return _flyLineProvider.checkFlights(bookingId, infants, children, adults);
   }
 

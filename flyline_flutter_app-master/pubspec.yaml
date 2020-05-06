@@ -44,6 +44,7 @@ dependencies:
   dotted_border: ^1.0.5
   flutter_typeahead: ^1.8.0
   datetime_picker_formfield: ^1.0.0
+  carousel_slider: ^2.1.0
 
 dev_dependencies:
   flutter_test:
