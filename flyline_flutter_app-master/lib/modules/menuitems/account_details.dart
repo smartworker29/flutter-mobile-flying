@@ -3,8 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:motel/models/account.dart';
 import 'package:motel/network/blocs.dart';
-import 'package:motel/widgets/round_primary_bottun.dart';
-import 'package:motel/widgets/round_textfield.dart';
+import 'package:motel/widgets/app_bar_pop_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountDetailsScreen extends StatefulWidget {
@@ -139,38 +138,40 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF7F9FC),
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Traveler Details',
-          style: TextStyle(
-              fontFamily: 'Gilroy',
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF0E3178)),
-        ),
-        leading: Container(
-          margin: EdgeInsets.only(left: 16),
-          width: 40,
-          height: 40,
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Color(0xFF0E3178),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top, left: 8, right: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    AppBarPopIcon(),
+                    Expanded(
+                      child: Text(
+                        'Account Details',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff3a3f5c),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(),
+                    )
+                  ],
+                ),
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
@@ -541,12 +542,33 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                     border: InputBorder.none,
                     hintText: 'Home Airport',
                   ),
-                  // validator: (value) {
-                  //   if (value.isEmpty) {
-                  //     return 'Please enter Last Name';
-                  //   }
-                  //   return null;
-                  // },
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              height: 50,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              child: Center(
+                child: TextFormField(
+                  // controller: tempController,
+                  enabled: false,
+                  keyboardType: TextInputType.text,
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    color: Color(0xff3a3f5c),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    // color: AppTheme.dark_grey,
+                  ),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: InputBorder.none,
+                    hintText: 'Free Plan',
+                  ),
                 ),
               ),
             ),
@@ -581,7 +603,6 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                           emailController.text,
                           phoneController.text,
                           passportController.text,
-                          
                         );
                       },
                     ),
