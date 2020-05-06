@@ -176,8 +176,11 @@ class FlyLineBloc {
   BehaviorSubject<List<LocationObject>> get locationItems =>
       _subjectlocationItems;
 
-  BehaviorSubject<List<FlightInformationObject>> get flightsItems =>
+  BehaviorSubject<List<FlightInformationObject>> get flightsExclusiveItems =>
       _subjectExclusiveFlightItems;
+
+  BehaviorSubject<List<FlightInformationObject>> get flightsMetaItems =>
+      _subjectMetaFlightItems;
 
   BehaviorSubject<List<FlylineDeal>> get randomDealItems => _subjectRandomDeals;
 

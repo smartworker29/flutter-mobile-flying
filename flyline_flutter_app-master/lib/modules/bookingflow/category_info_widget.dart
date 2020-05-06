@@ -5,7 +5,7 @@ class CategoryInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        vertical: 12,
+        vertical: 32,
         horizontal: 68,
       ),
       child: RichText(

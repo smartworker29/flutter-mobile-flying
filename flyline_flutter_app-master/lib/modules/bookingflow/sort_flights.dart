@@ -9,9 +9,6 @@ const titled = [
   'Legacy Airlines'
 ];
 
-
-
-
 class SortFlightsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -88,7 +85,7 @@ class SortFlightsPage extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width / 2,
                 child: Image.asset(
-                  'images/placeholder.png',
+                  'images/bg3.png',
                   fit: BoxFit.cover,
                 ),
               ),

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:motel/modules/bookingflow/search_results_screen.dart';
 
 class CategoryTileWidget extends StatelessWidget {
   const CategoryTileWidget({
@@ -10,7 +8,8 @@ class CategoryTileWidget extends StatelessWidget {
     @required this.maximumPrice,
     @required this.departureDate,
     @required this.arrivalDate,
-    @required this.tripType,
+    @required this.routeToPush,
+    @required this.color,
   });
 
   final String title;
@@ -19,12 +18,11 @@ class CategoryTileWidget extends StatelessWidget {
   final double maximumPrice;
   final DateTime departureDate;
   final DateTime arrivalDate;
-  final int tripType;
+  final Widget routeToPush;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    final dateFormatter = DateFormat("MMM dd");
-
     return Container(
       height: 120,
       color: Colors.white,
@@ -41,7 +39,7 @@ class CategoryTileWidget extends StatelessWidget {
               Text(
                 '$title',
                 style: TextStyle(
-                  color: Color.fromRGBO(14, 49, 120, 1),
+                  color: color,
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   height: 2,
@@ -71,13 +69,7 @@ class CategoryTileWidget extends StatelessWidget {
                 horizontal: 15.0,
               ),
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => SearchResults(
-                  //  flyingFrom:flyingFrom,
-                  //  flyingTo: flyingTo,
-                  depDate: dateFormatter.format(departureDate),
-                  arrDate: dateFormatter.format(arrivalDate),
-                  typeOfTripSelected: tripType,
-                ),
+                builder: (BuildContext context) => routeToPush,
               )),
               color: Color.fromRGBO(0, 174, 239, 1),
               child: Text(

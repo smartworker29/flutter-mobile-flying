@@ -149,7 +149,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     this.getAirlineCodes();
     super.initState();
 
-    flyLinebloc.flightsItems.stream
+    flyLinebloc.flightsExclusiveItems.stream
         .listen((List<FlightInformationObject> onData) {
       if (onData != null) {
         if (_clickedSearch || _loadMore) {
@@ -2486,8 +2486,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               print(formatAllDay.format(DateTime.parse(departureDate)));
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => SearchSelector(
-                  flyingFrom: 'FROM',
-                  flyingTo: 'TO',
+                  flyingTo: typeOfTripSelected == 0,
                   departureDate: DateTime.parse(departureDate),
                   arrivalDate: DateTime.parse(arrivalDate),
                   tripType: typeOfTripSelected,

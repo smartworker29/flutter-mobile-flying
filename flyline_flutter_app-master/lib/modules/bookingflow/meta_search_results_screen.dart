@@ -19,7 +19,7 @@ const kPlaceHolderColor = Color(0xFFa2a1b4);
 
 enum _TABS { ROUND_TRIP, ONE_WAY, NOMAD }
 
-class SearchResults extends StatefulWidget {
+class MetaSearchResults extends StatefulWidget {
   final List<FlightRouteObject> routes;
   final int typeOfTripSelected;
   final String departure;
@@ -33,7 +33,7 @@ class SearchResults extends StatefulWidget {
   final String depDate;
   final String arrDate;
 
-  SearchResults(
+  MetaSearchResults(
       {this.typeOfTripSelected,
       this.departure,
       this.arrival,
@@ -51,7 +51,7 @@ class SearchResults extends StatefulWidget {
   _SearchResultsState createState() => _SearchResultsState();
 }
 
-class _SearchResultsState extends State<SearchResults>
+class _SearchResultsState extends State<MetaSearchResults>
     with TickerProviderStateMixin {
   //ProgressBar _searchProgressBar;
 
@@ -151,7 +151,7 @@ class _SearchResultsState extends State<SearchResults>
     this.getAirlineCodes();
     super.initState();
 
-    flyLinebloc.flightsExclusiveItems.stream
+    flyLinebloc.flightsMetaItems.stream
         .listen((List<FlightInformationObject> onData) {
       if (onData != null) {
         if (_clickedSearch || _loadMore) {
@@ -492,7 +492,7 @@ class _SearchResultsState extends State<SearchResults>
                                         ),
                                       ),
                                       TextSpan(
-                                        text: "   FlyLine Fare",
+                                        text: "   Meta Fare",
                                         style: TextStyle(
                                           fontFamily: 'Gilroy',
                                           color: Color(0xFF62C6F4),

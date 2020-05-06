@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:motel/modules/bookingflow/category_info_widget.dart';
 import 'package:motel/modules/bookingflow/category_tile_widget.dart';
 import 'package:motel/modules/bookingflow/highlighted_flight_widget.dart';
+import 'package:motel/modules/bookingflow/meta_search_results_screen.dart';
+import 'package:motel/modules/bookingflow/search_results_screen.dart';
 import 'package:motel/widgets/app_bar_date_dep_arr.dart';
 import 'package:motel/widgets/app_bar_from_to.dart';
 import 'package:motel/widgets/app_bar_pop_icon.dart';
@@ -11,15 +13,13 @@ import 'package:motel/widgets/app_bar_pop_icon.dart';
 class SearchSelector extends StatefulWidget {
   const SearchSelector({
     Key key,
-    @required this.flyingFrom,
     @required this.flyingTo,
     @required this.departureDate,
     @required this.arrivalDate,
     @required this.tripType,
   }) : super(key: key);
 
-  final String flyingFrom;
-  final String flyingTo;
+  final bool flyingTo;
   final DateTime departureDate;
   final DateTime arrivalDate;
   final int tripType;
@@ -55,8 +55,7 @@ class _MyHomePageState extends State<SearchSelector> {
                       child: Column(
                         children: <Widget>[
                           AppBarFromTo(
-                            flyFrom: widget.flyingFrom,
-                            flyTo: widget.flyingTo,
+                            flyTo: widget.flyingTo != null,
                           ),
                           AppBarDateDepArr(
                             depDate: dateFormatter.format(widget.departureDate),
@@ -73,9 +72,9 @@ class _MyHomePageState extends State<SearchSelector> {
               ),
             ),
           ),
+          Flexible(child: Container()),
           CarouselSlider(
             options: CarouselOptions(
-                height: 253.0,
                 viewportFraction: 1,
                 onPageChanged: (index, reason) {
                   setState(() {
@@ -111,33 +110,50 @@ class _MyHomePageState extends State<SearchSelector> {
               );
             }).toList(),
           ),
+          Container(height: 12),
           CategoryTileWidget(
             title: 'FlyLine Fare',
             description: 'Book directly through the airline',
             minimumPrice: 94.0,
             maximumPrice: 198.0,
-            tripType: widget.tripType,
             arrivalDate: widget.arrivalDate,
             departureDate: widget.departureDate,
+            color: Color.fromRGBO(14, 49, 120, 1),
+            routeToPush: SearchResults(
+              depDate: dateFormatter.format(widget.departureDate),
+              arrDate: dateFormatter.format(widget.arrivalDate),
+              typeOfTripSelected: widget.tripType,
+            ),
           ),
           CategoryTileWidget(
             title: 'FlyLine Exclusives',
             description: 'Book directly through the airline',
             minimumPrice: 94.0,
             maximumPrice: 198.0,
-            tripType: widget.tripType,
             arrivalDate: widget.arrivalDate,
             departureDate: widget.departureDate,
+            color: Color.fromRGBO(0, 174, 239, 1),
+            routeToPush: MetaSearchResults(
+              depDate: dateFormatter.format(widget.departureDate),
+              arrDate: dateFormatter.format(widget.arrivalDate),
+              typeOfTripSelected: widget.tripType,
+            ),
           ),
           CategoryTileWidget(
             title: 'Meta Fare',
             description: 'Book directly through the airline',
             minimumPrice: 94.0,
             maximumPrice: 198.0,
-            tripType: widget.tripType,
             arrivalDate: widget.arrivalDate,
             departureDate: widget.departureDate,
+            color: Color.fromRGBO(68, 207, 87, 1),
+            routeToPush: SearchResults(
+              depDate: dateFormatter.format(widget.departureDate),
+              arrDate: dateFormatter.format(widget.arrivalDate),
+              typeOfTripSelected: widget.tripType,
+            ),
           ),
+          Flexible(child: Container()),
           CategoryInfoWidget(),
         ],
       ),

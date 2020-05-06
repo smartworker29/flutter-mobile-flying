@@ -15,7 +15,7 @@ import '../models/flyline_deal.dart';
 import '../models/locations.dart';
 
 class FlyLineProvider {
-  final baseUrl = "https://joinflyline.com";
+  final baseUrl = "https://staging.joinflyline.com";
 
   Future<String> getAuthToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -116,7 +116,6 @@ class FlyLineProvider {
 
     Response response;
     Dio dio = Dio(BaseOptions(baseUrl: '$baseUrl/api'));
-    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
     dio.options.headers["Authorization"] = "Token $token";
 
     List<FlightInformationObject> flights = List<FlightInformationObject>();
@@ -185,15 +184,18 @@ class FlyLineProvider {
         dio.post("/request-scraper/", data: payload("tripadvisor")),
       ]);
 
-      if (workers.every((w) => w.statusCode == 201)) {
+      if (workers.every((w) => w.statusCode == 200)) {
         final List ids = [...workers.map((w) => w.data['id'])];
-        final flights = await Future.wait(ids.map((id) => dio.get(
-              "/check-scraper-result/",
-              queryParameters: {"id": id},
-            )));
+        await Future.delayed(Duration(seconds: 16));
+        final flights = await Future.wait([
+          ...ids.map((id) => dio.get(
+                "/check-scraper-result/",
+                queryParameters: {"id": id},
+              ).catchError((error) => error.response))
+        ]);
         flights.forEach((f) {
           if (f.statusCode == 200) {
-            for (dynamic i in f.data) {
+            for (dynamic i in f.data["data"]) {
               flightResults.add(FlightInformationObject.fromJson(i));
             }
           }
@@ -202,6 +204,7 @@ class FlyLineProvider {
     } catch (e) {
       log(e.toString());
     }
+    print('FlightResuts $flightResults');
     return flightResults;
   }
 

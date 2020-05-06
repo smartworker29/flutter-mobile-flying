@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:motel/network/blocs.dart';
 
 class AppBarFromTo extends StatelessWidget {
   const AppBarFromTo({
-    @required this.flyFrom,
-    this.flyTo,
+    this.flyTo = false,
   });
 
-  final String flyFrom;
-  final String flyTo;
+  final bool flyTo;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class AppBarFromTo extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: flyFrom,
+            text: flyLinebloc.flightsExclusiveItems.value.first.flyFrom,
             style: TextStyle(
               fontFamily: 'Gilroy',
               color: Color(0xff0e3178),
@@ -25,9 +24,9 @@ class AppBarFromTo extends StatelessWidget {
               fontStyle: FontStyle.normal,
             ),
           ),
-          if (flyTo != null)
+          if (flyTo)
             TextSpan(
-              text: ' - $flyTo',
+              text: ' - ${flyLinebloc.flightsExclusiveItems.value.first.flyTo}',
               style: TextStyle(
                 fontFamily: 'Gilroy',
                 color: Color(0xff0e3178),
