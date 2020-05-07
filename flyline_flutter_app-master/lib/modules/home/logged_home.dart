@@ -618,7 +618,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   double _calculateHeight() {
     double screenHeight = _screenHeight();
-    double appBarHeight = AppBar().preferredSize.height + 10;
+    double appBarHeight = AppBar().preferredSize.height + 2;
     double screenPadding = MediaQuery.of(context).padding.top +
         MediaQuery.of(context).padding.bottom; //StatusBar + Navigation Buttons
     double textFieldTextHeight = _calculateTextHeight() * 2;
@@ -643,7 +643,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     print('Height:$height');
     return (Container(
       color: Color.fromRGBO(247, 249, 252, 1),
-      height: height - 6, //MediaQuery.of(context).size.height * 0.50,
+      height: height, //MediaQuery.of(context).size.height * 0.50,
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -1160,221 +1160,219 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             height: double.infinity,
             width: double.infinity,
             color: Color(0xFFF7F9FC),
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "FlyLine Premium",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "FlyLine Premium",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
+                  ),
+                  trailing: Image.asset(
+                    'assets/images/arrow.png',
+                    scale: 25,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MembershipPlansScreen()),
+                    );
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Account Details",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    onTap: () {
-                      Navigator.push(
+                  ),
+                  trailing: Image.asset(
+                    'assets/images/arrow.png',
+                    scale: 25,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AccountDetailsScreen()),
+                    );
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Travel Wallet",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                  trailing: Image.asset(
+                    'assets/images/arrow.png',
+                    scale: 25,
+                  ),
+                  onTap: () {
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MembershipPlansScreen()),
-                      );
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Account Details",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+                            builder: (context) => PaymentDetailsScreen()));
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Manage Trips",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AccountDetailsScreen()),
-                      );
-                    },
                   ),
-                  Divider(
-                    height: 1.5,
+                  trailing: Image.asset(
+                    'assets/images/arrow.png',
+                    scale: 25,
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Travel Wallet",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AccountDetailsScreen()),
+                    );
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Deal Feed",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PaymentDetailsScreen()));
-                    },
                   ),
-                  Divider(
-                    height: 1.5,
+                  trailing: Image.asset(
+                    'assets/images/arrow.png',
+                    scale: 25,
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Manage Trips",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DealFeed()),
+                    );
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Help Center",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AccountDetailsScreen()),
-                      );
-                    },
                   ),
-                  Divider(
-                    height: 1.5,
+                  trailing: Image.asset(
+                    'assets/images/arrow.png',
+                    scale: 25,
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Deal Feed",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HelpCenterScreen()),
+                    );
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: Text(
+                    "Terms & Privacy",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DealFeed()),
-                      );
-                    },
                   ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Help Center",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HelpCenterScreen()),
-                      );
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: Text(
-                      "Terms & Privacy",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
+                  trailing: Image.asset(
+                    'assets/images/arrow.png',
 //                      width: 20,
-                      scale: 25,
+                    scale: 25,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TermsOfUsePage()));
+                  },
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Log Out",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xffff0d0d),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
                     ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TermsOfUsePage()));
-                    },
                   ),
-                  Expanded(
-                    child: Container(),
+                  trailing: Image.asset(
+                    'assets/images/arrow.png',
+                    scale: 25,
                   ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Log Out",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xffff0d0d),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      _logOut();
-                    },
-                  ),
-                ],
-              ),
+                  onTap: () {
+                    _logOut();
+                  },
+                ),
+              ],
             ),
           ),
         ),
@@ -2909,41 +2907,24 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             child: Column(
               children: <Widget>[
                 Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.only(left: 8, right: 16),
-                  decoration: BoxDecoration(
-                    color: AppTheme.getTheme().backgroundColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Container(
-                      width: MediaQuery.of(context).size.width / 4,
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
-                      child: LocationSearchUI("Departure", true,
-                          notifyParent: refreshDepartureValue,
-                          city: departure)),
-                ),
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      right: 16,
+                    ),
+                    child: LocationSearchUI("Departure", true,
+                        notifyParent: refreshDepartureValue, city: departure)),
                 Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.only(
-                      left: 8, right: 16, top: 20, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: AppTheme.getTheme().backgroundColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Container(
-                      width: MediaQuery.of(context).size.width / 4,
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
-                      child: LocationSearchUI(
-                        "Arrival",
-                        false,
-                        notifyParent: refreshDepartureValue,
-                        city: arrival,
-                      )),
-                ),
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      right: 16,
+                      top: 20,
+                    ),
+                    child: LocationSearchUI(
+                      "Arrival",
+                      false,
+                      notifyParent: refreshDepartureValue,
+                      city: arrival,
+                    )),
               ],
             ),
           ),
@@ -3309,6 +3290,7 @@ class _LocationSearchUIState extends State<LocationSearchUI>
         cursorColor: AppTheme.getTheme().primaryColor,
         decoration: InputDecoration(
           hintText: "Select " + widget.title + " City or Airport",
+          fillColor: Color(0xFFF7F9FC),
         ),
         textAlign: TextAlign.start,
       ),

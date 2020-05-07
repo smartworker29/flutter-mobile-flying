@@ -110,7 +110,7 @@ class _DealFeedState extends State<DealFeed> {
                                   child: Row(
                                     children: <Widget>[
                                       Text(
-                                        "\$" + item.price,
+                                        "\$${item.price.substring(0, item.price.length - 3)}",
                                         style: TextStyle(
                                             fontFamily: 'Gilroy',
                                             fontWeight: FontWeight.bold,
