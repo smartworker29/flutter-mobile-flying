@@ -664,17 +664,17 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       : "Departure",
                                   style: departureDate != null
                                       ? TextStyle(
-                                          // fontStyle: FontStyle.normal,
+                                          fontStyle: FontStyle.normal,
                                           fontFamily: 'Gilroy',
                                           color: Color(0xFF3D415E),
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                         )
                                       : TextStyle(
-                                          color: kPlaceHolderColor,
+                                          // color: kPlaceHolderColor
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'Gilroy',
-                                          // color: Color(0xff3a3f5c),
+                                          color: Color(0xff3a3f5c),
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -734,10 +734,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                 fontWeight: FontWeight.w500,
                                               )
                                             : TextStyle(
-                                                color: kPlaceHolderColor,
+                                                // color: kPlaceHolderColor
                                                 fontStyle: FontStyle.normal,
                                                 fontFamily: 'Gilroy',
-                                                // color: Color(0xff3a3f5c),
+                                                color: Color(0xff3a3f5c),
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -753,9 +753,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => DatePickerScreen(
-                                            shouldChooseMultipleDates:
-                                                activeTab == _TABS.ROUND_TRIP,
-                                          ),
+                                        shouldChooseMultipleDates:
+                                            activeTab == _TABS.ROUND_TRIP,
+                                      ),
                                     ));
                                 if (newDateTime == null) return;
                                 setState(() {
@@ -3051,23 +3051,23 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     showDialog(
       context: context,
       builder: (BuildContext context) => CalendarPopupView(
-            barrierDismissible: true,
-            minimumDate: DateTime.now(),
-            //  maximumDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 10),
-            initialEndDate: endDate,
-            initialStartDate: startDate,
-            onApplyClick: (DateTime startData, DateTime endData) {
-              setState(() {
-                if (startData != null && endData != null) {
-                  startDate = startData;
-                  endDate = endData;
-                }
-              });
-            },
-            onCancelClick: () {
-              Navigator.pop(context);
-            },
-          ),
+        barrierDismissible: true,
+        minimumDate: DateTime.now(),
+        //  maximumDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 10),
+        initialEndDate: endDate,
+        initialStartDate: startDate,
+        onApplyClick: (DateTime startData, DateTime endData) {
+          setState(() {
+            if (startData != null && endData != null) {
+              startDate = startData;
+              endDate = endData;
+            }
+          });
+        },
+        onCancelClick: () {
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 
