@@ -1,6 +1,5 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:motel/appTheme.dart';
 import 'package:motel/introductionScreen.dart';
 import 'package:motel/main.dart';
@@ -110,38 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     // color: AppTheme.dark_grey,
                                   ),
                                   cursorColor: AppTheme.getTheme().primaryColor,
-                                  decoration: new InputDecoration(
-                                    errorText: null,
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    contentPadding: const EdgeInsets.all(15.0),
-                                    border: new OutlineInputBorder(
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(15.0),
-                                      ),
-                                    ),
-                                    enabledBorder: const OutlineInputBorder(
-                                      // width: 0.0 produces a thin "hairline" border
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(15.0),
-                                      ),
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent,
-                                          width: 0.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(15.0),
-                                      ),
-                                      borderSide: BorderSide(
-                                          color: HexColor("#0e3178"),
-                                          width: 1.0),
-                                    ),
+                                  decoration: InputDecoration(
                                     hintText: "Enter your email",
-                                    hintStyle: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: "Gilroy",
-                                        color: Color(0xFFC7C9D1)),
                                   ),
                                 ),
                               ),
@@ -249,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           : null,
                                       hintText: "Enter your password",
                                       hintStyle: TextStyle(
-                                        fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w500,
                                           fontFamily: "Gilroy",
                                           color: Color(0xFFC7C9D1)),
                                     ),
@@ -423,7 +392,6 @@ class _LoginScreenState extends State<LoginScreen> {
               style: new TextStyle(
                 color: HexColor("#0e3178"),
                 fontFamily: "Gilroy",
-                
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),

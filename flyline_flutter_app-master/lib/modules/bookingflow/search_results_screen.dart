@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:flutter_launcher_icons/xml_templates.dart';
-import 'package:motel/modules/bookingflow/trip_details.dart' as trip_details;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:motel/helper/helper.dart';
 import 'package:motel/models/filterExplore.dart';
 import 'package:motel/models/flight_information.dart';
 import 'package:motel/models/locations.dart';
-
+import 'package:motel/modules/bookingflow/trip_details.dart' as trip_details;
 import 'package:motel/network/blocs.dart';
-import 'package:intl/intl.dart' as intl;
+import 'package:motel/widgets/app_bar_date_dep_arr.dart';
+import 'package:motel/widgets/app_bar_from_to.dart';
+import 'package:motel/widgets/app_bar_pop_icon.dart';
 
 const kLabelTextColor = Color(0xFF3a3f5c);
 const kPlaceHolderColor = Color(0xFFa2a1b4);
@@ -149,7 +151,7 @@ class _SearchResultsState extends State<SearchResults>
     this.getAirlineCodes();
     super.initState();
 
-    flyLinebloc.flightsItems.stream
+    flyLinebloc.flightsExclusiveItems.stream
         .listen((List<FlightInformationObject> onData) {
       if (onData != null) {
         if (_clickedSearch || _loadMore) {
@@ -304,13 +306,11 @@ class _SearchResultsState extends State<SearchResults>
     List<FlightRouteObject> routes,
   ) {
     List<Widget> lists = List();
-    
 
     for (var i = 0; i < routes.length - 1; i++) {
-      
       FlightRouteObject route = routes[i];
       var flightTime = Helper.duration(route.duration);
-      var flightduration =flightTime.toString();
+      var flightduration = flightTime.toString();
       lists.add(
         RichText(
           text: TextSpan(children: [
@@ -321,13 +321,14 @@ class _SearchResultsState extends State<SearchResults>
                     fontWeight: FontWeight.w600,
                     color: Colors.black)),
             TextSpan(
-              text: flightduration,
-              style: TextStyle(
+                text: flightduration,
+                style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black,)
-                  //color: Color(0xFFFF3A27)),
-            ),
+                  color: Colors.black,
+                )
+                //color: Color(0xFFFF3A27)),
+                ),
           ]),
         ),
         // Text(
@@ -882,9 +883,6 @@ class _SearchResultsState extends State<SearchResults>
     List<String> departureStopOverCity = List();
     List<FlightRouteObject> returns = List();
     List<String> returnStopOverCity = List();
-    List<FlightRouteObject> routes;
-    int a2b = 0;
-    int b2a = 0;
     var flight = listOfFlights[0];
 
     if (widget.typeOfTripSelected == 1) {
@@ -892,7 +890,6 @@ class _SearchResultsState extends State<SearchResults>
         departures.add(route);
         if (route.cityTo != flight.cityTo) {
           departureStopOverCity.add(route.cityTo);
-          a2b++;
         } else {
           break;
         }
@@ -902,7 +899,6 @@ class _SearchResultsState extends State<SearchResults>
         departures.add(route);
         if (route.cityTo != flight.cityTo) {
           departureStopOverCity.add(route.cityTo);
-          a2b++;
         } else {
           break;
         }
@@ -910,10 +906,8 @@ class _SearchResultsState extends State<SearchResults>
 
       for (FlightRouteObject route in flight.routes.reversed) {
         returns.add(route);
-
         if (route.cityFrom != flight.cityTo) {
           returnStopOverCity.add(route.cityTo);
-          b2a++;
         } else {
           break;
         }
@@ -931,140 +925,24 @@ class _SearchResultsState extends State<SearchResults>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            AppBarPopIcon(),
             Expanded(
               child: Container(
-                alignment: Alignment.centerLeft,
-                height: AppBar().preferredSize.height + 10,
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(32.0),
+                color: Colors.white,
+                alignment: Alignment.center,
+                child: Column(
+                  children: <Widget>[
+                    AppBarFromTo(
+                      flyTo: flight.flyTo != null,
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: const Color(0xfff7f9fc)),
-                        child: Center(child: Icon(Icons.arrow_back_ios))),
-                  ),
+                    AppBarDateDepArr(
+                      depDate: widget.depDate,
+                      arrDate: widget.arrDate,
+                    ),
+                  ],
                 ),
               ),
             ),
-            (widget.typeOfTripSelected == 1
-                ? Expanded(
-                    child: Container(
-                      color: Colors.white,
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: <Widget>[
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: flight.flyFrom + ' - ',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    color: Color(0xff0e3178),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: flight.flyTo,
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    color: Color(0xff0e3178),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            widget.depDate,
-                            style: TextStyle(
-                              fontFamily: 'Gilroy',
-                              color: Color(0xff3a3f5c),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : Expanded(
-                    child: Container(
-                      color: Colors.white,
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: <Widget>[
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: flight.flyFrom + ' - ',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    color: Color(0xff0e3178),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: flight.flyTo,
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    color: Color(0xff0e3178),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: widget.depDate + ' - ',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    color: Color(0xff3a3f5c),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: widget.arrDate,
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    color: Color(0xff3a3f5c),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // SizedBox(height: 30,),
-                  )),
             Expanded(
               child: Container(
                 alignment: Alignment.centerRight,
@@ -1074,17 +952,21 @@ class _SearchResultsState extends State<SearchResults>
                   child: InkWell(
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-
                       this.handleFilter();
                     },
                     child: Container(
                       height: 40,
                       width: 40,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Color(0xFFF7F9FC)),
+                        shape: BoxShape.circle,
+                        color: Color(0xFFF7F9FC),
+                      ),
                       child: Center(
-                        child: Image.asset('assets/images/filter.png',
-                            width: 18, height: 23),
+                        child: Image.asset(
+                          'assets/images/filter.png',
+                          width: 18,
+                          height: 23,
+                        ),
                       ),
                     ),
                   ),
@@ -1107,8 +989,7 @@ class _SearchResultsState extends State<SearchResults>
           // padding: EdgeInsets.all(12),
           height: 40,
           // margin: EdgeInsets.only(left: 16.0, right: 16, top: 30),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
           child: Center(
             child: Text("Load More",
                 style: TextStyle(
@@ -1248,8 +1129,7 @@ class Loader extends StatefulWidget {
   _LoaderState createState() => _LoaderState();
 }
 
-class _LoaderState extends State<Loader>
-    with SingleTickerProviderStateMixin {
+class _LoaderState extends State<Loader> with SingleTickerProviderStateMixin {
   Animation<double> animationRotation;
   Animation<double> animationRadiusIn;
   Animation<double> animationRadiusOut;
@@ -1316,23 +1196,22 @@ class _LoaderState extends State<Loader>
       width: 100.0,
       height: 100.0,
       //color: Colors.black12,
-      child:  Center(
-        child:  RotationTransition(
-          
+      child: Center(
+        child: RotationTransition(
           turns: animationRotation,
-          child:  Container(
+          child: Container(
             //color: Colors.limeAccent,
-            child:  Center(
+            child: Center(
               child: Stack(
                 children: <Widget>[
-                   Transform.translate(
+                  Transform.translate(
                     offset: Offset(0.0, 0.0),
                     child: Dot(
                       radius: radius,
                       color: Colors.black12,
                     ),
                   ),
-                   Transform.translate(
+                  Transform.translate(
                     child: Dot(
                       radius: dotRadius,
                       color: Colors.amber,
@@ -1342,7 +1221,7 @@ class _LoaderState extends State<Loader>
                       radius * sin(0.0),
                     ),
                   ),
-                   Transform.translate(
+                  Transform.translate(
                     child: Dot(
                       radius: dotRadius,
                       color: Colors.deepOrangeAccent,
@@ -1352,7 +1231,7 @@ class _LoaderState extends State<Loader>
                       radius * sin(0.0 + 1 * pi / 4),
                     ),
                   ),
-                   Transform.translate(
+                  Transform.translate(
                     child: Dot(
                       radius: dotRadius,
                       color: Colors.pinkAccent,
@@ -1362,7 +1241,7 @@ class _LoaderState extends State<Loader>
                       radius * sin(0.0 + 2 * pi / 4),
                     ),
                   ),
-                   Transform.translate(
+                  Transform.translate(
                     child: Dot(
                       radius: dotRadius,
                       color: Colors.purple,
@@ -1372,7 +1251,7 @@ class _LoaderState extends State<Loader>
                       radius * sin(0.0 + 3 * pi / 4),
                     ),
                   ),
-                   Transform.translate(
+                  Transform.translate(
                     child: Dot(
                       radius: dotRadius,
                       color: Colors.yellow,
@@ -1382,7 +1261,7 @@ class _LoaderState extends State<Loader>
                       radius * sin(0.0 + 4 * pi / 4),
                     ),
                   ),
-                   Transform.translate(
+                  Transform.translate(
                     child: Dot(
                       radius: dotRadius,
                       color: Colors.lightGreen,
@@ -1392,7 +1271,7 @@ class _LoaderState extends State<Loader>
                       radius * sin(0.0 + 5 * pi / 4),
                     ),
                   ),
-                   Transform.translate(
+                  Transform.translate(
                     child: Dot(
                       radius: dotRadius,
                       color: Colors.orangeAccent,
@@ -1402,7 +1281,7 @@ class _LoaderState extends State<Loader>
                       radius * sin(0.0 + 6 * pi / 4),
                     ),
                   ),
-                   Transform.translate(
+                  Transform.translate(
                     child: Dot(
                       radius: dotRadius,
                       color: Colors.blueAccent,
@@ -1423,7 +1302,6 @@ class _LoaderState extends State<Loader>
 
   @override
   void dispose() {
-
     controller.dispose();
     super.dispose();
   }
@@ -1437,12 +1315,11 @@ class Dot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Center(
+    return Center(
       child: Container(
         width: radius,
         height: radius,
         decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-
       ),
     );
   }

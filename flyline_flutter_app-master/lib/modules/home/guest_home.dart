@@ -1,24 +1,26 @@
 import 'dart:convert';
 import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart' as ui_help;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart' as ui_help;
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:intl/intl.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/models/filterExplore.dart';
-import 'package:motel/modules/datepicker/datepicker_screen.dart';
 import 'package:motel/modules/bookingflow/search_results_screen.dart';
-import 'package:motel/modules/menuitems/deal_feed.dart';
-import 'package:motel/modules/menuitems/terms_of_service.dart';
 import 'package:motel/modules/bookingflow/sort_flights.dart';
 import 'package:motel/modules/bookingflow/trip_details.dart' as trip_details;
+import 'package:motel/modules/datepicker/datepicker_screen.dart';
 import 'package:motel/modules/login/loginScreen.dart';
+import 'package:motel/modules/menuitems/deal_feed.dart';
+import 'package:motel/modules/menuitems/terms_of_service.dart';
 import 'package:motel/modules/signup/signUp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../appTheme.dart';
 import '../../models/flight_information.dart';
 import '../../models/locations.dart';
@@ -144,7 +146,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     this.getAirlineCodes();
     super.initState();
 
-    flyLinebloc.flightsItems.stream
+    flyLinebloc.flightsExclusiveItems.stream
         .listen((List<FlightInformationObject> onData) {
       if (onData != null) {
         if (_clickedSearch || _loadMore) {

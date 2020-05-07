@@ -3,8 +3,8 @@ import 'package:motel/models/recent_flight_search.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/account.dart';
-import '../models/check_flight_response.dart';
 import '../models/booked_flight.dart';
+import '../models/check_flight_response.dart';
 import '../models/flight_information.dart';
 import '../models/flyline_deal.dart';
 import '../models/locations.dart';
@@ -19,12 +19,15 @@ class FlyLineBloc {
     _token.add(value);
   }
 
-
   BehaviorSubject<String> get tokenData => _token;
   final BehaviorSubject<List<LocationObject>> _subjectlocationItems =
       BehaviorSubject<List<LocationObject>>();
 
-  final BehaviorSubject<List<FlightInformationObject>> _subjectFlightItems =
+  final BehaviorSubject<List<FlightInformationObject>>
+      _subjectExclusiveFlightItems =
+      BehaviorSubject<List<FlightInformationObject>>();
+
+  final BehaviorSubject<List<FlightInformationObject>> _subjectMetaFlightItems =
       BehaviorSubject<List<FlightInformationObject>>();
 
   final BehaviorSubject<List<BookedFlight>> _subjectUpcomingFlights =
@@ -72,10 +75,6 @@ class FlyLineBloc {
       curr,
       offset,
       limit) async {
-    // return null for activate loading indicator on search page
-    // before real results will be loaded
-    _subjectFlightItems.sink.add(null);
-
     List<FlightInformationObject> response = await _repository.searchFlights(
         flyFrom,
         flyTo,
@@ -92,7 +91,17 @@ class FlyLineBloc {
         offset,
         limit);
 
-    _subjectFlightItems.sink.add(response);
+    _subjectExclusiveFlightItems.sink.add(response);
+
+    List<FlightInformationObject> metaResponse =
+        await _repository.searchMetaFlights(
+      flyFrom,
+      flyTo,
+      dateFrom,
+      dateTo,
+    );
+
+    _subjectMetaFlightItems.sink.add(metaResponse);
 
     return response;
   }
@@ -151,7 +160,7 @@ class FlyLineBloc {
   dispose() {
     _token.close();
     _subjectlocationItems.close();
-    _subjectFlightItems.close();
+    _subjectExclusiveFlightItems.close();
     _subjectRandomDeals.close();
     _subjectAccountInfo.close();
     _subjectCheckFlight.close();
@@ -159,6 +168,7 @@ class FlyLineBloc {
     _subjectPastFlights.close();
     _subjectUpcomingFlights.close();
     _subjectBookFlight.close();
+    _subjectMetaFlightItems.close();
   }
 
   BehaviorSubject<String> get loginResponse => _token;
@@ -166,8 +176,11 @@ class FlyLineBloc {
   BehaviorSubject<List<LocationObject>> get locationItems =>
       _subjectlocationItems;
 
-  BehaviorSubject<List<FlightInformationObject>> get flightsItems =>
-      _subjectFlightItems;
+  BehaviorSubject<List<FlightInformationObject>> get flightsExclusiveItems =>
+      _subjectExclusiveFlightItems;
+
+  BehaviorSubject<List<FlightInformationObject>> get flightsMetaItems =>
+      _subjectMetaFlightItems;
 
   BehaviorSubject<List<FlylineDeal>> get randomDealItems => _subjectRandomDeals;
 

@@ -49,7 +49,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: <Widget>[
               Padding(
                 padding:
-                EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                    EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                 child: appBar(),
               ),
               Expanded(
@@ -84,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               decoration: BoxDecoration(
                                 color: AppTheme.getTheme().backgroundColor,
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(15)),
+                                    BorderRadius.all(Radius.circular(15)),
                                 // border: Border.all(
                                 //   color: HexColor("#757575").withOpacity(0.6),
                                 // ),
@@ -105,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         emailpressed = false;
                                       else
                                         emailpressed =
-                                        true; // update the state of the class to show color change
+                                            true; // update the state of the class to show color change
                                       isLogginClicked = false;
                                     });
                                   },
@@ -116,38 +116,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     // color: AppTheme.dark_grey,
                                   ),
                                   cursorColor: AppTheme.getTheme().primaryColor,
-                                  decoration: new InputDecoration(
-                                    errorText: null,
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    contentPadding: const EdgeInsets.all(15.0),
-                                    border: new OutlineInputBorder(
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(15.0),
-                                      ),
-                                    ),
-                                    enabledBorder: const OutlineInputBorder(
-                                      // width: 0.0 produces a thin "hairline" border
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(15.0),
-                                      ),
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent,
-                                          width: 0.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(15.0),
-                                      ),
-                                      borderSide: BorderSide(
-                                          color: HexColor("#0e3178"),
-                                          width: 1.0),
-                                    ),
+                                  decoration: InputDecoration(
                                     hintText: "Enter your email",
-                                    hintStyle: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: "Gilroy",
-                                        color: Color(0xFFC7C9D1)),
                                   ),
                                 ),
                               ),
@@ -201,7 +171,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           passwordpressed = false;
                                         else
                                           passwordpressed =
-                                          true; // update the state of the class to show color change
+                                              true; // update the state of the class to show color change
                                         isLogginClicked = false;
                                       });
                                     },
@@ -210,13 +180,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       // color: AppTheme.dark_grey,
                                     ),
                                     cursorColor:
-                                    AppTheme.getTheme().primaryColor,
+                                        AppTheme.getTheme().primaryColor,
                                     decoration: new InputDecoration(
                                       fillColor: Colors.white,
                                       filled: true,
                                       // errorText: isLogginClicked?"Please enter a valid password":null,
                                       contentPadding:
-                                      const EdgeInsets.all(15.0),
+                                          const EdgeInsets.all(15.0),
                                       border: new OutlineInputBorder(
                                         borderRadius: const BorderRadius.all(
                                           const Radius.circular(15.0),
@@ -241,14 +211,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       ),
                                       errorBorder: isLogginClicked
                                           ? OutlineInputBorder(
-                                        borderRadius:
-                                        const BorderRadius.all(
-                                          const Radius.circular(15.0),
-                                        ),
-                                        borderSide: BorderSide(
-                                            color: HexColor("#ff6784"),
-                                            width: 1.0),
-                                      )
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                const Radius.circular(15.0),
+                                              ),
+                                              borderSide: BorderSide(
+                                                  color: HexColor("#ff6784"),
+                                                  width: 1.0),
+                                            )
                                           : null,
                                       hintText: "Enter your password",
                                       hintStyle: TextStyle(
@@ -309,7 +279,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           passwordpressed = false;
                                         else
                                           passwordpressed =
-                                          true; // update the state of the class to show color change
+                                              true; // update the state of the class to show color change
                                         isLogginClicked = false;
                                       });
                                     },
@@ -318,13 +288,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       // color: AppTheme.dark_grey,
                                     ),
                                     cursorColor:
-                                    AppTheme.getTheme().primaryColor,
+                                        AppTheme.getTheme().primaryColor,
                                     decoration: new InputDecoration(
                                       fillColor: Colors.white,
                                       filled: true,
                                       // errorText: isLogginClicked?"Please enter a valid password":null,
                                       contentPadding:
-                                      const EdgeInsets.all(15.0),
+                                          const EdgeInsets.all(15.0),
                                       border: new OutlineInputBorder(
                                         borderRadius: const BorderRadius.all(
                                           const Radius.circular(15.0),
@@ -349,14 +319,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       ),
                                       errorBorder: isLogginClicked
                                           ? OutlineInputBorder(
-                                        borderRadius:
-                                        const BorderRadius.all(
-                                          const Radius.circular(15.0),
-                                        ),
-                                        borderSide: BorderSide(
-                                            color: HexColor("#ff6784"),
-                                            width: 1.0),
-                                      )
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                const Radius.circular(15.0),
+                                              ),
+                                              borderSide: BorderSide(
+                                                  color: HexColor("#ff6784"),
+                                                  width: 1.0),
+                                            )
                                           : null,
                                       hintText: "Enter your home airport",
                                       hintStyle: TextStyle(
@@ -376,78 +346,76 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             left: 24, right: 24, bottom: 8, top: 16),
                         child: isLoggingIn
                             ? Container(
-                          margin: EdgeInsets.only(
-                              left: 40.0,
-                              right: 40.0,
-                              top: 30.0,
-                              bottom: 30.0),
-                          child: CircularProgressIndicator(
-                              valueColor:
-                              new AlwaysStoppedAnimation<Color>(
-                                  const Color(0xFF00AFF5)),
-                              strokeWidth: 3.0),
-                          height: 40.0,
-                          width: 40.0,
-                        )
+                                margin: EdgeInsets.only(
+                                    left: 40.0,
+                                    right: 40.0,
+                                    top: 30.0,
+                                    bottom: 30.0),
+                                child: CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            const Color(0xFF00AFF5)),
+                                    strokeWidth: 3.0),
+                                height: 40.0,
+                                width: 40.0,
+                              )
                             : Container(
-                          height: 48,
-                          decoration: BoxDecoration(
-                            color: emailpressed || passwordpressed
-                                ? HexColor("#00AEEF")
-                                : HexColor("#c7c9d1"),
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(27.0)),
-                            // boxShadow: <BoxShadow>[
-                            //   BoxShadow(
-                            //     color: AppTheme.getTheme().dividerColor,
-                            //     blurRadius: 8,
-                            //     offset: Offset(4, 4),
-                            //   ),
-                            // ],
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(1.0)),
-                            child: InkWell(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
-                              highlightColor: Colors.transparent,
-                              onTap: () {
-                                
-                                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>PremiumPage()),
-                                );
-
-                               
-                              },
-                              child: Center(
-                                child: Text(
-                                  "Sign Up",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Gilroy Bold',
-                                      fontSize: 16,
-                                      color: Colors.white),
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  color: emailpressed || passwordpressed
+                                      ? HexColor("#00AEEF")
+                                      : HexColor("#c7c9d1"),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(27.0)),
+                                  // boxShadow: <BoxShadow>[
+                                  //   BoxShadow(
+                                  //     color: AppTheme.getTheme().dividerColor,
+                                  //     blurRadius: 8,
+                                  //     offset: Offset(4, 4),
+                                  //   ),
+                                  // ],
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                  child: InkWell(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(1.0)),
+                                    highlightColor: Colors.transparent,
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PremiumPage()),
+                                      );
+                                    },
+                                    child: Center(
+                                      child: Text(
+                                        "Sign Up",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Gilroy Bold',
+                                            fontSize: 16,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
                       ),
                       Padding(
                         padding:
-                        const EdgeInsets.only(top: 8, right: 16, bottom: 8),
+                            const EdgeInsets.only(top: 8, right: 16, bottom: 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             InkWell(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1)),
+                                  BorderRadius.all(Radius.circular(1)),
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -482,7 +450,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-
 
   Widget appBar() {
     return Column(
@@ -532,7 +499,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               style: new TextStyle(
                 color: HexColor("#0e3178"),
                 fontFamily: "Gilroy",
-
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),

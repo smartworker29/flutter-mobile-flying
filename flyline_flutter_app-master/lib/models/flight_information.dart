@@ -113,7 +113,7 @@ class FlightRouteObject {
   int returnFlight;
 
   FlightRouteObject(
-    String cityCodeFrom,
+      String cityCodeFrom,
       String flyFrom,
       String flyTo,
       String cityFrom,
@@ -125,7 +125,6 @@ class FlightRouteObject {
       DateTime utcDeparture,
       String airline,
       int returnFlight) {
-    this.cityCodeFrom;
     this.cityFrom = cityFrom;
     this.cityTo = cityTo;
     this.flyFrom = flyFrom;
