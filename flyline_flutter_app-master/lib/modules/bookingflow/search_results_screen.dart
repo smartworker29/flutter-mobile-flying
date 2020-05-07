@@ -512,7 +512,7 @@ class _SearchResultsState extends State<SearchResults>
                                         text: getTypeName,
                                         style: TextStyle(
                                           fontFamily: 'Gilroy',
-                                          color: Color(0xFF62C6F4),
+                                          color: getTypeColor,
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
                                           fontStyle: FontStyle.normal,
@@ -873,16 +873,20 @@ class _SearchResultsState extends State<SearchResults>
                     context,
                     MaterialPageRoute(
                         builder: (context) => trip_details.HotelHomeScreen(
-                            depDate: widget.depDate,
-                            arrDate: widget.arrDate,
-                            routes: flight.routes,
-                            ad: this.ad,
-                            ch: this.children,
-                            typeOfTripSelected: this.widget.typeOfTripSelected,
-                            selectedClassOfService: this.selectedClassOfService,
-                            flight: flight,
-                            bookingToken: flight.bookingToken,
-                            retailInfo: flight.raw)),
+                              depDate: widget.depDate,
+                              arrDate: widget.arrDate,
+                              routes: flight.routes,
+                              ad: this.ad,
+                              ch: this.children,
+                              typeOfTripSelected:
+                                  this.widget.typeOfTripSelected,
+                              selectedClassOfService:
+                                  this.selectedClassOfService,
+                              flight: flight,
+                              bookingToken: flight.bookingToken,
+                              retailInfo: flight.raw,
+                              type: widget.type,
+                            )),
                   );
                 },
               );
