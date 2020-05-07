@@ -8,6 +8,7 @@ import 'package:motel/helper/helper.dart';
 import 'package:motel/models/filterExplore.dart';
 import 'package:motel/models/flight_information.dart';
 import 'package:motel/models/locations.dart';
+import 'package:motel/modules/bookingflow/search_selector.dart';
 import 'package:motel/modules/bookingflow/trip_details.dart' as trip_details;
 import 'package:motel/network/blocs.dart';
 import 'package:motel/widgets/app_bar_date_dep_arr.dart';
@@ -32,20 +33,25 @@ class SearchResults extends StatefulWidget {
   final String flyingTo;
   final String depDate;
   final String arrDate;
+  final SearchType type;
+  final Stream<List<FlightInformationObject>> flightsStream;
 
-  SearchResults(
-      {this.typeOfTripSelected,
-      this.departure,
-      this.arrival,
-      this.departureCode,
-      this.arrivalCode,
-      this.startDate,
-      this.endDate,
-      this.flyingFrom,
-      this.flyingTo,
-      this.depDate,
-      this.arrDate,
-      this.routes});
+  SearchResults({
+    this.typeOfTripSelected,
+    this.departure,
+    this.arrival,
+    this.departureCode,
+    this.arrivalCode,
+    this.startDate,
+    this.endDate,
+    this.flyingFrom,
+    this.flyingTo,
+    this.depDate,
+    this.arrDate,
+    this.routes,
+    this.type,
+    @required this.flightsStream,
+  });
 
   @override
   _SearchResultsState createState() => _SearchResultsState();
@@ -117,6 +123,18 @@ class _SearchResultsState extends State<SearchResults>
   GlobalKey stickyKey = GlobalKey();
   double heightBox = -1;
 
+  String get getTypeName => widget.type == SearchType.FARE
+      ? "   FlyLine Fare"
+      : widget.type == SearchType.EXCLUSIVE
+          ? "   FlyLine Exclusive"
+          : "   Meta Fare";
+
+  Color get getTypeColor => widget.type == SearchType.FARE
+      ? Color.fromRGBO(14, 49, 120, 1)
+      : widget.type == SearchType.EXCLUSIVE
+          ? Color.fromRGBO(0, 174, 239, 1)
+          : Color.fromRGBO(68, 207, 87, 1);
+
   @override
   void initState() {
     offset = 0;
@@ -151,8 +169,7 @@ class _SearchResultsState extends State<SearchResults>
     this.getAirlineCodes();
     super.initState();
 
-    flyLinebloc.flightsExclusiveItems.stream
-        .listen((List<FlightInformationObject> onData) {
+    widget.flightsStream.listen((List<FlightInformationObject> onData) {
       if (onData != null) {
         if (_clickedSearch || _loadMore) {
           print('trigger');
@@ -492,7 +509,7 @@ class _SearchResultsState extends State<SearchResults>
                                         ),
                                       ),
                                       TextSpan(
-                                        text: "   FlyLine Fare",
+                                        text: getTypeName,
                                         style: TextStyle(
                                           fontFamily: 'Gilroy',
                                           color: Color(0xFF62C6F4),
@@ -933,7 +950,8 @@ class _SearchResultsState extends State<SearchResults>
                 child: Column(
                   children: <Widget>[
                     AppBarFromTo(
-                      flyTo: flight.flyTo != null,
+                      flyFrom: flight.flyFrom,
+                      flyTo: flight.flyTo,
                     ),
                     AppBarDateDepArr(
                       depDate: widget.depDate,

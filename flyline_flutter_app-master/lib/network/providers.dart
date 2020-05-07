@@ -117,6 +117,7 @@ class FlyLineProvider {
     Response response;
     Dio dio = Dio(BaseOptions(baseUrl: '$baseUrl/api'));
     dio.options.headers["Authorization"] = "Token $token";
+    dio.interceptors.add(LogInterceptor());
 
     List<FlightInformationObject> flights = List<FlightInformationObject>();
 //    var url =
@@ -172,21 +173,21 @@ class FlyLineProvider {
     List<FlightInformationObject> flightResults = [];
     final payload = (kind) => {
           "kind": kind,
-          "fly_from": flyFrom,
-          "fly_to": flyTo,
+          "fly_from": flyFrom.split(':').last,
+          "fly_to": flyTo.split(':').last,
           "start_date": startDate,
           "return_date": returnDate
         };
     try {
       final workers = await Future.wait([
-        dio.post("/request-scraper/", data: payload("skyscanner")),
-        dio.post("/request-scraper/", data: payload("kayak")),
+        // dio.post("/request-scraper/", data: payload("skyscanner")),
+        // dio.post("/request-scraper/", data: payload("kayak")),
         dio.post("/request-scraper/", data: payload("tripadvisor")),
       ]);
 
       if (workers.every((w) => w.statusCode == 200)) {
         final List ids = [...workers.map((w) => w.data['id'])];
-        await Future.delayed(Duration(seconds: 16));
+        await Future.delayed(Duration(seconds: 10));
         final flights = await Future.wait([
           ...ids.map((id) => dio.get(
                 "/check-scraper-result/",
@@ -204,7 +205,6 @@ class FlyLineProvider {
     } catch (e) {
       log(e.toString());
     }
-    print('FlightResuts $flightResults');
     return flightResults;
   }
 

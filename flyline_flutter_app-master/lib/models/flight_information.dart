@@ -71,7 +71,6 @@ class FlightInformationObject {
     if (json["duration"] != null && json["duration"]["return"] != null)
       durationReturn = DateUtils.secs2hm(
           Duration(seconds: json["duration"]["return"]).inSeconds);
-
     return FlightInformationObject(
         json['flyFrom'],
         json["flyTo"],
@@ -86,7 +85,7 @@ class FlightInformationObject {
         json['booking_token'],
         json['airlines'],
         double.parse(json['price'].toString()),
-        double.parse(json['distance'].toString()),
+        double.tryParse(json['distance'].toString()) ?? 0,
         json);
   }
 
@@ -139,10 +138,18 @@ class FlightRouteObject {
   }
 
   factory FlightRouteObject.fromJson(Map<String, dynamic> json) {
-    var parsedDepartureDate = DateTime.parse(json["local_departure"]);
-    var parsedArrivalDate = DateTime.parse(json["local_arrival"]);
-    var parsedUTCDepartureDate = DateTime.parse(json["utc_departure"]);
-    var parsedUTCArrivalDate = DateTime.parse(json["utc_arrival"]);
+    DateTime parsedDepartureDate = DateTime.parse(json["local_departure"]);
+    DateTime parsedArrivalDate = DateTime.parse(json["local_arrival"]);
+    DateTime parsedUTCDepartureDate;
+    DateTime parsedUTCArrivalDate;
+    if (json.containsKey('utc_departure'))
+      parsedUTCDepartureDate = DateTime.parse(json["utc_departure"]);
+    else
+      parsedUTCDepartureDate = parsedDepartureDate.toUtc();
+    if (json.containsKey('utc_arrival'))
+      parsedUTCArrivalDate = DateTime.parse(json["utc_arrival"]);
+    else
+      parsedUTCArrivalDate = parsedArrivalDate.toUtc();
 
     return FlightRouteObject(
         json['cityCodeFrom'],
