@@ -1355,10 +1355,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       fontStyle: FontStyle.normal,
                     ),
                   ),
-                  trailing: Image.asset(
-                    'assets/images/arrow.png',
-                    scale: 25,
-                  ),
+                  trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Color(0xFF113377),
+                    ),
                   onTap: () {
                     _logOut();
                   },

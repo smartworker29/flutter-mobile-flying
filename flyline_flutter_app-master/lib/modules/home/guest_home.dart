@@ -1159,225 +1159,223 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             height: double.infinity,
             width: double.infinity,
             color: Color(0xFFF7F9FC),
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Traveler Details",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Traveler Details",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Payment",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
                   ),
-                  Divider(
-                    height: 1.5,
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Payment",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => EditInfoScreen()));
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "FlyLine Premium",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Trip Management",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => EditInfoScreen()));
-                    },
                   ),
-                  Divider(
-                    height: 1.5,
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "FlyLine Premium",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Deals",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Frequently Asked Questions",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
                   ),
-                  Divider(
-                    height: 1.5,
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Trip Management",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: Text(
+                    "Terms of Service",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TermsOfUsePage()));
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Privacy Policy",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
                   ),
-                  Divider(
-                    height: 1.5,
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Deals",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Log Out",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xffff0d0d),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
                   ),
-                  Divider(
-                    height: 1.5,
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Frequently Asked Questions",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: Text(
-                      "Terms of Service",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TermsOfUsePage()));
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Privacy Policy",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Log Out",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xffff0d0d),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
-                    ),
-                    onTap: () {
-                      _logOut();
-                    },
-                  ),
-                ],
-              ),
+                  onTap: () {
+                    _logOut();
+                  },
+                ),
+              ],
             ),
           ),
         ),
@@ -3007,37 +3005,25 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             child: Column(
               children: <Widget>[
                 Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.only(left: 8, right: 16),
-                  decoration: BoxDecoration(
-                    color: AppTheme.getTheme().backgroundColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Container(
-                      width: MediaQuery.of(context).size.width / 4,
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
-                      child: LocationSearchUI("Departure", true,
-                          notifyParent: refreshDepartureValue,
-                          city: departure)),
-                ),
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      right: 16,
+                    ),
+                    child: LocationSearchUI("Departure", true,
+                        notifyParent: refreshDepartureValue, city: departure)),
                 Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.only(
-                      left: 8, right: 16, top: 20, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: AppTheme.getTheme().backgroundColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Container(
-                      width: MediaQuery.of(context).size.width / 4,
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
-                      child: LocationSearchUI("Arrival", false,
-                          notifyParent: refreshDepartureValue, city: arrival)),
-                ),
+                  
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      right: 16,
+                      top: 20,
+                    ),
+                    child: LocationSearchUI(
+                      "Arrival",
+                      false,
+                      notifyParent: refreshDepartureValue,
+                      city: arrival,
+                    )),
               ],
             ),
           ),
@@ -3255,7 +3241,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   Widget getDrawerAppBarUI() {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFF7F9FC),
+        // color: Color(0xFFF7F9FC),
+        color: Colors.white
       ),
       child: Padding(
         padding: EdgeInsets.only(
@@ -3374,6 +3361,7 @@ class LocationSearchUI extends StatefulWidget {
   final title;
   final isDeparture;
 
+  // final TextStyle;
   final LocationObject city;
 
   LocationSearchUI(this.title, this.isDeparture,
@@ -3387,9 +3375,7 @@ class LocationSearchUI extends StatefulWidget {
 class _LocationSearchUIState extends State<LocationSearchUI>
     with TickerProviderStateMixin {
   List<FlightInformationObject> listOfFlights = List();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _typeAheadController = TextEditingController();
-  String _name;
 
   var title;
 
@@ -3401,6 +3387,9 @@ class _LocationSearchUIState extends State<LocationSearchUI>
   Widget build(BuildContext context) {
     return TypeAheadFormField<LocationObject>(
       autovalidate: true,
+      hideSuggestionsOnKeyboardHide: true,
+      keepSuggestionsOnLoading: false,
+      debounceDuration: Duration(milliseconds: 800),
       transitionBuilder: (context, suggestionsBox, controller) {
         return suggestionsBox;
       },
@@ -3429,19 +3418,39 @@ class _LocationSearchUIState extends State<LocationSearchUI>
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
-          decoration: InputDecoration.collapsed(
+          decoration: InputDecoration(fillColor:  Color(0xffF7F9FC),
+            
+              border: new OutlineInputBorder(
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(15.0),
+                ),
+              ),
+              enabledBorder: const OutlineInputBorder(
+                // width: 0.0 produces a thin "hairline" border
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(15.0),
+                ),
+                borderSide:
+                    const BorderSide(color: Colors.transparent, width: 0.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(15.0),
+                ),
+                borderSide: BorderSide(color: HexColor("#0e3178"), width: 1.0),
+              ),
               hintText: "Select " + widget.title + " City or Airport",
               hintStyle: TextStyle(
-                fontFamily: 'Gilroy',
-                color: Color(0xff3a3f5c),
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              )),
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "Gilroy",
+                                          color: Color(0xFFC7C9D1))
+                                          
+                                          
+                                          ),
           textAlign: TextAlign.start),
       suggestionsCallback: (search) async {
         if (search.length > 0) {
-          var response = flyLinebloc.locationQuery(search);
-          return response;
+          return flyLinebloc.locationQuery(search);
         } else
           return null;
       },
