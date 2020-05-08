@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class HelpCenterScreen extends StatelessWidget {
   final _key = UniqueKey();
@@ -41,10 +41,14 @@ class HelpCenterScreen extends StatelessWidget {
           )
         ],
       ),
-      body: WebView(
+      body: InAppWebView(
+        initialOptions: InAppWebViewWidgetOptions(
+            inAppWebViewOptions: InAppWebViewOptions(
+          horizontalScrollBarEnabled: false,
+          verticalScrollBarEnabled: false,
+        )),
         key: _key,
         initialUrl: 'https://intercom.help/flyline/en',
-        javascriptMode: JavascriptMode.unrestricted,
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:motel/modules/menuitems/menu_item_app_bar.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:motel/widgets/loading_screen.dart';
 
 class MetaBookScreen extends StatefulWidget {
   final String url;
@@ -18,29 +19,39 @@ class MetaBookScreen extends StatefulWidget {
 
 class _MetaBookScreenState extends State<MetaBookScreen> {
   String get baseUrl => 'https://staging.joinflyline.com';
-
+  int _stackToView = 1;
   @override
   Widget build(BuildContext context) {
-    print(widget.url);
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          MenuItemAppBar(title: 'Meta Fare'),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(40.0),
-                  topRight: const Radius.circular(40.0),
+      body: IndexedStack(
+        index: _stackToView,
+        children: [
+          Column(
+            children: <Widget>[
+              MenuItemAppBar(title: 'Meta Fare'),
+              Expanded(
+                child: Container(
+                  child: InAppWebView(
+                    onLoadStart: (controller, str) =>
+                        setState(() => _stackToView = 1),
+                    onLoadStop: (controller, url) =>
+                        setState(() => _stackToView = 0),
+                    initialUrl: '$baseUrl${widget.url}',
+                    initialOptions: InAppWebViewWidgetOptions(
+                      inAppWebViewOptions: InAppWebViewOptions(
+                        horizontalScrollBarEnabled: false,
+                        verticalScrollBarEnabled: false,
+                      ),
+                    ),
+                    onLoadError: (controller, asd, code, message) {
+                      print(code);
+                    },
+                  ),
                 ),
               ),
-              padding: const EdgeInsets.only(left: 38, right: 37, top: 26),
-              child: WebView(
-                initialUrl: '$baseUrl${widget.url}',
-              ),
-            ),
+            ],
           ),
+          LoadingScreen(),
         ],
       ),
     );

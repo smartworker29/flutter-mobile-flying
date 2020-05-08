@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:motel/appTheme.dart';
 import 'package:motel/helper/helper.dart';
@@ -53,8 +52,6 @@ class HotelHomeScreen extends StatefulWidget {
 
 class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
-  int numberOfPassengers = 0;
-
   bool _checkFlight = false;
   bool _firstLoad = false;
 
@@ -91,7 +88,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   List<BagItem> handBags;
   List<BagItem> holdBags;
 
-  bool _displayPayment = false;
   bool _clickFlightDeparture = false;
   bool _clickFlightArrival = false;
 
@@ -102,27 +98,40 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   void createCheckboxData() {
     for (var i = 0; i < handBags.length; i++) {
       if (i == 0) {
-        this.carryOnCheckBoxes.insert(numberOfPassengers - 1, Map());
-        this.carryOnCheckBoxes[numberOfPassengers - 1].addAll({i: true});
-        carryOnSelectedList[numberOfPassengers - 1] = handBags[0];
+        this
+            .carryOnCheckBoxes
+            .insert(flyLinebloc.numberOfPassengers - 1, Map());
+        this
+            .carryOnCheckBoxes[flyLinebloc.numberOfPassengers - 1]
+            .addAll({i: true});
+        carryOnSelectedList[flyLinebloc.numberOfPassengers - 1] = handBags[0];
       } else {
-        this.carryOnCheckBoxes[numberOfPassengers - 1].addAll({i: false});
+        this
+            .carryOnCheckBoxes[flyLinebloc.numberOfPassengers - 1]
+            .addAll({i: false});
       }
     }
 
     for (var i = 0; i < holdBags.length; i++) {
       if (i == 0) {
-        this.checkedBagageCheckBoxes.insert(numberOfPassengers - 1, Map());
-        this.checkedBagageCheckBoxes[numberOfPassengers - 1].addAll({i: true});
-        checkedBagageSelectedList[numberOfPassengers - 1] = holdBags[0];
+        this
+            .checkedBagageCheckBoxes
+            .insert(flyLinebloc.numberOfPassengers - 1, Map());
+        this
+            .checkedBagageCheckBoxes[flyLinebloc.numberOfPassengers - 1]
+            .addAll({i: true});
+        checkedBagageSelectedList[flyLinebloc.numberOfPassengers - 1] =
+            holdBags[0];
       } else {
-        this.checkedBagageCheckBoxes[numberOfPassengers - 1].addAll({i: false});
+        this
+            .checkedBagageCheckBoxes[flyLinebloc.numberOfPassengers - 1]
+            .addAll({i: false});
       }
     }
   }
 
   void addPassenger() async {
-    numberOfPassengers++;
+    flyLinebloc.setAdults(flyLinebloc.numberOfPassengers + 1);
     TextEditingController firstNameController = new TextEditingController();
     TextEditingController lastNameController = new TextEditingController();
     TextEditingController dobController = new TextEditingController();
@@ -141,7 +150,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     carryOnSelectedList.add(null);
     checkedBagageSelectedList.add(null);
 
-    if (numberOfPassengers == 1) {
+    if (flyLinebloc.numberOfPassengers == 1) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       firstNameController.text = prefs.getString('first_name');
       lastNameController.text = prefs.getString('last_name');
@@ -153,56 +162,20 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   @override
   void initState() {
-    firstNameControllers = List();
-    lastNameControllers = List();
-    dobControllers = List();
-    genderControllers = List();
-    passportIdControllers = List();
-    passportExpirationControllers = List();
-    carryOnSelectedList = List();
-    checkedBagageSelectedList = List();
-
-    carryOnCheckBoxes = List();
-    checkedBagageCheckBoxes = List();
-
-    handBags = List();
-    holdBags = List();
-
-    addPassenger();
-    flyLinebloc.checkFlights(widget.bookingToken, 0, widget.ch, widget.ad);
-    _checkFlight = true;
-    super.initState();
-
-    SchedulerBinding.instance.addPostFrameCallback((_) => {
-          scrollController.animateTo(-50.0,
-              duration: Duration(milliseconds: 1), curve: Curves.ease)
-        });
-
-    flyLinebloc.checkFlightData.stream.listen((CheckFlightResponse response) {
-      if (response != null && _checkFlight) {
-        setState(() {
-          _checkFlightResponse = response;
-          if (!_firstLoad) {
-//            scrollController.animateTo(-50.0,
-//                duration: Duration(milliseconds: 1), curve: Curves.ease);
-            handBags.addAll(response.baggage.combinations.handBag);
-            holdBags.addAll(response.baggage.combinations.holdBag);
-
-            this.createCheckboxData();
-            _firstLoad = true;
-          }
-        });
-
-        if (!response.flightsChecked) {
-          flyLinebloc.checkFlights(
-              widget.bookingToken, 0, widget.ch, widget.ad);
-        } else {
-          setState(() {
-            _displayPayment = true;
-          });
-        }
-      }
-    });
+    switch (widget.type) {
+      case SearchType.FARE:
+        getFareInit();
+        super.initState();
+        break;
+      case SearchType.EXCLUSIVE:
+        getExclusiveInit();
+        super.initState();
+        break;
+      case SearchType.META:
+        getMetaInit();
+        super.initState();
+        break;
+    }
   }
 
   @override
@@ -236,38 +209,41 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                        child: Row(
-                      children: <Widget>[
-                        RichText(
-                          text: new TextSpan(children: [
-                            new TextSpan(
-                              text: "Trip Total : ",
-                              style: TextStyle(
-                                fontFamily: 'Gilroy',
-                                color: Color(0xff0e3178),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
-                            ),
-                            new TextSpan(
-                              text: "  \$ " +
-                                  (tripP * numberOfPassengers)
-                                      .toStringAsFixed(2),
-
-                              // text: "  \$ " + widget.flight.price.toStringAsFixed(2),
-                              style: TextStyle(
-                                fontFamily: 'Gilroy',
-                                color: Color(0xff0e3178),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
-                            ),
-                          ]),
-                        ),
-                      ],
-                    )),
+                      child: Row(
+                        children: <Widget>[
+                          StreamBuilder(
+                              stream: flyLinebloc.outAdults,
+                              builder: (context, snapshot) {
+                                return RichText(
+                                  text: new TextSpan(
+                                    children: [
+                                      new TextSpan(
+                                        text: "Trip Total : ",
+                                        style: TextStyle(
+                                          color: Color(0xff0e3178),
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                      new TextSpan(
+                                        text: "  \$ " +
+                                            (tripP * snapshot.data)
+                                                .toStringAsFixed(2),
+                                        style: TextStyle(
+                                          color: Color(0xff0e3178),
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ],
+                      ),
+                    ),
                     Expanded(
                       child: InkWell(
                         child: Container(
@@ -311,491 +287,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     );
   }
 
-  Widget getTravailInformationUI(int position) {
-    List<Widget> listOfHandBag = List();
-    for (var i = 0; i < handBags.length; i++) {
-      var bag = handBags[i];
-      if (bag.indices.length == 0) {
-        listOfHandBag.add(Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
-          ),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            width: MediaQuery.of(context).size.width,
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Checkbox(
-                  value: carryOnCheckBoxes[position][i],
-                  onChanged: (value) {
-                    setState(() {
-                      carryOnCheckBoxes[position]
-                          .updateAll((key, value) => value = false);
-                      carryOnCheckBoxes[position][i] = value;
-                      carryOnSelectedList[position] = bag;
-                    });
-                  },
-                ),
-                Text(
-                  "Personal item",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  Helper.cost(_checkFlightResponse.total,
-                      _checkFlightResponse.conversion.amount, bag.price.amount),
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-          ),
-        ));
-      } else {
-        listOfHandBag.add(Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
-          ),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            width: MediaQuery.of(context).size.width,
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Checkbox(
-                  value: carryOnCheckBoxes[position][i],
-                  onChanged: (value) {
-                    setState(() {
-                      carryOnCheckBoxes[position]
-                          .updateAll((key, value) => value = false);
-                      carryOnCheckBoxes[position][i] = value;
-                      carryOnSelectedList[position] = bag;
-                    });
-                  },
-                ),
-                Text(
-                  "No Hand Baggage",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  Helper.cost(_checkFlightResponse.total,
-                      _checkFlightResponse.conversion.amount, bag.price.amount),
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-          ),
-        ));
-      }
-    }
-
-    List<Widget> listOfHoldBag = List();
-    for (var i = 0; i < holdBags.length; i++) {
-      var bag = holdBags[i];
-      if (bag.indices.length == 0) {
-        listOfHoldBag.add(Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
-          ),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            width: MediaQuery.of(context).size.width,
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Checkbox(
-                  value: checkedBagageCheckBoxes[position][i],
-                  onChanged: (value) {
-                    setState(() {
-                      checkedBagageCheckBoxes[position]
-                          .updateAll((key, value) => value = false);
-                      checkedBagageCheckBoxes[position][i] = value;
-                      checkedBagageSelectedList[position] = bag;
-                    });
-                  },
-                ),
-                Text(
-                  "No Checked bagage",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  Helper.cost(_checkFlightResponse.total,
-                      _checkFlightResponse.conversion.amount, bag.price.amount),
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-          ),
-        ));
-      } else {
-        List<Widget> rows = List();
-        for (var i = 0; i < bag.indices.length; i++) {
-          rows.add(Text(
-            "Checked Baggage",
-            textAlign: TextAlign.start,
-            style: TextStyle(
-                fontSize: 14, color: Colors.grey, fontWeight: FontWeight.w600),
-          ));
-        }
-        listOfHoldBag.add(Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
-          ),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            width: MediaQuery.of(context).size.width,
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Checkbox(
-                  value: checkedBagageCheckBoxes[position][i],
-                  onChanged: (value) {
-                    setState(() {
-                      checkedBagageCheckBoxes[position]
-                          .updateAll((key, value) => value = false);
-                      checkedBagageCheckBoxes[position][i] = value;
-                      checkedBagageSelectedList[position] = bag;
-                    });
-                  },
-                ),
-                Column(
-                  children: rows,
-                ),
-                Text(
-                  Helper.cost(_checkFlightResponse.total,
-                      _checkFlightResponse.conversion.amount, bag.price.amount),
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-          ),
-        ));
-      }
-    }
-    return Column(
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(top: 28, bottom: 10),
-          padding: EdgeInsets.only(left: 16.0),
-          child: Text(
-            (this.numberOfPassengers <= 1
-                ? "Traveler Information"
-                : "Traveler Information (Passenger $numberOfPassengers)"),
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
-          ),
-          child: Container(
-            width: MediaQuery.of(context).size.width / 4,
-            padding: EdgeInsets.only(left: 10),
-            child: TextField(
-              controller: firstNameControllers[position],
-              textAlign: TextAlign.start,
-              onChanged: (String txt) {},
-              onTap: () {},
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              cursorColor: AppTheme.getTheme().primaryColor,
-              decoration: new InputDecoration(
-                border: InputBorder.none,
-                hintText: "First Name",
-              ),
-            ),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
-          ),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            child: TextField(
-              controller: lastNameControllers[position],
-              textAlign: TextAlign.start,
-              onChanged: (String txt) {},
-              onTap: () {},
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              cursorColor: AppTheme.getTheme().primaryColor,
-              decoration: new InputDecoration(
-                border: InputBorder.none,
-                hintText: "Last Name",
-              ),
-            ),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
-          ),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            child: TextField(
-              controller: dobControllers[position],
-              textAlign: TextAlign.start,
-              onChanged: (String txt) {},
-              onTap: () {
-                DatePicker.showDatePicker(context,
-                    showTitleActions: true,
-                    minTime: DateTime(1960, 1, 1),
-                    maxTime: DateTime.now(), onChanged: (date) {
-                  print('change $date');
-                }, onConfirm: (date) {
-                  dobControllers[position].text =
-                      Helper.getDateViaDate(date, 'yyyy-MM-dd');
-                }, currentTime: DateTime.now(), locale: LocaleType.en);
-              },
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              cursorColor: AppTheme.getTheme().primaryColor,
-              decoration: new InputDecoration(
-                border: InputBorder.none,
-                hintText: "Birth Date",
-              ),
-            ),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
-          ),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            child: TextField(
-              controller: genderControllers[position],
-              textAlign: TextAlign.start,
-              onChanged: (String txt) {},
-              onTap: () async {
-                List<Widget> items = List();
-                items.add(Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        //                    <--- top side
-                        color: AppTheme.getTheme().dividerColor,
-                      ),
-                    ),
-                  ),
-                  child: Container(),
-                ));
-                genders.forEach((item) {
-                  items.add(Container(
-                      margin: const EdgeInsets.only(
-                          left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            //                    <--- top side
-                            color: AppTheme.getTheme().dividerColor,
-                          ),
-                        ),
-                      ),
-                      child: SimpleDialogOption(
-                        onPressed: () {
-                          Navigator.pop(context, item);
-                          setState(() {
-                            selectedGender = item;
-                            selectedGenderValue =
-                                genderValues[genders.indexOf(item)];
-                            genderControllers[position].text = item;
-                          });
-                        },
-                        child: Text(item),
-                      )));
-                });
-                await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SimpleDialog(
-                        title: const Text('Select Gender'),
-                        children: items,
-                      );
-                    });
-              },
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              cursorColor: AppTheme.getTheme().primaryColor,
-              decoration: new InputDecoration(
-                border: InputBorder.none,
-                hintText: "Gender",
-              ),
-            ),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(top: 8, bottom: 8),
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(left: 16.0, top: 16),
-          child: Text(
-            "Only required on international flights",
-            textAlign: TextAlign.start,
-            style: TextStyle(
-                color: Colors.grey, fontSize: 13, fontWeight: FontWeight.w600),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
-          ),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            child: TextField(
-              controller: passportIdControllers[position],
-              textAlign: TextAlign.start,
-              onChanged: (String txt) {},
-              onTap: () {},
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              cursorColor: AppTheme.getTheme().primaryColor,
-              decoration: new InputDecoration(
-                border: InputBorder.none,
-                hintText: "Passport ID",
-              ),
-            ),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.getTheme().backgroundColor,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(0, 2), blurRadius: 8.0),
-            ],
-          ),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            child: TextField(
-              controller: passportExpirationControllers[position],
-              textAlign: TextAlign.start,
-              onChanged: (String txt) {},
-              onTap: () {},
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              cursorColor: AppTheme.getTheme().primaryColor,
-              decoration: new InputDecoration(
-                border: InputBorder.none,
-                hintText: "Passport Expiration",
-              ),
-            ),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(top: 28, bottom: 10),
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(left: 16.0, top: 10),
-          child: Text(
-            "Carry On",
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-          ),
-        ),
-        Column(
-          children: <Widget>[] + listOfHandBag,
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(top: 28, bottom: 10),
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(left: 16.0, top: 10),
-          child: Text(
-            "Checked Bagage",
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-          ),
-        ),
-        Column(
-          children: <Widget>[] + listOfHoldBag,
-        ),
-      ],
-    );
-  }
-
   Widget flightDetail() {
-    double tripP = widget.flight.price;
     // initialize
     int a2b = 0;
     int b2a = 0;
@@ -804,8 +296,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     List<String> departureStopOverCity = List();
     List<FlightRouteObject> returns = List();
     List<String> returnStopOverCity = List();
-    // get all flight routes
-    List<FlightRouteObject> routes = widget.routes;
 
     // one way
     if (widget.typeOfTripSelected == 1) {
@@ -1645,26 +1135,28 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           ),
                           Row(
                             children: <Widget>[
-                              Container(
-                                child: Text(
-                                  numberOfPassengers.toString() +
-                                      ' Adult' +
-                                      ' ',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    color: Color(0xff000000),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                              ),
+                              StreamBuilder(
+                                  stream: flyLinebloc.outAdults,
+                                  builder: (context, snapshot) {
+                                    return Container(
+                                      child: Text(
+                                        snapshot.data.toString() +
+                                            ' Adult' +
+                                            ' ',
+                                        style: TextStyle(
+                                          color: Color(0xff000000),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                    );
+                                  }),
                               GestureDetector(
                                   child: Container(
                                     child: Text(
-                                      "Add More",
+                                      "+ Add More",
                                       style: TextStyle(
-                                        fontFamily: 'Gilroy',
                                         color: Color(0xff00aeef),
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
@@ -1673,10 +1165,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     ),
                                   ),
                                   onTap: () {
-                                    //  getAddAnotherPassenger();
-                                    setState(() {
-                                      numberOfPassengers++;
-                                    });
+                                    flyLinebloc.setAdults(
+                                        flyLinebloc.numberOfPassengers + 1);
                                   }),
                             ],
                           ),
@@ -1787,12 +1277,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       FlightRouteObject route = routes[i];
       lists.add(
         Text(
-          //route.cityTo +
-          // " (" +
           route.flyTo + ' ',
-          // +
-          // ")  Duration: " +
-          // Helper.duration(route.duration),
           textAlign: TextAlign.start,
           style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
         ),
@@ -1810,8 +1295,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       FlightRouteObject route = routes[i];
       lists.add(
         Text(
-          //route.cityTo +
-          // " (" +
           route.flyTo + ' ' + Helper.duration(route.duration),
           textAlign: TextAlign.start,
           style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
@@ -1969,30 +1452,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     return lists;
   }
 
-  // Widget getFlightDetailItems(List<FlightRouteObject> routes, String type) {
-  //   List<Widget> lists = List();
-  //   lists
-  //       .add(Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-  //     Container(
-  //       padding: EdgeInsets.only(left: 16.0, top: 10),
-  //       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-  //       child: Text(
-  //         type == "departure"
-  //             ? "Departure | Duration: " +
-  //                 widget.flight.durationDeparture.toString()
-  //             : "Return | Duration: " + widget.flight.durationReturn.toString(),
-  //         textAlign: TextAlign.start,
-  //         style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-  //       ),
-  //     )
-  //   ]));
-  //   lists.addAll(getFlightDetailItemUI(routes));
-
-  //   return Column(
-  //     children: lists,
-  //   );
-  // }
-
   Widget getAppBarUI() {
     return Container(
       decoration: BoxDecoration(color: Colors.white),
@@ -2051,58 +1510,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     );
   }
 
-  Widget getAddAnotherPassenger() {
-    return Container(
-        margin: EdgeInsets.only(right: 16, top: 16, left: 16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Expanded(
-                child: this.numberOfPassengers > 1
-                    ? InkWell(
-                        splashColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        onTap: () {
-                          if (this.numberOfPassengers > 1) {
-                            print('remove passenger');
-                            setState(() {
-                              this.carryOnCheckBoxes.removeLast();
-                              this.checkedBagageCheckBoxes.removeLast();
-                              this.carryOnSelectedList.removeLast();
-                              this.checkedBagageSelectedList.removeLast();
-
-                              this.numberOfPassengers--;
-                            });
-                          }
-                        },
-                        child: Text("Remove passenger",
-                            softWrap: true,
-                            style: TextStyle(color: Colors.red)))
-                    : Container()),
-            Expanded(
-                child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    onTap: () {
-                      print("add another");
-                      setState(() {
-                        this.addPassenger();
-                        this.createCheckboxData();
-                      });
-                    },
-                    child: Text("Add another passenger",
-                        textAlign: TextAlign.right,
-                        softWrap: true,
-                        style: TextStyle(color: Colors.lightBlue)))),
-          ],
-        ));
-  }
-
   Widget getSearchButton() {
     return Column(
       children: <Widget>[
@@ -2146,7 +1553,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   } else {
                     List<TravelerInformation> lists = List();
                     for (int index = 0;
-                        index < this.numberOfPassengers;
+                        index < flyLinebloc.numberOfPassengers;
                         index++) {
                       var uuid = new Uuid();
                       carryOnSelectedList[index].uuid = uuid.v4();
@@ -2216,12 +1623,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   void getExclusiveAction() {
     double tripP = widget.flight.price;
-    var totaltriprice = (tripP * numberOfPassengers).toStringAsFixed(2);
+    var totaltriprice =
+        (tripP * flyLinebloc.numberOfPassengers).toStringAsFixed(2);
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => personal_details.HotelHomeScreen(
-          numberofpass: numberOfPassengers,
+          numberofpass: flyLinebloc.numberOfPassengers,
           totalPrice: totaltriprice,
           routes: widget.flight.routes,
           ad: this.widget.ad,
@@ -2247,4 +1655,55 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       ),
     );
   }
+
+  void getFareInit() {}
+
+  void getExclusiveInit() {
+    firstNameControllers = List();
+    lastNameControllers = List();
+    dobControllers = List();
+    genderControllers = List();
+    passportIdControllers = List();
+    passportExpirationControllers = List();
+    carryOnSelectedList = List();
+    checkedBagageSelectedList = List();
+
+    carryOnCheckBoxes = List();
+    checkedBagageCheckBoxes = List();
+
+    handBags = List();
+    holdBags = List();
+
+    flyLinebloc.checkFlights(widget.bookingToken, 0, widget.ch, widget.ad);
+    _checkFlight = true;
+
+    SchedulerBinding.instance.addPostFrameCallback((_) => {
+          scrollController.animateTo(-50.0,
+              duration: Duration(milliseconds: 1), curve: Curves.ease)
+        });
+
+    flyLinebloc.checkFlightData.stream.listen((CheckFlightResponse response) {
+      if (response != null && _checkFlight) {
+        setState(() {
+          _checkFlightResponse = response;
+          if (!_firstLoad) {
+//            scrollController.animateTo(-50.0,
+//                duration: Duration(milliseconds: 1), curve: Curves.ease);
+            handBags.addAll(response.baggage.combinations.handBag);
+            holdBags.addAll(response.baggage.combinations.holdBag);
+
+            this.createCheckboxData();
+            _firstLoad = true;
+          }
+        });
+
+        if (!response.flightsChecked) {
+          flyLinebloc.checkFlights(
+              widget.bookingToken, 0, widget.ch, widget.ad);
+        }
+      }
+    });
+  }
+
+  void getMetaInit() {}
 }

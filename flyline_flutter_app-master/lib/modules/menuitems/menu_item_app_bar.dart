@@ -29,7 +29,7 @@ class MenuItemAppBar extends StatelessWidget {
             AppBarPopIcon(
               buttonColor: buttonColor,
             ),
-            Expanded(
+            Center(
               child: Text(
                 title,
                 textAlign: TextAlign.center,
@@ -41,8 +41,9 @@ class MenuItemAppBar extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
-              child: Container(),
+            Container(
+              height: 40,
+              width: 40,
             )
           ],
         ),

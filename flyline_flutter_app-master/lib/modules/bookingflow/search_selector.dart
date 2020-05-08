@@ -54,6 +54,7 @@ class _MyHomePageState extends State<SearchSelector> {
                       color: Colors.white,
                       alignment: Alignment.center,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           AppBarFromTo(
                             flyFrom: widget.flyingFrom,
@@ -67,8 +68,9 @@ class _MyHomePageState extends State<SearchSelector> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Container(),
+                  Container(
+                    height: 40,
+                    width: 40,
                   ),
                 ],
               ),

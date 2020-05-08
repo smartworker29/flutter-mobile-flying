@@ -20,9 +20,19 @@ class FlyLineBloc {
     _token.add(value);
   }
 
+  int get numberOfPassengers => _adultSubject.value + _childrenSubject.value;
+
   BehaviorSubject<String> get tokenData => _token;
   final BehaviorSubject<List<LocationObject>> _subjectlocationItems =
       BehaviorSubject<List<LocationObject>>();
+
+  final BehaviorSubject<int> _adultSubject = BehaviorSubject<int>();
+  ValueStream get outAdults => _adultSubject.stream;
+  Function(int) get setAdults => _adultSubject.sink.add;
+
+  final BehaviorSubject<int> _childrenSubject = BehaviorSubject<int>();
+  ValueStream get outChildren => _childrenSubject.stream;
+  Function(int) get setChildren => _childrenSubject.sink.add;
 
   final BehaviorSubject<List<FlightInformationObject>>
       _subjectExclusiveFlightItems =
@@ -160,20 +170,6 @@ class FlyLineBloc {
         firstName, lastName, dob, gender, email, phone, passport);
   }
 
-  dispose() {
-    _token.close();
-    _subjectlocationItems.close();
-    _subjectExclusiveFlightItems.close();
-    _subjectRandomDeals.close();
-    _subjectAccountInfo.close();
-    _subjectCheckFlight.close();
-    _subjectRecentFlightSearch.close();
-    _subjectPastFlights.close();
-    _subjectUpcomingFlights.close();
-    _subjectBookFlight.close();
-    _subjectMetaFlightItems.close();
-  }
-
   BehaviorSubject<String> get loginResponse => _token;
 
   BehaviorSubject<List<LocationObject>> get locationItems =>
@@ -201,6 +197,22 @@ class FlyLineBloc {
       _subjectUpcomingFlights;
 
   BehaviorSubject<Map> get bookFlight => _subjectBookFlight;
+
+  dispose() {
+    _token.close();
+    _subjectlocationItems.close();
+    _subjectExclusiveFlightItems.close();
+    _subjectRandomDeals.close();
+    _subjectAccountInfo.close();
+    _subjectCheckFlight.close();
+    _subjectRecentFlightSearch.close();
+    _subjectPastFlights.close();
+    _subjectUpcomingFlights.close();
+    _subjectBookFlight.close();
+    _subjectMetaFlightItems.close();
+    _adultSubject.close();
+    _childrenSubject.close();
+  }
 }
 
 final flyLinebloc = FlyLineBloc();

@@ -20,6 +20,8 @@ import 'package:motel/modules/menuitems/help_center.dart';
 import 'package:motel/modules/menuitems/membership_plans.dart';
 import 'package:motel/modules/menuitems/payment.dart';
 import 'package:motel/modules/menuitems/terms_of_service.dart';
+import 'package:motel/widgets/loading_screen.dart';
+import 'package:motel/widgets/value_incrementer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../appTheme.dart';
@@ -77,8 +79,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   _TABS activeTab = _TABS.ROUND_TRIP;
   String departureDate;
   String arrivalDate;
-  int adults = 0;
-  int kids = 0;
   String cabin = "economy";
 
   final formatDates = intl.DateFormat("dd MMM");
@@ -123,8 +123,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   GlobalKey stickyKey = GlobalKey();
   double heightBox = -1;
 
+  initStreams() {
+    flyLinebloc.setAdults(1);
+    flyLinebloc.setChildren(0);
+  }
+
   @override
   void initState() {
+    initStreams();
     _searchProgressBar = ProgressBar();
     animationController = AnimationController(
         duration: Duration(milliseconds: 1000), vsync: this);
@@ -798,117 +804,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(5.0),
-                        margin: const EdgeInsets.only(right: 5),
-                        height: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.white),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                if (!(adults - 1 < 0)) {
-                                  setState(() {
-                                    adults -= 1;
-                                  });
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                decoration: BoxDecoration(
-                                    color: Color.fromRGBO(247, 249, 252, 1),
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: Text(
-                                  "-",
-                                  style: TextStyle(
-                                    color: Color(0xFF0e3178),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Text(adults != null ? adults.toString() : ""),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  adults += 1;
-                                });
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                decoration: BoxDecoration(
-                                    color: Color.fromRGBO(247, 249, 252, 1),
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: Text(
-                                  "+",
-                                  style: TextStyle(color: Color(0xFF0e3178)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      child: ValueIncrementer(
+                        stream: flyLinebloc.outAdults,
+                        setter: flyLinebloc.setAdults,
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 5),
-                        padding: const EdgeInsets.all(5.0),
-                        height: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.white),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                if (!(kids - 1 < 0)) {
-                                  setState(() {
-                                    kids -= 1;
-                                  });
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                decoration: BoxDecoration(
-                                    color: Color.fromRGBO(247, 249, 252, 1),
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: Text(
-                                  "-",
-                                  style: TextStyle(
-                                    color: Color(0xFF0e3178),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Text(kids.toString()),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  kids += 1;
-                                });
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                decoration: BoxDecoration(
-                                    color: Color.fromRGBO(247, 249, 252, 1),
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: Text(
-                                  "+",
-                                  style: TextStyle(
-                                    color: Color(0xFF0e3178),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      child: ValueIncrementer(
+                        stream: flyLinebloc.outChildren,
+                        setter: flyLinebloc.setChildren,
                       ),
                     ),
                   ],
@@ -919,10 +823,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 child: Text(
                   "Cabin Class",
                   style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Gilroy Bold',
-                      fontSize: 18,
-                      color: kLabelTextColor),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                    color: kLabelTextColor,
+                  ),
                 ),
               ),
               Container(
@@ -3325,43 +3229,8 @@ class ProgressBar {
     }
   }
 
-  OverlayEntry _createdProgressEntry(BuildContext context) => OverlayEntry(
-      builder: (BuildContext context) => Stack(
-            children: <Widget>[
-              Container(
-                // color: Colors.white
-                color: Color(0xFF113377).withOpacity(1),
-              ),
-              Positioned(
-                top: screenHeight(context) / 2,
-                left: screenWidth(context) / 2.2,
-                child: CupertinoTheme(
-                  data: CupertinoTheme.of(context).copyWith(
-                      primaryColor: Colors.white, brightness: Brightness.dark),
-                  child: CupertinoActivityIndicator(
-                    radius: 20,
-                  ),
-                ),
-              ),
-              Positioned(
-                top: screenHeight(context) / 2.2,
-                left: screenWidth(context) / 4.2,
-                child: Material(
-                  color: Color(0xFF113377),
-                  child: new Text(
-                    "Loading Search Results",
-                    style: TextStyle(
-                      fontFamily: 'Gilroy',
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ));
+  OverlayEntry _createdProgressEntry(BuildContext context) =>
+      OverlayEntry(builder: (BuildContext context) => LoadingScreen());
 
   double screenHeight(BuildContext context) =>
       MediaQuery.of(context).size.height;

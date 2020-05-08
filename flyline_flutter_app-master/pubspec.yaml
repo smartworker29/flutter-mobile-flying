@@ -32,7 +32,7 @@ dependencies:
   page_indicator: ^0.3.0
   intl: ^0.16.0
   rflutter_alert:
-  webview_flutter: ^0.3.19+5
+  flutter_inappwebview: ^2.1.0+1
   flutter_datetime_picker:
     git:
       url: https://github.com/derohimat/flutter_datetime_picker.git
