@@ -231,13 +231,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     flyLinebloc.locationQuery(query);
   }
 
-  @override
-  void dispose() {
-    _searchProgressBar.hide();
-    this._clickedSearch = false;
-    super.dispose();
-  }
-
   void showSendingProgressBar() {
     _searchProgressBar.show(context);
   }
@@ -262,7 +255,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: Container(
-            color: Colors.white,
             child: Column(
               children: <Widget>[
                 getAppBarUI(),
@@ -640,10 +632,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   Widget tabsContent() {
     double height = _calculateHeight();
     double spacing = height > 400 ? ((height - 400) / 4) : 20;
-    print('Height:$height');
     return (Container(
       color: Color.fromRGBO(247, 249, 252, 1),
-      height: height - 6, //MediaQuery.of(context).size.height * 0.50,
+      height: height - 6,
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -2395,7 +2386,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 listOfFlights.addAll(items.getRange(offset, offset + perPage));
                 _displayLoadMore = true;
               }
-            } else {
               if ((offset + perPage) > originalFlights.length) {
                 listOfFlights.addAll(
                     originalFlights.getRange(offset, originalFlights.length));
@@ -2462,11 +2452,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       .searchFlight(
                         selectedDeparture.type + ":" + selectedDeparture.code,
                         selectedArrival.type + ":" + selectedArrival.code,
-                        formatAllDay.format(DateTime.parse(departureDate)),
-                        formatAllDay.format(DateTime.parse(arrivalDate)),
+                        DateTime.parse(departureDate),
+                        DateTime.parse(arrivalDate),
                         typeOfTripSelected == 0 ? "round" : "oneway",
-                        formatAllDay.format(DateTime.parse(departureDate)),
-                        formatAllDay.format(DateTime.parse(arrivalDate)),
+                        DateTime.parse(departureDate),
+                        DateTime.parse(arrivalDate),
                         ad.toString(),
                         "0",
                         "0",
@@ -2480,13 +2470,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           }));
                 } catch (e) {
                   print(e);
+                  hideSendingProgressBar();
                 }
               }
 
-              print(formatAllDay.format(DateTime.parse(departureDate)));
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => SearchSelector(
-                  flyingTo: typeOfTripSelected == 0,
+                  flyingFrom: selectedDeparture.code,
+                  flyingTo: selectedArrival.code,
                   departureDate: DateTime.parse(departureDate),
                   arrivalDate: DateTime.parse(arrivalDate),
                   tripType: typeOfTripSelected,
@@ -2909,43 +2900,24 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 48,
-                  width: double.infinity,
-                  margin: const EdgeInsets.only(left: 8, right: 16),
-                  decoration: BoxDecoration(
-                    color: AppTheme.getTheme().backgroundColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Container(
-                      width: MediaQuery.of(context).size.width / 4,
-                      // padding: EdgeInsets.only(
-                      //   left: 10,
-                      // ),
-                      child: LocationSearchUI("Departure", true,
-                          notifyParent: refreshDepartureValue,
-                          city: departure)),
-                ),
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      right: 16,
+                    ),
+                    child: LocationSearchUI("Departure", true,
+                        notifyParent: refreshDepartureValue, city: departure)),
                 Container(
-                  height: 48,
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.only(
-                      left: 8, right: 16, top: 20, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: AppTheme.getTheme().backgroundColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Container(
-                      width: MediaQuery.of(context).size.width / 4,
-                      // padding: EdgeInsets.only(
-                      //   left: 10,
-                      // ),
-                      child: LocationSearchUI(
-                        "Arrival",
-                        false,
-                        notifyParent: refreshDepartureValue,
-                        city: arrival,
-                      )),
-                ),
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      right: 16,
+                      top: 20,
+                    ),
+                    child: LocationSearchUI(
+                      "Arrival",
+                      false,
+                      notifyParent: refreshDepartureValue,
+                      city: arrival,
+                    )),
               ],
             ),
           ),
@@ -2960,23 +2932,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     }
     return Stack(
       children: <Widget>[
-        // Positioned(
-        //   top: 0,
-        //   left: 0,
-        //   right: 0,
-        //   child: Container(
-        // height: 10,
-        // decoration: BoxDecoration(
-        //   color: AppTheme.getTheme().backgroundColor,
-        //   // boxShadow: <BoxShadow>[
-        //   BoxShadow(
-        //       color: AppTheme.getTheme().dividerColor,
-        //       offset: Offset(0, -2),
-        //       blurRadius: 8.0),
-        // ],
-        // ),
-        //  ),
-        // ),
         Container(
             color: AppTheme.getTheme().backgroundColor,
             child: Padding(
@@ -2985,7 +2940,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               child: Column(
                 children: <Widget>[
                   Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
                         child: Padding(
@@ -3165,7 +3119,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   Widget getDrawerAppBarUI() {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFF7F9FC),
+        //33....: Color(0xFFF7F9FC),
+        color: Colors.white,
       ),
       child: Padding(
         padding: EdgeInsets.only(
@@ -3244,6 +3199,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       }
     }
   }
+
+  @override
+  void dispose() {
+    _searchProgressBar.hide();
+    this._clickedSearch = false;
+    super.dispose();
+  }
 }
 
 enum ButtonMarker { user, back }
@@ -3279,7 +3241,9 @@ class _LocationSearchUIState extends State<LocationSearchUI>
   Widget build(BuildContext context) {
     return TypeAheadFormField<LocationObject>(
       autovalidate: true,
-      debounceDuration: Duration(seconds: 1),
+      hideSuggestionsOnKeyboardHide: true,
+      keepSuggestionsOnLoading: false,
+      debounceDuration: Duration(milliseconds: 800),
       transitionBuilder: (context, suggestionsBox, controller) {
         return suggestionsBox;
       },

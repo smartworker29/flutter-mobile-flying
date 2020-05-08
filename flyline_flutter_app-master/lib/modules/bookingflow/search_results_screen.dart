@@ -8,8 +8,10 @@ import 'package:motel/helper/helper.dart';
 import 'package:motel/models/filterExplore.dart';
 import 'package:motel/models/flight_information.dart';
 import 'package:motel/models/locations.dart';
+import 'package:motel/modules/bookingflow/search_selector.dart';
 import 'package:motel/modules/bookingflow/trip_details.dart' as trip_details;
 import 'package:motel/network/blocs.dart';
+import 'package:motel/utils/bug_page.dart';
 import 'package:motel/widgets/app_bar_date_dep_arr.dart';
 import 'package:motel/widgets/app_bar_from_to.dart';
 import 'package:motel/widgets/app_bar_pop_icon.dart';
@@ -32,20 +34,25 @@ class SearchResults extends StatefulWidget {
   final String flyingTo;
   final String depDate;
   final String arrDate;
+  final SearchType type;
+  final Stream<List<FlightInformationObject>> flightsStream;
 
-  SearchResults(
-      {this.typeOfTripSelected,
-      this.departure,
-      this.arrival,
-      this.departureCode,
-      this.arrivalCode,
-      this.startDate,
-      this.endDate,
-      this.flyingFrom,
-      this.flyingTo,
-      this.depDate,
-      this.arrDate,
-      this.routes});
+  SearchResults({
+    this.typeOfTripSelected,
+    this.departure,
+    this.arrival,
+    this.departureCode,
+    this.arrivalCode,
+    this.startDate,
+    this.endDate,
+    this.flyingFrom,
+    this.flyingTo,
+    this.depDate,
+    this.arrDate,
+    this.routes,
+    this.type,
+    @required this.flightsStream,
+  });
 
   @override
   _SearchResultsState createState() => _SearchResultsState();
@@ -117,6 +124,18 @@ class _SearchResultsState extends State<SearchResults>
   GlobalKey stickyKey = GlobalKey();
   double heightBox = -1;
 
+  String get getTypeName => widget.type == SearchType.FARE
+      ? "   FlyLine Fare"
+      : widget.type == SearchType.EXCLUSIVE
+          ? "   FlyLine Exclusive"
+          : "   Meta Fare";
+
+  Color get getTypeColor => widget.type == SearchType.FARE
+      ? Color.fromRGBO(14, 49, 120, 1)
+      : widget.type == SearchType.EXCLUSIVE
+          ? Color.fromRGBO(0, 174, 239, 1)
+          : Color.fromRGBO(68, 207, 87, 1);
+
   @override
   void initState() {
     offset = 0;
@@ -151,8 +170,7 @@ class _SearchResultsState extends State<SearchResults>
     this.getAirlineCodes();
     super.initState();
 
-    flyLinebloc.flightsExclusiveItems.stream
-        .listen((List<FlightInformationObject> onData) {
+    widget.flightsStream.listen((List<FlightInformationObject> onData) {
       if (onData != null) {
         if (_clickedSearch || _loadMore) {
           print('trigger');
@@ -238,17 +256,24 @@ class _SearchResultsState extends State<SearchResults>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF2F5FA),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15.0),
-              child: getAppBarUI(),
-            ),
-            getFlightDetails(),
-          ],
-        ),
-      ),
+      body: StreamBuilder(
+          stream: widget.flightsStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data.length == 0) return BugPage();
+            if (snapshot.hasData)
+              return Container(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: getAppBarUI(),
+                    ),
+                    getFlightDetails(),
+                  ],
+                ),
+              );
+            return Container();
+          }),
       resizeToAvoidBottomPadding: false,
     );
   }
@@ -492,10 +517,10 @@ class _SearchResultsState extends State<SearchResults>
                                         ),
                                       ),
                                       TextSpan(
-                                        text: "   FlyLine Fare",
+                                        text: getTypeName,
                                         style: TextStyle(
                                           fontFamily: 'Gilroy',
-                                          color: Color(0xFF62C6F4),
+                                          color: getTypeColor,
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
                                           fontStyle: FontStyle.normal,
@@ -856,16 +881,20 @@ class _SearchResultsState extends State<SearchResults>
                     context,
                     MaterialPageRoute(
                         builder: (context) => trip_details.HotelHomeScreen(
-                            depDate: widget.depDate,
-                            arrDate: widget.arrDate,
-                            routes: flight.routes,
-                            ad: this.ad,
-                            ch: this.children,
-                            typeOfTripSelected: this.widget.typeOfTripSelected,
-                            selectedClassOfService: this.selectedClassOfService,
-                            flight: flight,
-                            bookingToken: flight.bookingToken,
-                            retailInfo: flight.raw)),
+                              depDate: widget.depDate,
+                              arrDate: widget.arrDate,
+                              routes: flight.routes,
+                              ad: this.ad,
+                              ch: this.children,
+                              typeOfTripSelected:
+                                  this.widget.typeOfTripSelected,
+                              selectedClassOfService:
+                                  this.selectedClassOfService,
+                              flight: flight,
+                              bookingToken: flight.bookingToken,
+                              retailInfo: flight.raw,
+                              type: widget.type,
+                            )),
                   );
                 },
               );
@@ -913,7 +942,7 @@ class _SearchResultsState extends State<SearchResults>
         }
       }
     }
-
+    print(flight.toString());
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -926,14 +955,15 @@ class _SearchResultsState extends State<SearchResults>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             AppBarPopIcon(),
-            Expanded(
+            Center(
               child: Container(
                 color: Colors.white,
                 alignment: Alignment.center,
                 child: Column(
                   children: <Widget>[
                     AppBarFromTo(
-                      flyTo: flight.flyTo != null,
+                      flyFrom: flight.flyFrom ?? flight.cityFrom,
+                      flyTo: flight.flyTo ?? flight.cityTo,
                     ),
                     AppBarDateDepArr(
                       depDate: widget.depDate,
@@ -943,30 +973,28 @@ class _SearchResultsState extends State<SearchResults>
                 ),
               ),
             ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.centerRight,
-                height: AppBar().preferredSize.height + 10,
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      this.handleFilter();
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFFF7F9FC),
-                      ),
-                      child: Center(
-                        child: Image.asset(
-                          'assets/images/filter.png',
-                          width: 18,
-                          height: 23,
-                        ),
+            Container(
+              alignment: Alignment.centerRight,
+              height: AppBar().preferredSize.height + 10,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    this.handleFilter();
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFF7F9FC),
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        'assets/images/filter.png',
+                        width: 18,
+                        height: 23,
                       ),
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:motel/models/book_request.dart';
 import 'package:motel/models/recent_flight_search.dart';
 import 'package:rxdart/rxdart.dart';
@@ -60,36 +61,39 @@ class FlyLineBloc {
     return response;
   }
 
-  Future<List<FlightInformationObject>> searchFlight(
-      flyFrom,
-      flyTo,
-      dateFrom,
-      dateTo,
-      type,
-      returnFrom,
-      returnTo,
-      adults,
-      infants,
-      children,
-      selectedCabins,
-      curr,
-      offset,
-      limit) async {
-    List<FlightInformationObject> response = await _repository.searchFlights(
-        flyFrom,
-        flyTo,
-        dateFrom,
-        dateTo,
-        type,
-        returnFrom,
-        returnTo,
-        adults,
-        infants,
-        children,
-        selectedCabins,
-        curr,
-        offset,
-        limit);
+  Future searchFlight(
+    flyFrom,
+    flyTo,
+    DateTime dateFrom,
+    DateTime dateTo,
+    type,
+    DateTime returnFrom,
+    DateTime returnTo,
+    adults,
+    infants,
+    children,
+    selectedCabins,
+    curr,
+    offset,
+    limit,
+  ) async {
+    List<FlightInformationObject> response = await _repository
+        .searchFlights(
+            flyFrom,
+            flyTo,
+            DateFormat("dd/MM/yyyy").format(dateFrom),
+            DateFormat("dd/MM/yyyy").format(dateTo),
+            type,
+            DateFormat("dd/MM/yyyy").format(returnFrom),
+            DateFormat("dd/MM/yyyy").format(returnTo),
+            adults,
+            infants,
+            children,
+            selectedCabins,
+            curr,
+            offset,
+            limit)
+        .catchError((e) => throw e);
 
     _subjectExclusiveFlightItems.sink.add(response);
 
@@ -97,19 +101,18 @@ class FlyLineBloc {
         await _repository.searchMetaFlights(
       flyFrom,
       flyTo,
-      dateFrom,
-      dateTo,
+      DateFormat("yyyy-MM-dd").format(dateFrom),
+      DateFormat("yyyy-MM-dd").format(dateTo),
     );
 
     _subjectMetaFlightItems.sink.add(metaResponse);
-
-    return response;
   }
 
   Future<CheckFlightResponse> checkFlights(
       bookingId, infants, children, adults) async {
-    CheckFlightResponse response =
-        await _repository.checkFlights(bookingId, infants, children, adults);
+    CheckFlightResponse response = await _repository
+        .checkFlights(bookingId, infants, children, adults)
+        .catchError((e) => throw e);
 
     _subjectCheckFlight.sink.add(response);
 

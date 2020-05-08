@@ -11,7 +11,6 @@ import 'package:intl/intl.dart' as intl;
 import 'package:intl/intl.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/models/filterExplore.dart';
-import 'package:motel/modules/bookingflow/search_results_screen.dart';
 import 'package:motel/modules/bookingflow/sort_flights.dart';
 import 'package:motel/modules/bookingflow/trip_details.dart' as trip_details;
 import 'package:motel/modules/datepicker/datepicker_screen.dart';
@@ -2711,11 +2710,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   flyLinebloc.searchFlight(
                       selectedDeparture.type + ":" + selectedDeparture.code,
                       selectedArrival.type + ":" + selectedArrival.code,
-                      formatAllDay.format(startDate),
-                      formatAllDay.format(startDate),
+                      startDate,
+                      startDate,
                       typeOfTripSelected == 0 ? "round" : "oneway",
-                      formatAllDay.format(endDate),
-                      formatAllDay.format(endDate),
+                      endDate,
+                      endDate,
                       ad.toString(),
                       "0",
                       "0",
@@ -2732,7 +2731,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 MaterialPageRoute(
                     builder: (context) =>
                         // hhs.HotelHomeScreen
-                        SearchResults()),
+                        Container()),
               );
             },
           ),

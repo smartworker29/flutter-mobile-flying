@@ -2,15 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:motel/widgets/app_bar_pop_icon.dart';
 
 class MenuItemAppBar extends StatelessWidget {
-  const MenuItemAppBar({Key key, @required this.title}) : super(key: key);
+  const MenuItemAppBar({
+    Key key,
+    @required this.title,
+    this.backgroundColor = Colors.white,
+    this.buttonColor,
+  }) : super(key: key);
 
   final String title;
+  final Color backgroundColor;
+  final Color buttonColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: backgroundColor,
       ),
       child: Padding(
         padding: EdgeInsets.only(
@@ -19,7 +26,9 @@ class MenuItemAppBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            AppBarPopIcon(),
+            AppBarPopIcon(
+              buttonColor: buttonColor,
+            ),
             Expanded(
               child: Text(
                 title,

@@ -1,18 +1,23 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:motel/appTheme.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/models/check_flight_response.dart';
 import 'package:motel/models/flight_information.dart';
 import 'package:motel/models/traveler_information.dart';
-import 'package:motel/modules/bookingflow/personal_details.dart' as personal_details;
+import 'package:motel/modules/bookingflow/meta_book_screen.dart';
+import 'package:motel/modules/bookingflow/personal_details.dart'
+    as personal_details;
+import 'package:motel/modules/bookingflow/search_selector.dart';
 import 'package:motel/network/blocs.dart';
+import 'package:motel/widgets/meta_fare_description.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-import 'package:intl/intl.dart' as intl;
 
 class HotelHomeScreen extends StatefulWidget {
   final List<FlightRouteObject> routes;
@@ -25,18 +30,22 @@ class HotelHomeScreen extends StatefulWidget {
   final Map<String, dynamic> retailInfo;
   final String depDate;
   final String arrDate;
+  final SearchType type;
 
-  HotelHomeScreen(
-      {Key key,
-      this.routes,
-      this.ad,
-      this.ch,
-      this.bookingToken,
-      this.flight,
-      this.selectedClassOfService,
-      this.typeOfTripSelected,
-      this.retailInfo, this.depDate, this.arrDate})
-      : super(key: key);
+  HotelHomeScreen({
+    Key key,
+    this.routes,
+    this.ad,
+    this.ch,
+    this.bookingToken,
+    this.flight,
+    this.selectedClassOfService,
+    this.typeOfTripSelected,
+    this.retailInfo,
+    this.depDate,
+    this.arrDate,
+    this.type,
+  }) : super(key: key);
 
   @override
   _HotelHomeScreenState createState() => _HotelHomeScreenState();
@@ -72,6 +81,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   var selectedGender = genders[0];
   var selectedGenderValue = genderValues[0];
+
+  String get continueButtonText =>
+      widget.type == SearchType.FARE || widget.type == SearchType.EXCLUSIVE
+          ? "Continue"
+          : "View Meta Fare";
 
   CheckFlightResponse _checkFlightResponse;
   List<BagItem> handBags;
@@ -201,8 +215,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-     double tripP = widget.flight.price;
-     var triptotal = (tripP*numberOfPassengers).toStringAsFixed(2);
+    double tripP = widget.flight.price;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -210,57 +223,58 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         child: Column(
           children: <Widget>[
             getAppBarUI(),
-            new Expanded(
-              child: SingleChildScrollView(
-                controller: scrollController,
-                child: flightDetail(),
-              )
-            ),
+            Expanded(
+                child: SingleChildScrollView(
+              controller: scrollController,
+              child: flightDetail(),
+            )),
             Container(
               height: 80.0,
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.only(right:20.0,left: 20.0),
+                padding: const EdgeInsets.only(right: 20.0, left: 20.0),
                 child: Row(
                   children: <Widget>[
                     Expanded(
                         child: Row(
-                          children: <Widget>[
-                            RichText(
-                              text: new TextSpan(children: [
-                                new TextSpan(
-                                  text: "Trip Total : ",
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    color: Color(0xff0e3178),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                                new TextSpan(
-                                  text: "  \$ " + (tripP*numberOfPassengers).toStringAsFixed(2),
-                                  
-                                  // text: "  \$ " + widget.flight.price.toStringAsFixed(2),
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    color: Color(0xff0e3178),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                              ]),
+                      children: <Widget>[
+                        RichText(
+                          text: new TextSpan(children: [
+                            new TextSpan(
+                              text: "Trip Total : ",
+                              style: TextStyle(
+                                fontFamily: 'Gilroy',
+                                color: Color(0xff0e3178),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                              ),
                             ),
-                          ],
-                        )),
+                            new TextSpan(
+                              text: "  \$ " +
+                                  (tripP * numberOfPassengers)
+                                      .toStringAsFixed(2),
+
+                              // text: "  \$ " + widget.flight.price.toStringAsFixed(2),
+                              style: TextStyle(
+                                fontFamily: 'Gilroy',
+                                color: Color(0xff0e3178),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                          ]),
+                        ),
+                      ],
+                    )),
                     Expanded(
                       child: InkWell(
-                        child:Container(
+                        child: Container(
                           padding: EdgeInsets.only(left: 40.0, right: 40.0),
                           width: 199,
                           height: 50,
-                          decoration: new BoxDecoration(
+                          decoration: BoxDecoration(
                             color: Color(0xff00aeef),
                             borderRadius: BorderRadius.circular(27),
                             boxShadow: [
@@ -272,8 +286,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             ],
                           ),
                           child: Center(
-                            child: new Text(
-                              "Continue",
+                            child: Text(
+                              continueButtonText,
                               style: TextStyle(
                                 fontFamily: 'Gilroy',
                                 color: Color(0xffffffff),
@@ -284,31 +298,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             ),
                           ),
                         ),
-                        onTap: (){
-                          
-                          var totaltriprice = (tripP*numberOfPassengers).toStringAsFixed(2);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      personal_details.HotelHomeScreen(
-                                        numberofpass: numberOfPassengers,
-                                        totalPrice:totaltriprice,
-                                          routes: widget.flight.routes,
-                                          ad: this.widget.ad,
-                                          //ch: this.widget.children,
-                                          typeOfTripSelected:
-                                          this.widget.typeOfTripSelected,
-                                          selectedClassOfService: this
-                                              .widget.selectedClassOfService,
-                                          flight: widget.flight,
-                                          bookingToken:
-                                          widget.flight.bookingToken,
-                                          retailInfo: widget.flight.raw
-                                      )
-
-                              ));
-                        },
+                        onTap: getContinueAction,
                       ),
                     ),
                   ],
@@ -899,7 +889,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       fontStyle: FontStyle.normal,
                                     )),
                                 TextSpan(
-                                  text: widget.depDate,
+                                    text: widget.depDate,
                                     // text: formatDates
                                     //     .format(widget.flight.localDeparture),
                                     style: TextStyle(
@@ -983,19 +973,19 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   width: 100,
                                 ),
                                 (a2b > 1
-                                        ? getFlightDetailItemsLogos(
-                                            departures, returns)
-                                        : Expanded(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle),
-                                              alignment: Alignment.topRight,
-                                              child: Image.network(
-                                                  'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[0].airline}.png',
-                                                  width: 24.0,
-                                                  height: 24.0),
-                                            ),
-                                          )),
+                                    ? getFlightDetailItemsLogos(
+                                        departures, returns)
+                                    : Expanded(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle),
+                                          alignment: Alignment.topRight,
+                                          child: Image.network(
+                                              'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[0].airline}.png',
+                                              width: 24.0,
+                                              height: 24.0),
+                                        ),
+                                      )),
                                 // Text(
                                 //   "Airlines",
                                 //   style: TextStyle(
@@ -1235,7 +1225,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             ),
                           ),
                           Text(
-                              widget.flight.nightsInDest.toString() +     
+                              widget.flight.nightsInDest.toString() +
                                   " night(s) in " +
                                   widget.flight.cityTo,
                               style: const TextStyle(
@@ -1290,10 +1280,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                           color: Color(0xff0e3178),
                                           fontSize: 18,
                                           fontWeight: FontWeight.w700,
-                                          fontStyle: FontStyle.normal
-                                      )),
+                                          fontStyle: FontStyle.normal)),
                                   TextSpan(
-                                    text: widget.arrDate,
+                                      text: widget.arrDate,
                                       // text: formatDates.format(
                                       //     returns[returns.length - 1]
                                       //         .localDeparture),
@@ -1363,18 +1352,19 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                         width: 100,
                                       ),
                                       (a2b > 1
-                                        ? getFlightDetailItemsLogos(departures,returns)
-                                        : Expanded(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle),
-                                              alignment: Alignment.topRight,
-                                              child: Image.network(
-                                                  'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[0].airline}.png',
-                                                  width: 20.0,
-                                                  height: 20.0),
-                                            ),
-                                          )),
+                                          ? getFlightDetailItemsLogos(
+                                              departures, returns)
+                                          : Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle),
+                                                alignment: Alignment.topRight,
+                                                child: Image.network(
+                                                    'https://storage.googleapis.com/joinflyline/images/airlines/${widget.flight.routes[0].airline}.png',
+                                                    width: 20.0,
+                                                    height: 20.0),
+                                              ),
+                                            )),
                                       // Text(
                                       //   "Airlines",
                                       //   style: TextStyle(
@@ -1514,8 +1504,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                             0xff0e3178),
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        fontFamily:
-                                                            "Gilroy",
+                                                        fontFamily: "Gilroy",
                                                         fontStyle:
                                                             FontStyle.normal,
                                                         fontSize: 12.0),
@@ -1555,8 +1544,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                               0xff0e3178),
                                                           fontWeight:
                                                               FontWeight.w600,
-                                                          fontFamily:
-                                                              "Gilroy",
+                                                          fontFamily: "Gilroy",
                                                           fontStyle:
                                                               FontStyle.normal,
                                                           fontSize: 12.0),
@@ -1592,8 +1580,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                                               0xff0e3178),
                                                           fontWeight:
                                                               FontWeight.w600,
-                                                          fontFamily:
-                                                              "Gilroy",
+                                                          fontFamily: "Gilroy",
                                                           fontStyle:
                                                               FontStyle.normal,
                                                           fontSize: 12.0),
@@ -1637,8 +1624,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 height: 16,
               ),
 
-
-              
               Padding(
                 padding: const EdgeInsets.only(right: 20.0, left: 20.0),
                 child: Column(
@@ -1662,7 +1647,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  numberOfPassengers.toString() + ' Adult' + ' ',
+                                  numberOfPassengers.toString() +
+                                      ' Adult' +
+                                      ' ',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     color: Color(0xff000000),
@@ -1673,30 +1660,24 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                 ),
                               ),
                               GestureDetector(
-                                child: Container(
-                                  child: Text(
-                                    "Add More",
-                                    style: TextStyle(
-                                      fontFamily: 'Gilroy',
-                                      color: Color(0xff00aeef),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FontStyle.normal,
+                                  child: Container(
+                                    child: Text(
+                                      "Add More",
+                                      style: TextStyle(
+                                        fontFamily: 'Gilroy',
+                                        color: Color(0xff00aeef),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        fontStyle: FontStyle.normal,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                onTap:(){
-                                  
-
-                                 //  getAddAnotherPassenger();
-                                   setState(() {
-                                     numberOfPassengers++;
-                                   
-                                     
-                                   });
-                                   
-                                   }
-                              ),
+                                  onTap: () {
+                                    //  getAddAnotherPassenger();
+                                    setState(() {
+                                      numberOfPassengers++;
+                                    });
+                                  }),
                             ],
                           ),
                         ],
@@ -1732,10 +1713,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               ),
                               child: Center(
                                 child: Text(
-                                  "  \$ " + widget.flight.price.toStringAsFixed(2),
+                                  "  \$ " +
+                                      widget.flight.price.toStringAsFixed(2),
                                   // (tripP*numberOfPassengers).toString(),
                                   // tripP.toString(),
-                                  
+
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     color: Color(0xff00aeef),
@@ -1750,22 +1732,29 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           ],
                         ),
                       ],
-                    ))
+                    )),
                   ],
                 ),
               ),
             ],
           ),
         ),
+        if (widget.type == SearchType.META)
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 24.0,
+              left: 46.0,
+              right: 46.0,
+            ),
+            child: MetaFareDescription(),
+          ),
       ],
     );
   }
 
-
-
-
   List<Widget> loadItemsLogos(
-    List<FlightRouteObject> routes, List<FlightRouteObject> returns,
+    List<FlightRouteObject> routes,
+    List<FlightRouteObject> returns,
   ) {
     List<Widget> lists = List();
 
@@ -1789,7 +1778,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   List<Widget> loadItems(
-    List<FlightRouteObject> routes, List<FlightRouteObject> returns,
+    List<FlightRouteObject> routes,
+    List<FlightRouteObject> returns,
   ) {
     List<Widget> lists = List();
 
@@ -1832,29 +1822,28 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   }
 
   Widget getFlightDetailItemsLogos(
-    List<FlightRouteObject> departures, List<FlightRouteObject> returns,
+    List<FlightRouteObject> departures,
+    List<FlightRouteObject> returns,
   ) {
     List<Widget> lists = List();
-    lists.addAll(loadItemsLogos(
-      departures,returns
-    ));
+    lists.addAll(loadItemsLogos(departures, returns));
     //lists.addAll(loadItems(returns.reversed.toList(), 'Return', flight));
     return Row(mainAxisAlignment: MainAxisAlignment.start, children: lists);
   }
 
   Widget getFlightDetailItems(
-    List<FlightRouteObject> departures,List<FlightRouteObject> returns,
+    List<FlightRouteObject> departures,
+    List<FlightRouteObject> returns,
   ) {
     List<Widget> lists = List();
-    lists.addAll(loadItems(
-      departures,returns
-    ));
+    lists.addAll(loadItems(departures, returns));
     //lists.addAll(loadItems(returns.reversed.toList(), 'Return', flight));
     return Row(mainAxisAlignment: MainAxisAlignment.start, children: lists);
   }
 
   Widget getFlightDetailItemsOneStop(
-    List<FlightRouteObject> departures,List<FlightRouteObject> returns,
+    List<FlightRouteObject> departures,
+    List<FlightRouteObject> returns,
   ) {
     List<Widget> lists = List();
     lists.addAll(loadItemsOneStop(
@@ -2006,9 +1995,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   Widget getAppBarUI() {
     return Container(
-      decoration: BoxDecoration(color: Colors.white
-        
-          ),
+      decoration: BoxDecoration(color: Colors.white),
       child: Padding(
         padding: EdgeInsets.only(
             top: MediaQuery.of(context).padding.top, left: 8, right: 8),
@@ -2190,14 +2177,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => personal_details.HotelHomeScreen(
-                                // numberOfPassengers: numberOfPassengers,
-                                // travelerInformations: lists,
-                                // flightResponse: _checkFlightResponse,
-                                // retailInfo: widget.retailInfo,
-                                // bookingToken: widget.bookingToken,
-                              )
-                              ),
+                          builder: (context) =>
+                              personal_details.HotelHomeScreen(
+                                  // numberOfPassengers: numberOfPassengers,
+                                  // travelerInformations: lists,
+                                  // flightResponse: _checkFlightResponse,
+                                  // retailInfo: widget.retailInfo,
+                                  // bookingToken: widget.bookingToken,
+                                  )),
                     );
                   }
                 },
@@ -2207,6 +2194,57 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         ),
         SizedBox(height: 100)
       ],
+    );
+  }
+
+  Function() getContinueAction() {
+    switch (widget.type) {
+      case SearchType.FARE:
+        getFareAction();
+        return null;
+      case SearchType.EXCLUSIVE:
+        getExclusiveAction();
+        return null;
+      case SearchType.META:
+        getMetaAction();
+        return null;
+    }
+    return null;
+  }
+
+  void getFareAction() {}
+
+  void getExclusiveAction() {
+    double tripP = widget.flight.price;
+    var totaltriprice = (tripP * numberOfPassengers).toStringAsFixed(2);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => personal_details.HotelHomeScreen(
+          numberofpass: numberOfPassengers,
+          totalPrice: totaltriprice,
+          routes: widget.flight.routes,
+          ad: this.widget.ad,
+          //ch: this.widget.children,
+          typeOfTripSelected: this.widget.typeOfTripSelected,
+          selectedClassOfService: this.widget.selectedClassOfService,
+          flight: widget.flight,
+          bookingToken: widget.flight.bookingToken,
+          retailInfo: widget.flight.raw,
+        ),
+      ),
+    );
+  }
+
+  void getMetaAction() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MetaBookScreen(
+          url: widget.flight.deepLink,
+          retailInfo: widget.flight.raw,
+        ),
+      ),
     );
   }
 }

@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:motel/modules/bookingflow/category_info_widget.dart';
 import 'package:motel/modules/bookingflow/category_tile_widget.dart';
 import 'package:motel/modules/bookingflow/highlighted_flight_widget.dart';
-import 'package:motel/modules/bookingflow/meta_search_results_screen.dart';
 import 'package:motel/modules/bookingflow/search_results_screen.dart';
+import 'package:motel/network/blocs.dart';
 import 'package:motel/widgets/app_bar_date_dep_arr.dart';
 import 'package:motel/widgets/app_bar_from_to.dart';
 import 'package:motel/widgets/app_bar_pop_icon.dart';
@@ -14,13 +14,15 @@ import 'package:motel/widgets/app_bar_pop_icon.dart';
 class SearchSelector extends StatefulWidget {
   const SearchSelector({
     Key key,
+    @required this.flyingFrom,
     @required this.flyingTo,
     @required this.departureDate,
     @required this.arrivalDate,
     @required this.tripType,
   }) : super(key: key);
 
-  final bool flyingTo;
+  final String flyingFrom;
+  final String flyingTo;
   final DateTime departureDate;
   final DateTime arrivalDate;
   final int tripType;
@@ -45,7 +47,6 @@ class _MyHomePageState extends State<SearchSelector> {
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).padding.top, left: 8, right: 8),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   AppBarPopIcon(),
@@ -56,7 +57,8 @@ class _MyHomePageState extends State<SearchSelector> {
                       child: Column(
                         children: <Widget>[
                           AppBarFromTo(
-                            flyTo: widget.flyingTo != null,
+                            flyFrom: widget.flyingFrom,
+                            flyTo: widget.flyingTo,
                           ),
                           AppBarDateDepArr(
                             depDate: dateFormatter.format(widget.departureDate),
@@ -73,7 +75,9 @@ class _MyHomePageState extends State<SearchSelector> {
               ),
             ),
           ),
-          Flexible(child: Container()),
+          Container(
+            height: 20,
+          ),
           CarouselSlider(
             options: CarouselOptions(
                 viewportFraction: 1,
@@ -121,9 +125,11 @@ class _MyHomePageState extends State<SearchSelector> {
             departureDate: widget.departureDate,
             color: Color.fromRGBO(14, 49, 120, 1),
             routeToPush: SearchResults(
+              type: SearchType.FARE,
               depDate: dateFormatter.format(widget.departureDate),
               arrDate: dateFormatter.format(widget.arrivalDate),
               typeOfTripSelected: widget.tripType,
+              flightsStream: flyLinebloc.flightsExclusiveItems,
             ),
           ),
           CategoryTileWidget(
@@ -134,10 +140,12 @@ class _MyHomePageState extends State<SearchSelector> {
             arrivalDate: widget.arrivalDate,
             departureDate: widget.departureDate,
             color: Color.fromRGBO(0, 174, 239, 1),
-            routeToPush: MetaSearchResults(
+            routeToPush: SearchResults(
+              type: SearchType.EXCLUSIVE,
               depDate: dateFormatter.format(widget.departureDate),
               arrDate: dateFormatter.format(widget.arrivalDate),
               typeOfTripSelected: widget.tripType,
+              flightsStream: flyLinebloc.flightsExclusiveItems,
             ),
           ),
           CategoryTileWidget(
@@ -149,9 +157,11 @@ class _MyHomePageState extends State<SearchSelector> {
             departureDate: widget.departureDate,
             color: Color.fromRGBO(68, 207, 87, 1),
             routeToPush: SearchResults(
+              type: SearchType.META,
               depDate: dateFormatter.format(widget.departureDate),
               arrDate: dateFormatter.format(widget.arrivalDate),
               typeOfTripSelected: widget.tripType,
+              flightsStream: flyLinebloc.flightsMetaItems,
             ),
           ),
           Flexible(child: Container()),
@@ -161,3 +171,5 @@ class _MyHomePageState extends State<SearchSelector> {
     );
   }
 }
+
+enum SearchType { FARE, EXCLUSIVE, META }

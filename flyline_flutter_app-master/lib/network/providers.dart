@@ -117,6 +117,7 @@ class FlyLineProvider {
     Response response;
     Dio dio = Dio(BaseOptions(baseUrl: '$baseUrl/api'));
     dio.options.headers["Authorization"] = "Token $token";
+    dio.interceptors.add(LogInterceptor());
 
     List<FlightInformationObject> flights = List<FlightInformationObject>();
 //    var url =
@@ -172,39 +173,44 @@ class FlyLineProvider {
     List<FlightInformationObject> flightResults = [];
     final payload = (kind) => {
           "kind": kind,
-          "fly_from": flyFrom,
-          "fly_to": flyTo,
+          "fly_from": flyFrom.split(':').last,
+          "fly_to": flyTo.split(':').last,
           "start_date": startDate,
           "return_date": returnDate
         };
     try {
       final workers = await Future.wait([
-        dio.post("/request-scraper/", data: payload("skyscanner")),
-        dio.post("/request-scraper/", data: payload("kayak")),
+        // dio.post("/request-scraper/", data: payload("skyscanner")),
+        // dio.post("/request-scraper/", data: payload("kayak")),
         dio.post("/request-scraper/", data: payload("tripadvisor")),
       ]);
 
       if (workers.every((w) => w.statusCode == 200)) {
         final List ids = [...workers.map((w) => w.data['id'])];
-        await Future.delayed(Duration(seconds: 16));
-        final flights = await Future.wait([
-          ...ids.map((id) => dio.get(
-                "/check-scraper-result/",
-                queryParameters: {"id": id},
-              ).catchError((error) => error.response))
-        ]);
+        List<Response> flights;
+        int retryCount = 5;
+
+        do {
+          await Future.delayed(Duration(seconds: 2));
+          flights = await Future.wait([
+            ...ids.map((id) => dio.get(
+                  "/check-scraper-result/",
+                  queryParameters: {"id": id},
+                ).catchError((error) => error.response))
+          ]);
+          retryCount--;
+          print(retryCount);
+        } while (flights.every((f) => f.statusCode != 200) || retryCount == 0);
+
         flights.forEach((f) {
-          if (f.statusCode == 200) {
-            for (dynamic i in f.data["data"]) {
-              flightResults.add(FlightInformationObject.fromJson(i));
-            }
+          for (dynamic i in f.data["data"]) {
+            flightResults.add(FlightInformationObject.fromJson(i));
           }
         });
       }
     } catch (e) {
       log(e.toString());
     }
-    print('FlightResuts $flightResults');
     return flightResults;
   }
 
