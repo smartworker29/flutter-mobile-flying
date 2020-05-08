@@ -1392,208 +1392,215 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             height: double.infinity,
             width: double.infinity,
             color: Color(0xFFF7F9FC),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "FlyLine Premium",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:16.0),
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "FlyLine Premium",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
                       ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "How it Works",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
                       ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    Divider(
+                      height: 1.5,
                     ),
-                    onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => EditInfoScreen()));
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Deal Feed",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "How it Works",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
                       ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DealFeed()),
-                      );
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Help Center",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
                       ),
+                      onTap: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => EditInfoScreen()));
+                      },
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    Divider(
+                      height: 1.5,
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Terms of Service",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "Deal Feed",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
                       ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
-                    ),
-                    onTap: () {
-                      Navigator.push(
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => TermsOfUsePage()));
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Privacy Policy",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
+                          MaterialPageRoute(builder: (context) => DealFeed()),
+                        );
+                      },
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "Help Center",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
                       ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: Text(
-                      "Log In",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
                       ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    Divider(
+                      height: 1.5,
                     ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
-                    },
-                  ),
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Create an Account",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff40ce53),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "Terms of Service",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
                       ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TermsOfUsePage()));
+                      },
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    Divider(
+                      height: 1.5,
                     ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignUpScreen()));
-                    },
-                  ),
-                ],
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "Privacy Policy",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: Text(
+                        "Log In",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                      },
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    Flexible(
+                      child: Container(),
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28,),
+                      title: new Text(
+                        "Create an Account",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff40ce53),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpScreen()));
+                      },
+                    ),
+                    
+                  ],
+                ),
               ),
             
           ),
