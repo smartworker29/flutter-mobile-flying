@@ -942,7 +942,7 @@ class _SearchResultsState extends State<SearchResults>
         }
       }
     }
-
+    print(flight.toString());
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -955,15 +955,15 @@ class _SearchResultsState extends State<SearchResults>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             AppBarPopIcon(),
-            Expanded(
+            Center(
               child: Container(
                 color: Colors.white,
                 alignment: Alignment.center,
                 child: Column(
                   children: <Widget>[
                     AppBarFromTo(
-                      flyFrom: flight.flyFrom,
-                      flyTo: flight.flyTo,
+                      flyFrom: flight.flyFrom ?? flight.cityFrom,
+                      flyTo: flight.flyTo ?? flight.cityTo,
                     ),
                     AppBarDateDepArr(
                       depDate: widget.depDate,
@@ -973,30 +973,28 @@ class _SearchResultsState extends State<SearchResults>
                 ),
               ),
             ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.centerRight,
-                height: AppBar().preferredSize.height + 10,
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      this.handleFilter();
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFFF7F9FC),
-                      ),
-                      child: Center(
-                        child: Image.asset(
-                          'assets/images/filter.png',
-                          width: 18,
-                          height: 23,
-                        ),
+            Container(
+              alignment: Alignment.centerRight,
+              height: AppBar().preferredSize.height + 10,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    this.handleFilter();
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFF7F9FC),
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        'assets/images/filter.png',
+                        width: 18,
+                        height: 23,
                       ),
                     ),
                   ),
