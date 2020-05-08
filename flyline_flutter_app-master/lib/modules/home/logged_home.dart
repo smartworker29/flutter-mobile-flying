@@ -2412,12 +2412,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       margin: EdgeInsets.only(left: 16.0, right: 16, top: 10, bottom: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Color.fromRGBO(0, 174, 239, 0.3),
-              offset: Offset(0, 0),
-              blurRadius: 30.0),
-        ],
         color: Color.fromRGBO(0, 174, 239, 1),
       ),
       child: Row(
