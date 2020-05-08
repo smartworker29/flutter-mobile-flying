@@ -51,7 +51,9 @@ class _MetaBookScreenState extends State<MetaBookScreen> {
               ),
             ],
           ),
-          LoadingScreen(),
+          LoadingScreen(
+            message: "Loading Booking Details",
+          ),
         ],
       ),
     );

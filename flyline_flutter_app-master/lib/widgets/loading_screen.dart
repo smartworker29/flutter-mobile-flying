@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({
     Key key,
-    this.message = "Loading Booking Details",
+    this.message = "Loading Search Results",
   }) : super(key: key);
 
   final String message;
