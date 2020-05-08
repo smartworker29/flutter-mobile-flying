@@ -16,24 +16,27 @@ class FlightInformationObject {
   double price;
   List<dynamic> airlines;
   double distance;
+  String deepLink;
   Map<String, dynamic> raw;
 
   FlightInformationObject(
-      String flyFrom,
-      String flyTo,
-      String cityFrom,
-      String cityTo,
-      int nightsInDest,
-      DateTime localArrival,
-      DateTime localDeparture,
-      List<FlightRouteObject> routes,
-      String durationDeparture,
-      String durationReturn,
-      String bookingToken,
-      List<dynamic> airlines,
-      double price,
-      double distance,
-      Map<String, dynamic> raw) {
+    String flyFrom,
+    String flyTo,
+    String cityFrom,
+    String cityTo,
+    int nightsInDest,
+    DateTime localArrival,
+    DateTime localDeparture,
+    List<FlightRouteObject> routes,
+    String durationDeparture,
+    String durationReturn,
+    String bookingToken,
+    List<dynamic> airlines,
+    double price,
+    double distance,
+    String deepLink,
+    Map<String, dynamic> raw,
+  ) {
     this.flyFrom = flyFrom;
     this.flyTo = flyTo;
     this.cityFrom = cityFrom;
@@ -48,6 +51,7 @@ class FlightInformationObject {
     this.price = price;
     this.airlines = airlines;
     this.distance = distance;
+    this.deepLink = deepLink;
     this.raw = raw;
   }
 
@@ -58,11 +62,13 @@ class FlightInformationObject {
 
     items = list.map((i) => FlightRouteObject.fromJson(i)).toList();
 
-    var durationDeparture = "";
-    var durationReturn = "";
+    String deepLink = "";
+    String durationDeparture = "";
+    String durationReturn = "";
 
-    var parsedDepartureDate = DateTime.parse(json["local_departure"]);
-    var parsedArrivalDate = DateTime.parse(json["local_arrival"]);
+    final DateTime parsedDepartureDate =
+        DateTime.parse(json["local_departure"]);
+    final DateTime parsedArrivalDate = DateTime.parse(json["local_arrival"]);
 
     if (json["duration"] != null && json["duration"]["departure"] != null)
       durationDeparture = DateUtils.secs2hm(
@@ -71,22 +77,27 @@ class FlightInformationObject {
     if (json["duration"] != null && json["duration"]["return"] != null)
       durationReturn = DateUtils.secs2hm(
           Duration(seconds: json["duration"]["return"]).inSeconds);
+
+    if (json["deeplink"] != null) deepLink = json["deeplink"];
+
     return FlightInformationObject(
-        json['flyFrom'],
-        json["flyTo"],
-        json['cityFrom'],
-        json['cityTo'],
-        json["nightsInDest"],
-        parsedArrivalDate,
-        parsedDepartureDate,
-        items,
-        durationDeparture,
-        durationReturn,
-        json['booking_token'],
-        json['airlines'],
-        double.parse(json['price'].toString()),
-        double.tryParse(json['distance'].toString()) ?? 0,
-        json);
+      json['flyFrom'],
+      json["flyTo"],
+      json['cityFrom'],
+      json['cityTo'],
+      json["nightsInDest"],
+      parsedArrivalDate,
+      parsedDepartureDate,
+      items,
+      durationDeparture,
+      durationReturn,
+      json['booking_token'],
+      json['airlines'],
+      double.parse(json['price'].toString()),
+      double.tryParse(json['distance'].toString() ?? ''),
+      deepLink,
+      json,
+    );
   }
 
   @override
@@ -112,18 +123,19 @@ class FlightRouteObject {
   int returnFlight;
 
   FlightRouteObject(
-      String cityCodeFrom,
-      String flyFrom,
-      String flyTo,
-      String cityFrom,
-      String cityTo,
-      int flightNo,
-      DateTime localArrival,
-      DateTime localDeparture,
-      DateTime utcArrival,
-      DateTime utcDeparture,
-      String airline,
-      int returnFlight) {
+    String cityCodeFrom,
+    String flyFrom,
+    String flyTo,
+    String cityFrom,
+    String cityTo,
+    int flightNo,
+    DateTime localArrival,
+    DateTime localDeparture,
+    DateTime utcArrival,
+    DateTime utcDeparture,
+    String airline,
+    int returnFlight,
+  ) {
     this.cityFrom = cityFrom;
     this.cityTo = cityTo;
     this.flyFrom = flyFrom;

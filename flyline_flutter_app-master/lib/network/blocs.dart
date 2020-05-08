@@ -61,21 +61,22 @@ class FlyLineBloc {
     return response;
   }
 
-  Future<List<FlightInformationObject>> searchFlight(
-      flyFrom,
-      flyTo,
-      DateTime dateFrom,
-      DateTime dateTo,
-      type,
-      DateTime returnFrom,
-      DateTime returnTo,
-      adults,
-      infants,
-      children,
-      selectedCabins,
-      curr,
-      offset,
-      limit) async {
+  Future searchFlight(
+    flyFrom,
+    flyTo,
+    DateTime dateFrom,
+    DateTime dateTo,
+    type,
+    DateTime returnFrom,
+    DateTime returnTo,
+    adults,
+    infants,
+    children,
+    selectedCabins,
+    curr,
+    offset,
+    limit,
+  ) async {
     List<FlightInformationObject> response = await _repository.searchFlights(
         flyFrom,
         flyTo,
@@ -103,8 +104,6 @@ class FlyLineBloc {
     );
 
     _subjectMetaFlightItems.sink.add(metaResponse);
-
-    return response;
   }
 
   Future<CheckFlightResponse> checkFlights(

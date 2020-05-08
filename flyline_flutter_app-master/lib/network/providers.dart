@@ -187,18 +187,24 @@ class FlyLineProvider {
 
       if (workers.every((w) => w.statusCode == 200)) {
         final List ids = [...workers.map((w) => w.data['id'])];
-        await Future.delayed(Duration(seconds: 10));
-        final flights = await Future.wait([
-          ...ids.map((id) => dio.get(
-                "/check-scraper-result/",
-                queryParameters: {"id": id},
-              ).catchError((error) => error.response))
-        ]);
+        List<Response> flights;
+        int retryCount = 5;
+
+        do {
+          await Future.delayed(Duration(seconds: 2));
+          flights = await Future.wait([
+            ...ids.map((id) => dio.get(
+                  "/check-scraper-result/",
+                  queryParameters: {"id": id},
+                ).catchError((error) => error.response))
+          ]);
+          retryCount--;
+          print(retryCount);
+        } while (flights.every((f) => f.statusCode != 200) || retryCount == 0);
+
         flights.forEach((f) {
-          if (f.statusCode == 200) {
-            for (dynamic i in f.data["data"]) {
-              flightResults.add(FlightInformationObject.fromJson(i));
-            }
+          for (dynamic i in f.data["data"]) {
+            flightResults.add(FlightInformationObject.fromJson(i));
           }
         });
       }

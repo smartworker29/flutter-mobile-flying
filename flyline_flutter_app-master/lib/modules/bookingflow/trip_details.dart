@@ -9,6 +9,7 @@ import 'package:motel/helper/helper.dart';
 import 'package:motel/models/check_flight_response.dart';
 import 'package:motel/models/flight_information.dart';
 import 'package:motel/models/traveler_information.dart';
+import 'package:motel/modules/bookingflow/meta_book_screen.dart';
 import 'package:motel/modules/bookingflow/personal_details.dart'
     as personal_details;
 import 'package:motel/modules/bookingflow/search_selector.dart';
@@ -80,6 +81,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   var selectedGender = genders[0];
   var selectedGenderValue = genderValues[0];
+
+  String get continueButtonText =>
+      widget.type == SearchType.FARE || widget.type == SearchType.EXCLUSIVE
+          ? "Continue"
+          : "View Meta Fare";
 
   CheckFlightResponse _checkFlightResponse;
   List<BagItem> handBags;
@@ -210,7 +216,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   @override
   Widget build(BuildContext context) {
     double tripP = widget.flight.price;
-    var triptotal = (tripP * numberOfPassengers).toStringAsFixed(2);
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -269,7 +274,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           padding: EdgeInsets.only(left: 40.0, right: 40.0),
                           width: 199,
                           height: 50,
-                          decoration: new BoxDecoration(
+                          decoration: BoxDecoration(
                             color: Color(0xff00aeef),
                             borderRadius: BorderRadius.circular(27),
                             boxShadow: [
@@ -281,8 +286,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             ],
                           ),
                           child: Center(
-                            child: new Text(
-                              "Continue",
+                            child: Text(
+                              continueButtonText,
                               style: TextStyle(
                                 fontFamily: 'Gilroy',
                                 color: Color(0xffffffff),
@@ -293,29 +298,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             ),
                           ),
                         ),
-                        onTap: () {
-                          var totaltriprice =
-                              (tripP * numberOfPassengers).toStringAsFixed(2);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      personal_details.HotelHomeScreen(
-                                          numberofpass: numberOfPassengers,
-                                          totalPrice: totaltriprice,
-                                          routes: widget.flight.routes,
-                                          ad: this.widget.ad,
-                                          //ch: this.widget.children,
-                                          typeOfTripSelected:
-                                              this.widget.typeOfTripSelected,
-                                          selectedClassOfService: this
-                                              .widget
-                                              .selectedClassOfService,
-                                          flight: widget.flight,
-                                          bookingToken:
-                                              widget.flight.bookingToken,
-                                          retailInfo: widget.flight.raw)));
-                        },
+                        onTap: getContinueAction,
                       ),
                     ),
                   ],
@@ -2211,6 +2194,57 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         ),
         SizedBox(height: 100)
       ],
+    );
+  }
+
+  Function() getContinueAction() {
+    switch (widget.type) {
+      case SearchType.FARE:
+        getFareAction();
+        return null;
+      case SearchType.EXCLUSIVE:
+        getExclusiveAction();
+        return null;
+      case SearchType.META:
+        getMetaAction();
+        return null;
+    }
+    return null;
+  }
+
+  void getFareAction() {}
+
+  void getExclusiveAction() {
+    double tripP = widget.flight.price;
+    var totaltriprice = (tripP * numberOfPassengers).toStringAsFixed(2);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => personal_details.HotelHomeScreen(
+          numberofpass: numberOfPassengers,
+          totalPrice: totaltriprice,
+          routes: widget.flight.routes,
+          ad: this.widget.ad,
+          //ch: this.widget.children,
+          typeOfTripSelected: this.widget.typeOfTripSelected,
+          selectedClassOfService: this.widget.selectedClassOfService,
+          flight: widget.flight,
+          bookingToken: widget.flight.bookingToken,
+          retailInfo: widget.flight.raw,
+        ),
+      ),
+    );
+  }
+
+  void getMetaAction() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MetaBookScreen(
+          url: widget.flight.deepLink,
+          retailInfo: widget.flight.raw,
+        ),
+      ),
     );
   }
 }
