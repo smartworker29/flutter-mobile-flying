@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     color: Color(0xff3a3f5c),
+                                    
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     // color: AppTheme.dark_grey,
@@ -139,13 +140,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                               .backgroundColor,
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(15)),
-                                          // boxShadow: <BoxShadow>[
-                                          //   BoxShadow(
-                                          //     color: AppTheme.getTheme().dividerColor,
-                                          //     blurRadius: 8,
-                                          //     offset: Offset(4, 4),
-                                          //   ),
-                                          // ],
                                         ),
                                       ),
                                     ),

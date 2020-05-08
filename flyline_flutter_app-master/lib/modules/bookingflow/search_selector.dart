@@ -164,7 +164,7 @@ class _MyHomePageState extends State<SearchSelector> {
               flightsStream: flyLinebloc.flightsMetaItems,
             ),
           ),
-          Flexible(child: Container()),
+          Expanded(child: Container()),
           CategoryInfoWidget(),
         ],
       ),
