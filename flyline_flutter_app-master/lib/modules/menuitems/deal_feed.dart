@@ -10,6 +10,7 @@ class DealFeed extends StatefulWidget {
 
 class _DealFeedState extends State<DealFeed> {
   List<FlylineDeal> dealItems = List();
+  
 
   @override
   void initState() {
@@ -89,6 +90,8 @@ class _DealFeedState extends State<DealFeed> {
                       } else if (item.airlines.length > 0) {
                         airlines.add(item.airlines[0]);
                       }
+
+                      double flightprice = double.parse(item.price);
                       return Container(
                         height: 150,
                         padding: EdgeInsets.all(8),

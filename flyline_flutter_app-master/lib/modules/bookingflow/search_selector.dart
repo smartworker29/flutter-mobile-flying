@@ -1,3 +1,4 @@
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -165,7 +166,7 @@ class _MyHomePageState extends State<SearchSelector> {
               flightsStream: flyLinebloc.flightsMetaItems,
             ),
           ),
-          Flexible(child: Container()),
+          Expanded(child: Container()),
           CategoryInfoWidget(),
         ],
       ),

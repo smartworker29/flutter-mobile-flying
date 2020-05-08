@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -11,17 +10,14 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:intl/intl.dart';
 import 'package:motel/helper/helper.dart';
-import 'package:motel/modules/bookingflow/search_selector.dart';
+import 'package:motel/models/filterExplore.dart';
+import 'package:motel/modules/bookingflow/sort_flights.dart';
+import 'package:motel/modules/bookingflow/trip_details.dart' as trip_details;
 import 'package:motel/modules/datepicker/datepicker_screen.dart';
 import 'package:motel/modules/login/loginScreen.dart';
-import 'package:motel/modules/menuitems/account_details.dart';
 import 'package:motel/modules/menuitems/deal_feed.dart';
-import 'package:motel/modules/menuitems/help_center.dart';
-import 'package:motel/modules/menuitems/membership_plans.dart';
-import 'package:motel/modules/menuitems/payment.dart';
 import 'package:motel/modules/menuitems/terms_of_service.dart';
-import 'package:motel/widgets/loading_screen.dart';
-import 'package:motel/widgets/value_incrementer.dart';
+import 'package:motel/modules/signup/signUp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../appTheme.dart';
@@ -30,7 +26,7 @@ import '../../models/locations.dart';
 import '../../network/blocs.dart';
 import '../calendar/calendarPopupView.dart';
 
-const kLabelTextColor = Color(0xff0e3178);
+const kLabelTextColor = Color(0xFF3a3f5c);
 const kPlaceHolderColor = Color(0xFFa2a1b4);
 
 enum _TABS { ROUND_TRIP, ONE_WAY, NOMAD }
@@ -79,14 +75,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   _TABS activeTab = _TABS.ROUND_TRIP;
   String departureDate;
   String arrivalDate;
+  int adults = 0;
+  int kids = 0;
   String cabin = "economy";
 
-  final formatDates = intl.DateFormat("dd MMM");
+  final formatDates = intl.DateFormat("dd MMM yyyy");
   final formatTime = intl.DateFormat("hh : mm a");
   final formatAllDay = intl.DateFormat("dd/MM/yyyy");
 
   var typeOfTripSelected = 0;
-
   LocationObject selectedDeparture;
   LocationObject selectedArrival;
 
@@ -106,11 +103,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   final searchBarHieght = 158.0;
   final filterBarHieght = 52.0;
 
-  int offset = 20;
-  int perPage = 20;
+  int offset = 0;
+  int perPage = 5;
   List<FlightInformationObject> originalFlights = List();
   List<FlightInformationObject> listOfFlights = List();
-  List<FlightRouteObject> returns = List();
   List<bool> _clickFlight = List();
   bool _loadMore = false;
   bool _isLoading = false;
@@ -118,19 +114,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   Map<String, dynamic> airlineCodes;
 
-  var filterExplore;
+  FilterExplore filterExplore;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey stickyKey = GlobalKey();
   double heightBox = -1;
 
-  initStreams() {
-    flyLinebloc.setAdults(1);
-    flyLinebloc.setChildren(0);
-  }
-
   @override
   void initState() {
-    initStreams();
     _searchProgressBar = ProgressBar();
     animationController = AnimationController(
         duration: Duration(milliseconds: 1000), vsync: this);
@@ -235,6 +225,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   searchForLocation(query, isDeparture) async {
     flyLinebloc.locationItems.add(List<LocationObject>());
     flyLinebloc.locationQuery(query);
+    //flyLinebloc.locationItems.stream.listen((data) => onUpdateResult(data, isDeparture));
+  }
+
+  @override
+  void dispose() {
+    _searchProgressBar.hide();
+    this._clickedSearch = false;
+    super.dispose();
   }
 
   void showSendingProgressBar() {
@@ -251,7 +249,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       length: 3,
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: _drawerbuild(context),
+        drawer: _guestdrawerbuild(context),
         body: InkWell(
           splashColor: Colors.transparent,
           focusColor: Colors.transparent,
@@ -261,21 +259,23 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: Container(
+            color: Colors.white,
             child: Column(
               children: <Widget>[
                 getAppBarUI(),
                 Expanded(
                   child: Column(children: <Widget>[
                     Container(
-                        color: Color.fromRGBO(247, 249, 252, 1),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            selectJourney(),
-                            tabsHeader(),
-                            tabsContent(),
-                          ],
-                        )),
+                      color: Color.fromRGBO(247, 249, 252, 1),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          selectJourney(),
+                          tabsHeader(),
+                          tabsContent(),
+                        ],
+                      ),
+                    ),
                   ]),
                 )
               ],
@@ -399,7 +399,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               child: Image.network(
                                 "https://storage.googleapis.com/joinflyline/images/airlines/${route.airline}.png",
                                 height: 20,
-                                scale: 25,
+                                width: 20,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -455,7 +455,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               child: GestureDetector(
                 onTap: () {
                   setState(() {
-                    typeOfTripSelected = 0;
                     activeTab = _TABS.ROUND_TRIP;
                   });
                 },
@@ -467,11 +466,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Column(
                       children: <Widget>[
                         Text(
-                          "Round-trip",
+                          "Round Trip",
                           style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'Gilroy',
-                              fontSize: 14,
                               color: activeTab == _TABS.ROUND_TRIP
                                   ? Color.fromRGBO(0, 174, 239, 1)
                                   : Colors.black12),
@@ -503,7 +499,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               child: GestureDetector(
                 onTap: () {
                   setState(() {
-                    typeOfTripSelected = 1;
                     activeTab = _TABS.ONE_WAY;
                   });
                 },
@@ -515,11 +510,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Column(
                       children: <Widget>[
                         Text(
-                          "One-way",
+                          "One-Way",
                           style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'Gilroy',
-                              fontSize: 14,
                               color: activeTab == _TABS.ONE_WAY
                                   ? Color.fromRGBO(0, 174, 239, 1)
                                   : Colors.black12),
@@ -638,362 +630,474 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   Widget tabsContent() {
     double height = _calculateHeight();
     double spacing = height > 400 ? ((height - 400) / 4) : 20;
+    print('Height:$height');
     return (Container(
-      color: Color.fromRGBO(247, 249, 252, 1),
-      height: height - 6,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(bottom: 20, top: spacing),
-                child: Text(
-                  "Trip Date(s)",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Gilroy Bold',
-                      fontSize: 18,
-                      color: kLabelTextColor),
+//        color: Color.fromRGBO(247, 249, 252, 1),
+        height: height - 6, //MediaQuery.of(context).size.height * 0.50,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(bottom: 20, top: spacing),
+                  child: Text(
+                    "Trip Date(s)",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Gilroy Bold',
+                        fontSize: 18,
+                        color: kLabelTextColor),
+                  ),
                 ),
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: InkWell(
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: InkWell(
+                          child: Container(
+                            padding: const EdgeInsets.all(15.0),
+                            margin: const EdgeInsets.only(right: 5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  child: Text(
+                                    departureDate != null
+                                        ? DateFormat("MM-dd-yyyy").format(
+                                            DateTime.parse(departureDate))
+                                        : "Departure",
+                                    style: departureDate != null
+                                        ? TextStyle()
+                                        : TextStyle(
+                                            // color: kPlaceHolderColor
+                                            fontStyle: FontStyle.normal,
+                                            fontFamily: 'Gilroy',
+                                            color: Color(0xff3a3f5c),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                  ),
+                                ),
+                                Image.asset("assets/images/calendar.png",
+                                    width: 20)
+                              ],
+                            ),
+                          ),
+                          onTap: () async {
+                            DateResult newDateTime = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => DatePickerScreen(
+                                      shouldChooseMultipleDates:
+                                          activeTab == _TABS.ROUND_TRIP),
+                                ));
+                            if (newDateTime == null) return;
+                            setState(() {
+                              departureDate =
+                                  newDateTime.departureDate.toString();
+                              if (activeTab == _TABS.ROUND_TRIP &&
+                                  newDateTime.returnDate != null)
+                                arrivalDate = newDateTime.returnDate.toString();
+                            });
+                          },
+                        ),
+                      ),
+                      activeTab == _TABS.ONE_WAY
+                          ? Container()
+                          : Expanded(
+                              child: InkWell(
+                                child: Container(
+                                  padding: const EdgeInsets.all(15.0),
+                                  margin: const EdgeInsets.only(left: 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(
+                                          arrivalDate != null
+                                              ? DateFormat("MM-dd-yyyy").format(
+                                                  DateTime.parse(
+                                                      arrivalDate.toString()))
+                                              : "Return",
+                                          style: arrivalDate != null
+                                              ? TextStyle()
+                                              : TextStyle(
+                                                  // color: kPlaceHolderColor
+                                                  fontStyle: FontStyle.normal,
+                                                  fontFamily: 'Gilroy',
+                                                  color: Color(0xff3a3f5c),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                        ),
+                                      ),
+                                      Image.asset("assets/images/calendar.png",
+                                          width: 20)
+                                    ],
+                                  ),
+                                ),
+                                onTap: () async {
+                                  DateResult newDateTime = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => DatePickerScreen(
+                                          shouldChooseMultipleDates:
+                                              activeTab == _TABS.ROUND_TRIP,
+                                        ),
+                                      ));
+                                  if (newDateTime == null) return;
+                                  setState(() {
+                                    departureDate =
+                                        newDateTime.departureDate.toString();
+                                    if (activeTab == _TABS.ROUND_TRIP &&
+                                        newDateTime.returnDate != null)
+                                      arrivalDate =
+                                          newDateTime.returnDate.toString();
+                                  });
+                                },
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: spacing, bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          "Adults",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Gilroy Bold',
+                              fontSize: 18,
+                              color: kLabelTextColor),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "Kids",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Gilroy Bold',
+                              fontSize: 18,
+                              color: kLabelTextColor),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
                         child: Container(
-                          padding: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.all(5.0),
                           margin: const EdgeInsets.only(right: 5),
+                          height: 50,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(15),
                               color: Colors.white),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Container(
-                                child: Text(
-                                  departureDate != null
-                                      ? DateFormat("MM-dd-yyyy")
-                                          .format(DateTime.parse(departureDate))
-                                      : "Departure",
-                                  style: departureDate != null
-                                      ? TextStyle()
-                                      : TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: "Gilroy",
-                                          color: Color(0xFFC7C9D1),
-                                        ),
+                              GestureDetector(
+                                onTap: () {
+                                  if (!(adults - 1 < 0)) {
+                                    setState(() {
+                                      adults -= 1;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  decoration: BoxDecoration(
+                                      color: Color.fromRGBO(247, 249, 252, 1),
+                                      borderRadius: BorderRadius.circular(30)),
+                                  child: Text(
+                                    "-",
+                                    style: TextStyle(
+                                      color: Color(0xFF0e3178),
+                                    ),
+                                  ),
                                 ),
                               ),
-                              Image.asset("assets/images/calendar.png",
-                                  width: 20)
+                              Text(adults != null ? adults.toString() : ""),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    adults += 1;
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  decoration: BoxDecoration(
+                                      color: Color.fromRGBO(247, 249, 252, 1),
+                                      borderRadius: BorderRadius.circular(30)),
+                                  child: Text(
+                                    "+",
+                                    style: TextStyle(color: Color(0xFF0e3178)),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        onTap: () async {
-                          DateResult newDateTime = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => DatePickerScreen(
-                                    shouldChooseMultipleDates:
-                                        activeTab == _TABS.ROUND_TRIP),
-                              ));
-                          if (newDateTime == null) return;
-                          setState(() {
-                            departureDate =
-                                newDateTime.departureDate.toString();
-                            if (activeTab == _TABS.ROUND_TRIP &&
-                                newDateTime.returnDate != null)
-                              arrivalDate = newDateTime.returnDate.toString();
-                          });
-                        },
                       ),
-                    ),
-                    activeTab == _TABS.ONE_WAY
-                        ? Container()
-                        : Expanded(
-                            child: InkWell(
-                              child: Container(
-                                padding: const EdgeInsets.all(15.0),
-                                margin: const EdgeInsets.only(left: 5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Container(
-                                      child: Text(
-                                        arrivalDate != null
-                                            ? DateFormat("MM-dd-yyyy").format(
-                                                DateTime.parse(
-                                                    arrivalDate.toString()))
-                                            : "Return",
-                                        style: arrivalDate != null
-                                            ? TextStyle()
-                                            : TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontFamily: "Gilroy",
-                                                color: Color(0xFFC7C9D1),
-                                              ),
-                                      ),
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 5),
+                          padding: const EdgeInsets.all(5.0),
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  if (!(kids - 1 < 0)) {
+                                    setState(() {
+                                      kids -= 1;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  decoration: BoxDecoration(
+                                      color: Color.fromRGBO(247, 249, 252, 1),
+                                      borderRadius: BorderRadius.circular(30)),
+                                  child: Text(
+                                    "-",
+                                    style: TextStyle(
+                                      color: Color(0xFF0e3178),
                                     ),
-                                    Image.asset("assets/images/calendar.png",
-                                        width: 20)
-                                  ],
+                                  ),
                                 ),
                               ),
-                              onTap: () async {
-                                DateResult newDateTime = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => DatePickerScreen(
-                                        shouldChooseMultipleDates:
-                                            activeTab == _TABS.ROUND_TRIP,
-                                      ),
-                                    ));
-                                if (newDateTime == null) return;
-                                setState(() {
-                                  departureDate =
-                                      newDateTime.departureDate.toString();
-                                  if (activeTab == _TABS.ROUND_TRIP &&
-                                      newDateTime.returnDate != null)
-                                    arrivalDate =
-                                        newDateTime.returnDate.toString();
-                                });
-                              },
-                            ),
+                              Text(kids.toString()),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    kids += 1;
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  decoration: BoxDecoration(
+                                      color: Color.fromRGBO(247, 249, 252, 1),
+                                      borderRadius: BorderRadius.circular(30)),
+                                  child: Text(
+                                    "+",
+                                    style: TextStyle(
+                                      color: Color(0xFF0e3178),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: spacing, bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        "Adults",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Gilroy Bold',
-                            fontSize: 18,
-                            color: kLabelTextColor),
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        "Kids",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Gilroy Bold',
-                            fontSize: 18,
-                            color: kLabelTextColor),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: ValueIncrementer(
-                        stream: flyLinebloc.outAdults,
-                        setter: flyLinebloc.setAdults,
-                      ),
-                    ),
-                    Expanded(
-                      child: ValueIncrementer(
-                        stream: flyLinebloc.outChildren,
-                        setter: flyLinebloc.setChildren,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: spacing, bottom: 20),
-                child: Text(
-                  "Cabin Class",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: kLabelTextColor,
+                    ],
                   ),
                 ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black12),
-                  borderRadius: BorderRadius.circular(30),
+                Container(
+                  margin: EdgeInsets.only(top: spacing, bottom: 20),
+                  child: Text(
+                    "Cabin Class",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Gilroy Bold',
+                        fontSize: 18,
+                        color: kLabelTextColor),
+                  ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            cabin = "economy";
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                              boxShadow: cabin == "economy"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.2),
-                                        blurRadius: 30,
-                                        offset: Offset(0, 15),
-                                      ),
-                                    ]
-                                  : [],
-                              borderRadius: BorderRadius.circular(20),
-                              color: cabin == "economy"
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              border: Border.all(
-                                color: cabin == "economy"
-                                    ? Color.fromRGBO(14, 49, 120, 1)
-                                    : Colors.transparent,
-                              )),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black12),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              cabin = "economy";
+                            });
+                          },
                           child: Container(
-                            child: Center(
-                              child: Text(
-                                "Economy",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Gilroy Bold',
-                                    fontSize: 14,
-                                    color: cabin == "economy"
-                                        ? Color.fromRGBO(14, 49, 120, 1)
-                                        : Colors.black26),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            cabin = "business";
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                              boxShadow: cabin == "business"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.2),
-                                        blurRadius: 30,
-                                        offset: Offset(0, 15),
-                                      ),
-                                    ]
-                                  : [],
-                              borderRadius: BorderRadius.circular(20),
-                              color: cabin == "business"
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              border: Border.all(
-                                color: cabin == "business"
-                                    ? Color.fromRGBO(14, 49, 120, 1)
-                                    : Colors.transparent,
-                              )),
-                          child: Container(
+                            padding: const EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
-                              boxShadow: cabin == "bussiness"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.5),
-                                        blurRadius: 30,
-                                      ),
-                                    ]
-                                  : [],
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Business",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Gilroy Bold',
-                                    fontSize: 14,
-                                    color: cabin == "business"
-                                        ? Color.fromRGBO(14, 49, 120, 1)
-                                        : Colors.black26),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            cabin = "fClass";
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                              boxShadow: cabin == "fClass"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.2),
-                                        blurRadius: 30,
-                                        offset: Offset(0, 15),
-                                      ),
-                                    ]
-                                  : [],
-                              borderRadius: BorderRadius.circular(20),
-                              color: cabin == "fClass"
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              border: Border.all(
-                                color: cabin == "fClass"
-                                    ? Color.fromRGBO(14, 49, 120, 1)
+                                boxShadow: cabin == "economy"
+                                    ? [
+                                        BoxShadow(
+                                          color:
+                                              Color.fromRGBO(20, 40, 160, 0.2),
+                                          blurRadius: 30,
+                                          offset: Offset(0, 15),
+                                        ),
+                                      ]
+                                    : [],
+                                borderRadius: BorderRadius.circular(20),
+                                color: cabin == "economy"
+                                    ? Colors.white
                                     : Colors.transparent,
-                              )),
-                          child: Container(
-                            child: Center(
-                              child: Text(
-                                "First Class",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Gilroy Bold',
-                                    fontSize: 14,
-                                    color: cabin == "fClass"
-                                        ? Color.fromRGBO(14, 49, 120, 1)
-                                        : Colors.black26),
+                                border: Border.all(
+                                  color: cabin == "economy"
+                                      ? Color.fromRGBO(14, 49, 120, 1)
+                                      : Colors.transparent,
+                                )),
+                            child: Container(
+                              child: Center(
+                                child: Text(
+                                  "Economy",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'Gilroy Bold',
+                                      fontSize: 14,
+                                      color: cabin == "economy"
+                                          ? Color.fromRGBO(14, 49, 120, 1)
+                                          : Colors.black26),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              cabin = "business";
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                                boxShadow: cabin == "business"
+                                    ? [
+                                        BoxShadow(
+                                          color:
+                                              Color.fromRGBO(20, 40, 160, 0.2),
+                                          blurRadius: 30,
+                                          offset: Offset(0, 15),
+                                        ),
+                                      ]
+                                    : [],
+                                borderRadius: BorderRadius.circular(20),
+                                color: cabin == "business"
+                                    ? Colors.white
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  color: cabin == "business"
+                                      ? Color.fromRGBO(14, 49, 120, 1)
+                                      : Colors.transparent,
+                                )),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                boxShadow: cabin == "bussiness"
+                                    ? [
+                                        BoxShadow(
+                                          color:
+                                              Color.fromRGBO(20, 40, 160, 0.5),
+                                          blurRadius: 30,
+                                        ),
+                                      ]
+                                    : [],
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Business",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'Gilroy Bold',
+                                      fontSize: 14,
+                                      color: cabin == "business"
+                                          ? Color.fromRGBO(14, 49, 120, 1)
+                                          : Colors.black26),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              cabin = "fClass";
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                                boxShadow: cabin == "fClass"
+                                    ? [
+                                        BoxShadow(
+                                          color:
+                                              Color.fromRGBO(20, 40, 160, 0.2),
+                                          blurRadius: 30,
+                                          offset: Offset(0, 15),
+                                        ),
+                                      ]
+                                    : [],
+                                borderRadius: BorderRadius.circular(20),
+                                color: cabin == "fClass"
+                                    ? Colors.white
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  color: cabin == "fClass"
+                                      ? Color.fromRGBO(14, 49, 120, 1)
+                                      : Colors.transparent,
+                                )),
+                            child: Container(
+                              child: Center(
+                                child: Text(
+                                  "First Class",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'Gilroy Bold',
+                                      fontSize: 14,
+                                      color: cabin == "fClass"
+                                          ? Color.fromRGBO(14, 49, 120, 1)
+                                          : Colors.black26),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: spacing * 1.5,
-              ),
-              getSearchButton(),
-            ],
+                SizedBox(
+                  height: spacing * 1.5,
+                ),
+                getSearchButton(),
+              ],
+            ),
           ),
-        ),
-      ),
-    ));
+        )));
   }
 
   Widget getFlightDetailItems(List<FlightRouteObject> departures,
@@ -1055,226 +1159,450 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             height: double.infinity,
             width: double.infinity,
             color: Color(0xFFF7F9FC),
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "FlyLine Premium",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Traveler Details",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Payment",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    onTap: () {
-                      Navigator.push(
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => EditInfoScreen()));
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "FlyLine Premium",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Trip Management",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Deals",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Frequently Asked Questions",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: Text(
+                    "Terms of Service",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MembershipPlansScreen()),
-                      );
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Account Details",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
+                            builder: (context) => TermsOfUsePage()));
+                  },
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Privacy Policy",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xff8e969f),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
                     ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                Divider(
+                  height: 1.5,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                  title: new Text(
+                    "Log Out",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Color(0xffff0d0d),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AccountDetailsScreen()),
-                      );
-                    },
                   ),
-                  Divider(
-                    height: 1.5,
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xFF113377),
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Travel Wallet",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PaymentDetailsScreen()));
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Manage Trips",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AccountDetailsScreen()),
-                      );
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Deal Feed",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DealFeed()),
-                      );
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Help Center",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HelpCenterScreen()),
-                      );
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: Text(
-                      "Terms & Privacy",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xff8e969f),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Image.asset(
-                      'assets/images/arrow.png',
-//                      width: 20,
-                      scale: 25,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TermsOfUsePage()));
-                    },
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Divider(
-                    height: 1.5,
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                    title: new Text(
-                      "Log Out",
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        color: Color(0xffff0d0d),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
-                    ),
-                    onTap: () {
-                      _logOut();
-                    },
-                  ),
-                ],
-              ),
+                  onTap: () {
+                    _logOut();
+                  },
+                ),
+              ],
             ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _guestdrawerbuild(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        getDrawerAppBarUI(),
+        Expanded(
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: Color(0xFFF7F9FC),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:16.0),
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "FlyLine Premium",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "How it Works",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => EditInfoScreen()));
+                      },
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "Deal Feed",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DealFeed()),
+                        );
+                      },
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "Help Center",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "Terms of Service",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TermsOfUsePage()));
+                      },
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: new Text(
+                        "Privacy Policy",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                      title: Text(
+                        "Log In",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff8e969f),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                      },
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    Flexible(
+                      child: Container(),
+                    ),
+                    Divider(
+                      height: 1.5,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 28,),
+                      title: new Text(
+                        "Create an Account",
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          color: Color(0xff40ce53),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF113377),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpScreen()));
+                      },
+                    ),
+                    
+                  ],
+                ),
+              ),
+            
           ),
         ),
       ],
@@ -2216,6 +2544,25 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       ),
                                     ),
                                   ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              trip_details.HotelHomeScreen(
+                                                  routes: flight.routes,
+                                                  ad: this.ad,
+                                                  ch: this.children,
+                                                  typeOfTripSelected:
+                                                      this.typeOfTripSelected,
+                                                  selectedClassOfService: this
+                                                      .selectedClassOfService,
+                                                  flight: flight,
+                                                  bookingToken:
+                                                      flight.bookingToken,
+                                                  retailInfo: flight.raw)),
+                                    );
+                                  },
                                 ),
                               )),
                             ],
@@ -2294,6 +2641,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 listOfFlights.addAll(items.getRange(offset, offset + perPage));
                 _displayLoadMore = true;
               }
+            } else {
               if ((offset + perPage) > originalFlights.length) {
                 listOfFlights.addAll(
                     originalFlights.getRange(offset, originalFlights.length));
@@ -2319,9 +2667,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
 
   Widget getSearchButton() {
     return Container(
-      margin: EdgeInsets.only(left: 16.0, right: 16, top: 10, bottom: 12),
+      margin: EdgeInsets.only(left: 16.0, right: 16, top: 20, bottom: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+              color: Color.fromRGBO(0, 174, 239, 0.3),
+              offset: Offset(0, 0),
+              blurRadius: 30.0),
+        ],
         color: Color.fromRGBO(0, 174, 239, 1),
       ),
       child: Row(
@@ -2333,12 +2687,19 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     color: Colors.white,
                     fontFamily: 'Gilroy Bold',
                     fontSize: 16.0,
-                    fontWeight: FontWeight.w700)),
+                    fontWeight: FontWeight.w600)),
             onPressed: () {
+              // var departureCityCodes = ${departures[0].flyFrom},
+
               if (!_clickedSearch &&
                   selectedDeparture != null &&
                   selectedArrival != null) {
                 showSendingProgressBar();
+                Future.delayed(const Duration(milliseconds: 10000), () {
+                  setState(() {
+                    hideSendingProgressBar();
+                  });
+                });
                 setState(() {
                   offset = 0;
                   originalFlights = List();
@@ -2350,41 +2711,32 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 });
 
                 try {
-                  flyLinebloc
-                      .searchFlight(
-                        selectedDeparture.type + ":" + selectedDeparture.code,
-                        selectedArrival.type + ":" + selectedArrival.code,
-                        DateTime.parse(departureDate),
-                        DateTime.parse(arrivalDate),
-                        typeOfTripSelected == 0 ? "round" : "oneway",
-                        DateTime.parse(departureDate),
-                        DateTime.parse(arrivalDate),
-                        ad.toString(),
-                        "0",
-                        "0",
-                        selectedClassOfServiceValue,
-                        "USD",
-                        this.offset.toString(),
-                        this.perPage.toString(),
-                      )
-                      .then((_) => setState(() {
-                            hideSendingProgressBar();
-                          }));
+                  flyLinebloc.searchFlight(
+                      selectedDeparture.type + ":" + selectedDeparture.code,
+                      selectedArrival.type + ":" + selectedArrival.code,
+                      startDate,
+                      startDate,
+                      typeOfTripSelected == 0 ? "round" : "oneway",
+                      endDate,
+                      endDate,
+                      ad.toString(),
+                      "0",
+                      "0",
+                      selectedClassOfServiceValue,
+                      "USD",
+                      this.offset.toString(),
+                      this.perPage.toString());
                 } catch (e) {
                   print(e);
-                  hideSendingProgressBar();
                 }
               }
-
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => SearchSelector(
-                  flyingFrom: selectedDeparture.code,
-                  flyingTo: selectedArrival.code,
-                  departureDate: DateTime.parse(departureDate),
-                  arrivalDate: DateTime.parse(arrivalDate),
-                  tripType: typeOfTripSelected,
-                ),
-              ));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        // hhs.HotelHomeScreen
+                        Container()),
+              );
             },
           ),
         ],
@@ -2493,155 +2845,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               color: Colors.grey.withOpacity(0.8),
             ),
           ),
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.grey.withOpacity(0.2),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 4, right: 4, top: 4, bottom: 4),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Passengers",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                                color: Colors.grey),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            ad > 1 ? "$ad Adults" : "$ad Adult",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
           Padding(
             padding: EdgeInsets.only(right: 8),
             child: Container(
               width: 1,
               height: 42,
               color: Colors.grey.withOpacity(0.8),
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.grey.withOpacity(0.2),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 4, right: 4, top: 4, bottom: 4),
-                      child: InkWell(
-                        onTap: () async {
-                          List<Widget> items = List();
-                          items.add(Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  //                    <--- top side
-                                  color: AppTheme.getTheme().dividerColor,
-                                ),
-                              ),
-                            ),
-                            child: Container(),
-                          ));
-                          classOfServicesList.forEach((item) {
-                            items.add(Container(
-                                margin: const EdgeInsets.only(
-                                    left: 10.0,
-                                    right: 10.0,
-                                    top: 5.0,
-                                    bottom: 5.0),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      //                    <--- top side
-                                      color: AppTheme.getTheme().dividerColor,
-                                    ),
-                                  ),
-                                ),
-                                child: SimpleDialogOption(
-                                  onPressed: () {
-                                    Navigator.pop(context, item);
-                                    setState(() {
-                                      selectedClassOfService = item;
-                                      selectedClassOfServiceValue =
-                                          classOfServicesValueList[
-                                              classOfServicesList
-                                                  .indexOf(item)];
-                                    });
-                                  },
-                                  child: Text(item),
-                                )));
-                          });
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SimpleDialog(
-                                  title: const Text('Select Class of Service'),
-                                  children: items,
-                                );
-                              });
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Class of Service",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  color: Colors.grey),
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              selectedClassOfService,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
         ],
@@ -2809,6 +3018,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     child: LocationSearchUI("Departure", true,
                         notifyParent: refreshDepartureValue, city: departure)),
                 Container(
+                  
                     padding: EdgeInsets.only(
                       left: 10,
                       right: 16,
@@ -2834,6 +3044,23 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     }
     return Stack(
       children: <Widget>[
+        // Positioned(
+        //   top: 0,
+        //   left: 0,
+        //   right: 0,
+        //   child: Container(
+        // height: 10,
+        // decoration: BoxDecoration(
+        //   color: AppTheme.getTheme().backgroundColor,
+        //   // boxShadow: <BoxShadow>[
+        //   BoxShadow(
+        //       color: AppTheme.getTheme().dividerColor,
+        //       offset: Offset(0, -2),
+        //       blurRadius: 8.0),
+        // ],
+        // ),
+        //  ),
+        // ),
         Container(
             color: AppTheme.getTheme().backgroundColor,
             child: Padding(
@@ -2842,6 +3069,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               child: Column(
                 children: <Widget>[
                   Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
                         child: Padding(
@@ -2955,11 +3183,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: const Color(0xfff7f9fc)),
-                        child: Center(
-                            child: Image.asset(
-                          'assets/images/menu.png',
-                          width: 20,
-                        ))),
+                        child: Center(child: Icon(Icons.arrow_back_ios))),
                   ),
                 ),
               ),
@@ -2986,8 +3210,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       Radius.circular(32.0),
                     ),
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => DealFeed()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SortFlightsPage()));
                       // _scaffoldKey.currentState.openDrawer();
                       // setState(() {
                       //   _isSearched = false;
@@ -3021,8 +3247,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   Widget getDrawerAppBarUI() {
     return Container(
       decoration: BoxDecoration(
-        //33....: Color(0xFFF7F9FC),
-        color: Colors.white,
+        // color: Color(0xFFF7F9FC),
+        color: Colors.white
       ),
       child: Padding(
         padding: EdgeInsets.only(
@@ -3048,15 +3274,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: const Color(0xfff7f9fc)),
-                      child: Center(
-                        child: Transform.rotate(
-                          angle: -math.pi / 1.0,
-                          child: Image.asset(
-                            'assets/images/arrow.png',
-                            scale: 25,
-                          ),
-                        ),
-                      )),
+                      child: Center(child: Icon(Icons.arrow_back_ios))),
                 ),
               ),
             ),
@@ -3097,16 +3315,48 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   handleFilter() {
     if (originalFlights.length != 0) {
       if (filterExplore == null) {
-        filterExplore = filterExplore(this.originalFlights, this.airlineCodes);
+        filterExplore = FilterExplore(this.originalFlights, this.airlineCodes);
       }
     }
   }
 
-  @override
-  void dispose() {
-    _searchProgressBar.hide();
-    this._clickedSearch = false;
-    super.dispose();
+  void filter(FilterExplore filter) {
+    var stop = filter.accomodationListData[0].isSelected
+        ? 1
+        : filter.accomodationListData[1].isSelected
+            ? 2
+            : filter.accomodationListData[2].isSelected ? 3 : 0;
+
+    var items = this.originalFlights.where((i) {
+      var airlineBool = filter.airlines
+          .where((item) =>
+              item["isSelected"] &&
+              item["title"] != null &&
+              i.airlines.contains(item["code"]))
+          .toList();
+
+      int a2b = i.routes.where((r) => r.returnFlight == 0).toList().length;
+      int b2a = i.routes.where((r) => r.returnFlight == 1).toList().length;
+
+      return (i.price >= filter.priceFrom.round() &&
+              i.price <= filter.priceTo.round()) &&
+          airlineBool.length != 0 &&
+          (stop == 0 || (stop > 0 && (a2b == stop || b2a == stop)));
+    }).toList();
+
+    setState(() {
+      listOfFlights = List();
+      _displayLoadMore = true;
+      if (offset > items.length) {
+        listOfFlights.addAll(items.getRange(0, items.length));
+        _displayLoadMore = false;
+      } else {
+        print(offset - perPage);
+        listOfFlights.addAll(items.getRange(0, offset - perPage));
+      }
+      filterExplore = filter;
+      _clickFlight = List(listOfFlights.length);
+    });
   }
 }
 
@@ -3174,8 +3424,8 @@ class _LocationSearchUIState extends State<LocationSearchUI>
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
-          decoration: InputDecoration(
-              fillColor: Color(0xffF7F9FC),
+          decoration: InputDecoration(fillColor:  Color(0xffF7F9FC),
+            
               border: new OutlineInputBorder(
                 borderRadius: const BorderRadius.all(
                   const Radius.circular(15.0),
@@ -3197,9 +3447,12 @@ class _LocationSearchUIState extends State<LocationSearchUI>
               ),
               hintText: "Select " + widget.title + " City or Airport",
               hintStyle: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontFamily: "Gilroy",
-                  color: Color(0xFFC7C9D1))),
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "Gilroy",
+                                          color: Color(0xFFC7C9D1))
+                                          
+                                          
+                                          ),
           textAlign: TextAlign.start),
       suggestionsCallback: (search) async {
         if (search.length > 0) {
@@ -3250,8 +3503,43 @@ class ProgressBar {
     }
   }
 
-  OverlayEntry _createdProgressEntry(BuildContext context) =>
-      OverlayEntry(builder: (BuildContext context) => LoadingScreen());
+  OverlayEntry _createdProgressEntry(BuildContext context) => OverlayEntry(
+      builder: (BuildContext context) => Stack(
+            children: <Widget>[
+              Container(
+                // color: Colors.white
+                color: Color(0xFF113377).withOpacity(1),
+              ),
+              Positioned(
+                top: screenHeight(context) / 2,
+                left: screenWidth(context) / 2.2,
+                child: CupertinoTheme(
+                  data: CupertinoTheme.of(context).copyWith(
+                      primaryColor: Colors.white, brightness: Brightness.dark),
+                  child: CupertinoActivityIndicator(
+                    radius: 20,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: screenHeight(context) / 2.2,
+                left: screenWidth(context) / 3.9,
+                child: Material(
+                  color: Color(0xFF113377),
+                  child: new Text(
+                    "Loading Search Results",
+                    style: TextStyle(
+                      fontFamily: 'AvenirNext',
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ));
 
   double screenHeight(BuildContext context) =>
       MediaQuery.of(context).size.height;
