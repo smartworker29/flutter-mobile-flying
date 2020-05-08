@@ -84,16 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: AppTheme.getTheme().backgroundColor,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
-                                // border: Border.all(
-                                //   color: HexColor("#757575").withOpacity(0.6),
-                                // ),
-                                // boxShadow: <BoxShadow>[
-                                //   BoxShadow(
-                                //     color: AppTheme.getTheme().dividerColor,
-                                //     blurRadius: 8,
-                                //     offset: Offset(4, 4),
-                                //   ),
-                                // ],
+                               
                               ),
                               child: Center(
                                 child: TextField(
