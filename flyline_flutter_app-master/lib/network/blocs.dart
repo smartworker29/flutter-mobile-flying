@@ -77,21 +77,23 @@ class FlyLineBloc {
     offset,
     limit,
   ) async {
-    List<FlightInformationObject> response = await _repository.searchFlights(
-        flyFrom,
-        flyTo,
-        DateFormat("dd/MM/yyyy").format(dateFrom),
-        DateFormat("dd/MM/yyyy").format(dateTo),
-        type,
-        DateFormat("dd/MM/yyyy").format(returnFrom),
-        DateFormat("dd/MM/yyyy").format(returnTo),
-        adults,
-        infants,
-        children,
-        selectedCabins,
-        curr,
-        offset,
-        limit);
+    List<FlightInformationObject> response = await _repository
+        .searchFlights(
+            flyFrom,
+            flyTo,
+            DateFormat("dd/MM/yyyy").format(dateFrom),
+            DateFormat("dd/MM/yyyy").format(dateTo),
+            type,
+            DateFormat("dd/MM/yyyy").format(returnFrom),
+            DateFormat("dd/MM/yyyy").format(returnTo),
+            adults,
+            infants,
+            children,
+            selectedCabins,
+            curr,
+            offset,
+            limit)
+        .catchError((e) => throw e);
 
     _subjectExclusiveFlightItems.sink.add(response);
 
@@ -108,8 +110,9 @@ class FlyLineBloc {
 
   Future<CheckFlightResponse> checkFlights(
       bookingId, infants, children, adults) async {
-    CheckFlightResponse response =
-        await _repository.checkFlights(bookingId, infants, children, adults);
+    CheckFlightResponse response = await _repository
+        .checkFlights(bookingId, infants, children, adults)
+        .catchError((e) => throw e);
 
     _subjectCheckFlight.sink.add(response);
 

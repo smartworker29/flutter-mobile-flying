@@ -11,6 +11,7 @@ import 'package:motel/models/locations.dart';
 import 'package:motel/modules/bookingflow/search_selector.dart';
 import 'package:motel/modules/bookingflow/trip_details.dart' as trip_details;
 import 'package:motel/network/blocs.dart';
+import 'package:motel/utils/bug_page.dart';
 import 'package:motel/widgets/app_bar_date_dep_arr.dart';
 import 'package:motel/widgets/app_bar_from_to.dart';
 import 'package:motel/widgets/app_bar_pop_icon.dart';
@@ -255,17 +256,24 @@ class _SearchResultsState extends State<SearchResults>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF2F5FA),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15.0),
-              child: getAppBarUI(),
-            ),
-            getFlightDetails(),
-          ],
-        ),
-      ),
+      body: StreamBuilder(
+          stream: widget.flightsStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data.length == 0) return BugPage();
+            if (snapshot.hasData)
+              return Container(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: getAppBarUI(),
+                    ),
+                    getFlightDetails(),
+                  ],
+                ),
+              );
+            return Container();
+          }),
       resizeToAvoidBottomPadding: false,
     );
   }

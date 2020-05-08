@@ -2468,6 +2468,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           }));
                 } catch (e) {
                   print(e);
+                  hideSendingProgressBar();
                 }
               }
 

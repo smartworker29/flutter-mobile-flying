@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AppBarPopIcon extends StatelessWidget {
+  final Color buttonColor;
+
+  const AppBarPopIcon({
+    Key key,
+    this.buttonColor = const Color(0xfff7f9fc),
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -21,7 +28,7 @@ class AppBarPopIcon extends StatelessWidget {
               width: 40,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xfff7f9fc),
+                color: buttonColor,
               ),
               child: Center(
                 child: Icon(Icons.arrow_back_ios),
