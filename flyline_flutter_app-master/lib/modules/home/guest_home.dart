@@ -1392,7 +1392,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             height: double.infinity,
             width: double.infinity,
             color: Color(0xFFF7F9FC),
-            child: SafeArea(
               child: Column(
                 children: <Widget>[
                   ListTile(
@@ -1596,7 +1595,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   ),
                 ],
               ),
-            ),
+            
           ),
         ),
       ],
