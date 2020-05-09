@@ -1,5 +1,7 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_inappwebview (0.0.1):
+    - Flutter
   - flutter_keyboard_visibility (0.7.0):
     - Flutter
   - FMDB (2.7.5):
@@ -17,11 +19,10 @@ PODS:
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
-  - webview_flutter (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - OneSignal (< 3.0, >= 2.9.3)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -29,7 +30,6 @@ DEPENDENCIES:
   - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
   - shared_preferences_web (from `.symlinks/plugins/shared_preferences_web/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
   trunk:
@@ -39,6 +39,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_inappwebview:
+    :path: ".symlinks/plugins/flutter_inappwebview/ios"
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   path_provider:
@@ -51,11 +53,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_web/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
-  webview_flutter:
-    :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_inappwebview: 239198123453705522ba6c4f78d3d7468215f248
   flutter_keyboard_visibility: 6195387fb6d8f46e5cd6dda4a4154e41f800f545
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   OneSignal: a6df91542d1cf133b9dd19d89f2b533d8f2d3163
@@ -64,7 +65,6 @@ SPEC CHECKSUMS:
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
-  webview_flutter: bec7599de6bfbe8008a739aa3ebd7b364ea9d0cd
 
 PODFILE CHECKSUM: cbeaeb1c7b27250dfb539b176113f039d4626265
 

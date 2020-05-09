@@ -440,14 +440,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             boxShadow: <BoxShadow>[
               BoxShadow(
                 color: AppTheme.getTheme().dividerColor,
-                blurRadius: 3,
+                blurRadius: 0,
                 offset: Offset(0, 3),
               ),
             ],
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(15),
-              bottomRight: Radius.circular(15),
-            )),
+            ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -678,7 +675,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   departureDate != null
                                       ? DateFormat("MM-dd-yyyy")
                                           .format(DateTime.parse(departureDate))
-                                      : "Departure",
+                                      : "Departure Date",
                                   style: departureDate != null
                                       ? TextStyle()
                                       : TextStyle(
@@ -732,7 +729,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                             ? DateFormat("MM-dd-yyyy").format(
                                                 DateTime.parse(
                                                     arrivalDate.toString()))
-                                            : "Return",
+                                            : "Return Date",
                                         style: arrivalDate != null
                                             ? TextStyle()
                                             : TextStyle(
@@ -778,7 +775,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        "Adults",
+                        "Adult(s)",
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontFamily: 'Gilroy Bold',
@@ -788,7 +785,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     ),
                     Expanded(
                       child: Text(
-                        "Kids",
+                        "Kid(s)",
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontFamily: 'Gilroy Bold',
@@ -847,15 +844,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                              boxShadow: cabin == "economy"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.2),
-                                        blurRadius: 30,
-                                        offset: Offset(0, 15),
-                                      ),
-                                    ]
-                                  : [],
                               borderRadius: BorderRadius.circular(20),
                               color: cabin == "economy"
                                   ? Colors.white
@@ -892,15 +880,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                              boxShadow: cabin == "business"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.2),
-                                        blurRadius: 30,
-                                        offset: Offset(0, 15),
-                                      ),
-                                    ]
-                                  : [],
                               borderRadius: BorderRadius.circular(20),
                               color: cabin == "business"
                                   ? Colors.white
@@ -912,14 +891,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               )),
                           child: Container(
                             decoration: BoxDecoration(
-                              boxShadow: cabin == "bussiness"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.5),
-                                        blurRadius: 30,
-                                      ),
-                                    ]
-                                  : [],
                             ),
                             child: Center(
                               child: Text(
@@ -947,15 +918,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                              boxShadow: cabin == "fClass"
-                                  ? [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(20, 40, 160, 0.2),
-                                        blurRadius: 30,
-                                        offset: Offset(0, 15),
-                                      ),
-                                    ]
-                                  : [],
                               borderRadius: BorderRadius.circular(20),
                               color: cabin == "fClass"
                                   ? Colors.white
@@ -2784,16 +2746,16 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(top: 10),
-                  child: Image.asset('assets/images/departure.png',
-                      width: 23, height: 23),
+                  margin: EdgeInsets.only(top:4),
+                  child: Image.asset('assets/images/form_dot.png',
+                      width: 30, height: 30),
                 ),
                 Container(
                   child: Image.asset('assets/images/arrow_down.png', width: 7),
                 ),
                 Container(
-                  child: Image.asset('assets/images/arrival.png',
-                      width: 23, height: 23),
+                  child: Image.asset('assets/images/form_dot.png',
+                      width: 30, height: 30),
                 ),
               ],
             ),
@@ -2952,9 +2914,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     child: Container(
                         height: 40,
                         width: 40,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: const Color(0xfff7f9fc)),
                         child: Center(
                             child: Image.asset(
                           'assets/images/menu.png',
@@ -2997,13 +2956,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     child: Container(
                         height: 40,
                         width: 40,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: const Color(0xfff7f9fc)),
                         child: Center(
                           child: Image.asset(
                             'assets/images/add.png',
-                            //width: 10,
+                            width: 20,
                           ),
                         )
                         // Image.asset("assets/images/left.png"),
