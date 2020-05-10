@@ -368,7 +368,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.arrow_back_ios),
+                    child: Image.asset(
+                      'assets/images/back-arrow.png',
+                      scale: 28,)
                   ),
                 ),
               ),

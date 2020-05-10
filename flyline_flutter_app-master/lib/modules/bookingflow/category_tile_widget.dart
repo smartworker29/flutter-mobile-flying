@@ -74,7 +74,9 @@ class CategoryTileWidget extends StatelessWidget {
               color: Color.fromRGBO(0, 174, 239, 1),
               child: Text(
                 'View Flights',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Colors.white
+                    ),
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
