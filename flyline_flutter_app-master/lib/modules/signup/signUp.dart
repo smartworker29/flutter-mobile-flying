@@ -145,7 +145,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           color: AppTheme.getTheme()
                                               .backgroundColor,
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
+                                              Radius.circular(40)),
                                           // boxShadow: <BoxShadow>[
                                           //   BoxShadow(
                                           //     color: AppTheme.getTheme().dividerColor,
@@ -481,7 +481,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.arrow_back_ios),
+                    child: Image.asset(
+                    'assets/images/back-arrow.png',
+                      scale: 28,)
                   ),
                 ),
               ),

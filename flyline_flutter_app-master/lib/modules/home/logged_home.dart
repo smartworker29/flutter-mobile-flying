@@ -15,10 +15,10 @@ import 'package:motel/modules/bookingflow/search_selector.dart';
 import 'package:motel/modules/datepicker/datepicker_screen.dart';
 import 'package:motel/modules/login/loginScreen.dart';
 import 'package:motel/modules/menuitems/account_details.dart';
-import 'package:motel/modules/menuitems/deal_feed.dart';
+import 'package:motel/modules/deals/deal_feed.dart';
 import 'package:motel/modules/menuitems/help_center.dart';
-import 'package:motel/modules/menuitems/membership_plans.dart';
-import 'package:motel/modules/menuitems/payment.dart';
+import 'package:motel/modules/signup/flyline_premium.dart';
+import 'package:motel/modules/menuitems/travel_wallet.dart';
 import 'package:motel/modules/menuitems/terms_of_service.dart';
 import 'package:motel/widgets/loading_screen.dart';
 import 'package:motel/widgets/value_incrementer.dart';
@@ -829,7 +829,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black12),
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -844,7 +844,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(15),
                               color: cabin == "economy"
                                   ? Colors.white
                                   : Colors.transparent,
@@ -880,7 +880,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(15),
                               color: cabin == "business"
                                   ? Colors.white
                                   : Colors.transparent,
@@ -918,7 +918,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(15),
                               color: cabin == "fClass"
                                   ? Colors.white
                                   : Colors.transparent,
@@ -1028,20 +1028,20 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff8e969f),
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                       ),
                     ),
                     trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
+                      'assets/images/forward-arrow.png',
+                      scale: 34,
                     ),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MembershipPlansScreen()),
+                            builder: (context) => PremiumPage()),
                       );
                     },
                   ),
@@ -1055,14 +1055,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff8e969f),
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                       ),
                     ),
                     trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
+                      'assets/images/forward-arrow.png',
+                      scale: 34,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1082,14 +1082,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff8e969f),
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                       ),
                     ),
                     trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
+                      'assets/images/forward-arrow.png',
+                      scale: 34,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1108,14 +1108,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff8e969f),
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                       ),
                     ),
                     trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
+                      'assets/images/forward-arrow.png',
+                      scale: 34,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1135,14 +1135,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff8e969f),
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                       ),
                     ),
                     trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
+                      'assets/images/forward-arrow.png',
+                      scale: 34,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1161,14 +1161,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff8e969f),
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                       ),
                     ),
                     trailing: Image.asset(
-                      'assets/images/arrow.png',
-                      scale: 25,
+                      'assets/images/forward-arrow.png',
+                      scale: 34,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1188,15 +1188,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xff8e969f),
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                       ),
                     ),
                     trailing: Image.asset(
-                      'assets/images/arrow.png',
+                      'assets/images/forward-arrow.png',
 //                      width: 20,
-                      scale: 25,
+                      scale: 34,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -1221,14 +1221,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         color: Color(0xffff0d0d),
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w700,
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF113377),
+                    trailing: Image.asset(
+                      'assets/images/forward-arrow.png',
+                      scale: 28,
                     ),
                     onTap: () {
                       _logOut();
@@ -2290,11 +2290,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(
-            child: Text("Search Flights",
+            child: Text("Search",
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Gilroy Bold',
-                    fontSize: 16.0,
+                    fontSize: 18.0,
                     fontWeight: FontWeight.w700)),
             onPressed: () {
               if (!_clickedSearch &&
@@ -3003,15 +3003,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       width: 40,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: const Color(0xfff7f9fc)),
+                          color: const Color(0xffffff)),
                       child: Center(
-                        child: Transform.rotate(
-                          angle: -math.pi / 1.0,
                           child: Image.asset(
-                            'assets/images/arrow.png',
-                            scale: 25,
+                            'assets/images/back-arrow.png',
+                            scale: 28,
                           ),
-                        ),
                       )),
                 ),
               ),
@@ -3126,7 +3123,7 @@ class _LocationSearchUIState extends State<LocationSearchUI>
           style: DefaultTextStyle.of(context).style.copyWith(
                 fontStyle: FontStyle.normal,
                 fontFamily: 'Gilroy',
-                color: Color(0xff3a3f5c),
+                color: Color(0xff0e3178),
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),

@@ -13,10 +13,9 @@ class HelpCenterScreen extends StatelessWidget {
           child: Material(
             shape: new CircleBorder(),
             child: InkWell(
-              child: Icon(
-                Icons.arrow_back_ios,
-                size: 20,
-                color: Color.fromRGBO(58, 63, 92, 1),
+              child: Image.asset(
+                'assets/images/back-arrow.png',
+                scale: 34,
               ),
               onTap: () {
                 Navigator.pop(context);
