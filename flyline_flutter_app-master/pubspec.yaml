@@ -78,6 +78,7 @@ flutter:
     - assets/images/question.png
     - assets/images/originaline.png
     - assets/images/sort_flight.png
+    - assets/images/bug_page.png
 
   fonts:
     - family: Gilroy

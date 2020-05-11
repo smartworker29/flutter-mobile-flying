@@ -229,7 +229,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       new TextSpan(
                                         text: "  \$ " +
                                             (tripP * snapshot.data)
-                                                .toStringAsFixed(2),
+                                                ?.toStringAsFixed(2),
                                         style: TextStyle(
                                           color: Color(0xff0e3178),
                                           fontSize: 17,

@@ -17,6 +17,7 @@ class FlightInformationObject {
   List<dynamic> airlines;
   double distance;
   String deepLink;
+  String kind;
   Map<String, dynamic> raw;
 
   FlightInformationObject(
@@ -35,6 +36,7 @@ class FlightInformationObject {
     double price,
     double distance,
     String deepLink,
+    String kind,
     Map<String, dynamic> raw,
   ) {
     this.flyFrom = flyFrom;
@@ -52,6 +54,7 @@ class FlightInformationObject {
     this.airlines = airlines;
     this.distance = distance;
     this.deepLink = deepLink;
+    this.kind = kind;
     this.raw = raw;
   }
 
@@ -96,6 +99,7 @@ class FlightInformationObject {
       double.parse(json['price'].toString()),
       double.tryParse(json['distance'].toString() ?? ''),
       deepLink,
+      json["kind"],
       json,
     );
   }

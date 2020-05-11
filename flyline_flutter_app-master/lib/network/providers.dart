@@ -179,31 +179,50 @@ class FlyLineProvider {
           "return_date": returnDate
         };
     try {
-      final workers = await Future.wait([
+      List<Response> workers = List.from(await Future.wait([
         // dio.post("/request-scraper/", data: payload("skyscanner")),
         // dio.post("/request-scraper/", data: payload("kayak")),
         dio.post("/request-scraper/", data: payload("tripadvisor")),
-      ]);
+      ]));
 
-      if (workers.every((w) => w.statusCode == 200)) {
-        final List ids = [...workers.map((w) => w.data['id'])];
+      workers.retainWhere((worker) => worker.statusCode == 200);
+
+      Map<String, Map<String, dynamic>> taskScrapper = workers.fold({}, (a, b) {
+        a.addAll({
+          b.data["id"]: {"kind": b.request.data["kind"]}
+        });
+        return a;
+      });
+
+      if (workers.length > 0) {
+        List ids = [...taskScrapper.keys];
         List<Response> flights;
-        int retryCount = 5;
+        int retryCount = 3;
 
         do {
-          await Future.delayed(Duration(seconds: 2));
-          flights = await Future.wait([
+          await Future.delayed(Duration(seconds: retryCount + 1));
+          flights = List.from(await Future.wait([
             ...ids.map((id) => dio.get(
                   "/check-scraper-result/",
                   queryParameters: {"id": id},
                 ).catchError((error) => error.response))
-          ]);
-          retryCount--;
-          print(retryCount);
-        } while (flights.every((f) => f.statusCode != 200) || retryCount == 0);
+          ]));
 
-        flights.forEach((f) {
-          for (dynamic i in f.data["data"]) {
+          flights.retainWhere((f) => f.statusCode == 200);
+
+          for (int i = 0; i < flights.length; i++) {
+            if (flights[i].data["status"] == "success") {
+              taskScrapper[ids.removeAt(i)]
+                  .addAll({"data": flights.removeAt(i).data["data"]});
+            }
+          }
+
+          retryCount--;
+        } while (flights.length != 0 && retryCount > 0);
+
+        taskScrapper.values.forEach((f) {
+          for (dynamic i in f["data"]) {
+            i["kind"] = f["kind"];
             flightResults.add(FlightInformationObject.fromJson(i));
           }
         });

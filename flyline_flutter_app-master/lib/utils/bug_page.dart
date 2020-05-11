@@ -13,7 +13,7 @@ class BugPage extends StatelessWidget {
             buttonColor: Colors.white,
           ),
           Container(
-            height: MediaQuery.of(context).devicePixelRatio * 40,
+            height: MediaQuery.of(context).size.height * .05,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -21,23 +21,29 @@ class BugPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Placeholder(),
+                Image.asset(
+                  "assets/images/bug_page.png",
+                  fit: BoxFit.fitWidth,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * .025,
+                ),
                 Text(
                   "Oops, there's a bug",
                   style: TextStyle(
-                    fontSize: 18 * MediaQuery.of(context).devicePixelRatio,
+                    fontSize: 26,
                     color: Color.fromRGBO(14, 49, 120, 1),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).devicePixelRatio * 10,
+                  height: MediaQuery.of(context).size.height * .025,
                 ),
                 RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     style: TextStyle(
-                      fontSize: 10 * MediaQuery.of(context).devicePixelRatio,
+                      fontSize: 18,
                       fontWeight: FontWeight.w400,
                       height: 1.4,
                     ),
