@@ -7,8 +7,12 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - in_app_purchase (0.0.1):
+    - Flutter
   - OneSignal (2.12.6)
   - path_provider (0.0.1):
+    - Flutter
+  - path_provider_macos (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
@@ -24,8 +28,10 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - in_app_purchase (from `.symlinks/plugins/in_app_purchase/ios`)
   - OneSignal (< 3.0, >= 2.9.3)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
   - shared_preferences_web (from `.symlinks/plugins/shared_preferences_web/ios`)
@@ -43,8 +49,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_inappwebview/ios"
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  in_app_purchase:
+    :path: ".symlinks/plugins/in_app_purchase/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  path_provider_macos:
+    :path: ".symlinks/plugins/path_provider_macos/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   shared_preferences_macos:
@@ -59,9 +69,11 @@ SPEC CHECKSUMS:
   flutter_inappwebview: 239198123453705522ba6c4f78d3d7468215f248
   flutter_keyboard_visibility: 6195387fb6d8f46e5cd6dda4a4154e41f800f545
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  in_app_purchase: 3e2155afa9d03d4fa32d9e62d567885080ce97d6
   OneSignal: a6df91542d1cf133b9dd19d89f2b533d8f2d3163
-  path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
-  shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0

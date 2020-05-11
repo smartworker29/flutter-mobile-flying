@@ -21,7 +21,7 @@ dependencies:
   shared_preferences: ^0.5.3+5
   ##shared_preferences: 0.5.6
   dio_cookie_manager: 1.0.0
-  flushbar: 1.6.0
+  flushbar: 1.10.2
   #flushbar: 1.9.1
   simple_autocomplete_formfield: 0.2.4
   date_range_picker: ^1.0.5
@@ -47,6 +47,7 @@ dependencies:
   flutter_typeahead: ^1.8.0
   datetime_picker_formfield: ^1.0.0
   carousel_slider: ^2.1.0
+  in_app_purchase: ^0.3.3+1
 
 dev_dependencies:
   flutter_test:

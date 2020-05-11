@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 class PremiumPage extends StatefulWidget {
   PremiumPage({Key key, this.title}) : super(key: key);
@@ -139,9 +140,10 @@ class _PremiumPageState extends State<PremiumPage> {
 
   Widget _checkList() {
     List<String> titles = [
-      'Exclusive FlyLine Fores',
-      '3% - 10% Cash Back',
+      'Access to Exclusive FlyLine Fares',
+      'Up to 4% Cashback Booking Credit',
       'Premium Co-Pilot',
+      'Automatic Check-In',
     ];
 
     return Container(
@@ -165,7 +167,7 @@ class _PremiumPageState extends State<PremiumPage> {
                     padding: EdgeInsets.only(left: 16.0),
                   ),
                   Text(
-                    'Exclusive FlyLine Fores',
+                    'Access to Exclusive FlyLine Fares',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14.0,
@@ -190,7 +192,7 @@ class _PremiumPageState extends State<PremiumPage> {
                     padding: EdgeInsets.only(left: 16.0),
                   ),
                   Text(
-                    '3% - 10% Cash Back',
+                    'Up to 4% Cashback Booking Credit',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14.0,
@@ -221,6 +223,30 @@ class _PremiumPageState extends State<PremiumPage> {
                       fontSize: 14.0,
                       fontWeight: FontWeight.w600,
                   ),),
+                ],
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
+              height: 32.0,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset(
+                    'assets/images/check.png',
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 16.0),
+                  ),
+                  Text(
+                    'Automatic Check-In',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600,
+                    ),),
                 ],
               ),
             ),
@@ -278,7 +304,7 @@ class _PremiumPageState extends State<PremiumPage> {
           child: MaterialButton(
             height: 44.0,
             color: Colors.white,
-            child: Text('\$11.99 per month',
+            child: Text('\$9.99 per month',
                 style: TextStyle(fontSize: 16.0, color: Color(0xFF0E3178),fontWeight: FontWeight.bold,)),
             onPressed: () {},
           ),
@@ -299,7 +325,7 @@ class _PremiumPageState extends State<PremiumPage> {
           child: MaterialButton(
             height: 44.0,
             color: Colors.white,
-            child: Text('\$59.99 | 12 Months',
+            child: Text('\$79.99 per year',
                 style: TextStyle(fontSize: 16.0, color: Color(0xFF0E3178),fontWeight: FontWeight.bold,)),
             onPressed: () {},
           ),

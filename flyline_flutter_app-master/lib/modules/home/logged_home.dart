@@ -19,6 +19,7 @@ import 'package:motel/modules/deals/deal_feed.dart';
 import 'package:motel/modules/menuitems/help_center.dart';
 import 'package:motel/modules/signup/flyline_premium.dart';
 import 'package:motel/modules/menuitems/travel_wallet.dart';
+import 'package:motel/modules/menuitems/trip_management.dart';
 import 'package:motel/modules/menuitems/terms_of_service.dart';
 import 'package:motel/widgets/loading_screen.dart';
 import 'package:motel/widgets/value_incrementer.dart';
@@ -1121,7 +1122,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AccountDetailsScreen()),
+                            builder: (context) => TripScreen()),
                       );
                     },
                   ),

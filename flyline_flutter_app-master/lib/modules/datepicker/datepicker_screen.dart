@@ -50,13 +50,10 @@ class DatePickerScreen extends StatelessWidget {
                       child: Container(
                           height: 40,
                           width: 40,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: const Color(0xfff7f9fc)),
                           child: Center(
-                            child: Icon(Platform.isAndroid
-                                ? Icons.arrow_back
-                                : Icons.arrow_back_ios),
+                            child: Image.asset(
+                              'assets/images/back-arrow.png',
+                              scale: 28,)
                           )
                           // Image.asset("assets/images/left.png"),
                           ),

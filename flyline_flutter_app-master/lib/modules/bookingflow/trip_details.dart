@@ -82,7 +82,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   String get continueButtonText =>
       widget.type == SearchType.FARE || widget.type == SearchType.EXCLUSIVE
           ? "Continue"
-          : "View Meta Fare";
+          : "Continue";
 
   CheckFlightResponse _checkFlightResponse;
   List<BagItem> handBags;
@@ -1467,17 +1467,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               child: Container(
                 height: 40.0,
                 width: 40.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFFF7F9FC),
-                ),
                 child: InkWell(
                   onTap: () {
                     Navigator.pop(context);
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.arrow_back_ios),
+                    child: Image.asset(
+                      'assets/images/back-arrow.png',
+                      scale: 28,)
                   ),
                 ),
               ),
