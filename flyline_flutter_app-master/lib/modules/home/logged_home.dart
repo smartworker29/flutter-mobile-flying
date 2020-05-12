@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -13,14 +12,14 @@ import 'package:intl/intl.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/modules/bookingflow/search_selector.dart';
 import 'package:motel/modules/datepicker/datepicker_screen.dart';
+import 'package:motel/modules/deals/deal_feed.dart';
 import 'package:motel/modules/login/loginScreen.dart';
 import 'package:motel/modules/menuitems/account_details.dart';
-import 'package:motel/modules/deals/deal_feed.dart';
 import 'package:motel/modules/menuitems/help_center.dart';
-import 'package:motel/modules/signup/flyline_premium.dart';
+import 'package:motel/modules/menuitems/terms_of_service.dart';
 import 'package:motel/modules/menuitems/travel_wallet.dart';
 import 'package:motel/modules/menuitems/trip_management.dart';
-import 'package:motel/modules/menuitems/terms_of_service.dart';
+import 'package:motel/modules/signup/flyline_premium.dart';
 import 'package:motel/widgets/loading_screen.dart';
 import 'package:motel/widgets/value_incrementer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -437,15 +436,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     return Container(
 //        margin: EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: AppTheme.getTheme().dividerColor,
-                blurRadius: 0,
-                offset: Offset(0, 3),
-              ),
-            ],
+          color: Colors.white,
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: AppTheme.getTheme().dividerColor,
+              blurRadius: 0,
+              offset: Offset(0, 3),
             ),
+          ],
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -891,8 +890,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     : Colors.transparent,
                               )),
                           child: Container(
-                            decoration: BoxDecoration(
-                            ),
+                            decoration: BoxDecoration(),
                             child: Center(
                               child: Text(
                                 "Business",
@@ -1041,8 +1039,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => PremiumPage()),
+                        MaterialPageRoute(builder: (context) => PremiumPage()),
                       );
                     },
                   ),
@@ -1121,8 +1118,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => TripScreen()),
+                        MaterialPageRoute(builder: (context) => TripScreen()),
                       );
                     },
                   ),
@@ -2747,7 +2743,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(top:4),
+                  margin: EdgeInsets.only(top: 4),
                   child: Image.asset('assets/images/form_dot.png',
                       width: 30, height: 30),
                 ),
@@ -3003,13 +2999,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       height: 40,
                       width: 40,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: const Color(0xffffff)),
+                          shape: BoxShape.circle, color: const Color(0xffffff)),
                       child: Center(
-                          child: Image.asset(
-                            'assets/images/back-arrow.png',
-                            scale: 28,
-                          ),
+                        child: Image.asset(
+                          'assets/images/back-arrow.png',
+                          scale: 28,
+                        ),
                       )),
                 ),
               ),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -13,13 +12,13 @@ import 'package:intl/intl.dart';
 import 'package:motel/helper/helper.dart';
 import 'package:motel/modules/bookingflow/search_selector.dart';
 import 'package:motel/modules/datepicker/datepicker_screen.dart';
+import 'package:motel/modules/deals/deal_feed.dart';
 import 'package:motel/modules/login/loginScreen.dart';
 import 'package:motel/modules/menuitems/account_details.dart';
-import 'package:motel/modules/deals/deal_feed.dart';
 import 'package:motel/modules/menuitems/help_center.dart';
+import 'package:motel/modules/menuitems/terms_of_service.dart';
 import 'package:motel/modules/menuitems/travel_wallet.dart';
 import 'package:motel/modules/signup/flyline_premium.dart';
-import 'package:motel/modules/menuitems/terms_of_service.dart';
 import 'package:motel/modules/signup/signUp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -990,8 +989,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     : Colors.transparent,
                               )),
                           child: Container(
-                            decoration: BoxDecoration(
-                            ),
+                            decoration: BoxDecoration(),
                             child: Center(
                               child: Text(
                                 "Business",
@@ -1118,7 +1116,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             width: double.infinity,
             color: Color(0xFFF7F9FC),
             child: Padding(
-             padding: const EdgeInsets.only(bottom:16.0),
+              padding: const EdgeInsets.only(bottom: 16.0),
               child: Column(
                 children: <Widget>[
                   ListTile(
@@ -1140,8 +1138,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => PremiumPage()),
+                        MaterialPageRoute(builder: (context) => PremiumPage()),
                       );
                     },
                   ),
@@ -1305,7 +1302,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               builder: (context) => TermsOfUsePage()));
                     },
                   ),
-                   Divider(
+                  Divider(
                     height: 1.5,
                   ),
                   Expanded(
@@ -1327,9 +1324,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       ),
                     ),
                     trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Color(0xFF113377),
-                      ),
+                      Icons.arrow_forward_ios,
+                      color: Color(0xFF113377),
+                    ),
                     onTap: () {
                       _logOut();
                     },
@@ -2871,7 +2868,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     child: LocationSearchUI("Departure", true,
                         notifyParent: refreshDepartureValue, city: departure)),
                 Container(
-                  
                     padding: EdgeInsets.only(
                       left: 10,
                       right: 16,
@@ -3016,13 +3012,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         height: 40,
                         width: 40,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.transparent,),
+                          shape: BoxShape.circle,
+                          color: Colors.transparent,
+                        ),
                         child: Center(
                             child: Image.asset(
-                              'assets/images/menu.png',
-                              width: 20,
-                            ))),
+                          'assets/images/menu.png',
+                          width: 20,
+                        ))),
                   ),
                 ),
               ),
@@ -3061,8 +3058,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         height: 40,
                         width: 40,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.transparent,),
+                          shape: BoxShape.circle,
+                          color: Colors.transparent,
+                        ),
                         child: Center(
                           child: Image.asset(
                             'assets/images/add.png',
@@ -3080,12 +3078,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       ),
     );
   }
-   Widget getDrawerAppBarUI() {
+
+  Widget getDrawerAppBarUI() {
     return Container(
       decoration: BoxDecoration(
-        // color: Color(0xFFF7F9FC),
-        color: Colors.white
-      ),
+          // color: Color(0xFFF7F9FC),
+          color: Colors.white),
       child: Padding(
         padding: EdgeInsets.only(
             top: MediaQuery.of(context).padding.top, left: 8, right: 8),
@@ -3108,11 +3106,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       height: 40,
                       width: 40,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.transparent,),
+                        shape: BoxShape.circle,
+                        color: Colors.transparent,
+                      ),
                       child: Image.asset(
                         'assets/images/back-arrow.png',
-                        scale: 28,)),
+                        scale: 28,
+                      )),
                 ),
               ),
             ),
@@ -3139,7 +3139,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       ),
     );
   }
-   Widget _guestdrawerbuild(BuildContext context) {
+
+  Widget _guestdrawerbuild(BuildContext context) {
     return Column(
       children: <Widget>[
         getDrawerAppBarUI(),
@@ -3148,223 +3149,222 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
             height: double.infinity,
             width: double.infinity,
             color: Color(0xFFF7F9FC),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom:16.0),
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                      title: new Text(
-                        "FlyLine Premium",
-                        style: TextStyle(
-                          fontFamily: 'Gilroy',
-                          color: Color(0xff8e969f),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        ),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                    title: new Text(
+                      "FlyLine Premium",
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xff8e969f),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
                       ),
-                      trailing: Image.asset(
-                        'assets/images/forward-arrow.png',
-                        scale: 28,
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
                     ),
-                    Divider(
-                      height: 1.5,
+                    trailing: Image.asset(
+                      'assets/images/forward-arrow.png',
+                      scale: 28,
                     ),
-                    ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                      title: new Text(
-                        "How it Works",
-                        style: TextStyle(
-                          fontFamily: 'Gilroy',
-                          color: Color(0xff8e969f),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Divider(
+                    height: 1.5,
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                    title: new Text(
+                      "How it Works",
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xff8e969f),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
                       ),
-                      trailing: Image.asset(
-                        'assets/images/forward-arrow.png',
-                        scale: 28,
-                      ),
-                      onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => EditInfoScreen()));
-                      },
                     ),
-                    Divider(
-                      height: 1.5,
+                    trailing: Image.asset(
+                      'assets/images/forward-arrow.png',
+                      scale: 28,
                     ),
-                    ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                      title: new Text(
-                        "Deal Feed",
-                        style: TextStyle(
-                          fontFamily: 'Gilroy',
-                          color: Color(0xff8e969f),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        ),
+                    onTap: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => EditInfoScreen()));
+                    },
+                  ),
+                  Divider(
+                    height: 1.5,
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                    title: new Text(
+                      "Deal Feed",
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xff8e969f),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
                       ),
-                      trailing: Image.asset(
-                        'assets/images/forward-arrow.png',
-                        scale: 28,
+                    ),
+                    trailing: Image.asset(
+                      'assets/images/forward-arrow.png',
+                      scale: 28,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DealFeed()),
+                      );
+                    },
+                  ),
+                  Divider(
+                    height: 1.5,
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                    title: new Text(
+                      "Help Center",
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xff8e969f),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
                       ),
-                      onTap: () {
-                        Navigator.push(
+                    ),
+                    trailing: Image.asset(
+                      'assets/images/forward-arrow.png',
+                      scale: 28,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Divider(
+                    height: 1.5,
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                    title: new Text(
+                      "Terms of Service",
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xff8e969f),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    trailing: Image.asset(
+                      'assets/images/forward-arrow.png',
+                      scale: 28,
+                    ),
+                    onTap: () {
+                      Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => DealFeed()),
-                        );
-                      },
-                    ),
-                    Divider(
-                      height: 1.5,
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                      title: new Text(
-                        "Help Center",
-                        style: TextStyle(
-                          fontFamily: 'Gilroy',
-                          color: Color(0xff8e969f),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        ),
+                          MaterialPageRoute(
+                              builder: (context) => TermsOfUsePage()));
+                    },
+                  ),
+                  Divider(
+                    height: 1.5,
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                    title: new Text(
+                      "Privacy Policy",
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xff8e969f),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
                       ),
-                      trailing: Image.asset(
-                        'assets/images/forward-arrow.png',
-                        scale: 28,
+                    ),
+                    trailing: Image.asset(
+                      'assets/images/forward-arrow.png',
+                      scale: 28,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Divider(
+                    height: 1.5,
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 28),
+                    title: Text(
+                      "Log In",
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xff8e969f),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
                       ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
                     ),
-                    Divider(
-                      height: 1.5,
+                    trailing: Image.asset(
+                      'assets/images/forward-arrow.png',
+                      scale: 28,
                     ),
-                    ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                      title: new Text(
-                        "Terms of Service",
-                        style: TextStyle(
-                          fontFamily: 'Gilroy',
-                          color: Color(0xff8e969f),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    },
+                  ),
+                  Divider(
+                    height: 1.5,
+                  ),
+                  Flexible(
+                    child: Container(),
+                  ),
+                  Divider(
+                    height: 1.5,
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 28,
+                    ),
+                    title: new Text(
+                      "Create an Account",
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        color: Color(0xff40ce53),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
                       ),
-                      trailing: Image.asset(
-                        'assets/images/forward-arrow.png',
-                        scale: 28,
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TermsOfUsePage()));
-                      },
                     ),
-                    Divider(
-                      height: 1.5,
+                    trailing: Image.asset(
+                      'assets/images/forward-arrow.png',
+                      scale: 28,
                     ),
-                    ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                      title: new Text(
-                        "Privacy Policy",
-                        style: TextStyle(
-                          fontFamily: 'Gilroy',
-                          color: Color(0xff8e969f),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        ),
-                      ),
-                      trailing: Image.asset(
-                        'assets/images/forward-arrow.png',
-                        scale: 28,
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    Divider(
-                      height: 1.5,
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 28),
-                      title: Text(
-                        "Log In",
-                        style: TextStyle(
-                          fontFamily: 'Gilroy',
-                          color: Color(0xff8e969f),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        ),
-                      ),
-                      trailing: Image.asset(
-                        'assets/images/forward-arrow.png',
-                        scale: 28,
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
-                      },
-                    ),
-                    Divider(
-                      height: 1.5,
-                    ),
-                    Flexible(
-                      child: Container(),
-                    ),
-                    Divider(
-                      height: 1.5,
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 28,),
-                      title: new Text(
-                        "Create an Account",
-                        style: TextStyle(
-                          fontFamily: 'Gilroy',
-                          color: Color(0xff40ce53),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                        ),
-                      ),
-                      trailing: Image.asset(
-                        'assets/images/forward-arrow.png',
-                        scale: 28,
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpScreen()));
-                      },
-                    ),
-                    
-                  ],
-                ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignUpScreen()));
+                    },
+                  ),
+                ],
               ),
-            
+            ),
           ),
         ),
       ],
     );
   }
-
 
   refreshDepartureValue(value, isDeparture) {
     if (this.mounted)
@@ -3456,8 +3456,8 @@ class _LocationSearchUIState extends State<LocationSearchUI>
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
-          decoration: InputDecoration(fillColor:  Color(0xffF7F9FC),
-            
+          decoration: InputDecoration(
+              fillColor: Color(0xffF7F9FC),
               border: new OutlineInputBorder(
                 borderRadius: const BorderRadius.all(
                   const Radius.circular(15.0),
@@ -3479,12 +3479,9 @@ class _LocationSearchUIState extends State<LocationSearchUI>
               ),
               hintText: "Select " + widget.title + " City or Airport",
               hintStyle: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: "Gilroy",
-                                          color: Color(0xFFC7C9D1))
-                                          
-                                          
-                                          ),
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Gilroy",
+                  color: Color(0xFFC7C9D1))),
           textAlign: TextAlign.start),
       suggestionsCallback: (search) async {
         if (search.length > 0) {

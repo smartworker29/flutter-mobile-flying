@@ -1,5 +1,3 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:motel/modules/datepicker/flutter_calendar_carousel.dart';
@@ -51,10 +49,10 @@ class DatePickerScreen extends StatelessWidget {
                           height: 40,
                           width: 40,
                           child: Center(
-                            child: Image.asset(
-                              'assets/images/back-arrow.png',
-                              scale: 28,)
-                          )
+                              child: Image.asset(
+                            'assets/images/back-arrow.png',
+                            scale: 28,
+                          ))
                           // Image.asset("assets/images/left.png"),
                           ),
                     ),

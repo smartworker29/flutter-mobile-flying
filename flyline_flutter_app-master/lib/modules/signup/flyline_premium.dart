@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 
 class PremiumPage extends StatefulWidget {
   PremiumPage({Key key, this.title}) : super(key: key);
@@ -74,7 +73,10 @@ class _PremiumPageState extends State<PremiumPage> {
             padding: EdgeInsets.only(top: 20.0, right: 36.0, left: 36.0),
             child: Text(
               'Continue with FlyLine Free',
-              style: TextStyle(fontSize: 14.0, color: Colors.white,fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -87,9 +89,14 @@ class _PremiumPageState extends State<PremiumPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Flexible(child:Container(
-            padding: EdgeInsets.only(right: 36.0, left: 36.0),
-            child: Image.asset('assets/images/premium_logo.png',fit: BoxFit.fitWidth,),),
+          Flexible(
+            child: Container(
+              padding: EdgeInsets.only(right: 36.0, left: 36.0),
+              child: Image.asset(
+                'assets/images/premium_logo.png',
+                fit: BoxFit.fitWidth,
+              ),
+            ),
           ),
         ],
       ),
@@ -127,7 +134,11 @@ class _PremiumPageState extends State<PremiumPage> {
               padding: EdgeInsets.only(right: 36.0, left: 36.0),
               child: Text(
                 'Maxiumize savings on FlyLine when you upgrade to FlyLine Premiun',
-                style: TextStyle(fontSize: 14.0, color: Colors.white, height: 1.4,),
+                style: TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.white,
+                  height: 1.4,
+                ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
               ),
@@ -222,7 +233,8 @@ class _PremiumPageState extends State<PremiumPage> {
                       color: Colors.white,
                       fontSize: 14.0,
                       fontWeight: FontWeight.w600,
-                  ),),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -246,7 +258,8 @@ class _PremiumPageState extends State<PremiumPage> {
                       color: Colors.white,
                       fontSize: 14.0,
                       fontWeight: FontWeight.w600,
-                    ),),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -263,7 +276,8 @@ class _PremiumPageState extends State<PremiumPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Flexible(child:Padding(
+          Flexible(
+              child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0),
             child: Container(
               height: 1.0,
@@ -279,14 +293,16 @@ class _PremiumPageState extends State<PremiumPage> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          Flexible(child:Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            child: Container(
-              height: 1.0,
-              width: 60.0,
-              color: Colors.white70,
+          Flexible(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Container(
+                height: 1.0,
+                width: 60.0,
+                color: Colors.white70,
+              ),
             ),
-          ),),
+          ),
         ],
       ),
     );
@@ -305,7 +321,11 @@ class _PremiumPageState extends State<PremiumPage> {
             height: 44.0,
             color: Colors.white,
             child: Text('\$9.99 per month',
-                style: TextStyle(fontSize: 16.0, color: Color(0xFF0E3178),fontWeight: FontWeight.bold,)),
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Color(0xFF0E3178),
+                  fontWeight: FontWeight.bold,
+                )),
             onPressed: () {},
           ),
         ),
@@ -326,7 +346,11 @@ class _PremiumPageState extends State<PremiumPage> {
             height: 44.0,
             color: Colors.white,
             child: Text('\$79.99 per year',
-                style: TextStyle(fontSize: 16.0, color: Color(0xFF0E3178),fontWeight: FontWeight.bold,)),
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Color(0xFF0E3178),
+                  fontWeight: FontWeight.bold,
+                )),
             onPressed: () {},
           ),
         ),

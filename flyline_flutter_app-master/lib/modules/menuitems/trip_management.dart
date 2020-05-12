@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:motel/modules/menuitems/menu_item_app_bar.dart';
 import 'package:motel/modules/menuitems/menu_item_tab_bar.dart';
-import 'package:motel/widgets/round_primary_bottun.dart';
-import 'package:motel/widgets/round_textfield.dart';
 
 class TripScreen extends StatefulWidget {
   @override
